@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.littletonrobotics.junction.LogFileUtil;
@@ -13,6 +14,8 @@ import org.littletonrobotics.junction.networktables.NT4Publisher;
 import org.littletonrobotics.junction.wpilog.WPILOGReader;
 import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.utils.logging.commands.CommandLogger;
@@ -28,6 +31,9 @@ public class Robot extends LoggedRobot {
   private final RobotContainer robotContainer;
   private static final AtomicReference<RobotMode> mode = new AtomicReference<>(RobotMode.DISABLED);
 
+  private Character autonomousWinner;
+
+  private static Optional<DriverStation.Alliance> allianceColor = Optional.empty();
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -97,6 +103,14 @@ public class Robot extends LoggedRobot {
         if (Constants.ENABLE_LOGGING) {
             CommandLogger.get().log();
         }
+
+    // Gets the alliance color.
+    if (DriverStation.isDSAttached() && allianceColor.isEmpty()) {
+      allianceColor = DriverStation.getAlliance();
+      if (allianceColor.isPresent()) {
+        // robotContainer.getAutoChooser().getProvider().forceRefresh();
+      }
+    }
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
@@ -141,13 +155,24 @@ public class Robot extends LoggedRobot {
 
   /** This function is called periodically during operator control. */
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {
+    if (autonomousWinner == null) {
+      autonomousWinner = DriverStation.getGameSpecificMessage().charAt(0);
+    } else {
+      Alliance autoWinner = switch (autonomousWinner) {
+        case 'R' -> Alliance.Red;
+        case 'B' -> Alliance.Blue;
+        default -> throw new AssertionError("The winner isn't red or blue somehow.");
+      };
+      // TODO: code for shifts
+    }
+  }
 
   @Override
   public void testInit() {
- mode.set(RobotMode.TEST);
-        // Cancels all running commands at the start of test mode.
-        CommandScheduler.getInstance().cancelAll();  }
+    mode.set(RobotMode.TEST);
+    // Cancels all running commands at the start of test mode.
+    CommandScheduler.getInstance().cancelAll();  }
 
   /** This function is called periodically during test mode. */
   @Override

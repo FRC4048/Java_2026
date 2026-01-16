@@ -46,6 +46,6 @@ public class RealSparkMaxIo extends BaseIoImpl<MotorLoggableInputs> implements S
 
     @Override
     protected void updateInputs(MotorLoggableInputs inputs) {
-        getInputs().fromHardware(motor);
+        inputs.fromHardware(motor);
     }
 }

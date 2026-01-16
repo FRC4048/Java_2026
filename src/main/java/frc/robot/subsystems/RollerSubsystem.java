@@ -43,7 +43,7 @@ public class RollerSubsystem extends SubsystemBase {
     }
 
     public static SparkMaxIo createMockIo() {
-        return new MockSparkMaxIo();
+        return new MockSparkMaxIo(LOGGING_NAME, MotorLoggableInputs.allMetrics());
     }
 
     public static SparkMaxIo createRealIo() {

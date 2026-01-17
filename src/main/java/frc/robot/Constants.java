@@ -59,6 +59,7 @@ public final class Constants {
     public static final double TILT_GEARING = 45.0;
     public static final boolean TILT_SIMULATE_GRAVITY = false;
 
+    public static final boolean TUNING_MODE = false;
     public static final boolean ARM_DEBUG = true;
     public static final double DRIVE_BASE_WIDTH = 0.635;
     public static final double DRIVE_BASE_LENGTH = 0.635;

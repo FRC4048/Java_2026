@@ -1,16 +1,17 @@
 package frc.robot.apriltags;
 
 import edu.wpi.first.math.geometry.*;
-import frc.robot.Constants;
+import frc.robot.constants.Constants;
 import frc.robot.utils.Apriltag;
 import frc.robot.utils.logging.io.BaseIoImpl;
 import java.util.Queue;
 import org.littletonrobotics.junction.Logger;
 
-public class TCPApriltag extends BaseIOImpl<ApriltagInputs> implements ApriltagIO{
+public class TCPApriltag extends BaseIoImpl<ApriltagInputs> implements ApriltagIO{
   private final TCPApriltagServer server;
 
-  public TCPApriltag() {
+  public TCPApriltag(String name, ApriltagInputs inputs) {
+    super(name, inputs);
     server = new TCPApriltagServer(Constants.TCP_SERVER_PORT);
     server.start();
   }

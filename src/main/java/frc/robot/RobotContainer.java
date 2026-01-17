@@ -24,7 +24,7 @@ import frc.robot.utils.simulation.RobotVisualizer;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final RollerSubsystem rollerSubsystem;
-  private final TiltSubsystem tiltSubsystem;
+  //private final TiltSubsystem tiltSubsystem;
   private RobotVisualizer robotVisualizer = null;
   // Replace with CommandPS4Controller or CommandJoystick if needed
       //new CommandXboxController(OperatorConstants.kDriverControllerPort);
@@ -35,16 +35,16 @@ public class RobotContainer {
     switch (Constants.currentMode) {
             case REAL -> {
                 rollerSubsystem = new RollerSubsystem(RollerSubsystem.createRealIo());
-                tiltSubsystem = new TiltSubsystem(TiltSubsystem.createRealIo());
+                //tiltSubsystem = new TiltSubsystem(TiltSubsystem.createRealIo());
             }
             case REPLAY -> {
                 rollerSubsystem = new RollerSubsystem(RollerSubsystem.createMockIo());
-                tiltSubsystem = new TiltSubsystem(TiltSubsystem.createMockIo());
+                //tiltSubsystem = new TiltSubsystem(TiltSubsystem.createMockIo());
             }
             case SIM -> {
                 robotVisualizer = new RobotVisualizer();
                 rollerSubsystem = new RollerSubsystem(RollerSubsystem.createSimIo(robotVisualizer));
-                tiltSubsystem = new TiltSubsystem(TiltSubsystem.createSimIo(robotVisualizer));
+                //tiltSubsystem = new TiltSubsystem(TiltSubsystem.createSimIo(robotVisualizer));
             }
             default -> {
                 throw new RuntimeException("Did not specify Robot Mode");
@@ -78,13 +78,13 @@ public class RobotContainer {
                     "Spin Roller",
                     new SpinRoller(rollerSubsystem));
 
-            SmartDashboard.putData(
-                    "Tilt Up",
-                    new TiltUp(tiltSubsystem));
+            //SmartDashboard.putData(
+              //      "Tilt Up",
+              //      new TiltUp(tiltSubsystem));
 
-            SmartDashboard.putData(
-                    "Tilt Down",
-                    new TiltDown(tiltSubsystem));
+            //SmartDashboard.putData(
+              //      "Tilt Down",
+                //    new TiltDown(tiltSubsystem));
         }
     }
   /**

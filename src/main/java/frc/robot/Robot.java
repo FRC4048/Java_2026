@@ -15,6 +15,7 @@ import org.littletonrobotics.junction.wpilog.WPILOGReader;
 import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -31,7 +32,11 @@ public class Robot extends LoggedRobot {
   private final RobotContainer robotContainer;
   private static final AtomicReference<RobotMode> mode = new AtomicReference<>(RobotMode.DISABLED);
 
-  private Character autonomousWinner;
+  private static Character autonomousWinner;
+
+  private static boolean hubActive;
+  private static Timer timer = new Timer();
+  private static Alliance autoWinner;
 
   private static Optional<DriverStation.Alliance> allianceColor = Optional.empty();
 
@@ -135,6 +140,9 @@ public class Robot extends LoggedRobot {
     if (autonomousCommand != null) {
       autonomousCommand.schedule();
     }
+
+    // Hub is always active during autonomous.
+    hubActive = true;
   }
 
   /** This function is called periodically during autonomous. */
@@ -151,20 +159,37 @@ public class Robot extends LoggedRobot {
         if (autonomousCommand != null) {
             autonomousCommand.cancel();
         }
+    
+    // Start the timer to keep track of shifts.
+    timer.start();
   }
 
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
+    // Check who won autonomous.
     if (autonomousWinner == null) {
       autonomousWinner = DriverStation.getGameSpecificMessage().charAt(0);
+      if (autonomousWinner != null) {
+        autoWinner = switch (autonomousWinner) {
+          case 'R' -> Alliance.Red;
+          case 'B' -> Alliance.Blue;
+          default -> throw new AssertionError("Data is corrupt - winner must be red or blue.");
+        };
+      }
     } else {
-      Alliance autoWinner = switch (autonomousWinner) {
-        case 'R' -> Alliance.Red;
-        case 'B' -> Alliance.Blue;
-        default -> throw new AssertionError("The winner isn't red or blue somehow.");
-      };
-      // TODO: code for shifts
+      // Determine whether the hub is active.
+      if (timer.hasElapsed(110)) {
+        hubActive = true; // end game
+      } else if (timer.hasElapsed(85)) {
+        hubActive = (allianceColor.get() == autoWinner); // shift 4
+      } else if (timer.hasElapsed(60)) {
+        hubActive = (allianceColor.get() != autoWinner); // shift 3
+      } else if (timer.hasElapsed(35)) {
+        hubActive = (allianceColor.get() == autoWinner); // shift 2
+      } else if (timer.hasElapsed(10)) {
+        hubActive = (allianceColor.get() != autoWinner); // shift 1
+      } else hubActive = true; // transition
     }
   }
 
@@ -185,4 +210,6 @@ public class Robot extends LoggedRobot {
   /** This function is called periodically whilst in simulation. */
   @Override
   public void simulationPeriodic() {}
+
+  public static boolean hubActive() {return hubActive;}
 }

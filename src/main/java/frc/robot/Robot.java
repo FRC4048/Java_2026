@@ -16,6 +16,7 @@ import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -32,7 +33,7 @@ public class Robot extends LoggedRobot {
   private final RobotContainer robotContainer;
   private static final AtomicReference<RobotMode> mode = new AtomicReference<>(RobotMode.DISABLED);
 
-  private static Character autonomousWinner;
+  private static String autonomousWinner;
 
   private static boolean hubActive;
   private static Timer timer = new Timer();
@@ -116,6 +117,10 @@ public class Robot extends LoggedRobot {
         // robotContainer.getAutoChooser().getProvider().forceRefresh();
       }
     }
+
+    // Puts data on the elastic dashboard
+    SmartDashboard.putString("Alliance Color", Robot.allianceColorString());
+    SmartDashboard.putBoolean("Hub Active?", Robot.hubActive());
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
@@ -169,11 +174,12 @@ public class Robot extends LoggedRobot {
   public void teleopPeriodic() {
     // Check who won autonomous.
     if (autonomousWinner == null) {
-      autonomousWinner = DriverStation.getGameSpecificMessage().charAt(0);
+      autonomousWinner = DriverStation.getGameSpecificMessage();
       if (autonomousWinner != null) {
+        System.out.println("Winner of autonomous: " + autonomousWinner);
         autoWinner = switch (autonomousWinner) {
-          case 'R' -> Alliance.Red;
-          case 'B' -> Alliance.Blue;
+          case "R" -> Alliance.Red;
+          case "B" -> Alliance.Blue;
           default -> throw new AssertionError("Data is corrupt - winner must be red or blue.");
         };
       }
@@ -212,4 +218,6 @@ public class Robot extends LoggedRobot {
   public void simulationPeriodic() {}
 
   public static boolean hubActive() {return hubActive;}
+  public static Optional<Alliance> allianceColor() {return allianceColor;}
+  public static String allianceColorString() {return String.valueOf(allianceColor.orElse(null));}
 }

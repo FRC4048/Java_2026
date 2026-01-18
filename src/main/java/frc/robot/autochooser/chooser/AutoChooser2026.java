@@ -11,12 +11,12 @@ import frc.robot.autochooser.event.AutoEventProviderIO;
 import frc.robot.utils.logging.commands.DoNothingCommand;
 import java.util.Map;
 
-public class AutoChooser2025 extends SubsystemBase implements AutoChooser {
+public class AutoChooser2026 extends SubsystemBase implements AutoChooser {
   private final Map<AutoEvent, Command> commandMap;
   private final AutoEventProvider provider;
   // private final SwerveDrivetrain drivetrain;
 
-  public AutoChooser2025(
+  public AutoChooser2026(
       AutoEventProviderIO providerIO
       // SwerveDrivetrain drivetrain,
       ) {

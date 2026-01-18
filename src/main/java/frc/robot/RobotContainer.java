@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.autochooser.chooser.AutoChooser2025;
+import frc.robot.autochooser.chooser.AutoChooser2026;
 import frc.robot.commands.roller.SpinRoller;
 import frc.robot.commands.tilt.TiltDown;
 import frc.robot.commands.tilt.TiltUp;
@@ -27,7 +27,7 @@ public class RobotContainer {
   private final RollerSubsystem rollerSubsystem;
   private final TiltSubsystem tiltSubsystem;
   private RobotVisualizer robotVisualizer = null;
-  private final AutoChooser2025 autoChooser;
+  private final AutoChooser2026 autoChooser;
   // Replace with CommandPS4Controller or CommandJoystick if needed
       //new CommandXboxController(OperatorConstants.kDriverControllerPort);
 
@@ -54,7 +54,7 @@ public class RobotContainer {
         }
     configureBindings();
     putShuffleboardCommands();
-    autoChooser = new AutoChooser2025(null);
+    autoChooser = new AutoChooser2026(null);
   }
 
   /**
@@ -103,7 +103,7 @@ public class RobotContainer {
     return robotVisualizer;
   }
 
-  public AutoChooser2025 getAutoChooser() {
+  public AutoChooser2026 getAutoChooser() {
     return autoChooser;
   }
 }

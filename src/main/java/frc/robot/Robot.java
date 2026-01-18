@@ -113,7 +113,7 @@ public class Robot extends LoggedRobot {
     if (DriverStation.isDSAttached() && allianceColor.isEmpty()) {
       allianceColor = DriverStation.getAlliance();
       if (allianceColor.isPresent()) {
-        // robotContainer.getAutoChooser().getProvider().forceRefresh();
+        robotContainer.getAutoChooser().getProvider().forceRefresh();
       }
     }
   }
@@ -211,5 +211,9 @@ public class Robot extends LoggedRobot {
   @Override
   public void simulationPeriodic() {}
 
+  // getters
+  /** @return whether the hub is active */
   public static boolean hubActive() {return hubActive;}
+  /** @return the alliance color */
+  public static Optional<DriverStation.Alliance> getAllianceColor() {return allianceColor;}
 }

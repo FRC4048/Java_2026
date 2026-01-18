@@ -3,7 +3,6 @@ package frc.robot.autochooser.event;
 import frc.robot.Robot;
 import frc.robot.autochooser.AutoAction;
 import frc.robot.autochooser.FieldLocation;
-import frc.robot.utils.logging.subsystem.LoggableSystem;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 
@@ -12,37 +11,38 @@ import java.util.function.Consumer;
  * AutoActions} and {@link FieldLocation fieldLocations}<br>
  */
 public class AutoEventProvider {
-  private final LoggableSystem<AutoEventProviderIO, AutoChooserInputs> system;
+  private final AutoEventProviderIO io;
+  private final AutoChooserInputs inputs;
   private final BiFunction<AutoAction, FieldLocation, Boolean> validator;
   private boolean changed = false;
 
   public AutoEventProvider(
       AutoEventProviderIO providerIO, BiFunction<AutoAction, FieldLocation, Boolean> validator) {
-    this.system = new LoggableSystem<>(providerIO, new AutoChooserInputs("AutoChooser"));
+    this.io = providerIO;
+    this.inputs = new AutoChooserInputs();
     this.validator = validator;
     setOnActionChangeListener((a) -> changed = true);
     setOnLocationChangeListener((l) -> changed = true);
   }
 
   public AutoAction getSelectedAction() {
-    return system.getInputs().action == null
-        ? system.getInputs().defaultAction
-        : system.getInputs().action;
+    return inputs.action == null
+        ? inputs.defaultAction
+        : inputs.action;
   }
 
   public FieldLocation getSelectedLocation() {
-    return system.getInputs().location == null
-        ? system.getInputs().defaultLocation
-        : system.getInputs().location;
+    return inputs.location == null
+        ? inputs.defaultLocation
+        : inputs.location;
   }
 
   public void updateInputs() {
-    FieldLocation lastsLoc = system.getInputs().location;
-    AutoAction lastsAct = system.getInputs().action;
-    system.updateInputs();
+    FieldLocation lastsLoc = inputs.location;
+    AutoAction lastsAct = inputs.action;
     if (!Robot.isReal()
-        && (!lastsLoc.equals(system.getInputs().location)
-            || !lastsAct.equals(system.getInputs().action))) {
+        && (!lastsLoc.equals(inputs.location)
+            || !lastsAct.equals(inputs.action))) {
       changed = true;
     }
     if (changed) {
@@ -52,25 +52,25 @@ public class AutoEventProvider {
   }
 
   public void setOnActionChangeListener(Consumer<AutoAction> listener) {
-    system.getIO().setOnActionChangeListener(listener);
+    io.setOnActionChangeListener(listener);
   }
 
   public void setOnLocationChangeListener(Consumer<FieldLocation> listener) {
-    system.getIO().setOnLocationChangeListener(listener);
+    io.setOnLocationChangeListener(listener);
   }
 
   public void forceRefresh() {
     if (validator.apply(getSelectedAction(), getSelectedLocation())) {
-      system.getIO().setFeedbackAction(getSelectedAction());
-      system.getIO().setFeedbackLocation(getSelectedLocation());
-      system.getIO().runValidCommands();
+      io.setFeedbackAction(getSelectedAction());
+      io.setFeedbackLocation(getSelectedLocation());
+      io.runValidCommands();
     } else {
-      system.getIO().setFeedbackAction(AutoAction.INVALID);
-      system.getIO().setFeedbackLocation(FieldLocation.INVALID);
+      io.setFeedbackAction(AutoAction.INVALID);
+      io.setFeedbackLocation(FieldLocation.INVALID);
     }
   }
 
   public void addOnValidationCommand(Runnable c) {
-    system.getIO().addOnValidationCommand(c);
+    io.addOnValidationCommand(c);
   }
 }

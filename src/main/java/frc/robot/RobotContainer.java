@@ -103,7 +103,7 @@ public class RobotContainer {
     return robotVisualizer;
   }
 
-  public Object getAutoChooser() {
+  public AutoChooser2025 getAutoChooser() {
     return autoChooser;
   }
 }

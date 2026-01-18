@@ -4,6 +4,9 @@
 
 package frc.robot;
 
+import com.ctre.phoenix6.swerve.SwerveDrivetrain;
+
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -14,6 +17,8 @@ import frc.robot.commands.tilt.TiltUp;
 import frc.robot.subsystems.RollerSubsystem;
 import frc.robot.subsystems.TiltSubsystem;
 import frc.robot.utils.simulation.RobotVisualizer;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -23,11 +28,15 @@ import frc.robot.utils.simulation.RobotVisualizer;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
+  private SwerveDrivetrain drivetrain;
   private final RollerSubsystem rollerSubsystem;
   private final TiltSubsystem tiltSubsystem;
   private RobotVisualizer robotVisualizer = null;
-  // Replace with CommandPS4Controller or CommandJoystick if needed
-      //new CommandXboxController(OperatorConstants.kDriverControllerPort);
+  private final CommandXboxController controller =
+      new CommandXboxController(Constants.XBOX_CONTROLLER_ID);
+  private final Joystick joyleft = new Joystick(Constants.LEFT_JOYSTICK_ID);
+  private final Joystick joyright = new Joystick(Constants.RIGHT_JOYSTICK_ID);
+
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -54,24 +63,11 @@ public class RobotContainer {
     putShuffleboardCommands();
   }
 
-  /**
-   * Use this method to define your trigger->command mappings. Triggers can be created via the
-   * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with an arbitrary
-   * predicate, or via the named factories in {@link
-   * edu.wpi.first.wpilibj2.command.button.CommandGenericHID}'s subclasses for {@link
-   * CommandXboxController Xbox}/{@link edu.wpi.first.wpilibj2.command.button.CommandPS4Controller
-   * PS4} controllers or {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
-   * joysticks}.
-   */
   private void configureBindings() {
-    // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-    //new Trigger(m_exampleSubsystem::exampleCondition)
-      //  .onTrue(new ExampleCommand(m_exampleSubsystem));
-
-    // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
-    // cancelling on release.
-   // m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
+    JoystickButton joyLeft2 = new JoystickButton(joyleft, 2);
+    JoystickButton joyRight1 = new JoystickButton(joyright, 1);
   }
+
   public void putShuffleboardCommands() {
         if (Constants.DEBUG) {
             SmartDashboard.putData(
@@ -100,3 +96,5 @@ public class RobotContainer {
     return robotVisualizer;
   }
 }
+
+

@@ -64,5 +64,9 @@ public final class Constants {
     public static final double DRIVE_BASE_LENGTH = 0.635;
     public static final double INITIAL_ROBOT_HEIGHT = 0;
 
+    public static final int XBOX_CONTROLLER_ID = 0;
+    public static final int LEFT_JOYSTICK_ID = 1;
+    public static final int RIGHT_JOYSTICK_ID = 2;
+
 }
 

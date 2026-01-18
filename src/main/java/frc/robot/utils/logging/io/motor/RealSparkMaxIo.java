@@ -48,4 +48,8 @@ public class RealSparkMaxIo extends BaseIoImpl<MotorLoggableInputs> implements S
     protected void updateInputs(MotorLoggableInputs inputs) {
         inputs.fromHardware(motor);
     }
+
+    public SparkMax getSparkMax() {
+        return motor;
+    }
 }

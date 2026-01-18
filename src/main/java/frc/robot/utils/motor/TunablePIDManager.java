@@ -1,10 +1,10 @@
 package frc.robot.utils.motor;
 
 import frc.robot.utils.logging.LoggedTunableNumber;
-import frc.robot.utils.logging.PIDLoggableIO;
+import frc.robot.utils.logging.PIDIo;
 
 public class TunablePIDManager {
-  private final PIDLoggableIO io;
+  private final PIDIo io;
   private final NeoPidConfig initConfig;
   private final String prefix;
   private final LoggedTunableNumber kPTunable;
@@ -16,7 +16,7 @@ public class TunablePIDManager {
   private final LoggedTunableNumber kMaxAccTunable;
   private final LoggedTunableNumber kAllowedErrorTunable;
 
-  public TunablePIDManager(String prefix, PIDLoggableIO io, NeoPidConfig initConfig) {
+  public TunablePIDManager(String prefix, PIDIo io, NeoPidConfig initConfig) {
     this.io = io;
     this.initConfig = initConfig;
     this.prefix = prefix;

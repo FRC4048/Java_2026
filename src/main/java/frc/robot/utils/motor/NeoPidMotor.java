@@ -11,6 +11,10 @@ import com.revrobotics.spark.*;
 import com.revrobotics.spark.config.ClosedLoopConfig;
 import com.revrobotics.spark.config.LimitSwitchConfig;
 import com.revrobotics.spark.config.MAXMotionConfig.MAXMotionPositionMode;
+import com.revrobotics.spark.FeedbackSensor;
+
+import frc.robot.utils.logging.io.motor.SparkMaxIo;
+
 import com.revrobotics.spark.config.SparkMaxConfig;
 
 /**
@@ -57,7 +61,7 @@ public class NeoPidMotor {
         .idleMode(kBrake);
     config
         .closedLoop
-        .feedbackSensor(ClosedLoopConfig.FeedbackSensor.kPrimaryEncoder);
+        .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
         .pid(pidConfig.getP(), pidConfig.getI(), pidConfig.getD())
         .velocityFF(pidConfig.getFF())
         .iZone(pidConfig.getIZone())

@@ -29,6 +29,7 @@ public class RobotContainer {
   private final RollerSubsystem rollerSubsystem;
   private final TiltSubsystem tiltSubsystem;
   private final IntakeSubsystem intakeSubsystem;
+  private final DigitalInput intakeDigitalInput = new DigitalInput(0);
   private RobotVisualizer robotVisualizer = null;
   // Replace with CommandPS4Controller or CommandJoystick if needed
       //new CommandXboxController(OperatorConstants.kDriverControllerPort);
@@ -40,18 +41,18 @@ public class RobotContainer {
             case REAL -> {
                 rollerSubsystem = new RollerSubsystem(RollerSubsystem.createRealIo());
                 tiltSubsystem = new TiltSubsystem(TiltSubsystem.createRealIo());
-                intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createRealIo(), new DigitalInput(0));
+                intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createRealIo(), intakeDigitalInput);
             }
             case REPLAY -> {
                 rollerSubsystem = new RollerSubsystem(RollerSubsystem.createMockIo());
                 tiltSubsystem = new TiltSubsystem(TiltSubsystem.createMockIo());
-                intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createMockIo(), new DigitalInput(0));
+                intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createMockIo(), intakeDigitalInput);
             }
             case SIM -> {
                 robotVisualizer = new RobotVisualizer();
                 rollerSubsystem = new RollerSubsystem(RollerSubsystem.createSimIo(robotVisualizer));
                 tiltSubsystem = new TiltSubsystem(TiltSubsystem.createSimIo(robotVisualizer));
-                intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createSimIo(robotVisualizer), new DigitalInput(0));
+                intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createSimIo(robotVisualizer), intakeDigitalInput);
             }
             
             default -> {

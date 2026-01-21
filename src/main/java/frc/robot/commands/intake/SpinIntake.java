@@ -21,16 +21,16 @@ public class SpinIntake extends LoggableCommand {
 
     @Override
     public void execute() {
-        subsystem.setSpeed(Constants.INTAKE_SPEED);
+        if (subsystem.isDeployed()) {
+            subsystem.setSpeed(Constants.INTAKE_SPEED);
+        } else {
+            subsystem.setSpeed(0);
+        }
     }
 
     @Override
     public boolean isFinished() {
-        if (subsystem.isDeployed()) {
-            return false;
-        } else {
-            return true;
-        }
+        return false;
     }
 
     @Override

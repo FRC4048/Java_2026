@@ -29,7 +29,6 @@ public class RobotContainer {
   private final RollerSubsystem rollerSubsystem;
   private final TiltSubsystem tiltSubsystem;
   private final IntakeSubsystem intakeSubsystem;
-  private final DigitalInput intakeDigitalInput = new DigitalInput(0);
   private RobotVisualizer robotVisualizer = null;
   // Replace with CommandPS4Controller or CommandJoystick if needed
       //new CommandXboxController(OperatorConstants.kDriverControllerPort);
@@ -41,18 +40,18 @@ public class RobotContainer {
             case REAL -> {
                 rollerSubsystem = new RollerSubsystem(RollerSubsystem.createRealIo());
                 tiltSubsystem = new TiltSubsystem(TiltSubsystem.createRealIo());
-                intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createRealIo(), intakeDigitalInput);
+                intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createRealIo(), new DigitalInput(Constants.INTAKE_DIGITAL_INPUT_CHANNEL));
             }
             case REPLAY -> {
                 rollerSubsystem = new RollerSubsystem(RollerSubsystem.createMockIo());
                 tiltSubsystem = new TiltSubsystem(TiltSubsystem.createMockIo());
-                intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createMockIo(), intakeDigitalInput);
+                intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createMockIo(), new DigitalInput(Constants.INTAKE_DIGITAL_INPUT_CHANNEL));
             }
             case SIM -> {
                 robotVisualizer = new RobotVisualizer();
                 rollerSubsystem = new RollerSubsystem(RollerSubsystem.createSimIo(robotVisualizer));
                 tiltSubsystem = new TiltSubsystem(TiltSubsystem.createSimIo(robotVisualizer));
-                intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createSimIo(robotVisualizer), intakeDigitalInput);
+                intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createSimIo(robotVisualizer), new DigitalInput(Constants.INTAKE_DIGITAL_INPUT_CHANNEL));
             }
             
             default -> {

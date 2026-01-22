@@ -31,9 +31,8 @@ public class RobotContainer {
   //private final RollerSubsystem rollerSubsystem;
   //private final TiltSubsystem tiltSubsystem;
   private RobotVisualizer robotVisualizer = null;
-  private final SwerveSubsystem drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
-                                                                                "YAGSL"));
-  final CommandXboxController driverXbox = new CommandXboxController(0);// DO NOT USE THIS THIS IS FOR DRIVING AND WILL BE DELETED EVENTUALLY
+  private final SwerveSubsystem drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),"YAGSL"));
+  private final CommandXboxController driverXbox = new CommandXboxController(0);// DO NOT USE THIS THIS IS FOR DRIVING AND WILL BE DELETED EVENTUALLY
   // Replace with CommandPS4Controller or CommandJoystick if needed
       //new CommandXboxController(OperatorConstants.kDriverControllerPort);
 
@@ -89,7 +88,7 @@ public class RobotContainer {
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
    // m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
-    Command driveRobotOrientedAngularVelocity  = drivebase.driveFieldOriented(driveRobotOriented);
+    Command driveRobotOrientedAngularVelocity = drivebase.driveFieldOriented(driveRobotOriented);
     drivebase.setDefaultCommand(driveRobotOrientedAngularVelocity);
   }
   public void putShuffleboardCommands() {

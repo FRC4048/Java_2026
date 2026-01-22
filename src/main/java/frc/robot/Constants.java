@@ -5,6 +5,7 @@
 package frc.robot;
 
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.RobotBase;
 
 /**
@@ -63,6 +64,10 @@ public final class Constants {
     public static final double DRIVE_BASE_WIDTH = 0.635;
     public static final double DRIVE_BASE_LENGTH = 0.635;
     public static final double INITIAL_ROBOT_HEIGHT = 0;
+
+    public static final double MAX_SPEED = Units.feetToMeters(14.5);
+
+    public static final double DEADBAND = 0.1;
 
 }
 

@@ -42,7 +42,7 @@ public class RobotVisualizer {
         LoggedMechanismLigament2d intakeRiserLigament =
                 intakeRoot.append(
                         new LoggedMechanismLigament2d(
-                                "Intake Riser", 0.35, 90, 5, new Color8Bit(Color.kDarkGray)));
+                                "Intake Riser", 0.35, 30, 5, new Color8Bit(Color.kDarkGray)));
                             
         this.intakeLigament =
                 intakeRiserLigament.append(

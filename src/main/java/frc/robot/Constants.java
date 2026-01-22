@@ -51,7 +51,7 @@ public final class Constants {
 
     public static final double ROLLER_SPEED = 0.25;
     public static final double TILT_SPEED = -0.5; // Arm motor is inverted - use negative speed
-    public static final double INTAKE_SPEED = 0.5;
+    public static final double INTAKE_SPEED = -0.5;
     public static final double SPIN_TIMEOUT = 5;
     public static final double TILT_TIMEOUT = 5;
     public static final double TILT_LENGTH = 0.2;

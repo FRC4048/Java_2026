@@ -1,15 +1,15 @@
 package frc.robot.utils.logging.io.motor;
 
 import edu.wpi.first.wpilibj.DigitalInput;
-import frc.robot.utils.logging.input.MotorLoggableInputs;
+import frc.robot.utils.logging.input.DigitalInputLoggableInputs;
 import frc.robot.utils.logging.io.BaseIoImpl;
 
-public class RealDigitalInputIo extends BaseIoImpl<MotorLoggableInputs> implements DigitalInputIo {
+public class RealDigitalInputIo extends BaseIoImpl<DigitalInputLoggableInputs> implements DigitalInputIo {
 
     protected final DigitalInput input;
     private boolean pressed;
 
-    public RealDigitalInputIo(String name, DigitalInput input, MotorLoggableInputs inputs) {
+    public RealDigitalInputIo(String name, DigitalInput input, DigitalInputLoggableInputs inputs) {
         super(name, inputs);
         this.input = input;
     }
@@ -20,7 +20,7 @@ public class RealDigitalInputIo extends BaseIoImpl<MotorLoggableInputs> implemen
     }
 
     @Override
-    protected void updateInputs(MotorLoggableInputs inputs) {
+    protected void updateInputs(DigitalInputLoggableInputs inputs) {
         pressed = input.get();
     }
 }

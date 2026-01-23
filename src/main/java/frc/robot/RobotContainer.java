@@ -40,18 +40,18 @@ public class RobotContainer {
             case REAL -> {
                 rollerSubsystem = new RollerSubsystem(RollerSubsystem.createRealIo());
                 tiltSubsystem = new TiltSubsystem(TiltSubsystem.createRealIo());
-                intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createRealIo(), new DigitalInput(Constants.INTAKE_DIGITAL_INPUT_CHANNEL));
+                intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createRealIo(), IntakeSubsystem.createRealDeploymentSwitch());
             }
             case REPLAY -> {
                 rollerSubsystem = new RollerSubsystem(RollerSubsystem.createMockIo());
                 tiltSubsystem = new TiltSubsystem(TiltSubsystem.createMockIo());
-                intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createMockIo(), new DigitalInput(Constants.INTAKE_DIGITAL_INPUT_CHANNEL));
+                intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createMockIo(), IntakeSubsystem.createMockDeploymentSwitch());
             }
             case SIM -> {
                 robotVisualizer = new RobotVisualizer();
                 rollerSubsystem = new RollerSubsystem(RollerSubsystem.createSimIo(robotVisualizer));
                 tiltSubsystem = new TiltSubsystem(TiltSubsystem.createSimIo(robotVisualizer));
-                intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createSimIo(robotVisualizer), new DigitalInput(Constants.INTAKE_DIGITAL_INPUT_CHANNEL));
+                intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createSimIo(robotVisualizer), IntakeSubsystem.createSimDeploymentSwitch());
             }
             
             default -> {

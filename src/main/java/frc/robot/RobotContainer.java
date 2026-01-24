@@ -72,8 +72,8 @@ public class RobotContainer {
     putShuffleboardCommands();
   }
   SwerveInputStream driveAngularVelocity = SwerveInputStream.of(drivebase.getSwerveDrive(),
-                                                                () -> driveJoystick.getY() * -1,
-                                                                () -> driveJoystick.getX() * -1)
+                                                                () -> driveJoystick.getY() * -1 * Constants.MAX_SPEED,
+                                                                () -> driveJoystick.getX() * -1 * Constants.MAX_SPEED)
                                                             .withControllerRotationAxis(() -> steerJoystick.getX() * -1)
                                                             .deadband(Constants.DEADBAND)
                                                             .scaleTranslation(0.8)

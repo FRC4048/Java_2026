@@ -5,21 +5,34 @@
 package frc.robot.commands.drive;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
-
+/**
+ * Drives the robot 
+ * @param speedX Speed in the x direction in meters per second
+ * @param speedY Speed in the Y direction in meters per second
+ * @param radians Rotational speed in radians per second
+ * @param fieldRelative True for field-relative, false for robot-relative.
+ * @param time Amount of time before the command ends
+ */
 public class Drive extends Command {
 
   private final SwerveSubsystem drivebase;
-  private final Pose2d pose;
+  private final double speedX;
+  private final double speedY;
+  private final double radians;
   private final boolean fieldRelative;
+  private final double time;
   private Timer timer;
-  public Drive(SwerveSubsystem drivebase, Pose2d pose, boolean fieldRelative) {
+  public Drive(SwerveSubsystem drivebase, double speedX, double speedY,double radians, boolean fieldRelative, double time) {
     timer = new Timer();
+    this.time = time;
     this.drivebase = drivebase;
-    this.pose = pose;
+    this.speedX = speedX;
+    this.speedY = speedY;
+    this.radians = radians;
     this.fieldRelative = fieldRelative;
     addRequirements(drivebase);
   }
@@ -33,7 +46,7 @@ public class Drive extends Command {
  
   @Override
   public void execute() {
-    drivebase.drive(pose.getTranslation(),pose.getRotation().getRadians(), fieldRelative);
+    drivebase.drive(new Translation2d(speedX,speedY),radians, fieldRelative);
 
   }
 
@@ -45,7 +58,7 @@ public class Drive extends Command {
 
   @Override
   public boolean isFinished() {
-   if (timer.hasElapsed(Constants.DRIVE_TO_POSE_TIMEOUT)) {
+   if (timer.hasElapsed(time)) {
       return true;
     } else{
       return false;

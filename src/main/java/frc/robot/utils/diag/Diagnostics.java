@@ -4,7 +4,8 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Robot;
-import frc.robot.utils.RobotMode;
+import frc.robot.RobotMode;
+
 import java.util.ArrayList;
 import java.util.List;
 

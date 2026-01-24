@@ -1,7 +1,7 @@
 package frc.robot.utils.math;
 
 import edu.wpi.first.math.geometry.Rotation2d;
-import frc.robot.constants.Constants;
+import frc.robot.Constants;
 import org.littletonrobotics.junction.Logger;
 
 /** Utility class for vectors used in projectile motion */

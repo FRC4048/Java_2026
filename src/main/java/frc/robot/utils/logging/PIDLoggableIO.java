@@ -1,8 +1,8 @@
-package frc.robot.utils.logging;
+/*package frc.robot.utils.logging;
 
-import frc.robot.utils.logging.subsystem.inputs.PidMotorInputs;
+import frc.robot.utils.logging.commands.Loggable;
 import frc.robot.utils.motor.NeoPidConfig;
 
-public interface PIDLoggableIO extends LoggableIO<PidMotorInputs> {
-  void configurePID(NeoPidConfig pidConfig);
-}
+public interface PIDLoggableIO extends Loggable<PidMotorInputs> {
+ void configurePID(NeoPidConfig pidConfig);
+}*/

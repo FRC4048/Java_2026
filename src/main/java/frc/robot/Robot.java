@@ -101,7 +101,8 @@ public class Robot extends LoggedRobot {
         }
         SmartDashboard.putNumber("driverXbox.getLeftY()",driverXbox.getLeftY());
         SmartDashboard.putNumber("driverXbox::getRightX", driverXbox.getRightX());
-  }
+        Logger.recordOutput("MyPose", robotContainer.getDriveBase().getPose());
+      }
 
   /** This function is called once each time the robot enters Disabled mode. */
   @Override

@@ -6,6 +6,7 @@ package frc.robot;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.units.measure.Time;
 import edu.wpi.first.wpilibj.RobotBase;
 
 /**
@@ -55,6 +56,7 @@ public final class Constants {
     public static final double INTAKE_SPEED = -0.5;
     public static final double SPIN_TIMEOUT = 5;
     public static final double TILT_TIMEOUT = 5;
+    public static final double DRIVE_TO_POSE_TIMEOUT = 10;
     public static final double TILT_LENGTH = 0.2;
     public static final Rotation2d TILT_MIN_ANGLE = Rotation2d.fromDegrees(45);
     public static final Rotation2d TILT_MAX_ANGLE = Rotation2d.fromDegrees(90);
@@ -74,6 +76,8 @@ public final class Constants {
 
     public static final int DRIVE_JOYSTICK_PORT = 0;
     public static final int STEER_JOYSTICK_PORT = 1;
+
+
 
 }
 

@@ -67,7 +67,7 @@ public final class Constants {
     public static final double DRIVE_BASE_LENGTH = 0.635;
     public static final double INITIAL_ROBOT_HEIGHT = 0;
 
-    public static final double MAX_SPEED = Units.feetToMeters(14.5);
+    public static final double MAX_SPEED = Units.feetToMeters(3.81);
 
     public static final double DEADBAND = 0.15;
     public static final int INTAKE_DIGITAL_INPUT_CHANNEL = 0;

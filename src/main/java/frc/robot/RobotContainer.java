@@ -7,6 +7,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.intake.SpinIntake;
@@ -83,6 +84,18 @@ public class RobotContainer {
   public void putShuffleboardCommands() {
         if (Constants.DEBUG) {
             SmartDashboard.putData(
+                    "Intake/Spin Forward", 
+                    new InstantCommand(() -> intakeSubsystem.setSpeed(1.0)));
+
+            SmartDashboard.putData(
+                    "Intake/Spin Backward", 
+                    new InstantCommand(() -> intakeSubsystem.setSpeed(-1.0)));
+
+            SmartDashboard.putData(
+                    "Intake/Stop", 
+                    new InstantCommand(intakeSubsystem::stopMotors));
+
+            SmartDashboard.putData(
                     "Spin Roller",
                     new SpinRoller(rollerSubsystem));
 
@@ -110,5 +123,9 @@ public class RobotContainer {
   }
   public RobotVisualizer getRobotVisualizer() {
     return robotVisualizer;
+  }
+
+  public IntakeSubsystem getIntakeSubsystem() {
+    return intakeSubsystem;
   }
 }

@@ -7,6 +7,7 @@ import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DigitalSource;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.commands.intake.SpinIntake;
@@ -80,6 +81,7 @@ public static DigitalInputIo createRealDeploymentSwitch() {
             new DigitalInput(Constants.INTAKE_DIGITAL_INPUT_CHANNEL),
             DigitalInputLoggableInputs.allMetrics()
     );
+    
 }
 
 public static DigitalInputIo createSimDeploymentSwitch() {
@@ -102,5 +104,8 @@ public static DigitalInputIo createSimDeploymentSwitch() {
 
         return motor;
     }
-
+    
+    public DigitalInputIo getDeploymentSwitchIo() {
+        return intakeDeploymentSwitch;
+    }
 }

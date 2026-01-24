@@ -13,8 +13,10 @@ import org.littletonrobotics.junction.networktables.NT4Publisher;
 import org.littletonrobotics.junction.wpilog.WPILOGReader;
 import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.utils.logging.commands.CommandLogger;
 
 /**
@@ -28,7 +30,7 @@ public class Robot extends LoggedRobot {
   private final RobotContainer robotContainer;
   private static final AtomicReference<RobotMode> mode = new AtomicReference<>(RobotMode.DISABLED);
 
-
+  final CommandXboxController driverXbox = new CommandXboxController(0);
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -97,6 +99,8 @@ public class Robot extends LoggedRobot {
         if (Constants.ENABLE_LOGGING) {
             CommandLogger.get().log();
         }
+        SmartDashboard.putNumber("driverXbox.getLeftY()",driverXbox.getLeftY());
+        SmartDashboard.putNumber("driverXbox::getRightX", driverXbox.getRightX());
   }
 
   /** This function is called once each time the robot enters Disabled mode. */

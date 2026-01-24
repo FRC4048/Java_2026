@@ -4,6 +4,9 @@
 
 package frc.robot;
 
+import java.io.File;
+
+import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -16,7 +19,9 @@ import frc.robot.commands.tilt.TiltUp;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.RollerSubsystem;
 import frc.robot.subsystems.TiltSubsystem;
+import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import frc.robot.utils.simulation.RobotVisualizer;
+import swervelib.SwerveInputStream;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -26,10 +31,12 @@ import frc.robot.utils.simulation.RobotVisualizer;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final RollerSubsystem rollerSubsystem;
-  private final TiltSubsystem tiltSubsystem;
+  //private final RollerSubsystem rollerSubsystem;
+  //private final TiltSubsystem tiltSubsystem;
   private final IntakeSubsystem intakeSubsystem;
   private RobotVisualizer robotVisualizer = null;
+  private final SwerveSubsystem drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),"YAGSL"));
+  private final CommandXboxController driverXbox = new CommandXboxController(0);// DO NOT USE THIS THIS IS FOR DRIVING AND WILL BE DELETED EVENTUALLY
   // Replace with CommandPS4Controller or CommandJoystick if needed
       //new CommandXboxController(OperatorConstants.kDriverControllerPort);
 
@@ -38,19 +45,19 @@ public class RobotContainer {
     // Configure the trigger bindings
     switch (Constants.currentMode) {
             case REAL -> {
-                rollerSubsystem = new RollerSubsystem(RollerSubsystem.createRealIo());
-                tiltSubsystem = new TiltSubsystem(TiltSubsystem.createRealIo());
+                //rollerSubsystem = new RollerSubsystem(RollerSubsystem.createRealIo());
+                //tiltSubsystem = new TiltSubsystem(TiltSubsystem.createRealIo());
                 intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createRealIo(), new DigitalInput(Constants.INTAKE_DIGITAL_INPUT_CHANNEL));
             }
             case REPLAY -> {
-                rollerSubsystem = new RollerSubsystem(RollerSubsystem.createMockIo());
-                tiltSubsystem = new TiltSubsystem(TiltSubsystem.createMockIo());
+                //rollerSubsystem = new RollerSubsystem(RollerSubsystem.createMockIo());
+                //tiltSubsystem = new TiltSubsystem(TiltSubsystem.createMockIo());
                 intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createMockIo(), new DigitalInput(Constants.INTAKE_DIGITAL_INPUT_CHANNEL));
             }
             case SIM -> {
                 robotVisualizer = new RobotVisualizer();
-                rollerSubsystem = new RollerSubsystem(RollerSubsystem.createSimIo(robotVisualizer));
-                tiltSubsystem = new TiltSubsystem(TiltSubsystem.createSimIo(robotVisualizer));
+               //rollerSubsystem = new RollerSubsystem(RollerSubsystem.createSimIo(robotVisualizer));
+               //tiltSubsystem = new TiltSubsystem(TiltSubsystem.createSimIo(robotVisualizer));
                 intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createSimIo(robotVisualizer), new DigitalInput(Constants.INTAKE_DIGITAL_INPUT_CHANNEL));
             }
             
@@ -60,8 +67,18 @@ public class RobotContainer {
        }
     configureBindings();
     putShuffleboardCommands();
- }
+  }
+  SwerveInputStream driveAngularVelocity = SwerveInputStream.of(drivebase.getSwerveDrive(),
+                                                                () -> driverXbox.getLeftY() * -1,
+                                                                () -> driverXbox.getLeftX() * -1)
+                                                            .withControllerRotationAxis(driverXbox::getRightX)
+                                                            .deadband(Constants.DEADBAND)
+                                                            .scaleTranslation(0.8)
+                                                            .allianceRelativeControl(true);
+  SwerveInputStream driveRobotOriented = driveAngularVelocity.copy().robotRelative(true)
+                                                             .allianceRelativeControl(false);
 
+  
   /**
    * Use this method to define your trigger->command mappings. Triggers can be created via the
    * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with an arbitrary
@@ -79,10 +96,12 @@ public class RobotContainer {
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
    // m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
+    Command driveRobotOrientedAngularVelocity = drivebase.driveFieldOriented(driveRobotOriented);
+    drivebase.setDefaultCommand(driveRobotOrientedAngularVelocity);
   }
   public void putShuffleboardCommands() {
         if (Constants.DEBUG) {
-            SmartDashboard.putData(
+            /*SmartDashboard.putData(
                     "Spin Roller",
                     new SpinRoller(rollerSubsystem));
 
@@ -93,12 +112,12 @@ public class RobotContainer {
             SmartDashboard.putData(
                     "Tilt Down",
                     new TiltDown(tiltSubsystem));
-
+          */
             SmartDashboard.putData(
                     "Spin Intake",
                     new SpinIntake(intakeSubsystem));
         }
-    }
+   }
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *

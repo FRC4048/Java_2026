@@ -37,6 +37,8 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+    //private final RollerSubsystem rollerSubsystem;
+    //private final TiltSubsystem tiltSubsystem;
     // Configure the trigger bindings
     switch (Constants.currentMode) {
             case REAL -> {
@@ -93,6 +95,18 @@ public class RobotContainer {
   }
   public void putShuffleboardCommands() {
         if (Constants.DEBUG) {
+        /*SmartDashboard.putData(
+                "Spin Roller",
+                new SpinRoller(rollerSubsystem));
+
+        SmartDashboard.putData(
+                "Tilt Up",
+                new TiltUp(tiltSubsystem));
+
+        SmartDashboard.putData(
+                "Tilt Down",
+                new TiltDown(tiltSubsystem));
+          */
             SmartDashboard.putData(
                     "Intake/Spin Forward", 
                     new InstantCommand(() -> intakeSubsystem.setSpeed(1.0)));

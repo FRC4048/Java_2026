@@ -69,7 +69,7 @@ public final class Constants {
 
     public static final double MAX_SPEED = Units.feetToMeters(14.5);
 
-    public static final double DEADBAND = 0.1;
+    public static final double DEADBAND = 0.15;
     public static final int INTAKE_DIGITAL_INPUT_CHANNEL = 0;
 
     public static final int DRIVE_JOYSTICK_PORT = 0;

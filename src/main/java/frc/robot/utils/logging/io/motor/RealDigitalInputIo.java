@@ -6,21 +6,21 @@ import frc.robot.utils.logging.io.BaseIoImpl;
 
 public class RealDigitalInputIo extends BaseIoImpl<DigitalInputLoggableInputs> implements DigitalInputIo {
 
-    protected final DigitalInput input;
-    private boolean pressed;
+    protected final DigitalInput digitalInput;
 
-    public RealDigitalInputIo(String name, DigitalInput input, DigitalInputLoggableInputs inputs) {
+    public RealDigitalInputIo(String name, DigitalInput digitalInput, DigitalInputLoggableInputs inputs) {
         super(name, inputs);
-        this.input = input;
-    }
-
-    @Override
-    public boolean isPressed() {
-        return pressed;
+        this.digitalInput = digitalInput;
     }
 
     @Override
     protected void updateInputs(DigitalInputLoggableInputs inputs) {
-        pressed = input.get();
+        inputs.fromHardware(digitalInput);
+    }
+
+    @Override
+    public boolean isPressed() {
+        return getInputs().isPressed();
     }
 }
+

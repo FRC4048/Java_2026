@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.intake.SpinIntake;
@@ -36,7 +37,9 @@ public class RobotContainer {
   //private final IntakeSubsystem intakeSubsystem;
   private RobotVisualizer robotVisualizer = null;
   private final SwerveSubsystem drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),"YAGSL"));
-  private final CommandXboxController driverXbox = new CommandXboxController(0);// DO NOT USE THIS THIS IS FOR DRIVING AND WILL BE DELETED EVENTUALLY
+  private final CommandJoystick driveJoystick = new CommandJoystick(Constants.DRIVE_JOYSTICK_PORT);
+  private final CommandJoystick steerJoystick = new CommandJoystick(Constants.STEER_JOYSTICK_PORT);
+
   // Replace with CommandPS4Controller or CommandJoystick if needed
       //new CommandXboxController(OperatorConstants.kDriverControllerPort);
 
@@ -69,9 +72,9 @@ public class RobotContainer {
     putShuffleboardCommands();
   }
   SwerveInputStream driveAngularVelocity = SwerveInputStream.of(drivebase.getSwerveDrive(),
-                                                                () -> driverXbox.getLeftY() * -1,
-                                                                () -> driverXbox.getLeftX() * -1)
-                                                            .withControllerRotationAxis(driverXbox::getRightX)
+                                                                () -> driveJoystick.getY() * -1,
+                                                                () -> driveJoystick.getX() * -1)
+                                                            .withControllerRotationAxis(steerJoystick::getX)
                                                             .deadband(Constants.DEADBAND)
                                                             .scaleTranslation(0.8)
                                                             .allianceRelativeControl(true);

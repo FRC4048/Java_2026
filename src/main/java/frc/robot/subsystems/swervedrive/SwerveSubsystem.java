@@ -54,7 +54,7 @@ public class SwerveSubsystem extends SubsystemBase
                                                                       Meter.of(4)),
                                                     Rotation2d.fromDegrees(180));
     // Configure the Telemetry before creating the SwerveDrive to avoid unnecessary objects being created.
-    SwerveDriveTelemetry.verbosity = TelemetryVerbosity.HIGH;
+    SwerveDriveTelemetry.verbosity = TelemetryVerbosity.POSE;
     try
     {
       swerveDrive = new SwerveParser(directory).createSwerveDrive(Constants.MAX_SPEED, startingPose);

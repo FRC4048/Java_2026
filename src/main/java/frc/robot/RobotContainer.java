@@ -16,7 +16,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.commands.drive.DriveToPosition;
+import frc.robot.commands.drive.Drive;
 import frc.robot.commands.intake.SpinIntake;
 import frc.robot.commands.roller.SpinRoller;
 import frc.robot.commands.tilt.TiltDown;
@@ -103,11 +103,11 @@ public class RobotContainer {
    // m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
     Command driveFieldOrientedAnglularVelocity = drivebase.driveFieldOriented(driveAngularVelocity);
     drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity);
-    Translation2d translation = new Translation2d(16,5);
-    Rotation2d rotation = new Rotation2d(0);
-    Pose2d pose = new Pose2d(translation,rotation);
-    Command DriveToPosition = new DriveToPosition(drivebase, pose, true);
-    driveJoystick.button(1).whileTrue(DriveToPosition);
+    
+    //basic command
+    Pose2d pose = new Pose2d(new Translation2d(1,1),new Rotation2d(5));
+    Command drive = new Drive(drivebase, pose, true);
+    driveJoystick.button(1).whileTrue(drive);
   }
   public void putShuffleboardCommands() {
         if (Constants.DEBUG) {
@@ -140,4 +140,8 @@ public class RobotContainer {
   public RobotVisualizer getRobotVisualizer() {
     return robotVisualizer;
   }
+  public SwerveSubsystem getdrivebase(){
+    return drivebase;
+  }
 }
+

@@ -10,13 +10,13 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 
-public class DriveToPosition extends Command {
+public class Drive extends Command {
 
   private final SwerveSubsystem drivebase;
   private final Pose2d pose;
   private final boolean fieldRelative;
   private Timer timer;
-  public DriveToPosition(SwerveSubsystem drivebase, Pose2d pose, boolean fieldRelative) {
+  public Drive(SwerveSubsystem drivebase, Pose2d pose, boolean fieldRelative) {
     timer = new Timer();
     this.drivebase = drivebase;
     this.pose = pose;
@@ -33,7 +33,7 @@ public class DriveToPosition extends Command {
  
   @Override
   public void execute() {
-    drivebase.drive(pose.getTranslation(),pose.getRotation().getDegrees(), fieldRelative);
+    drivebase.drive(pose.getTranslation(),pose.getRotation().getRadians(), fieldRelative);
 
   }
 
@@ -45,7 +45,7 @@ public class DriveToPosition extends Command {
 
   @Override
   public boolean isFinished() {
-   if (timer.hasElapsed(Constants.DRIVE_TO_POSE_TIMEOUT) || drivebase.getPose().equals(pose)) {
+   if (timer.hasElapsed(Constants.DRIVE_TO_POSE_TIMEOUT)) {
       return true;
     } else{
       return false;

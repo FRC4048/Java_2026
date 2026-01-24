@@ -33,7 +33,7 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   //private final RollerSubsystem rollerSubsystem;
   //private final TiltSubsystem tiltSubsystem;
-  private final IntakeSubsystem intakeSubsystem;
+  //private final IntakeSubsystem intakeSubsystem;
   private RobotVisualizer robotVisualizer = null;
   private final SwerveSubsystem drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),"YAGSL"));
   private final CommandXboxController driverXbox = new CommandXboxController(0);// DO NOT USE THIS THIS IS FOR DRIVING AND WILL BE DELETED EVENTUALLY
@@ -47,18 +47,18 @@ public class RobotContainer {
             case REAL -> {
                 //rollerSubsystem = new RollerSubsystem(RollerSubsystem.createRealIo());
                 //tiltSubsystem = new TiltSubsystem(TiltSubsystem.createRealIo());
-                intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createRealIo(), new DigitalInput(Constants.INTAKE_DIGITAL_INPUT_CHANNEL));
+                //intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createRealIo(), new DigitalInput(Constants.INTAKE_DIGITAL_INPUT_CHANNEL));
             }
             case REPLAY -> {
                 //rollerSubsystem = new RollerSubsystem(RollerSubsystem.createMockIo());
                 //tiltSubsystem = new TiltSubsystem(TiltSubsystem.createMockIo());
-                intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createMockIo(), new DigitalInput(Constants.INTAKE_DIGITAL_INPUT_CHANNEL));
+                //intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createMockIo(), new DigitalInput(Constants.INTAKE_DIGITAL_INPUT_CHANNEL));
             }
             case SIM -> {
                 robotVisualizer = new RobotVisualizer();
                //rollerSubsystem = new RollerSubsystem(RollerSubsystem.createSimIo(robotVisualizer));
                //tiltSubsystem = new TiltSubsystem(TiltSubsystem.createSimIo(robotVisualizer));
-                intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createSimIo(robotVisualizer), new DigitalInput(Constants.INTAKE_DIGITAL_INPUT_CHANNEL));
+                //intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createSimIo(robotVisualizer), new DigitalInput(Constants.INTAKE_DIGITAL_INPUT_CHANNEL));
             }
             
             default -> {
@@ -75,8 +75,6 @@ public class RobotContainer {
                                                             .deadband(Constants.DEADBAND)
                                                             .scaleTranslation(0.8)
                                                             .allianceRelativeControl(true);
-  SwerveInputStream driveRobotOriented = driveAngularVelocity.copy().robotRelative(true)
-                                                             .allianceRelativeControl(false);
 
   
   /**
@@ -96,8 +94,8 @@ public class RobotContainer {
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
    // m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
-    Command driveRobotOrientedAngularVelocity = drivebase.driveFieldOriented(driveRobotOriented);
-    drivebase.setDefaultCommand(driveRobotOrientedAngularVelocity);
+    Command driveFieldOrientedAnglularVelocity = drivebase.driveFieldOriented(driveAngularVelocity);
+    drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity);
   }
   public void putShuffleboardCommands() {
         if (Constants.DEBUG) {
@@ -112,10 +110,10 @@ public class RobotContainer {
             SmartDashboard.putData(
                     "Tilt Down",
                     new TiltDown(tiltSubsystem));
-          */
+          
             SmartDashboard.putData(
                     "Spin Intake",
-                    new SpinIntake(intakeSubsystem));
+                    new SpinIntake(intakeSubsystem));*/
         }
    }
   /**

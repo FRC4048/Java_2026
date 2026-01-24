@@ -8,7 +8,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.autochooser.AutoAction;
+import frc.robot.autochooser.FieldLocation;
 import frc.robot.autochooser.chooser.AutoChooser2026;
+import frc.robot.autochooser.event.RealAutoEventProvider;
 import frc.robot.commands.roller.SpinRoller;
 import frc.robot.commands.tilt.TiltDown;
 import frc.robot.commands.tilt.TiltUp;
@@ -54,7 +57,7 @@ public class RobotContainer {
         }
     configureBindings();
     putShuffleboardCommands();
-    autoChooser = new AutoChooser2026(null);
+    autoChooser = new AutoChooser2026(new RealAutoEventProvider(AutoAction.DO_NOTHING, FieldLocation.ZERO));
   }
 
   /**

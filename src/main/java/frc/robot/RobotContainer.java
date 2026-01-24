@@ -72,14 +72,12 @@ public class RobotContainer {
     putShuffleboardCommands();
   }
   SwerveInputStream driveAngularVelocity = SwerveInputStream.of(drivebase.getSwerveDrive(),
-                                                                () -> driveJoystick.getY() * -1,
-                                                                () -> driveJoystick.getX() * -1)
+                                                                () -> driveJoystick.getY(),
+                                                                () -> driveJoystick.getX())
                                                             .withControllerRotationAxis(steerJoystick::getX)
                                                             .deadband(Constants.DEADBAND)
                                                             .scaleTranslation(0.8)
                                                             .allianceRelativeControl(true);
-  SwerveInputStream driveRobotOriented = driveAngularVelocity.copy().robotRelative(true)
-                                                             .allianceRelativeControl(false);
 
   
   /**
@@ -99,8 +97,8 @@ public class RobotContainer {
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
    // m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
-    Command driveRobotOrientedAngularVelocity = drivebase.driveFieldOriented(driveRobotOriented);
-    drivebase.setDefaultCommand(driveRobotOrientedAngularVelocity);
+    Command driveFieldOrientedAnglularVelocity = drivebase.driveFieldOriented(driveAngularVelocity);
+    drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity);
   }
   public void putShuffleboardCommands() {
         if (Constants.DEBUG) {

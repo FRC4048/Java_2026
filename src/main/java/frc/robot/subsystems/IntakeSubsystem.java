@@ -70,7 +70,7 @@ public class IntakeSubsystem extends SubsystemBase {
     public static DigitalInputIo createMockDeploymentSwitch() {
     return new MockDigitalInputIo(
             LOGGING_NAME + "/DeploymentSwitch",
-            DigitalInputLoggableInputs.allMetrics()
+            new DigitalInputLoggableInputs()
     );
 }
 
@@ -78,15 +78,16 @@ public static DigitalInputIo createRealDeploymentSwitch() {
     return new RealDigitalInputIo(
             LOGGING_NAME + "/DeploymentSwitch",
             new DigitalInput(Constants.INTAKE_DIGITAL_INPUT_CHANNEL),
-            DigitalInputLoggableInputs.allMetrics()
+            new DigitalInputLoggableInputs()
     );
+    
 }
 
 public static DigitalInputIo createSimDeploymentSwitch() {
     return new SimDigitalInputIo(
         LOGGING_NAME + "/DeploymentSwitch",
         new DigitalInput(Constants.INTAKE_DIGITAL_INPUT_CHANNEL),
-        DigitalInputLoggableInputs.allMetrics()
+        new DigitalInputLoggableInputs()
     );
 }
 
@@ -102,5 +103,8 @@ public static DigitalInputIo createSimDeploymentSwitch() {
 
         return motor;
     }
-
+    
+    public DigitalInputIo getDeploymentSwitchIo() {
+        return intakeDeploymentSwitch;
+    }
 }

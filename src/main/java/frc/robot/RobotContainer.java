@@ -3,23 +3,17 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot;
-
 import java.io.File;
 
 import edu.wpi.first.wpilibj.Filesystem;
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.intake.SpinIntake;
-import frc.robot.commands.roller.SpinRoller;
-import frc.robot.commands.tilt.TiltDown;
-import frc.robot.commands.tilt.TiltUp;
 import frc.robot.subsystems.IntakeSubsystem;
-import frc.robot.subsystems.RollerSubsystem;
-import frc.robot.subsystems.TiltSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import frc.robot.utils.simulation.RobotVisualizer;
 import swervelib.SwerveInputStream;
@@ -32,19 +26,19 @@ import swervelib.SwerveInputStream;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  //private final RollerSubsystem rollerSubsystem;
-  //private final TiltSubsystem tiltSubsystem;
   private final IntakeSubsystem intakeSubsystem;
   private RobotVisualizer robotVisualizer = null;
+
   private final SwerveSubsystem drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),"YAGSL"));
   private final CommandJoystick driveJoystick = new CommandJoystick(Constants.DRIVE_JOYSTICK_PORT);
   private final CommandJoystick steerJoystick = new CommandJoystick(Constants.STEER_JOYSTICK_PORT);
-
   // Replace with CommandPS4Controller or CommandJoystick if needed
       //new CommandXboxController(OperatorConstants.kDriverControllerPort);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+    //private final RollerSubsystem rollerSubsystem;
+    //private final TiltSubsystem tiltSubsystem;
     // Configure the trigger bindings
     switch (Constants.currentMode) {
             case REAL -> {
@@ -59,8 +53,8 @@ public class RobotContainer {
             }
             case SIM -> {
                 robotVisualizer = new RobotVisualizer();
-               //rollerSubsystem = new RollerSubsystem(RollerSubsystem.createSimIo(robotVisualizer));
-               //tiltSubsystem = new TiltSubsystem(TiltSubsystem.createSimIo(robotVisualizer));
+                //rollerSubsystem = new RollerSubsystem(RollerSubsystem.createSimIo(robotVisualizer));
+                //tiltSubsystem = new TiltSubsystem(TiltSubsystem.createSimIo(robotVisualizer));
                 intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createSimIo(robotVisualizer), IntakeSubsystem.createSimDeploymentSwitch());
             }
             
@@ -70,8 +64,8 @@ public class RobotContainer {
        }
     configureBindings();
     putShuffleboardCommands();
-  }
-  SwerveInputStream driveAngularVelocity = SwerveInputStream.of(drivebase.getSwerveDrive(),
+ }
+ SwerveInputStream driveAngularVelocity = SwerveInputStream.of(drivebase.getSwerveDrive(),
                                                                 () -> driveJoystick.getY() * -1,
                                                                 () -> driveJoystick.getX() * -1)
                                                             .withControllerRotationAxis(() -> steerJoystick.getX() * -1)
@@ -102,23 +96,35 @@ public class RobotContainer {
   }
   public void putShuffleboardCommands() {
         if (Constants.DEBUG) {
-            /*SmartDashboard.putData(
-                    "Spin Roller",
-                    new SpinRoller(rollerSubsystem));
+        /*SmartDashboard.putData(
+                "Spin Roller",
+                new SpinRoller(rollerSubsystem));
 
-            SmartDashboard.putData(
-                    "Tilt Up",
-                    new TiltUp(tiltSubsystem));
+        SmartDashboard.putData(
+                "Tilt Up",
+                new TiltUp(tiltSubsystem));
 
-            SmartDashboard.putData(
-                    "Tilt Down",
-                    new TiltDown(tiltSubsystem));
+        SmartDashboard.putData(
+                "Tilt Down",
+                new TiltDown(tiltSubsystem));
           */
+            SmartDashboard.putData(
+                    "Intake/Spin Forward",
+                    new InstantCommand(() -> intakeSubsystem.setSpeed(1.0)));
+
+            SmartDashboard.putData(
+                    "Intake/Spin Backward",
+                    new InstantCommand(() -> intakeSubsystem.setSpeed(-1.0)));
+
+            SmartDashboard.putData(
+                    "Intake/Stop",
+                    new InstantCommand(intakeSubsystem::stopMotors));
+
             SmartDashboard.putData(
                     "Spin Intake",
                     new SpinIntake(intakeSubsystem));
         }
-   }
+    }
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *
@@ -131,7 +137,12 @@ public class RobotContainer {
   public RobotVisualizer getRobotVisualizer() {
     return robotVisualizer;
   }
-  public SwerveSubsystem getDriveBase(){
-    return drivebase;
+
+  public IntakeSubsystem getIntakeSubsystem() {
+    return intakeSubsystem;
   }
+
+    public SwerveSubsystem getDriveBase(){
+        return drivebase;
+    }
 }

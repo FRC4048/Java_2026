@@ -33,6 +33,7 @@ public class IntakeSubsystem extends SubsystemBase {
     public IntakeSubsystem(SparkMaxIo io, DigitalInputIo intakeDeploymentSwitch) {
         this.io = io;
         this.intakeDeploymentSwitch = intakeDeploymentSwitch;
+        setDefaultCommand(new SpinIntake(this));
     }
 
     public void setSpeed(double speed) {

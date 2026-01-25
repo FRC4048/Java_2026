@@ -5,15 +5,13 @@ import frc.robot.utils.logging.io.BaseIoImpl;
 
 public class MockDigitalInputIo extends BaseIoImpl<DigitalInputLoggableInputs> implements DigitalInputIo {
 
-    private boolean pressed;
-
     public MockDigitalInputIo(String name, DigitalInputLoggableInputs inputs) {
         super(name, inputs);
     }
 
     @Override
     public boolean isPressed() {
-        return pressed;
+        return getInputs().isPressed();
     }
 
     @Override
@@ -22,7 +20,7 @@ public class MockDigitalInputIo extends BaseIoImpl<DigitalInputLoggableInputs> i
     }
 
     public void setPressed(boolean pressed) {
-        this.pressed = pressed;
+        
     }
 }
 

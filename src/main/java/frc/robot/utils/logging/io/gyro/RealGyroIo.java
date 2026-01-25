@@ -40,4 +40,8 @@ public class RealGyroIo extends BaseIoImpl<GyroInputs> implements GyroIo {
     protected void updateInputs(GyroInputs inputs) {
         inputs.fromHardware(threadedGyro.getGyroValues());
     }
+
+    public ThreadedGyro getThreadedGyro() {
+        return threadedGyro;
+    }
 }

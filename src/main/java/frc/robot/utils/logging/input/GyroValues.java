@@ -1,5 +1,7 @@
 package frc.robot.utils.logging.input;
 
+import edu.wpi.first.math.geometry.Rotation3d;
+
 public class GyroValues {
     private double anglesInDeg = 0;
     private double angleOffset = 0;
@@ -29,6 +31,8 @@ public class GyroValues {
     private double robotCentricVelocityX = 0;
     private double robotCentricVelocityY = 0;
     private double robotCentricVelocityZ = 0;
+    private Rotation3d rotation3d = null;
+    private double rate = 0.0;
 
     public double getAnglesInDeg() {
         return anglesInDeg;
@@ -252,5 +256,21 @@ public class GyroValues {
 
     public void setRobotCentricVelocityZ(double robotCentricVelocityZ) {
         this.robotCentricVelocityZ = robotCentricVelocityZ;
+    }
+
+    public Rotation3d getRotation3d() {
+        return rotation3d;
+    }
+
+    public void setRotation3d(Rotation3d rotation3d) {
+        this.rotation3d = rotation3d;
+    }
+
+    public double getRate() {
+        return rate;
+    }
+
+    public void setRate(double rate) {
+        this.rate = rate;
     }
 }

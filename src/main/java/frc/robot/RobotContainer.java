@@ -3,6 +3,7 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot;
+
 import java.io.File;
 
 import edu.wpi.first.wpilibj.Filesystem;
@@ -26,6 +27,8 @@ import swervelib.SwerveInputStream;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
+  //private final RollerSubsystem rollerSubsystem;
+  //private final TiltSubsystem tiltSubsystem;
   private final IntakeSubsystem intakeSubsystem;
   private RobotVisualizer robotVisualizer = null;
 
@@ -37,8 +40,6 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    //private final RollerSubsystem rollerSubsystem;
-    //private final TiltSubsystem tiltSubsystem;
     // Configure the trigger bindings
     switch (Constants.currentMode) {
             case REAL -> {

@@ -66,6 +66,12 @@ public final class Constants {
     public static final double DRIVE_BASE_WIDTH = 0.635;
     public static final double DRIVE_BASE_LENGTH = 0.635;
     public static final double INITIAL_ROBOT_HEIGHT = 0;
+    public static final double HUB_HEIGHT = 1.83;
+    public static final double SHOOTER_HEIGHT = 0.5;
+    public static final double HUB_X_POSITION = 4.6256;
+    public static final double HUB_Y_POSITION = 4.0345;
+    public static final double DRAG_K = 1.20; // experimental value -- needs testing
+    public static final double DRAG_Q = 0.055; // experimental value -- needs testing
 
     public static final double MAX_SPEED = Units.feetToMeters(14.5);
 

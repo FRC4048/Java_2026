@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
-import com.revrobotics.spark.SparkBase;
+import com.revrobotics.PersistMode;
+import com.revrobotics.ResetMode;
 import com.revrobotics.spark.SparkLowLevel;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig;
@@ -32,7 +33,6 @@ public class IntakeSubsystem extends SubsystemBase {
     public IntakeSubsystem(SparkMaxIo io, DigitalInputIo intakeDeploymentSwitch) {
         this.io = io;
         this.intakeDeploymentSwitch = intakeDeploymentSwitch;
-        setDefaultCommand(new SpinIntake(this));
     }
 
     public void setSpeed(double speed) {
@@ -98,8 +98,8 @@ public static DigitalInputIo createSimDeploymentSwitch() {
         motorConfig.smartCurrentLimit(Constants.NEO_CURRENT_LIMIT);
         motor.configure(
                 motorConfig,
-                SparkBase.ResetMode.kResetSafeParameters,
-                SparkBase.PersistMode.kPersistParameters);
+                ResetMode.kResetSafeParameters,
+                PersistMode.kPersistParameters);
 
         return motor;
     }

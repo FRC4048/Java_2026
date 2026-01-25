@@ -26,7 +26,7 @@ public class DigitalInputLoggableInputs implements LoggableInputs {
 
     public void fromHardware(DigitalInput input) {
         // Note that the DigitalInput on the RIO is set to HIGH if floating (nothing connected) and to LOW when closed
-        // signal connected to ground).
+        // (signal connected to ground).
         // PRESSED for us means LOW, so reverse the get() method
         pressed = ! input.get();
     }

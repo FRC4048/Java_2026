@@ -13,7 +13,6 @@ import frc.robot.subsystems.swervedrive.SwerveSubsystem;
  * Drives the robot 
  * @param speedX Speed in the x direction in meters per second
  * @param speedY Speed in the Y direction in meters per second
- * @param radians Rotational speed in radians per second
  * @param fieldRelative True for field-relative, false for robot-relative.
  * @param time Amount of time before the command ends
  */
@@ -22,17 +21,15 @@ public class Drive extends Command {
   private final SwerveSubsystem drivebase;
   private final double speedX;
   private final double speedY;
-  private final double radians;
   private final boolean fieldRelative;
   private final double time;
   private Timer timer;
-  public Drive(SwerveSubsystem drivebase, double speedX, double speedY,double radians, boolean fieldRelative, double time) {
+  public Drive(SwerveSubsystem drivebase, double speedX, double speedY, boolean fieldRelative, double time) {
     timer = new Timer();
     this.time = time;
     this.drivebase = drivebase;
     this.speedX = speedX;
     this.speedY = speedY;
-    this.radians = radians;
     this.fieldRelative = fieldRelative;
     addRequirements(drivebase);
   }
@@ -46,7 +43,7 @@ public class Drive extends Command {
  
   @Override
   public void execute() {
-    drivebase.drive(new Translation2d(speedX,speedY),radians, fieldRelative);
+    drivebase.drive(new Translation2d(speedX,speedY),0, fieldRelative);
 
   }
 

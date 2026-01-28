@@ -100,7 +100,7 @@ public class RobotContainer {
     drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity);
     
     //basic drive command
-    Command drive = new Drive(drivebase, 0.1,0.1,2, true, 1);
+    Command drive = new Drive(drivebase, 0.1,2, true, 1);
     driveJoystick.button(1).whileTrue(drive);
   }
   public void putShuffleboardCommands() {

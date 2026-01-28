@@ -1,19 +1,24 @@
 package frc.robot.subsystems;
 
-import com.revrobotics.spark.SparkBase;
+import com.revrobotics.PersistMode;
+import com.revrobotics.ResetMode;
 import com.revrobotics.spark.SparkLowLevel;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.commands.intake.SpinIntake;
+import frc.robot.utils.logging.input.DigitalInputLoggableInputs;
 import frc.robot.utils.logging.input.MotorLoggableInputs;
+import frc.robot.utils.logging.io.motor.DigitalInputIo;
+import frc.robot.utils.logging.io.motor.MockDigitalInputIo;
 import frc.robot.utils.logging.io.motor.MockSparkMaxIo;
+import frc.robot.utils.logging.io.motor.RealDigitalInputIo;
 import frc.robot.utils.logging.io.motor.RealSparkMaxIo;
+import frc.robot.utils.logging.io.motor.SimDigitalInputIo;
 import frc.robot.utils.logging.io.motor.SimSparkMaxIo;
 import frc.robot.utils.logging.io.motor.SparkMaxIo;
 import frc.robot.utils.simulation.MotorSimulator;
@@ -23,9 +28,9 @@ public class IntakeSubsystem extends SubsystemBase {
     
     public static final String LOGGING_NAME = "IntakeSubsystem";
     private final SparkMaxIo io;
-    private final DigitalInput intakeDeploymentSwitch;
+    private final DigitalInputIo intakeDeploymentSwitch;
 
-    public IntakeSubsystem(SparkMaxIo io, DigitalInput intakeDeploymentSwitch) {
+    public IntakeSubsystem(SparkMaxIo io, DigitalInputIo intakeDeploymentSwitch) {
         this.io = io;
         this.intakeDeploymentSwitch = intakeDeploymentSwitch;
         setDefaultCommand(new SpinIntake(this));
@@ -42,10 +47,11 @@ public class IntakeSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
         io.periodic();
+        intakeDeploymentSwitch.periodic();
     }
 
     public boolean isDeployed() {
-        return intakeDeploymentSwitch.get();
+        return intakeDeploymentSwitch.isPressed();
     }
 
     public static SparkMaxIo createMockIo() {
@@ -62,6 +68,30 @@ public class IntakeSubsystem extends SubsystemBase {
                 new MotorSimulator(motor, visualizer.getIntakeLigament()));
     }
 
+    public static DigitalInputIo createMockDeploymentSwitch() {
+    return new MockDigitalInputIo(
+            LOGGING_NAME + "/DeploymentSwitch",
+            new DigitalInputLoggableInputs()
+    );
+}
+
+public static DigitalInputIo createRealDeploymentSwitch() {
+    return new RealDigitalInputIo(
+            LOGGING_NAME + "/DeploymentSwitch",
+            new DigitalInput(Constants.INTAKE_DIGITAL_INPUT_CHANNEL),
+            new DigitalInputLoggableInputs()
+    );
+    
+}
+
+public static DigitalInputIo createSimDeploymentSwitch() {
+    return new SimDigitalInputIo(
+        LOGGING_NAME + "/DeploymentSwitch",
+        new DigitalInput(Constants.INTAKE_DIGITAL_INPUT_CHANNEL),
+        new DigitalInputLoggableInputs()
+    );
+}
+
     private static SparkMax createMotor() {
         SparkMax motor = new SparkMax(Constants.INTAKE_MOTOR_ID, SparkLowLevel.MotorType.kBrushless);
         SparkMaxConfig motorConfig = new SparkMaxConfig();
@@ -69,10 +99,13 @@ public class IntakeSubsystem extends SubsystemBase {
         motorConfig.smartCurrentLimit(Constants.NEO_CURRENT_LIMIT);
         motor.configure(
                 motorConfig,
-                SparkBase.ResetMode.kResetSafeParameters,
-                SparkBase.PersistMode.kPersistParameters);
+                ResetMode.kResetSafeParameters,
+                PersistMode.kPersistParameters);
 
         return motor;
     }
-
+    
+    public DigitalInputIo getDeploymentSwitchIo() {
+        return intakeDeploymentSwitch;
+    }
 }

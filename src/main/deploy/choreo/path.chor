@@ -76,7 +76,7 @@
  },
  "generationFeatures":[],
  "codegen":{
-  "root":"Users/michael/Desktop/Java_2026/src/main/deploy/choreo",
+  "root":"Users/michael/Downloads",
   "genVars":true,
   "genTrajData":true,
   "useChoreoLib":true

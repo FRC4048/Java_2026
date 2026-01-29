@@ -39,6 +39,7 @@ public class GameConstants {
     //Joystick
     public static final int DRIVE_JOYSTICK_PORT = 0;
     public static final int STEER_JOYSTICK_PORT = 1;
+    public static final int XBOX_CONTROLLER_PORT = 2;
 
     //Speeds
     public static final double ROLLER_SPEED = 0.25;

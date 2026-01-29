@@ -13,7 +13,8 @@ import edu.wpi.first.wpilibj.simulation.BatterySim;
 import edu.wpi.first.wpilibj.simulation.RoboRioSim;
 import edu.wpi.first.wpilibj.simulation.SingleJointedArmSim;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.Constants;
+import frc.robot.constants.Constants;
+
 import org.littletonrobotics.junction.mechanism.LoggedMechanismLigament2d;
 
 /**

@@ -3,6 +3,7 @@ package frc.robot.constants;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.RobotBase;
+import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
 
 public class GameConstants {
     
@@ -60,5 +61,17 @@ public class GameConstants {
     public static final double TILT_GEARING = 45.0;
     public static final boolean TILT_SIMULATE_GRAVITY = false;
     public static final int NEO_CURRENT_LIMIT = 20;
+    
+    //swerve config
+    public static final TelemetryVerbosity TELEMENTRY_VERBOSITY = TelemetryVerbosity.HIGH;
+    public static final boolean SET_HEADING_CORRECTION = false;
+    public static final boolean COSIN_COMPENSATOR = false;
+    public static final boolean USE_ANGULAR_VELOCITY_COMPENSATION_IN_TELEOP = true;
+    public static final boolean USE_ANGULAR_VELOCITY_COMPENSATION_IN_AUTO = true;
+    public static final double ANGULAR_VELOCITY_COEFFICENT = 0;
+    public static final boolean SET_MODULE_ENCODER_AUTO_SYNCHRONIZE = false;
+    public static final double SET_MODULE_ENCODER_AUTO_SYNCHRONIZE_DEADBAND = 0;
+
+    
 
 }

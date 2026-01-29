@@ -100,8 +100,8 @@ public class RobotContainer {
     drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity);
     
     //basic drive command
-    Command DriveDirectionTime = new DriveDirectionTime(drivebase, 0.1,0.1, true, 1);
-    SmartDashboard.putData("Drive Command", DriveDirectionTime);
+    Command driveDirectionTime = new DriveDirectionTime(drivebase, 0.1,0.1, true, 1);
+    SmartDashboard.putData("Drive Command", driveDirectionTime);
   }
   public void putShuffleboardCommands() {
         if (Constants.DEBUG) {

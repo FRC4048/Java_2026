@@ -9,6 +9,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
+import frc.robot.utils.logging.commands.LoggableCommand;
 /**
  * Drives the robot 
  * @param speedX Speed in the x direction in meters per second
@@ -16,7 +17,7 @@ import frc.robot.subsystems.swervedrive.SwerveSubsystem;
  * @param fieldRelative True for field-relative, false for robot-relative.
  * @param time Amount of time before the command ends
  */
-public class Drive extends Command {
+public class Drive extends LoggableCommand {
 
   private final SwerveSubsystem drivebase;
   private final double speedX;
@@ -49,16 +50,12 @@ public class Drive extends Command {
 
   @Override
   public void end(boolean interrupted) {
-
+    drivebase.drive(new Translation2d(0,0),0, fieldRelative);
   }
 
 
   @Override
   public boolean isFinished() {
-   if (timer.hasElapsed(time)) {
-      return true;
-    } else{
-      return false;
-    }
+    return timer.hasElapsed(time);
   }
 }

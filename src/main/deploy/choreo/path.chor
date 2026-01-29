@@ -1,5 +1,5 @@
 {
- "name":"Untitled",
+ "name":"path",
  "version":2,
  "type":"Swerve",
  "variables":{
@@ -76,7 +76,7 @@
  },
  "generationFeatures":[],
  "codegen":{
-  "root":null,
+  "root":"Users/michael/Desktop/Java_2026/src/main/deploy/choreo",
   "genVars":true,
   "genTrajData":true,
   "useChoreoLib":true

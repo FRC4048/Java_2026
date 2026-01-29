@@ -98,10 +98,6 @@ public class RobotContainer {
    // m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
     Command driveFieldOrientedAnglularVelocity = drivebase.driveFieldOriented(driveAngularVelocity);
     drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity);
-    
-    //basic drive command
-    Command driveDirectionTime = new DriveDirectionTime(drivebase, 0.1,0.1, true, 1);
-    SmartDashboard.putData("Drive Command", driveDirectionTime);
   }
   public void putShuffleboardCommands() {
         if (Constants.DEBUG) {
@@ -134,6 +130,9 @@ public class RobotContainer {
                     "Spin Intake",
                     new SpinIntake(intakeSubsystem));
         }
+            //basic drive command
+    Command driveDirectionTime = new DriveDirectionTime(drivebase, 0.1,0.1, true, 1);
+    SmartDashboard.putData("Drive Command", driveDirectionTime);
     }
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.

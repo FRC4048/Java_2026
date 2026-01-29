@@ -36,6 +36,10 @@ public class GameConstants {
     public static final boolean DEBUG = true;
     public static final boolean ARM_DEBUG = true;
 
+    //Joystick
+    public static final int DRIVE_JOYSTICK_PORT = 0;
+    public static final int STEER_JOYSTICK_PORT = 1;
+
     //Speeds
     public static final double ROLLER_SPEED = 0.25;
     public static final double TILT_SPEED = -0.5; // Arm motor is inverted - use negative speed

@@ -1,4 +1,4 @@
-package frc.robot;
+package frc.robot.constants;
 
 public class Constants2026 extends GameConstants {
 
@@ -13,5 +13,9 @@ public class Constants2026 extends GameConstants {
     public static final double INITIAL_ROBOT_HEIGHT = 0;
 
     public static final int INTAKE_DIGITAL_INPUT_CHANNEL = 0;
+
+    //Joystick
+    public static final int DRIVE_JOYSTICK_PORT = 0;
+    public static final int STEER_JOYSTICK_PORT = 1;
 
 }

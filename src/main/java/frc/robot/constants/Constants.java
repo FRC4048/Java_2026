@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot;
+package frc.robot.constants;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.RobotBase;
@@ -18,8 +18,7 @@ import edu.wpi.first.wpilibj.RobotBase;
 
 public class Constants extends Constants2026 {
 
-    public static final int DRIVE_JOYSTICK_PORT = 0;
-    public static final int STEER_JOYSTICK_PORT = 1;
+    
 
 }
 

@@ -1,6 +1,7 @@
-package frc.robot;
+package frc.robot.constants;
 
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.RobotBase;
 
 public class GameConstants {
@@ -20,6 +21,8 @@ public class GameConstants {
         REPLAY
     }
 
+    public static final double DEADBAND = 0.1;
+
     // Mode
     public static final Mode simMode = Mode.SIM;
     //  public static final Mode simMode = Mode.REPLAY;
@@ -37,6 +40,7 @@ public class GameConstants {
     public static final double ROLLER_SPEED = 0.25;
     public static final double TILT_SPEED = -0.5; // Arm motor is inverted - use negative speed
     public static final double INTAKE_SPEED = -0.5;
+    public static final double MAX_SPEED = Units.feetToMeters(14.5);
 
     //Timeouts
     public static final double SPIN_TIMEOUT = 5;

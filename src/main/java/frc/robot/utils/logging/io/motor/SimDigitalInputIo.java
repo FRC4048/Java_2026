@@ -1,7 +1,7 @@
 package frc.robot.utils.logging.io.motor;
 
 import edu.wpi.first.wpilibj.DigitalInput;
-import frc.robot.Constants;
+import frc.robot.constants.Constants;
 import frc.robot.utils.logging.input.DigitalInputLoggableInputs;
 
 public class SimDigitalInputIo extends RealDigitalInputIo {

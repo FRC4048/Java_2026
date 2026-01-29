@@ -4,7 +4,6 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -13,6 +12,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.intake.SpinIntake;
+import frc.robot.constants.Constants;
 import frc.robot.subsystems.GyroSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
@@ -83,17 +83,10 @@ public class RobotContainer {
             default -> {
                 throw new RuntimeException("Did not specify Robot Mode");
             }
-       }
-    configureBindings();
-    putShuffleboardCommands();
- }
- SwerveInputStream driveAngularVelocity = SwerveInputStream.of(drivebase.getSwerveDrive(),
-                                                                () -> driveJoystick.getY() * -1,
-                                                                () -> driveJoystick.getX() * -1)
-                                                            .withControllerRotationAxis(() -> steerJoystick.getX() * -1)
-                                                            .deadband(Constants.DEADBAND)
-                                                            .scaleTranslation(0.8)
-                                                            .allianceRelativeControl(true);
+        }
+        configureBindings();
+        putShuffleboardCommands();
+    }
 
     /**
      * Use this method to define your trigger->command mappings. Triggers can be created via the
@@ -173,11 +166,11 @@ public class RobotContainer {
         return robotVisualizer;
     }
 
-  public IntakeSubsystem getIntakeSubsystem() {
-    return intakeSubsystem;
-  }
+    public IntakeSubsystem getIntakeSubsystem() {
+        return intakeSubsystem;
+    }
 
-    public SwerveSubsystem getDriveBase(){
+    public SwerveSubsystem getDriveBase() {
         return drivebase;
     }
 }

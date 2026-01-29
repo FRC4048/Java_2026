@@ -7,12 +7,16 @@ package frc.robot;
 import java.io.File;
 
 import edu.wpi.first.wpilibj.Filesystem;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.commands.drive.DriveDirectionTime;
 import frc.robot.commands.intake.SpinIntake;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
@@ -95,6 +99,10 @@ public class RobotContainer {
    // m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
     Command driveFieldOrientedAnglularVelocity = drivebase.driveFieldOriented(driveAngularVelocity);
     drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity);
+    
+    //basic drive command
+    Command driveDirectionTime = new DriveDirectionTime(drivebase, 0.1,0.1, true, 1);
+    SmartDashboard.putData("Drive Command", driveDirectionTime);
   }
   public void putShuffleboardCommands() {
         if (Constants.DEBUG) {
@@ -140,12 +148,11 @@ public class RobotContainer {
   public RobotVisualizer getRobotVisualizer() {
     return robotVisualizer;
   }
-
-  public IntakeSubsystem getIntakeSubsystem() {
+  public SwerveSubsystem getDriveBase(){
+    return drivebase;
+  }
+  public IntakeSubsystem getIntakeSubsystem(){
     return intakeSubsystem;
   }
-
-    public SwerveSubsystem getDriveBase(){
-        return drivebase;
-    }
 }
+

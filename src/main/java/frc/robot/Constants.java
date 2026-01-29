@@ -4,6 +4,9 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.RobotBase;
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants. This class should not be used for any other purpose. All constants should be declared
@@ -14,6 +17,9 @@ package frc.robot;
  */
 
 public class Constants extends Constants2026 {
+
+    public static final int DRIVE_JOYSTICK_PORT = 0;
+    public static final int STEER_JOYSTICK_PORT = 1;
 
 }
 

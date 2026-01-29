@@ -126,7 +126,7 @@ public class RobotContainer {
                     "Spin Intake",
                     new SpinIntake(intakeSubsystem));
         }
-        
+        drivebase.getSwerveDrive().addVisionMeasurement(null, 0);
     }
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.

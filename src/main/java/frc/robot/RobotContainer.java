@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.intake.SpinIntake;
+import frc.robot.constants.Constants;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import frc.robot.utils.simulation.RobotVisualizer;
@@ -38,6 +39,7 @@ public class RobotContainer {
   private final CommandJoystick steerJoystick = new CommandJoystick(Constants.STEER_JOYSTICK_PORT);
   // Replace with CommandPS4Controller or CommandJoystick if needed
       //new CommandXboxController(OperatorConstants.kDriverControllerPort);
+  private final CommandXboxController controller = new CommandXboxController(Constants.XBOX_CONTROLLER_PORT);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {

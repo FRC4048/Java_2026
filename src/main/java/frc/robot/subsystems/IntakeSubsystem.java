@@ -9,8 +9,8 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
 import frc.robot.commands.intake.SpinIntake;
+import frc.robot.constants.Constants;
 import frc.robot.utils.logging.input.DigitalInputLoggableInputs;
 import frc.robot.utils.logging.input.MotorLoggableInputs;
 import frc.robot.utils.logging.io.motor.DigitalInputIo;

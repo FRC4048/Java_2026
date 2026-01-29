@@ -21,7 +21,8 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Config;
-import frc.robot.Constants;
+import frc.robot.constants.Constants;
+
 import java.io.File;
 import java.util.Arrays;
 import java.util.function.DoubleSupplier;

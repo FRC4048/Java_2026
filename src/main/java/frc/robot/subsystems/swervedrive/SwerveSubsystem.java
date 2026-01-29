@@ -6,14 +6,18 @@ package frc.robot.subsystems.swervedrive;
 
 import static edu.wpi.first.units.Units.Meter;
 
+import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.numbers.N1;
+import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Config;
@@ -482,5 +486,8 @@ public class SwerveSubsystem extends SubsystemBase
   public SwerveDrive getSwerveDrive()
   {
     return swerveDrive;
+  }
+  public void addVisionMeasurement(Pose2d pose, Matrix<N3,N1> visionMeasurementStdDevs){
+    swerveDrive.addVisionMeasurement(pose, Timer.getFPGATimestamp(), visionMeasurementStdDevs);
   }
 }

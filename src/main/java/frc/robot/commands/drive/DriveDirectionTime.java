@@ -17,7 +17,7 @@ import frc.robot.utils.logging.commands.LoggableCommand;
  * @param fieldRelative True for field-relative, false for robot-relative.
  * @param time Amount of time before the command ends
  */
-public class Drive extends LoggableCommand {
+public class DriveDirectionTime extends LoggableCommand {
 
   private final SwerveSubsystem drivebase;
   private final double speedX;
@@ -25,7 +25,7 @@ public class Drive extends LoggableCommand {
   private final boolean fieldRelative;
   private final double time;
   private Timer timer;
-  public Drive(SwerveSubsystem drivebase, double speedX, double speedY, boolean fieldRelative, double time) {
+  public DriveDirectionTime(SwerveSubsystem drivebase, double speedX, double speedY, boolean fieldRelative, double time) {
     timer = new Timer();
     this.time = time;
     this.drivebase = drivebase;

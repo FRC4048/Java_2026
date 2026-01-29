@@ -37,6 +37,7 @@ public class RobotContainer {
     private final IntakeSubsystem intakeSubsystem;
     private RobotVisualizer robotVisualizer = null;
     private SwerveSubsystem drivebase = null;
+    private GyroSubsystem gyroSubsystem = null;
     private final CommandJoystick driveJoystick = new CommandJoystick(Constants.DRIVE_JOYSTICK_PORT);
     private final CommandJoystick steerJoystick = new CommandJoystick(Constants.STEER_JOYSTICK_PORT);
 
@@ -53,9 +54,10 @@ public class RobotContainer {
                 //rollerSubsystem = new RollerSubsystem(RollerSubsystem.createRealIo());
                 //tiltSubsystem = new TiltSubsystem(TiltSubsystem.createRealIo());
                 intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createRealIo(), new DigitalInput(Constants.INTAKE_DIGITAL_INPUT_CHANNEL));
-                // For now, we are not creating an instance of the gyro subsystem - just the threadedIO...
+
                 RealGyroIo gyroIo = (RealGyroIo) GyroSubsystem.createRealIo();
                 ThreadedGyro threadedGyro = gyroIo.getThreadedGyro();
+                gyroSubsystem = new GyroSubsystem(gyroIo);
                 SwerveIMU swerveIMU = new ThreadedGyroSwerveIMU(threadedGyro);
                 drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "YAGSL"), swerveIMU);
             }
@@ -63,6 +65,7 @@ public class RobotContainer {
                 //rollerSubsystem = new RollerSubsystem(RollerSubsystem.createMockIo());
                 //tiltSubsystem = new TiltSubsystem(TiltSubsystem.createMockIo());
                 intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createMockIo(), new DigitalInput(Constants.INTAKE_DIGITAL_INPUT_CHANNEL));
+                // No GyroSubsystem in REPLAY for now
                 // create the drive subsystem with null gyro (use default json)
                 drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "YAGSL"), null);
             }
@@ -71,6 +74,7 @@ public class RobotContainer {
                 //rollerSubsystem = new RollerSubsystem(RollerSubsystem.createSimIo(robotVisualizer));
                 //tiltSubsystem = new TiltSubsystem(TiltSubsystem.createSimIo(robotVisualizer));
                 intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createSimIo(robotVisualizer), new DigitalInput(Constants.INTAKE_DIGITAL_INPUT_CHANNEL));
+                // No GyroSubsystem in REPLAY for now
                 // create the drive subsystem with null gyro (use default json)
                 drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "YAGSL"), null);
             }

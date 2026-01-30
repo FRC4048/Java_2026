@@ -3,20 +3,21 @@ package frc.robot.apriltags;
 import edu.wpi.first.math.geometry.*;
 import frc.robot.constants.Constants;
 import frc.robot.utils.Apriltag;
-import frc.robot.utils.logging.LoggableIO;
+import frc.robot.utils.logging.io.BaseIoImpl;
 import java.util.Queue;
 import org.littletonrobotics.junction.Logger;
 
-public class TCPApriltag implements LoggableIO<ApriltagInputs> {
+public class TCPApriltag extends BaseIoImpl<ApriltagInputs> implements ApriltagIO{
     private final TCPApriltagServer server;
 
-    public TCPApriltag() {
+    public TCPApriltag(String name, ApriltagInputs inputs) {
+        super(name, inputs);
         server = new TCPApriltagServer(Constants.TCP_SERVER_PORT);
         server.start();
     }
 
     @Override
-    public void updateInputs(ApriltagInputs inputs) {
+    protected void updateInputs(ApriltagInputs inputs) {
         Queue<ApriltagReading> queue = server.flush();
         int queueSize = queue.size();
         Logger.recordOutput("VisionMeasurementsThisTick", queueSize);

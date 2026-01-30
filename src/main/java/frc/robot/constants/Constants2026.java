@@ -14,4 +14,12 @@ public class Constants2026 extends GameConstants {
 
     public static final int INTAKE_DIGITAL_INPUT_CHANNEL = 0;
 
+    // other
+    public static final int SERVER_SOCKET_ATTEMPT_DELAY = 100;
+    public static final int TCP_SERVER_PORT = 5806;
+
+    //timeouts
+    public static final int SERVER_SOCKET_CONNECTION_TIMEOUT = 2000;
+
+
 }

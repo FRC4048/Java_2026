@@ -13,8 +13,10 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.commands.hopper.SpinHopper;
 import frc.robot.commands.intake.SpinIntake;
 import frc.robot.constants.Constants;
+import frc.robot.subsystems.HopperSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import frc.robot.utils.simulation.RobotVisualizer;
@@ -32,6 +34,7 @@ public class RobotContainer {
   //private final TiltSubsystem tiltSubsystem;
   private final IntakeSubsystem intakeSubsystem;
   private RobotVisualizer robotVisualizer = null;
+  private final HopperSubsystem hopperSubsystem;
 
   private final SwerveSubsystem drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),"YAGSL"));
   private final CommandJoystick driveJoystick = new CommandJoystick(Constants.DRIVE_JOYSTICK_PORT);
@@ -48,17 +51,21 @@ public class RobotContainer {
                 //rollerSubsystem = new RollerSubsystem(RollerSubsystem.createRealIo());
                 //tiltSubsystem = new TiltSubsystem(TiltSubsystem.createRealIo());
                 intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createRealIo(), IntakeSubsystem.createRealDeploymentSwitch());
+                hopperSubsystem = new HopperSubsystem(HopperSubsystem.createRealIo());
+
             }
             case REPLAY -> {
                 //rollerSubsystem = new RollerSubsystem(RollerSubsystem.createMockIo());
                 //tiltSubsystem = new TiltSubsystem(TiltSubsystem.createMockIo());
                 intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createMockIo(), IntakeSubsystem.createMockDeploymentSwitch());
+                hopperSubsystem = new HopperSubsystem(HopperSubsystem.createMockIo());
             }
             case SIM -> {
                 robotVisualizer = new RobotVisualizer();
                 //rollerSubsystem = new RollerSubsystem(RollerSubsystem.createSimIo(robotVisualizer));
                 //tiltSubsystem = new TiltSubsystem(TiltSubsystem.createSimIo(robotVisualizer));
                 intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createSimIo(robotVisualizer), IntakeSubsystem.createSimDeploymentSwitch());
+                hopperSubsystem = new HopperSubsystem(HopperSubsystem.createSimIo(robotVisualizer));
             }
             
             default -> {
@@ -127,6 +134,14 @@ public class RobotContainer {
             SmartDashboard.putData(
                     "Spin Intake",
                     new SpinIntake(intakeSubsystem));
+            
+            SmartDashboard.putData(
+              "Start Hopper",
+              new SpinHopper(hopperSubsystem));
+
+            SmartDashboard.putData(
+              "Stop Hopper",
+              new InstantCommand(hopperSubsystem :: stopMotors));
         }
     }
   /**

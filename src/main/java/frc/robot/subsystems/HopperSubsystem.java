@@ -54,7 +54,7 @@ public class HopperSubsystem extends SubsystemBase{
     public static SparkMaxIo createSimIo(RobotVisualizer visualizer) {
         SparkMax motor = createMotor();
         return new SimSparkMaxIo(LOGGING_NAME, motor, MotorLoggableInputs.allMetrics(),
-                new MotorSimulator(motor, visualizer.getRollerLigament()));
+                new MotorSimulator(motor, visualizer.getHopperLigament()));
     }
 
      private static SparkMax createMotor() {

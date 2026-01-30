@@ -4,23 +4,30 @@
 
 package frc.robot;
 
-import java.io.File;
-
 import edu.wpi.first.wpilibj.Filesystem;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.commands.feeder.SpinFeeder;
+import frc.robot.commands.drive.DriveDirectionTime;
 import frc.robot.commands.intake.SpinIntake;
 import frc.robot.constants.Constants;
-import frc.robot.subsystems.FeederSubsystem;
+import frc.robot.subsystems.GyroSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
+import frc.robot.utils.logging.io.gyro.RealGyroIo;
+import frc.robot.utils.logging.io.gyro.ThreadedGyro;
+import frc.robot.utils.logging.io.gyro.ThreadedGyroSwerveIMU;
 import frc.robot.utils.simulation.RobotVisualizer;
 import swervelib.SwerveInputStream;
+import swervelib.imu.SwerveIMU;
+
+import java.io.File;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -33,7 +40,6 @@ public class RobotContainer {
   //private final RollerSubsystem rollerSubsystem;
   //private final TiltSubsystem tiltSubsystem;
   private final IntakeSubsystem intakeSubsystem;
-  private final FeederSubsystem feederSubsystem;
   private RobotVisualizer robotVisualizer = null;
 
   private final SwerveSubsystem drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),"YAGSL"));
@@ -43,67 +49,81 @@ public class RobotContainer {
       //new CommandXboxController(OperatorConstants.kDriverControllerPort);
   private final CommandXboxController controller = new CommandXboxController(Constants.XBOX_CONTROLLER_PORT);
 
-  /** The container for the robot. Contains subsystems, OI devices, and commands. */
-  public RobotContainer() {
-    // Configure the trigger bindings
-    switch (Constants.currentMode) {
+    /**
+     * The container for the robot. Contains subsystems, OI devices, and commands.
+     */
+    public RobotContainer() {
+        // Configure the trigger bindings
+        switch (Constants.currentMode) {
             case REAL -> {
                 //rollerSubsystem = new RollerSubsystem(RollerSubsystem.createRealIo());
                 //tiltSubsystem = new TiltSubsystem(TiltSubsystem.createRealIo());
                 intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createRealIo(), IntakeSubsystem.createRealDeploymentSwitch());
-                feederSubsystem = new FeederSubsystem(FeederSubsystem.createRealIo());
+
+                RealGyroIo gyroIo = (RealGyroIo) GyroSubsystem.createRealIo();
+                ThreadedGyro threadedGyro = gyroIo.getThreadedGyro();
+                gyroSubsystem = new GyroSubsystem(gyroIo);
+                SwerveIMU swerveIMU = new ThreadedGyroSwerveIMU(threadedGyro);
+                drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "YAGSL"), swerveIMU);
             }
             case REPLAY -> {
                 //rollerSubsystem = new RollerSubsystem(RollerSubsystem.createMockIo());
                 //tiltSubsystem = new TiltSubsystem(TiltSubsystem.createMockIo());
                 intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createMockIo(), IntakeSubsystem.createMockDeploymentSwitch());
-                feederSubsystem = new FeederSubsystem(FeederSubsystem.createMockIo());
+                // No GyroSubsystem in REPLAY for now
+                // create the drive subsystem with null gyro (use default json)
+                drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "YAGSL"), null);
             }
             case SIM -> {
                 robotVisualizer = new RobotVisualizer();
                 //rollerSubsystem = new RollerSubsystem(RollerSubsystem.createSimIo(robotVisualizer));
                 //tiltSubsystem = new TiltSubsystem(TiltSubsystem.createSimIo(robotVisualizer));
                 intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createSimIo(robotVisualizer), IntakeSubsystem.createSimDeploymentSwitch());
-                feederSubsystem = new FeederSubsystem(FeederSubsystem.createSimIo(robotVisualizer));
+                // No GyroSubsystem in REPLAY for now
+                // create the drive subsystem with null gyro (use default json)
+                drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "YAGSL"), null);
             }
-            
+
             default -> {
                 throw new RuntimeException("Did not specify Robot Mode");
             }
-       }
-    configureBindings();
-    putShuffleboardCommands();
- }
- SwerveInputStream driveAngularVelocity = SwerveInputStream.of(drivebase.getSwerveDrive(),
-                                                                () -> driveJoystick.getY() * -1,
-                                                                () -> driveJoystick.getX() * -1)
-                                                            .withControllerRotationAxis(() -> steerJoystick.getX() * -1)
-                                                            .deadband(Constants.DEADBAND)
-                                                            .scaleTranslation(0.8)
-                                                            .allianceRelativeControl(true);
+        }
+        configureBindings();
+        putShuffleboardCommands();
+    }
 
+    /**
+     * Use this method to define your trigger->command mappings. Triggers can be created via the
+     * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with an arbitrary
+     * predicate, or via the named factories in {@link
+     * edu.wpi.first.wpilibj2.command.button.CommandGenericHID}'s subclasses for {@link
+     * CommandXboxController Xbox}/{@link edu.wpi.first.wpilibj2.command.button.CommandPS4Controller
+     * PS4} controllers or {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
+     * joysticks}.
+     */
+    private void configureBindings() {
+        // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
+        //new Trigger(m_exampleSubsystem::exampleCondition)
+        //  .onTrue(new ExampleCommand(m_exampleSubsystem));
 
-  /**
-   * Use this method to define your trigger->command mappings. Triggers can be created via the
-   * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with an arbitrary
-   * predicate, or via the named factories in {@link
-   * edu.wpi.first.wpilibj2.command.button.CommandGenericHID}'s subclasses for {@link
-   * CommandXboxController Xbox}/{@link edu.wpi.first.wpilibj2.command.button.CommandPS4Controller
-   * PS4} controllers or {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
-   * joysticks}.
-   */
-  private void configureBindings() {
-    // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-    //new Trigger(m_exampleSubsystem::exampleCondition)
-      //  .onTrue(new ExampleCommand(m_exampleSubsystem));
+        // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
+        // cancelling on release.
+        // m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
+        // TODO: Clean this up a little - create command in method and only create the one actually needed
+        SwerveInputStream driveAngularVelocity = SwerveInputStream.of(drivebase.getSwerveDrive(),
+                        () -> driveJoystick.getY() * -1,
+                        () -> driveJoystick.getX() * -1)
+                .withControllerRotationAxis(steerJoystick::getX)
+                .deadband(Constants.DEADBAND)
+                .scaleTranslation(0.8)
+                .allianceRelativeControl(true);
+        SwerveInputStream driveRobotOriented = driveAngularVelocity.copy().robotRelative(true)
+                .allianceRelativeControl(false);
+        Command driveFieldOrientedAnglularVelocity = drivebase.driveFieldOriented(driveAngularVelocity);
+        drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity);
+    }
 
-    // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
-    // cancelling on release.
-   // m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
-    Command driveFieldOrientedAnglularVelocity = drivebase.driveFieldOriented(driveAngularVelocity);
-    drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity);
-  }
-  public void putShuffleboardCommands() {
+    public void putShuffleboardCommands() {
         if (Constants.DEBUG) {
         /*SmartDashboard.putData(
                 "Spin Roller",
@@ -138,25 +158,31 @@ public class RobotContainer {
                     "Spin Feeder",
                     new SpinFeeder(feederSubsystem));
         }
+    //basic drive command
+    Command driveDirectionTime = new DriveDirectionTime(drivebase, 0.1,0.1, true, 1);
+    SmartDashboard.putData("Drive Command", driveDirectionTime);
     }
-  /**
-   * Use this to pass the autonomous command to the main {@link Robot} class.
-   *
-   * @return the command to run in autonomous
-   */
-  public Command getAutonomousCommand() {
-    // An example command will be run in autonomous
-    return null;
-  }
-  public RobotVisualizer getRobotVisualizer() {
-    return robotVisualizer;
-  }
 
-  public IntakeSubsystem getIntakeSubsystem() {
-    return intakeSubsystem;
-  }
+    /**
+     * Use this to pass the autonomous command to the main {@link Robot} class.
+     *
+     * @return the command to run in autonomous
+     */
+    public Command getAutonomousCommand() {
+        // An example command will be run in autonomous
+        return null;
+    }
 
-    public SwerveSubsystem getDriveBase(){
+    public RobotVisualizer getRobotVisualizer() {
+        return robotVisualizer;
+    }
+
+    public IntakeSubsystem getIntakeSubsystem() {
+        return intakeSubsystem;
+    }
+
+    public SwerveSubsystem getDriveBase() {
         return drivebase;
     }
 }
+

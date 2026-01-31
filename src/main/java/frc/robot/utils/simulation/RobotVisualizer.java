@@ -3,7 +3,8 @@ package frc.robot.utils.simulation;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj.util.Color8Bit;
-import frc.robot.Constants;
+import frc.robot.constants.Constants;
+
 import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.mechanism.LoggedMechanism2d;
 import org.littletonrobotics.junction.mechanism.LoggedMechanismLigament2d;
@@ -13,6 +14,7 @@ public class RobotVisualizer {
     private final LoggedMechanism2d mech2d = new LoggedMechanism2d(2, Units.feetToMeters(7));
     private final LoggedMechanismLigament2d tiltLigament;
     private final LoggedMechanismLigament2d rollerLigament;
+    private final LoggedMechanismLigament2d intakeLigament;
 
     public RobotVisualizer() {
         LoggedMechanismRoot2d root =
@@ -34,6 +36,24 @@ public class RobotVisualizer {
                 this.tiltLigament.append(
                         new LoggedMechanismLigament2d(
                                 "Roller", 0.05, 180, 5, new Color8Bit(Color.kGreen)));
+        
+        LoggedMechanismRoot2d intakeRoot =
+                mech2d.getRoot("Intake Root", Constants.DRIVE_BASE_WIDTH, Constants.INITIAL_ROBOT_HEIGHT);
+
+        LoggedMechanismLigament2d intakeRiserLigament =
+                intakeRoot.append(
+                        new LoggedMechanismLigament2d(
+                                "Intake Riser", 0.35, 30, 5, new Color8Bit(Color.kDarkGray)));
+                            
+        this.intakeLigament =
+                intakeRiserLigament.append(
+                        new LoggedMechanismLigament2d(
+                                "Intake Wheel",
+                                0.1,
+                                90.0,
+                                4,
+                                new Color8Bit(Color.kRed)));
+        
     }
 
     public LoggedMechanismLigament2d getRollerLigament() {
@@ -42,6 +62,10 @@ public class RobotVisualizer {
 
     public LoggedMechanismLigament2d getTiltLigament() {
         return tiltLigament;
+    }
+
+    public LoggedMechanismLigament2d getIntakeLigament() {
+        return intakeLigament;
     }
 
     public void logMechanism() {

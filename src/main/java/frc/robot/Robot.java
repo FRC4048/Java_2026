@@ -13,13 +13,14 @@ import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.networktables.NT4Publisher;
 import org.littletonrobotics.junction.wpilog.WPILOGReader;
 import org.littletonrobotics.junction.wpilog.WPILOGWriter;
-
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.constants.Constants;
 import frc.robot.utils.logging.commands.CommandLogger;
 
 /**
@@ -41,6 +42,7 @@ public class Robot extends LoggedRobot {
 
   private static Optional<DriverStation.Alliance> allianceColor = Optional.empty();
 
+  final CommandXboxController driverXbox = new CommandXboxController(0);
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -109,7 +111,10 @@ public class Robot extends LoggedRobot {
         if (Constants.ENABLE_LOGGING) {
             CommandLogger.get().log();
         }
-
+    SmartDashboard.putNumber("driverXbox.getLeftY()",driverXbox.getLeftY());
+    SmartDashboard.putNumber("driverXbox::getRightX", driverXbox.getRightX());
+    Logger.recordOutput("MyPose", robotContainer.getDriveBase().getPose());
+    
     // Gets the alliance color.
     if (DriverStation.isDSAttached() && allianceColor.isEmpty()) {
       allianceColor = DriverStation.getAlliance();

@@ -488,7 +488,7 @@ public class SwerveSubsystem extends SubsystemBase
   {
     return swerveDrive;
   }
-  public void addVisionMeasurement(Pose2d pose, Matrix<N3,N1> visionMeasurementStdDevs){
-    swerveDrive.addVisionMeasurement(pose, Timer.getFPGATimestamp(), visionMeasurementStdDevs);
+  public void addVisionMeasurement(Pose2d pose){
+    swerveDrive.addVisionMeasurement(pose, Timer.getFPGATimestamp());
   }
 }

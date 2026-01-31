@@ -128,6 +128,7 @@ public class RobotContainer {
             SmartDashboard.putData(
                     "Spin Intake",
                     new SpinIntake(intakeSubsystem));
+            SmartDashboard.putData("Give fake pose", )
         }
     }
   /**

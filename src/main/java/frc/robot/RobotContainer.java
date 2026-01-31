@@ -75,6 +75,7 @@ public class RobotContainer {
        }
     configureBindings();
     putShuffleboardCommands();
+    autoChooser = new AutoChooser2026(new RealAutoEventProvider(AutoAction.DO_NOTHING, FieldLocation.ZERO));
   }
   SwerveInputStream driveAngularVelocity = SwerveInputStream.of(drivebase.getSwerveDrive(),
                                                                 () -> driveJoystick.getY() * -1,

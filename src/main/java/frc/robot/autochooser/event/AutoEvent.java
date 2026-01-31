@@ -3,6 +3,8 @@ package frc.robot.autochooser.event;
 import frc.robot.autochooser.AutoAction;
 import frc.robot.autochooser.FieldLocation;
 import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Wrapper Class, that Contains a {@link frc.robot.autochooser.AutoAction} and a {@link
@@ -36,5 +38,23 @@ public class AutoEvent {
   @Override
   public int hashCode() {
     return Objects.hash(action, location);
+  }
+
+  @Override
+  public String toString() {
+    return "AutoEvent[action = " + action.toString() + ", location = " + location.toString() + "]";
+  }
+
+  public static AutoEvent fromString(String name) {
+    // Regex to capture the values inside 'action = ' and 'location = '
+    Pattern pattern = Pattern.compile("AutoEvent\\[action = (.*), location = (.*)\\]");
+    Matcher matcher = pattern.matcher(name);
+
+    if (matcher.find()) {
+        AutoAction action = AutoAction.fromName(matcher.group(1));
+        FieldLocation location = FieldLocation.fromName(matcher.group(2));
+        return new AutoEvent(action, location);
+    }
+    throw new IllegalArgumentException("Invalid format");
   }
 }

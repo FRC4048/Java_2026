@@ -1,6 +1,9 @@
 package frc.robot.utils.logging.io.gyro;
 
 import com.studica.frc.AHRS;
+import frc.robot.Robot;
+import frc.robot.constants.Constants;
+import frc.robot.utils.diag.DiagGyro;
 import frc.robot.utils.logging.input.GyroInputs;
 import frc.robot.utils.logging.input.GyroValues;
 import frc.robot.utils.logging.io.BaseIoImpl;
@@ -11,6 +14,7 @@ public class RealGyroIo extends BaseIoImpl<GyroInputs> implements GyroIo {
     public RealGyroIo() {
         super(LOGGING_NAME, new GyroInputs());
         threadedGyro = new ThreadedGyro(new AHRS(AHRS.NavXComType.kMXP_SPI));
+        Robot.getDiagnostics().addDiagnosable(new DiagGyro("Gyro", "Gyro Angle", Constants.GYRO_DIAGS_ANGLE, threadedGyro));
     }
 
     public void start() {

@@ -6,6 +6,7 @@ package frc.robot;
 
 import java.util.concurrent.atomic.AtomicReference;
 
+import frc.robot.utils.diag.Diagnostics;
 import org.littletonrobotics.junction.LogFileUtil;
 import org.littletonrobotics.junction.LoggedRobot;
 import org.littletonrobotics.junction.Logger;
@@ -27,7 +28,7 @@ import frc.robot.utils.logging.commands.CommandLogger;
  */
 public class Robot extends LoggedRobot {
   private Command autonomousCommand;
-
+  private static final Diagnostics diagnostics = new Diagnostics();
   private final RobotContainer robotContainer;
   private static final AtomicReference<RobotMode> mode = new AtomicReference<>(RobotMode.DISABLED);
 
@@ -139,6 +140,7 @@ public class Robot extends LoggedRobot {
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
+      diagnostics.reset();
       mode.set(RobotMode.TELEOP);
         if (autonomousCommand != null) {
             autonomousCommand.cancel();
@@ -151,13 +153,16 @@ public class Robot extends LoggedRobot {
 
   @Override
   public void testInit() {
+      diagnostics.reset();
  mode.set(RobotMode.TEST);
         // Cancels all running commands at the start of test mode.
         CommandScheduler.getInstance().cancelAll();  }
 
   /** This function is called periodically during test mode. */
   @Override
-  public void testPeriodic() {}
+  public void testPeriodic() {
+      diagnostics.refresh();
+  }
 
   /** This function is called once when the robot is first started up. */
   @Override
@@ -166,4 +171,7 @@ public class Robot extends LoggedRobot {
   /** This function is called periodically whilst in simulation. */
   @Override
   public void simulationPeriodic() {}
+    public static Diagnostics getDiagnostics() {
+        return diagnostics;
+    }
 }

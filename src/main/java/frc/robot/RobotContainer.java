@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.drive.DriveDirectionTime;
+import frc.robot.commands.drive.FakeVision;
 import frc.robot.commands.intake.SpinIntake;
 import frc.robot.constants.Constants;
 import frc.robot.subsystems.GyroSubsystem;
@@ -157,6 +158,7 @@ public class RobotContainer {
     //basic drive command
     Command driveDirectionTime = new DriveDirectionTime(drivebase, 0.1,0.1, true, 1);
     SmartDashboard.putData("Drive Command", driveDirectionTime);
+    SmartDashboard.putData("Fake vision", new FakeVision(drivebase));
     }
 
     /**

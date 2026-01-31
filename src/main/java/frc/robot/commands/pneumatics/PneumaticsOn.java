@@ -1,7 +1,7 @@
 package frc.robot.commands.pneumatics;
 
 import edu.wpi.first.wpilibj.Timer;
-import frc.robot.Constants;
+import frc.robot.constants.Constants;
 import frc.robot.subsystems.PneumaticsSubsystem;
 import frc.robot.utils.logging.commands.LoggableCommand;
 

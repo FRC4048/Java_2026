@@ -18,4 +18,19 @@ public class ConstantsTestbed2026 extends Constants2026 {
    * public static final int EXAMPLE_ID = 99;
    */
 
+   
+    // TESTBED SPECIFIC
+
+    public static final int ROLLER_MOTOR_ID = 42;
+    public static final int TILT_MOTOR_ID = 40;
+    public static final int INTAKE_MOTOR_ID = 50;
+    public static final int TEST_SOLENOID_ID_BOTTOM = 4;
+    public static final int TEST_SOLENOID_ID_TOP = 0;
+
+
+
+
+    public static final int PNEUMATIC_PCM_ID = 20;
+
+
 }

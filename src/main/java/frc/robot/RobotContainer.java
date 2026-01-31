@@ -16,11 +16,11 @@ import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.intake.SpinIntake;
-import frc.robot.commands.pneumatics.DoubleToggle;
+//import frc.robot.commands.pneumatics.DoubleToggle;
 import frc.robot.commands.pneumatics.PneumaticsOff;
 import frc.robot.commands.pneumatics.PneumaticsOn;
 import frc.robot.commands.pneumatics.PneumaticsToggle;
-import frc.robot.commands.pneumatics.SixSeven;
+//import frc.robot.commands.pneumatics.SixSeven;
 import frc.robot.commands.roller.SpinRoller;
 import frc.robot.commands.tilt.TiltDown;
 import frc.robot.commands.tilt.TiltUp;
@@ -159,9 +159,9 @@ public class RobotContainer {
                     "Six Seven",
                     new SixSeven(pneumaticsSubsystemBottom, pneumaticsSubsystemTop));
 
-            SmartDashboard.putData(
-                    "Double Toggle",
-                    new DoubleToggle(pneumaticsSubsystemBottom, pneumaticsSubsystemTop));
+           // SmartDashboard.putData(
+             //       "Double Toggle",
+                    //new DoubleToggle(pneumaticsSubsystemBottom, pneumaticsSubsystemTop));
         }
    }
   /**

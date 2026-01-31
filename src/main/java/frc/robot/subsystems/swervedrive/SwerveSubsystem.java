@@ -309,9 +309,6 @@ public class SwerveSubsystem extends SubsystemBase {
    *
    * @return {@link SwerveDrive}
    */
-  public void addVisionMeasurement(Pose2d pose){
-    swerveDrive.addVisionMeasurement(pose, Timer.getFPGATimestamp());
-  }
     /**
      * Post the trajectory to the field.
      *

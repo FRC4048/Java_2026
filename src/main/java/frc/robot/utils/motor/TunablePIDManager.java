@@ -3,11 +3,12 @@
 package frc.robot.utils.motor;
 
 import frc.robot.utils.logging.LoggedTunableNumber;
-import frc.robot.utils.logging.PIDLoggableIO;
+import frc.robot.utils.logging.io.pidmotor.SparkMaxPidConfig;
+import frc.robot.utils.logging.io.pidmotor.SparkMaxPidMotorIo;
 
 public class TunablePIDManager {
-    private final PIDLoggableIO io;
-    private final NeoPidConfig initConfig;
+    private final SparkMaxPidMotorIo io;
+    private final SparkMaxPidConfig initConfig;
     private final String prefix;
     private final LoggedTunableNumber kPTunable;
     private final LoggedTunableNumber kITunable;
@@ -18,7 +19,7 @@ public class TunablePIDManager {
     private final LoggedTunableNumber kMaxAccTunable;
     private final LoggedTunableNumber kAllowedErrorTunable;
 
-    public TunablePIDManager(String prefix, PIDLoggableIO io, NeoPidConfig initConfig) {
+    public TunablePIDManager(String prefix, SparkMaxPidMotorIo io, SparkMaxPidConfig initConfig) {
         this.io = io;
         this.initConfig = initConfig;
         this.prefix = prefix;
@@ -38,7 +39,7 @@ public class TunablePIDManager {
                 hashCode(),
                 () ->
                         io.configurePID(
-                                new NeoPidConfig(initConfig.getUsesMaxMotion())
+                                new SparkMaxPidConfig(initConfig.getUsesMaxMotion())
                                         .setP(kPTunable.get())
                                         .setI(kITunable.get())
                                         .setD(kDTunable.get())

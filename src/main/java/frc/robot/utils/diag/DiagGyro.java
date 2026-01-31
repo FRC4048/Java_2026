@@ -13,6 +13,6 @@ public class DiagGyro extends DiagDistanceTraveled {
 
     @Override
     protected double getCurrentValue() {
-        return gyro.getGyroValue();
+        return gyro.getGyroValues().getAnglesInDeg();
     }
 }

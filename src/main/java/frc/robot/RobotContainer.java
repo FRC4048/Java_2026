@@ -21,6 +21,7 @@ import frc.robot.commands.intake.SpinIntake;
 import frc.robot.constants.Constants;
 import frc.robot.subsystems.HopperSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
 //import frc.robot.subsystems.RollerSubsystem;
 //import frc.robot.subsystems.TiltSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
@@ -37,6 +38,7 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   //private final RollerSubsystem rollerSubsystem;
   //private final TiltSubsystem tiltSubsystem;
+  private final ShooterSubsystem shooterSubsystem;
   private final IntakeSubsystem intakeSubsystem;
   private RobotVisualizer robotVisualizer = null;
   private final HopperSubsystem hopperSubsystem;
@@ -57,6 +59,7 @@ public class RobotContainer {
                 //tiltSubsystem = new TiltSubsystem(TiltSubsystem.createRealIo());
                 intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createRealIo(), IntakeSubsystem.createRealDeploymentSwitch());
                 hopperSubsystem = new HopperSubsystem(HopperSubsystem.createRealIo());
+                
 
             }
             case REPLAY -> {

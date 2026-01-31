@@ -1,15 +1,15 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.utils.logging.io.motor.SparkMaxIo;
+import frc.robot.utils.logging.io.pidmotor.SparkMaxPidMotorIo;
 
 public class AngularSubsystem extends SubsystemBase {
 
     public static final String LOGGING_NAME = "AngularSubsystem";
 
-    private final SparkMaxIo io;
+    private final SparkMaxPidMotorIo io;
 
-    public AngularSubsystem(SparkMaxIo io) {
+    public AngularSubsystem(SparkMaxPidMotorIo io) {
         this.io = io;
     }
 

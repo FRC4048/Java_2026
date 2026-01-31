@@ -49,7 +49,8 @@ public final class Constants {
     public static final int ROLLER_MOTOR_ID = 42;
     public static final int TILT_MOTOR_ID = 40;
     public static final int INTAKE_MOTOR_ID = 50;
-    public static final int TEST_SOLENOID_ID = 4;
+    public static final int TEST_SOLENOID_ID_BOTTOM = 4;
+    public static final int TEST_SOLENOID_ID_TOP = 0;
 
     public static final double ROLLER_SPEED = 0.25;
     public static final double TILT_SPEED = -0.5; // Arm motor is inverted - use negative speed
@@ -75,6 +76,10 @@ public final class Constants {
 
     public static final int DRIVE_JOYSTICK_PORT = 0;
     public static final int STEER_JOYSTICK_PORT = 1;
+
+    // TESTBED SPECIFIC
+
+    public static final int PNEUMATIC_PCM_ID = 20;
 
 }
 

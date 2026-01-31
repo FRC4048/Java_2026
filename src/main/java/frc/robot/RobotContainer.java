@@ -19,6 +19,7 @@ import frc.robot.commands.intake.SpinIntake;
 import frc.robot.commands.pneumatics.PneumaticsOff;
 import frc.robot.commands.pneumatics.PneumaticsOn;
 import frc.robot.commands.pneumatics.PneumaticsToggle;
+import frc.robot.commands.pneumatics.SixSeven;
 import frc.robot.commands.roller.SpinRoller;
 import frc.robot.commands.tilt.TiltDown;
 import frc.robot.commands.tilt.TiltUp;
@@ -41,7 +42,8 @@ public class RobotContainer {
   //private final RollerSubsystem rollerSubsystem;
   //private final TiltSubsystem tiltSubsystem;
   private final IntakeSubsystem intakeSubsystem;
-  private final PneumaticsSubsystem pneumaticsSubsystem;
+  private final PneumaticsSubsystem pneumaticsSubsystemBottom;
+  private final PneumaticsSubsystem pneumaticsSubsystemTop;
   private RobotVisualizer robotVisualizer = null;
   //private final SwerveSubsystem drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),"YAGSL"));
   private final CommandJoystick driveJoystick = new CommandJoystick(Constants.DRIVE_JOYSTICK_PORT);
@@ -53,7 +55,8 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the trigger bindings
-    pneumaticsSubsystem = new PneumaticsSubsystem(new Solenoid(PneumaticsModuleType.CTREPCM, Constants.TEST_SOLENOID_ID));
+    pneumaticsSubsystemBottom = new PneumaticsSubsystem(new Solenoid(Constants.PNEUMATIC_PCM_ID, PneumaticsModuleType.CTREPCM, Constants.TEST_SOLENOID_ID_BOTTOM));
+    pneumaticsSubsystemTop = new PneumaticsSubsystem(new Solenoid(Constants.PNEUMATIC_PCM_ID, PneumaticsModuleType.CTREPCM, Constants.TEST_SOLENOID_ID_TOP));
     switch (Constants.currentMode) {
             case REAL -> {
                 //rollerSubsystem = new RollerSubsystem(RollerSubsystem.createRealIo());
@@ -128,16 +131,32 @@ public class RobotContainer {
                     new SpinIntake(intakeSubsystem));
 
             SmartDashboard.putData(
-                    "Pneumatics On",
-                    new PneumaticsOn(pneumaticsSubsystem));
+                    "Pneumatics On - Bottom",
+                    new PneumaticsOn(pneumaticsSubsystemBottom));
 
             SmartDashboard.putData(
-                    "Pneumatics Off",
-                    new PneumaticsOff(pneumaticsSubsystem));
+                    "Pneumatics Off - Bottom",
+                    new PneumaticsOff(pneumaticsSubsystemBottom));
 
             SmartDashboard.putData(
-                    "Pneumatics Toggle",
-                    new PneumaticsToggle(pneumaticsSubsystem));
+                    "Pneumatics Toggle - Bottom",
+                    new PneumaticsToggle(pneumaticsSubsystemBottom));
+
+            SmartDashboard.putData(
+                    "Pneumatics On - Top",
+                    new PneumaticsOn(pneumaticsSubsystemTop));
+
+            SmartDashboard.putData(
+                    "Pneumatics Off - Top",
+                    new PneumaticsOff(pneumaticsSubsystemTop));
+
+            SmartDashboard.putData(
+                    "Pneumatics Toggle - Top",
+                    new PneumaticsToggle(pneumaticsSubsystemTop));
+
+            SmartDashboard.putData(
+                    "Six Seven",
+                    new SixSeven(pneumaticsSubsystemBottom, pneumaticsSubsystemTop));
         }
    }
   /**

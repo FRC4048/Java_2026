@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems.swervedrive;
 
+import static edu.wpi.first.units.Units.Meter;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -73,13 +74,13 @@ public class SwerveSubsystem extends SubsystemBase {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        swerveDrive.setHeadingCorrection(false); // Heading correction should only be used while controlling the robot via angle.
-        swerveDrive.setCosineCompensator(false);//!SwerveDriveTelemetry.isSimulation); // Disables cosine compensation for simulations since it causes discrepancies not seen in real life.
-        swerveDrive.setAngularVelocityCompensation(true,
-                true,
-                0.1); //Correct for skew that gets worse as angular velocity increases. Start with a coefficient of 0.1.
-        swerveDrive.setModuleEncoderAutoSynchronize(false,
-                1); // Enable if you want to resynchronize your absolute encoders and motor encoders periodically when they are not moving.
+        swerveDrive.setHeadingCorrection(Constants.SET_HEADING_CORRECTION); // Heading correction should only be used while controlling the robot via angle.
+        swerveDrive.setCosineCompensator(Constants.COSIN_COMPENSATOR);//!SwerveDriveTelemetry.isSimulation); // Disables cosine compensation for simulations since it causes discrepancies not seen in real life.
+        swerveDrive.setAngularVelocityCompensation(Constants.USE_ANGULAR_VELOCITY_COMPENSATION_IN_TELEOP,
+                Constants.USE_ANGULAR_VELOCITY_COMPENSATION_IN_AUTO,
+                Constants.ANGULAR_VELOCITY_COEFFICENT); //Correct for skew that gets worse as angular velocity increases. Start with a coefficient of 0.1.
+        swerveDrive.setModuleEncoderAutoSynchronize(Constants.SET_MODULE_ENCODER_AUTO_SYNCHRONIZE,
+                Constants.SET_MODULE_ENCODER_AUTO_SYNCHRONIZE_DEADBAND); // Enable if you want to resynchronize your absolute encoders and motor encoders periodically when they are not moving.
         // swerveDrive.pushOffsetsToEncoders(); // Set the absolute encoder to be used over the internal encoder and push the offsets onto it. Throws warning if not possible
     }
 
@@ -297,7 +298,6 @@ public class SwerveSubsystem extends SubsystemBase {
     public void setChassisSpeeds(ChassisSpeeds chassisSpeeds) {
         swerveDrive.setChassisSpeeds(chassisSpeeds);
     }
-
     /**
      * Post the trajectory to the field.
      *

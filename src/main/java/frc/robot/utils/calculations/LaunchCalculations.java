@@ -142,7 +142,7 @@ public class LaunchCalculations {
         deltaHeight = hubHeight - shooterHeight;
 
         /*
-        *  Computes the ideal shooter velocity. This is the speed of the shooter without considering
+        *  Computes the ideal shooter velocity. This is the initial velocity of the shooter without considering
         *  the effects of drag. It is a physics formula that computes the initial velocity given
         *  the launch angle, the distance between the robot and the hub, the height change, and
         *  the gravitational constant g. This formula has been tested in projectile motion simulators.
@@ -193,8 +193,8 @@ public class LaunchCalculations {
         doTheMath();
     }
 
-    // returns the speed of the shooter
-    public double getShooterSpeed() {
+    // returns the initial velocity of the shooter
+    public double getShooterVelocity() {
         return shooterVelocity;
     }
 

@@ -69,9 +69,9 @@ public class GameConstants {
     public static final boolean COSIN_COMPENSATOR = false;
     public static final boolean USE_ANGULAR_VELOCITY_COMPENSATION_IN_TELEOP = true;
     public static final boolean USE_ANGULAR_VELOCITY_COMPENSATION_IN_AUTO = true;
-    public static final double ANGULAR_VELOCITY_COEFFICENT = 0;
+    public static final double ANGULAR_VELOCITY_COEFFICENT = 0.1;
     public static final boolean SET_MODULE_ENCODER_AUTO_SYNCHRONIZE = false;
-    public static final double SET_MODULE_ENCODER_AUTO_SYNCHRONIZE_DEADBAND = 0;
+    public static final double SET_MODULE_ENCODER_AUTO_SYNCHRONIZE_DEADBAND = 1;
 
     
 

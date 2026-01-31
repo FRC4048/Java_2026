@@ -1,21 +1,19 @@
-package frc.robot.utils.logging.io.motor;
-
-import com.revrobotics.spark.SparkMax;
+package frc.robot.utils.logging.io.pidmotor;
 
 import frc.robot.constants.Constants;
 import frc.robot.utils.logging.input.MotorLoggableInputs;
 import frc.robot.utils.simulation.Simulator;
-import org.littletonrobotics.junction.mechanism.LoggedMechanismLigament2d;
 
 /**
- * IO Implementation for a simulated SparkMax IO controller.
+ * IO implementation for simulation PID motor.
+ * Similar to the {@link frc.robot.utils.logging.io.motor.SimSparkMaxIo},
+ * this extends the Real implementation and adds simulation step.
  */
-public class SimSparkMaxIo extends RealSparkMaxIo {
+public class SimSparkMaxPidMotorIo extends RealSparkMaxPidMotorIo {
     private final Simulator motorSimulator;
 
-    public SimSparkMaxIo(String name, SparkMax motor, MotorLoggableInputs inputs,
-                         Simulator simulator) {
-        super(name, motor, inputs);
+    public SimSparkMaxPidMotorIo(String name, SparkMaxPidMotor pidMotor, MotorLoggableInputs inputs, Simulator simulator) {
+        super(name, pidMotor, inputs);
         this.motorSimulator = simulator;
     }
 

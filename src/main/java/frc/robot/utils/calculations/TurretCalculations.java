@@ -12,9 +12,8 @@ public class TurretCalculations {
      * angle would be pi/2 radians (1.57). 
      * 
      * This class takes the robot's x and y positions: robotPosX and robotPosY. These are the
-     * distances (in meters) from the origin. The origin is defined as the corner on the alliance 
-     * side of the field closest to the chute.
-
+     * distances (in meters) from the origin. The origin is defined as the bottom right corner 
+     * of the alliance blue alliance.
      * 
      */
 
@@ -31,17 +30,26 @@ public class TurretCalculations {
 
     // Given values -- from Constants file
     // gives the x and y positions of the hub (in meters)
-    private static final double hubPosX = Constants.HUB_X_POSITION;
-    private static final double hubPosY = Constants.HUB_Y_POSITION;
+    private double hubPosX;
+    private double hubPosY;
 
     // gives the turret's pan angle assuming the robot is facing directly to the right 
     // basically, it doesn't account for the robot's rotation
     private double panAngleUnadjusted;
 
-    public TurretCalculations(double robotPosX, double robotPosY, double robotRotation) {
+    public TurretCalculations(double robotPosX, double robotPosY, double robotRotation, boolean isBlueAlliance) {
         this.robotPosX = robotPosX;
         this.robotPosY = robotPosY;
         this.robotRotation = robotRotation;
+        if (isBlueAlliance) {
+            // hub position determined by which alliance robot is on
+            hubPosX = Constants.BLUE_HUB_X_POSITION;
+            hubPosY = Constants.BLUE_HUB_Y_POSITION;
+        }
+        else {
+            hubPosX = Constants.RED_HUB_X_POSITION;
+            hubPosY = Constants.RED_HUB_Y_POSITION;
+        }
         doTheMath();
     }
 

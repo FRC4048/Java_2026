@@ -38,7 +38,7 @@ public class LaunchCalculations {
 
     */
 
-    // The origin is defined as the corner on the alliance side of the field closest to the chute
+    // The origin is defined as the bottom right corner of the blue alliance
     
     // All angles are in radians, all distances are in meters, all velocities in m/s
 
@@ -53,8 +53,8 @@ public class LaunchCalculations {
     // Given values -- from Constants file
     private static final double hubHeight = Constants.HUB_HEIGHT; // height of the top of the hub
     private static final double shooterHeight = Constants.SHOOTER_HEIGHT; // height of shooter
-    private static final double hubPosX = Constants.HUB_X_POSITION; // x distance between hub and origin (meters)
-    private static final double hubPosY = Constants.HUB_Y_POSITION; // y distance between hub and origin (meters)
+    private double hubPosX; 
+    private double hubPosY;
     private static final double g = 9.81; // gravity constant
 
     /*
@@ -83,9 +83,18 @@ public class LaunchCalculations {
      * the class to calculate the launch angle automatically. This does not accoint for the
      * buffer zone.
      */
-    public LaunchCalculations(double robotPosX, double robotPosY) {
+    public LaunchCalculations(double robotPosX, double robotPosY, boolean isBlueAlliance) {
         this.robotPosX = robotPosX;
         this.robotPosY = robotPosY;
+        if (isBlueAlliance) {
+            // hub position determined by which alliance robot is on
+            hubPosX = Constants.BLUE_HUB_X_POSITION;
+            hubPosY = Constants.BLUE_HUB_Y_POSITION;
+        }
+        else {
+            hubPosX = Constants.RED_HUB_X_POSITION;
+            hubPosY = Constants.RED_HUB_Y_POSITION;
+        }
         safeShooting = true; // by default, safeShooting is true, and is turned false if it becomes unsafe
 
         // Compute distance between hub and robot with Pythagorean Theorem
@@ -100,9 +109,18 @@ public class LaunchCalculations {
      * This is an overloaded constructor that includes a launch angle. This is if you want to
      * manually set the launch angle, like if the robot is within the buffer zone.
      */
-    public LaunchCalculations(double RobotPosX, double RobotPosY, double launchAngle) {
+    public LaunchCalculations(double RobotPosX, double RobotPosY, double launchAngle, boolean isBlueAlliance) {
         this.robotPosX = robotPosX;
         this.robotPosY = robotPosY;
+        if (isBlueAlliance) {
+            // hub position determined by which alliance robot is on
+            hubPosX = Constants.BLUE_HUB_X_POSITION;
+            hubPosY = Constants.BLUE_HUB_Y_POSITION;
+        }
+        else {
+            hubPosX = Constants.RED_HUB_X_POSITION;
+            hubPosY = Constants.RED_HUB_Y_POSITION;
+        }
         safeShooting = true; // by default, safeShooting is true, and is turned false if it becomes unsafe
         
         // Compute distance between hub and robot with Pythagorean Theorem

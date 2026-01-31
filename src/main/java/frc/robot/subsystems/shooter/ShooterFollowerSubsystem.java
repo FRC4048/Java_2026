@@ -1,4 +1,4 @@
-package frc.robot.subsystems;
+package frc.robot.subsystems.shooter;
 
 import com.revrobotics.PersistMode;
 import com.revrobotics.ResetMode;
@@ -49,19 +49,17 @@ public class ShooterFollowerSubsystem extends SubsystemBase{
 
     public static SparkMaxIo createSimIo(RobotVisualizer visualizer) {
         SparkMax motor = createMotor();
-        SparkMaxConfig motorConfig = new SparkMaxConfig();
-        motor.isFollower();
-        motorConfig.follow(Constants.SHOOTER_LEADER_MOTOR_ID);
-        motor.configure(motorConfig, SparkBase.ResetMode.kNoResetSafeParameters, SparkBase.PersistMode.kNoPersistParameters);
         return new SimSparkMaxIo(LOGGING_NAME, motor, MotorLoggableInputs.allMetrics(),
                 new MotorSimulator(motor, visualizer.getShooterLigament()));
     }
 
      private static SparkMax createMotor() {
-        SparkMax motor = new SparkMax(Constants.SHOOTER_LEADER_MOTOR_ID, SparkLowLevel.MotorType.kBrushless);
+        SparkMax motor = new SparkMax(Constants.SHOOTER_FOLLOWER_MOTOR_ID, SparkLowLevel.MotorType.kBrushless);
         SparkMaxConfig motorConfig = new SparkMaxConfig();
         motorConfig.idleMode(SparkBaseConfig.IdleMode.kBrake);
         motorConfig.smartCurrentLimit(Constants.NEO_CURRENT_LIMIT);
+        motor.isFollower();
+        motorConfig.follow(Constants.SHOOTER_LEADER_MOTOR_ID);
         motor.configure(
                 motorConfig,
                 ResetMode.kResetSafeParameters,

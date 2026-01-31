@@ -21,7 +21,8 @@ import frc.robot.commands.intake.SpinIntake;
 import frc.robot.constants.Constants;
 import frc.robot.subsystems.HopperSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
-import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.shooter.ShooterFollowerSubsystem;
+import frc.robot.subsystems.shooter.ShooterLeaderSubsystem;
 //import frc.robot.subsystems.RollerSubsystem;
 //import frc.robot.subsystems.TiltSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
@@ -38,7 +39,8 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   //private final RollerSubsystem rollerSubsystem;
   //private final TiltSubsystem tiltSubsystem;
-  private final ShooterSubsystem shooterSubsystem;
+  private final ShooterFollowerSubsystem shooterFollowerSubsystem;
+  private final ShooterLeaderSubsystem shooterLeaderSubsystem;
   private final IntakeSubsystem intakeSubsystem;
   private RobotVisualizer robotVisualizer = null;
   private final HopperSubsystem hopperSubsystem;
@@ -59,7 +61,9 @@ public class RobotContainer {
                 //tiltSubsystem = new TiltSubsystem(TiltSubsystem.createRealIo());
                 intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createRealIo(), IntakeSubsystem.createRealDeploymentSwitch());
                 hopperSubsystem = new HopperSubsystem(HopperSubsystem.createRealIo());
-                
+                shooterLeaderSubsystem = new ShooterLeaderSubsystem(ShooterLeaderSubsystem.createRealIo());
+                shooterFollowerSubsystem = new ShooterFollowerSubsystem(ShooterFollowerSubsystem.createRealIo());
+
 
             }
             case REPLAY -> {
@@ -67,6 +71,8 @@ public class RobotContainer {
                 //tiltSubsystem = new TiltSubsystem(TiltSubsystem.createMockIo());
                 intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createMockIo(), IntakeSubsystem.createMockDeploymentSwitch());
                 hopperSubsystem = new HopperSubsystem(HopperSubsystem.createMockIo());
+                shooterLeaderSubsystem = new ShooterLeaderSubsystem(ShooterLeaderSubsystem.createMockIo());
+                shooterFollowerSubsystem = new ShooterFollowerSubsystem(ShooterFollowerSubsystem.createMockIo());
             }
             case SIM -> {
                 robotVisualizer = new RobotVisualizer();
@@ -74,6 +80,8 @@ public class RobotContainer {
                 //tiltSubsystem = new TiltSubsystem(TiltSubsystem.createSimIo(robotVisualizer));
                 intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createSimIo(robotVisualizer), IntakeSubsystem.createSimDeploymentSwitch());
                 hopperSubsystem = new HopperSubsystem(HopperSubsystem.createSimIo(robotVisualizer));
+                shooterLeaderSubsystem = new ShooterLeaderSubsystem(ShooterLeaderSubsystem.createSimIo(robotVisualizer));
+                shooterFollowerSubsystem = new ShooterFollowerSubsystem(ShooterFollowerSubsystem.createSimIo(robotVisualizer));
             }
             
             default -> {
@@ -163,6 +171,14 @@ public class RobotContainer {
 
   public IntakeSubsystem getIntakeSubsystem() {
     return intakeSubsystem;
+  }
+
+  public ShooterLeaderSubsystem getShooterLeaderSubsystem() {
+    return shooterLeaderSubsystem;
+  }
+
+  public ShooterFollowerSubsystem getShooterFollowerSubsystem() {
+    return shooterFollowerSubsystem;
   }
 
     public SwerveSubsystem getDriveBase(){

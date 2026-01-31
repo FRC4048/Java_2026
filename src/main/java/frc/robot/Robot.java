@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.commands.autocommands.TestAuto;
 import frc.robot.constants.Constants;
 import frc.robot.utils.logging.commands.CommandLogger;
 
@@ -78,7 +79,6 @@ public class Robot extends LoggedRobot {
                                   true, 
                                   robotContainer.getDriveBase());
     path = autoFactory.trajectoryCmd("AnotherPath");
-    
   }
 
   public static RobotMode getMode() {
@@ -133,7 +133,7 @@ public class Robot extends LoggedRobot {
 
     // schedule the autonomous command (example)
     mode.set(RobotMode.AUTONOMOUS);
-    autonomousCommand = path;
+    autonomousCommand = new TestAuto(robotContainer.getDriveBase(), autoFactory, robotContainer.getIntakeSubsystem());
 
     // schedule the autonomous command (example)
     if (autonomousCommand != null) {

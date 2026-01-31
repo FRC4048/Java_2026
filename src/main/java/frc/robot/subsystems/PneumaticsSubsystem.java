@@ -19,7 +19,7 @@ public class PneumaticsSubsystem extends SubsystemBase {
     }
 
     public boolean getLimitSwitch() {
-        return true;
+        
     }
 
     public void solenoidOn() {
@@ -32,5 +32,6 @@ public class PneumaticsSubsystem extends SubsystemBase {
 
     public void toggleSolenoid() {
         solenoid.toggle();
+
     }
 }

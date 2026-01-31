@@ -86,7 +86,16 @@ public class RobotContainer {
     autoChooser.addOption(new AutoEvent(AutoAction.DO_NOTHING, FieldLocation.LEFT), new DoNothingCommand());
     autoChooser.addOption(new AutoEvent(AutoAction.DO_NOTHING, FieldLocation.RIGHT), new DoNothingCommand());
     autoChooser.addOption(new AutoEvent(AutoAction.DO_NOTHING, FieldLocation.MIDDLE),
-     new DoSomethingCommand("Did Something!"));
+     new DoSomethingCommand("""
+      
+     SUCCESSFULLY
+
+     DID
+
+     SOMETHING
+
+
+      """)); // Bigger print message is easier to see in the logs.
   }
   SwerveInputStream driveAngularVelocity = SwerveInputStream.of(drivebase.getSwerveDrive(),
                                                                 () -> driveJoystick.getY() * -1,

@@ -154,7 +154,6 @@ public class RobotContainer {
             SmartDashboard.putData(
                     "Spin Intake",
                     new SpinIntake(intakeSubsystem));
-            SmartDashboard.putData("Give fake pose", );
         }
     //basic drive command
     Command driveDirectionTime = new DriveDirectionTime(drivebase, 0.1,0.1, true, 1);

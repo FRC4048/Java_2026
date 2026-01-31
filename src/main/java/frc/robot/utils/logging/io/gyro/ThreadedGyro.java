@@ -47,6 +47,7 @@ public class ThreadedGyro {
 
     public void stop() {
         executor.shutdownNow();
+        gyro.close();
     }
 
     public boolean stopAndWait(long maxTime, TimeUnit timeUnit) {
@@ -99,6 +100,10 @@ public class ThreadedGyro {
         newValues.setRobotCentricVelocityY(gyro.getRobotCentricVelocityY());
         newValues.setRobotCentricVelocityZ(gyro.getRobotCentricVelocityZ());
 
+        newValues.setRotation3d(gyro.getRotation3d());
+
+        newValues.setRate(gyro.getRate());
+
         gyroValues.set(newValues);
     }
 
@@ -117,5 +122,18 @@ public class ThreadedGyro {
 
     public double getAngleOffset() {
         return Double.longBitsToDouble(gyroOffset.get());
+    }
+
+    /**
+     * A method to get the actual Mavx instance underneath the threadedGyro implementation.
+     * This method should not normally be called, as access to the NavX should be controlled
+     * by this instance.
+     *
+     * Use if you know what you're doing.
+     *
+     * @return the NavX instance underneath the threadedGyro
+     */
+    public AHRS getNavxInstance() {
+        return gyro;
     }
 }

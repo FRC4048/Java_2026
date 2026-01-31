@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.constants.Constants;
 import frc.robot.utils.logging.commands.CommandLogger;
 
 /**
@@ -118,7 +119,8 @@ public class Robot extends LoggedRobot {
     }
         SmartDashboard.putNumber("driverXbox.getLeftY()",driverXbox.getLeftY());
         SmartDashboard.putNumber("driverXbox::getRightX", driverXbox.getRightX());
-  }
+        Logger.recordOutput("MyPose", robotContainer.getDriveBase().getPose());
+      }
 
   /** This function is called once each time the robot enters Disabled mode. */
   @Override

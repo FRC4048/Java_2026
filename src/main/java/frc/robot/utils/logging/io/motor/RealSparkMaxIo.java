@@ -23,21 +23,6 @@ public class RealSparkMaxIo extends BaseIoImpl<MotorLoggableInputs> implements S
 
     public RealSparkMaxIo(String name, SparkMax motor, MotorLoggableInputs inputs) {
         super(name, inputs);
-        SparkMaxConfig config = new SparkMaxConfig();
-
-        config
-            .closedLoop
-            .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-            .p(Constants.ANGULARP)
-            .i(Constants.ANGULARI)
-            .d(Constants.ANGULARD);
-
-        motor.configure(
-            config,
-            ResetMode.kResetSafeParameters,
-            PersistMode.kPersistParameters
-        );
-
         this.motor = motor;
     }
 

@@ -15,6 +15,10 @@ package frc.robot.constants;
 
 public class Constants extends Constants2026 {
 
+    public static final double ANGULARP = 0;
+    public static final double ANGULARI = 0;
+    public static final double ANGULARD = 0;
+
     
 
 }

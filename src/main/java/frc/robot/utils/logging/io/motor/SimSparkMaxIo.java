@@ -5,7 +5,6 @@ import com.revrobotics.spark.SparkMax;
 import frc.robot.constants.Constants;
 import frc.robot.utils.logging.input.MotorLoggableInputs;
 import frc.robot.utils.simulation.Simulator;
-import org.littletonrobotics.junction.mechanism.LoggedMechanismLigament2d;
 
 /**
  * IO Implementation for a simulated SparkMax IO controller.
@@ -17,6 +16,15 @@ public class SimSparkMaxIo extends RealSparkMaxIo {
                          Simulator simulator) {
         super(name, motor, inputs);
         this.motorSimulator = simulator;
+    }
+
+    @Override
+    public void setPosition(double rotations) {
+        super.setPosition(rotations);
+
+        if (Constants.currentMode == Constants.Mode.SIM) {
+            motorSimulator.stepSimulation();
+        }
     }
 
     @Override

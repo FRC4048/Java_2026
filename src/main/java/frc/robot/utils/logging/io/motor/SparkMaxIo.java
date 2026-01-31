@@ -12,6 +12,8 @@ public interface SparkMaxIo extends BaseIo {
 
     void stopMotor();
 
+    void setPosition(double targetRotations);
+
     boolean isFwdSwitchPressed();
     boolean isRevSwitchPressed();
 }

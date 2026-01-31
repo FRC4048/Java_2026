@@ -61,7 +61,7 @@ public class RobotVisualizer {
         LoggedMechanismLigament2d hopperRiserLigament = 
                 hopperRoot.append(
                         new LoggedMechanismLigament2d(
-                                "Hopper Riser", 0.5, 90, 5, new Color8Bit(Color.kDarkGray)));
+                                "Hopper Riser", 1.5, 90, 5, new Color8Bit(Color.kDarkGray)));
         
         this.hopperLigament = 
                 hopperRiserLigament.append(

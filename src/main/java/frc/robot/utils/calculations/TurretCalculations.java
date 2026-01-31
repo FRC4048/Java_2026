@@ -1,6 +1,6 @@
 package frc.robot.utils.calculations;
 
-import frc.robot.Constants;
+import frc.robot.constants.GameConstants;
 
 public class TurretCalculations {
 
@@ -43,12 +43,12 @@ public class TurretCalculations {
         this.robotRotation = robotRotation;
         if (isBlueAlliance) {
             // hub position determined by which alliance robot is on
-            hubPosX = Constants.BLUE_HUB_X_POSITION;
-            hubPosY = Constants.BLUE_HUB_Y_POSITION;
+            hubPosX = GameConstants.BLUE_HUB_X_POSITION;
+            hubPosY = GameConstants.BLUE_HUB_Y_POSITION;
         }
         else {
-            hubPosX = Constants.RED_HUB_X_POSITION;
-            hubPosY = Constants.RED_HUB_Y_POSITION;
+            hubPosX = GameConstants.RED_HUB_X_POSITION;
+            hubPosY = GameConstants.RED_HUB_Y_POSITION;
         }
         doTheMath();
     }

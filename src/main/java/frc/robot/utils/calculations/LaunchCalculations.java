@@ -1,6 +1,6 @@
 package frc.robot.utils.calculations;
 
-import frc.robot.Constants;
+import frc.robot.constants.GameConstants;
 
 public class LaunchCalculations {
 
@@ -51,8 +51,8 @@ public class LaunchCalculations {
     private double robotPosY; // y distance between robot and origin (meters)
 
     // Given values -- from Constants file
-    private static final double hubHeight = Constants.HUB_HEIGHT; // height of the top of the hub
-    private static final double shooterHeight = Constants.SHOOTER_HEIGHT; // height of shooter
+    private static final double hubHeight = GameConstants.HUB_HEIGHT; // height of the top of the hub
+    private static final double shooterHeight = GameConstants.SHOOTER_HEIGHT; // height of shooter
     private double hubPosX; 
     private double hubPosY;
     private static final double g = 9.81; // gravity constant
@@ -67,8 +67,8 @@ public class LaunchCalculations {
      */
 
     // Experimental drag values -- from Constants file
-    private static final double dragK = Constants.DRAG_K; // constant scalar
-    private static final double dragQ = Constants.DRAG_Q; // value proportional to distance
+    private static final double dragK = GameConstants.DRAG_K; // constant scalar
+    private static final double dragQ = GameConstants.DRAG_Q; // value proportional to distance
 
     // Intermediate values;
     private double deltaDistance; // distance between the robot and the hub
@@ -88,12 +88,12 @@ public class LaunchCalculations {
         this.robotPosY = robotPosY;
         if (isBlueAlliance) {
             // hub position determined by which alliance robot is on
-            hubPosX = Constants.BLUE_HUB_X_POSITION;
-            hubPosY = Constants.BLUE_HUB_Y_POSITION;
+            hubPosX = GameConstants.BLUE_HUB_X_POSITION;
+            hubPosY = GameConstants.BLUE_HUB_Y_POSITION;
         }
         else {
-            hubPosX = Constants.RED_HUB_X_POSITION;
-            hubPosY = Constants.RED_HUB_Y_POSITION;
+            hubPosX = GameConstants.RED_HUB_X_POSITION;
+            hubPosY = GameConstants.RED_HUB_Y_POSITION;
         }
         safeShooting = true; // by default, safeShooting is true, and is turned false if it becomes unsafe
 
@@ -114,12 +114,12 @@ public class LaunchCalculations {
         this.robotPosY = robotPosY;
         if (isBlueAlliance) {
             // hub position determined by which alliance robot is on
-            hubPosX = Constants.BLUE_HUB_X_POSITION;
-            hubPosY = Constants.BLUE_HUB_Y_POSITION;
+            hubPosX = GameConstants.BLUE_HUB_X_POSITION;
+            hubPosY = GameConstants.BLUE_HUB_Y_POSITION;
         }
         else {
-            hubPosX = Constants.RED_HUB_X_POSITION;
-            hubPosY = Constants.RED_HUB_Y_POSITION;
+            hubPosX = GameConstants.RED_HUB_X_POSITION;
+            hubPosY = GameConstants.RED_HUB_Y_POSITION;
         }
         safeShooting = true; // by default, safeShooting is true, and is turned false if it becomes unsafe
         

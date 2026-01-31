@@ -21,6 +21,7 @@ import frc.robot.autochooser.event.AutoEvent;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import frc.robot.utils.logging.commands.DoNothingCommand;
+import frc.robot.utils.logging.commands.DoSomethingCommand;
 import frc.robot.utils.simulation.RobotVisualizer;
 import swervelib.SwerveInputStream;
 
@@ -84,7 +85,8 @@ public class RobotContainer {
     // Adding more options using autoChooser.addOption(...)
     autoChooser.addOption(new AutoEvent(AutoAction.DO_NOTHING, FieldLocation.LEFT), new DoNothingCommand());
     autoChooser.addOption(new AutoEvent(AutoAction.DO_NOTHING, FieldLocation.RIGHT), new DoNothingCommand());
-    autoChooser.addOption(new AutoEvent(AutoAction.DO_NOTHING, FieldLocation.MIDDLE), new DoNothingCommand());
+    autoChooser.addOption(new AutoEvent(AutoAction.DO_NOTHING, FieldLocation.MIDDLE),
+     new DoSomethingCommand("Did Something!"));
   }
   SwerveInputStream driveAngularVelocity = SwerveInputStream.of(drivebase.getSwerveDrive(),
                                                                 () -> driveJoystick.getY() * -1,

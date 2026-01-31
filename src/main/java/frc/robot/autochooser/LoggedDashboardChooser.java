@@ -28,11 +28,12 @@ import org.littletonrobotics.junction.networktables.LoggedNetworkInput;
  */
 public class LoggedDashboardChooser extends LoggedNetworkInput {
   private final String key;
-  private AutoEvent selectedValue = null;
+  private AutoEvent selectedValue = new AutoEvent(AutoAction.INVALID, FieldLocation.INVALID);
   private AutoEvent previousValue = null;
   private SendableChooser<AutoEvent> sendableChooser = new SendableChooser<>();
   private Map<AutoEvent, LoggableCommand> options = new HashMap<>();
   private Consumer<LoggableCommand> listener = null;
+  private boolean defaultSetYet = false;
 
   private final LoggableInputs inputs =
       new LoggableInputs() {
@@ -41,7 +42,7 @@ public class LoggedDashboardChooser extends LoggedNetworkInput {
         }
 
         public void fromLog(LogTable table) {
-          selectedValue = AutoEvent.fromString(table.get(key.toString(), selectedValue.toString()));
+          selectedValue = AutoEvent.fromString(table.get(key, selectedValue.toString()));
         }
       };
 
@@ -53,7 +54,7 @@ public class LoggedDashboardChooser extends LoggedNetworkInput {
    */
   public LoggedDashboardChooser(String key) {
     this.key = key;
-    SmartDashboard.putData(key.toString(), sendableChooser);
+    SmartDashboard.putData(key, sendableChooser);
     periodic();
     Logger.registerDashboardInput(this);
   }
@@ -127,6 +128,7 @@ public class LoggedDashboardChooser extends LoggedNetworkInput {
   public void addDefaultOption(AutoEvent key, LoggableCommand value) {
     sendableChooser.setDefaultOption(key.toString(), key);
     options.put(key, value);
+    defaultSetYet = true;
   }
 
   /**
@@ -160,7 +162,7 @@ public class LoggedDashboardChooser extends LoggedNetworkInput {
   }
 
   public void periodic() {
-    if (!Logger.hasReplaySource()) {
+    if (!Logger.hasReplaySource() && defaultSetYet) {
       selectedValue = sendableChooser.getSelected();
     }
     Logger.processInputs(prefix + "/SmartDashboard", inputs);

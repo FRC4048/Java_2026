@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.utils.logging.input.GyroValues;
 import frc.robot.utils.logging.io.gyro.GyroIo;
 import frc.robot.utils.logging.io.gyro.MockGyroIo;
 import frc.robot.utils.logging.io.gyro.RealGyroIo;
@@ -19,6 +20,10 @@ public class GyroSubsystem extends SubsystemBase {
 
     public void resetGyro() {
         io.resetGyro();
+    }
+
+    public GyroValues getGyroValues() {
+        return io.getGyroValues();
     }
 
     @Override

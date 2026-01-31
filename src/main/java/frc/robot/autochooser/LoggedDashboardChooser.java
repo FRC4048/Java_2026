@@ -27,7 +27,7 @@ import org.littletonrobotics.junction.networktables.LoggedNetworkInput;
  * @param <LoggableCommand> The value type associated with each string key.
  */
 public class LoggedDashboardChooser extends LoggedNetworkInput {
-  private final AutoEvent key;
+  private final String key;
   private AutoEvent selectedValue = null;
   private AutoEvent previousValue = null;
   private SendableChooser<AutoEvent> sendableChooser = new SendableChooser<>();
@@ -37,7 +37,7 @@ public class LoggedDashboardChooser extends LoggedNetworkInput {
   private final LoggableInputs inputs =
       new LoggableInputs() {
         public void toLog(LogTable table) {
-          table.put(key.toString(), selectedValue.toString());
+          table.put(key, selectedValue.toString());
         }
 
         public void fromLog(LogTable table) {
@@ -51,7 +51,7 @@ public class LoggedDashboardChooser extends LoggedNetworkInput {
    * @param key The key for the chooser, published to "/SmartDashboard/{key}" for NT or
    *     "/DashboardInputs/SmartDashboard/{key}" when logged.
    */
-  public LoggedDashboardChooser(AutoEvent key) {
+  public LoggedDashboardChooser(String key) {
     this.key = key;
     SmartDashboard.putData(key.toString(), sendableChooser);
     periodic();
@@ -68,7 +68,7 @@ public class LoggedDashboardChooser extends LoggedNetworkInput {
    * @param chooser The existing SendableChooser object.
    */
   @SuppressWarnings("unchecked")
-  public LoggedDashboardChooser(AutoEvent key, SendableChooser<LoggableCommand> chooser) {
+  public LoggedDashboardChooser(String key, SendableChooser<LoggableCommand> chooser) {
     this(key);
 
     // Get options map

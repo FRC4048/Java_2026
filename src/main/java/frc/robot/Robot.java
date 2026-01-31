@@ -115,9 +115,6 @@ public class Robot extends LoggedRobot {
     // Gets the alliance color.
     if (DriverStation.isDSAttached() && allianceColor.isEmpty()) {
       allianceColor = DriverStation.getAlliance();
-      if (allianceColor.isPresent()) {
-        robotContainer.getAutoChooser().getProvider().forceRefresh();
-      }
     }
         SmartDashboard.putNumber("driverXbox.getLeftY()",driverXbox.getLeftY());
         SmartDashboard.putNumber("driverXbox::getRightX", driverXbox.getRightX());

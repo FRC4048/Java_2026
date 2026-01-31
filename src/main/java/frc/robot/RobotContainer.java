@@ -16,15 +16,11 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.intake.SpinIntake;
 import frc.robot.autochooser.AutoAction;
 import frc.robot.autochooser.FieldLocation;
-import frc.robot.autochooser.chooser.AutoChooser2026;
-import frc.robot.autochooser.event.RealAutoEventProvider;
-import frc.robot.commands.roller.SpinRoller;
-import frc.robot.commands.tilt.TiltDown;
-import frc.robot.commands.tilt.TiltUp;
+import frc.robot.autochooser.LoggedDashboardChooser;
+import frc.robot.autochooser.event.AutoEvent;
 import frc.robot.subsystems.IntakeSubsystem;
-import frc.robot.subsystems.RollerSubsystem;
-import frc.robot.subsystems.TiltSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
+import frc.robot.utils.logging.commands.DoNothingCommand;
 import frc.robot.utils.simulation.RobotVisualizer;
 import swervelib.SwerveInputStream;
 
@@ -43,8 +39,12 @@ public class RobotContainer {
   private final SwerveSubsystem drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),"YAGSL"));
   private final CommandJoystick driveJoystick = new CommandJoystick(Constants.DRIVE_JOYSTICK_PORT);
   private final CommandJoystick steerJoystick = new CommandJoystick(Constants.STEER_JOYSTICK_PORT);
+  // Instantiate the autochooser.
+  private final LoggedDashboardChooser autoChooser = new LoggedDashboardChooser(
+      // This is where you choose what the key is on the dashboard.
+      "Autonomous Chooser"
+      );
 
-  private final AutoChooser2026 autoChooser;
   // Replace with CommandPS4Controller or CommandJoystick if needed
       //new CommandXboxController(OperatorConstants.kDriverControllerPort);
 
@@ -75,7 +75,16 @@ public class RobotContainer {
        }
     configureBindings();
     putShuffleboardCommands();
-    autoChooser = new AutoChooser2026(new RealAutoEventProvider(AutoAction.DO_NOTHING, FieldLocation.ZERO));
+    
+    // This is where options get added to the autoChooser.
+    autoChooser.addDefaultOption( // Adds a default option
+      new AutoEvent(AutoAction.DO_NOTHING, FieldLocation.ZERO), // Adds an action and a location
+      new DoNothingCommand() // Adds a corresponding command
+    );
+    // Adding more options using autoChooser.addOption(...)
+    autoChooser.addOption(new AutoEvent(AutoAction.DO_NOTHING, FieldLocation.LEFT), new DoNothingCommand());
+    autoChooser.addOption(new AutoEvent(AutoAction.DO_NOTHING, FieldLocation.RIGHT), new DoNothingCommand());
+    autoChooser.addOption(new AutoEvent(AutoAction.DO_NOTHING, FieldLocation.MIDDLE), new DoNothingCommand());
   }
   SwerveInputStream driveAngularVelocity = SwerveInputStream.of(drivebase.getSwerveDrive(),
                                                                 () -> driveJoystick.getY() * -1,
@@ -133,14 +142,13 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    // An example command will be run in autonomous
-    return null;
+    return autoChooser.get();
   }
   public RobotVisualizer getRobotVisualizer() {
     return robotVisualizer;
   }
 
-  public AutoChooser2026 getAutoChooser() {
+  public LoggedDashboardChooser getAutoChooser() {
     return autoChooser;
   }
 }

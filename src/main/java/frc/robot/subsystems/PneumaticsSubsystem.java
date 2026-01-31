@@ -18,6 +18,10 @@ public class PneumaticsSubsystem extends SubsystemBase {
         this.solenoid = solenoid;
     }
 
+    public boolean getLimitSwitch() {
+        return true;
+    }
+
     public void solenoidOn() {
         solenoid.set(true);
     }

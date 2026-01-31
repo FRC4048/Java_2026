@@ -73,8 +73,6 @@ public class GameConstants {
     public static final boolean SET_MODULE_ENCODER_AUTO_SYNCHRONIZE = false;
     public static final double SET_MODULE_ENCODER_AUTO_SYNCHRONIZE_DEADBAND = 1;
 
-<<<<<<< HEAD:src/main/java/frc/robot/Constants.java
-    public static final boolean ARM_DEBUG = true;
     public static final double DRIVE_BASE_WIDTH = 0.635;
     public static final double DRIVE_BASE_LENGTH = 0.635;
     public static final double INITIAL_ROBOT_HEIGHT = 0;
@@ -88,10 +86,6 @@ public class GameConstants {
     public static final double RED_HUB_Y_POSITION = 4.0345;
     public static final double DRAG_K = 1.20; // experimental value -- needs testing
     public static final double DRAG_Q = 0.055; // experimental value -- needs testing
-=======
-    
->>>>>>> 2d92d8509d28160a8d213e980027688d68d09ec6:src/main/java/frc/robot/constants/GameConstants.java
-
 
 
 }

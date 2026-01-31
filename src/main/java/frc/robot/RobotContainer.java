@@ -17,7 +17,7 @@ import frc.robot.commands.intake.SpinIntake;
 import frc.robot.autochooser.AutoAction;
 import frc.robot.autochooser.FieldLocation;
 import frc.robot.autochooser.LoggedDashboardChooser;
-import frc.robot.autochooser.event.AutoEvent;
+import frc.robot.autochooser.AutoEvent;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import frc.robot.utils.logging.commands.DoNothingCommand;

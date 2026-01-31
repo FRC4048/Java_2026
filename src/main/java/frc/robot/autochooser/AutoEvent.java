@@ -1,7 +1,5 @@
-package frc.robot.autochooser.event;
+package frc.robot.autochooser;
 
-import frc.robot.autochooser.AutoAction;
-import frc.robot.autochooser.FieldLocation;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

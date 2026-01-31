@@ -9,7 +9,6 @@ package frc.robot.autochooser;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.autochooser.event.AutoEvent;
 import frc.robot.utils.logging.commands.LoggableCommand;
 
 import java.lang.reflect.Field;

@@ -303,12 +303,6 @@ public class SwerveSubsystem extends SubsystemBase {
     public void setChassisSpeeds(ChassisSpeeds chassisSpeeds) {
         swerveDrive.setChassisSpeeds(chassisSpeeds);
     }
-
-  /**
-   * Gets the swerve drive object.
-   *
-   * @return {@link SwerveDrive}
-   */
     /**
      * Post the trajectory to the field.
      *

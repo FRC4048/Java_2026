@@ -15,9 +15,14 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.hopper.SpinHopper;
 import frc.robot.commands.intake.SpinIntake;
+//import frc.robot.commands.roller.SpinRoller;
+//import frc.robot.commands.tilt.TiltDown;
+//import frc.robot.commands.tilt.TiltUp;
 import frc.robot.constants.Constants;
 import frc.robot.subsystems.HopperSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
+//import frc.robot.subsystems.RollerSubsystem;
+//import frc.robot.subsystems.TiltSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import frc.robot.utils.simulation.RobotVisualizer;
 import swervelib.SwerveInputStream;
@@ -116,8 +121,8 @@ public class RobotContainer {
 
         SmartDashboard.putData(
                 "Tilt Down",
-                new TiltDown(tiltSubsystem));
-          */
+                new TiltDown(tiltSubsystem));*/
+          
             // TODO: These commands do not REQUIRE the subsystem therefore cannot be used in production
             SmartDashboard.putData(
                     "Intake/Spin Forward",
@@ -136,12 +141,8 @@ public class RobotContainer {
                     new SpinIntake(intakeSubsystem));
             
             SmartDashboard.putData(
-              "Start Hopper",
-              new SpinHopper(hopperSubsystem));
-
-            SmartDashboard.putData(
-              "Stop Hopper",
-              new InstantCommand(hopperSubsystem :: stopMotors));
+                    "Start Hopper",
+                    new SpinHopper(hopperSubsystem));
         }
     }
   /**

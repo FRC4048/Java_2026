@@ -17,6 +17,8 @@ import frc.robot.utils.logging.io.motor.SparkMaxIo;
 import frc.robot.utils.simulation.MotorSimulator;
 import frc.robot.utils.simulation.RobotVisualizer;
 
+//the hopper subsystem spins the hopper such that the fuel can be transported to the feeder
+
 public class HopperSubsystem extends SubsystemBase{
     public static final String LOGGING_NAME = "HopperSubsystem";
     private final SparkMaxIo io;
@@ -40,7 +42,7 @@ public class HopperSubsystem extends SubsystemBase{
     @Override
     public void periodic() {
         // TODO Auto-generated method stub
-        super.periodic();
+        io.periodic();
     }
 
     public static SparkMaxIo createMockIo() {

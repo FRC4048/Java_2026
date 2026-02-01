@@ -11,8 +11,8 @@ import frc.robot.utils.logging.commands.LoggableSequentialCommandGroup;
 public class TestAuto extends LoggableSequentialCommandGroup{
     public TestAuto(SwerveSubsystem subsystem, AutoFactory auto, IntakeSubsystem intake) {
         addCommands(
-            auto.resetOdometry("StraightPath"),
-            auto.trajectoryCmd("StraightPath"),
+            auto.resetOdometry("ExamplePath"),
+            auto.trajectoryCmd("ExamplePath"), 
             new PrintCommand("Moving"));
         
     }

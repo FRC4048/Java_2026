@@ -7,9 +7,6 @@ import com.revrobotics.spark.SparkMax;
  * subclass.
  */
 public class DiagSparkMaxSwitch extends DiagBoolean {
-    public DiagSparkMaxSwitch(String title, String name) {
-        super(title, name);
-    }
 
     public enum Direction {
         FORWARD,

@@ -20,7 +20,6 @@ public class RealSparkMaxIo extends BaseIoImpl<MotorLoggableInputs> implements S
     public RealSparkMaxIo(String name, SparkMax motor, MotorLoggableInputs inputs) {
         super(name, inputs);
         this.motor = motor;
-        Robot.getDiagnostics().addDiagnosable(new DiagSparkMaxEncoder("Intake SparkMax", "Encoder Angle", 2, motor));
     }
 
     @Override

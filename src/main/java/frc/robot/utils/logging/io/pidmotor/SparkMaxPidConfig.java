@@ -4,13 +4,13 @@ package frc.robot.utils.logging.io.pidmotor;
  * Value container helper class for configuring a PidMotor.
  */
 public class SparkMaxPidConfig {
-    public static final double DEFAULT_P = 0.01;
+    public static final double DEFAULT_P = 0.0003;
     public static final double DEFAULT_I = 0;
     public static final double DEFAULT_D = 0.0;
     public static final double DEFAULT_IZONE = 0.0;
     public static final double DEFAULT_FF = 0.0;
     public static final double MAX_VELOCITY = 5000;
-    public static final double MAX_ACCELERATION = 10000;
+    public static final double MAX_ACCELERATION = 1000000;
     public static final double ALLOWED_ERROR = 1.0;
 
     private double p = DEFAULT_P;

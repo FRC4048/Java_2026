@@ -41,7 +41,7 @@ public class RobotContainer {
     //private final TiltSubsystem tiltSubsystem;
     private final IntakeSubsystem intakeSubsystem;
     private RobotVisualizer robotVisualizer = null;
-    private SwerveSubsystem drivebase = null;
+//    private SwerveSubsystem drivebase = null;
     private GyroSubsystem gyroSubsystem = null;
     private final CommandJoystick driveJoystick = new CommandJoystick(Constants.DRIVE_JOYSTICK_PORT);
     private final CommandJoystick steerJoystick = new CommandJoystick(Constants.STEER_JOYSTICK_PORT);
@@ -64,7 +64,7 @@ public class RobotContainer {
                 ThreadedGyro threadedGyro = gyroIo.getThreadedGyro();
                 gyroSubsystem = new GyroSubsystem(gyroIo);
                 SwerveIMU swerveIMU = new ThreadedGyroSwerveIMU(threadedGyro);
-                drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "YAGSL"), swerveIMU);
+//                drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "YAGSL"), swerveIMU);
             }
             case REPLAY -> {
                 //rollerSubsystem = new RollerSubsystem(RollerSubsystem.createMockIo());
@@ -72,7 +72,7 @@ public class RobotContainer {
                 intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createMockIo(), IntakeSubsystem.createMockDeploymentSwitch());
                 // No GyroSubsystem in REPLAY for now
                 // create the drive subsystem with null gyro (use default json)
-                drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "YAGSL"), null);
+//                drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "YAGSL"), null);
             }
             case SIM -> {
                 robotVisualizer = new RobotVisualizer();
@@ -81,7 +81,7 @@ public class RobotContainer {
                 intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createSimIo(robotVisualizer), IntakeSubsystem.createSimDeploymentSwitch());
                 // No GyroSubsystem in REPLAY for now
                 // create the drive subsystem with null gyro (use default json)
-                drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "YAGSL"), null);
+//                drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "YAGSL"), null);
             }
 
             default -> {
@@ -110,17 +110,17 @@ public class RobotContainer {
         // cancelling on release.
         // m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
         // TODO: Clean this up a little - create command in method and only create the one actually needed
-        SwerveInputStream driveAngularVelocity = SwerveInputStream.of(drivebase.getSwerveDrive(),
-                        () -> driveJoystick.getY() * -1,
-                        () -> driveJoystick.getX() * -1)
-                .withControllerRotationAxis(steerJoystick::getX)
-                .deadband(Constants.DEADBAND)
-                .scaleTranslation(0.8)
-                .allianceRelativeControl(true);
-        SwerveInputStream driveRobotOriented = driveAngularVelocity.copy().robotRelative(true)
-                .allianceRelativeControl(false);
-        Command driveFieldOrientedAnglularVelocity = drivebase.driveFieldOriented(driveAngularVelocity);
-        drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity);
+//        SwerveInputStream driveAngularVelocity = SwerveInputStream.of(drivebase.getSwerveDrive(),
+//                        () -> driveJoystick.getY() * -1,
+//                        () -> driveJoystick.getX() * -1)
+//                .withControllerRotationAxis(steerJoystick::getX)
+//                .deadband(Constants.DEADBAND)
+//                .scaleTranslation(0.8)
+//                .allianceRelativeControl(true);
+//        SwerveInputStream driveRobotOriented = driveAngularVelocity.copy().robotRelative(true)
+//                .allianceRelativeControl(false);
+//        Command driveFieldOrientedAnglularVelocity = drivebase.driveFieldOriented(driveAngularVelocity);
+//        drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity);
     }
 
     public void putShuffleboardCommands() {
@@ -153,10 +153,34 @@ public class RobotContainer {
             SmartDashboard.putData(
                     "Spin Intake",
                     new SpinIntake(intakeSubsystem));
+
+            SmartDashboard.putData(
+                    "Intake position 0",
+                    new InstantCommand(() -> intakeSubsystem.setPidPosition(0), intakeSubsystem));
+
+            SmartDashboard.putData(
+                    "Intake position 10",
+                    new InstantCommand(() -> intakeSubsystem.setPidPosition(10), intakeSubsystem));
+
+            SmartDashboard.putData(
+                    "Intake speed 50",
+                    new InstantCommand(() -> intakeSubsystem.setPidVelocity(50), intakeSubsystem));
+
+            SmartDashboard.putData(
+                    "Intake speed 500",
+                    new InstantCommand(() -> intakeSubsystem.setPidVelocity(500), intakeSubsystem));
+
+            SmartDashboard.putData(
+                    "Intake speed 1000",
+                    new InstantCommand(() -> intakeSubsystem.setPidVelocity(1000), intakeSubsystem));
+
+            SmartDashboard.putData(
+                    "Intake speed 2000",
+                    new InstantCommand(() -> intakeSubsystem.setPidVelocity(2000), intakeSubsystem));
        }
     //basic drive command
-    Command driveDirectionTime = new DriveDirectionTime(drivebase, 0.1,0.1, true, 1);
-    SmartDashboard.putData("Drive Command", driveDirectionTime);
+//    Command driveDirectionTime = new DriveDirectionTime(drivebase, 0.1,0.1, true, 1);
+//    SmartDashboard.putData("Drive Command", driveDirectionTime);
     }
 
     /**
@@ -177,8 +201,8 @@ public class RobotContainer {
         return intakeSubsystem;
     }
 
-    public SwerveSubsystem getDriveBase() {
-        return drivebase;
-    }
+//    public SwerveSubsystem getDriveBase() {
+//        return drivebase;
+//    }
 }
 

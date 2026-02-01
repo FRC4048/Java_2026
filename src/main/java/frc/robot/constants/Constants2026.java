@@ -16,4 +16,6 @@ public class Constants2026 extends GameConstants {
     
     public static final double GYRO_DIAGS_ANGLE = 30;
 
+    public static final boolean TUNING_MODE = true;
+
 }

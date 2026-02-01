@@ -57,11 +57,9 @@ public class IntakeSubsystem extends SubsystemBase {
     public static SparkMaxIo createMockIo() {
         return new MockSparkMaxIo(LOGGING_NAME, MotorLoggableInputs.allMetrics());
     }
-
     public static SparkMaxIo createRealIo() {
         return new RealSparkMaxIo(LOGGING_NAME, createMotor(), MotorLoggableInputs.allMetrics());
     }
-
     public static SparkMaxIo createSimIo(RobotVisualizer visualizer) {
         SparkMax motor = createMotor();
         return new SimSparkMaxIo(LOGGING_NAME, motor, MotorLoggableInputs.allMetrics(),
@@ -101,7 +99,6 @@ public static DigitalInputIo createSimDeploymentSwitch() {
                 motorConfig,
                 ResetMode.kResetSafeParameters,
                 PersistMode.kPersistParameters);
-
         return motor;
     }
     

@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.feeder.SpinFeeder;
 import frc.robot.commands.drive.DriveDirectionTime;
 import frc.robot.commands.intake.SpinIntake;
+import frc.robot.commands.shooter.SetShootingMode;
 import frc.robot.constants.Constants;
 import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.constants.ShootingMode;
@@ -165,8 +166,23 @@ public class RobotContainer {
             SmartDashboard.putData(
                     "Spin Feeder",
                     new SpinFeeder(feederSubsystem));
+
+            SmartDashboard.putData(
+                    "Shooting Mode Stopped",
+                    new SetShootingMode(shootingMode, ShootingMode.STOPPED));
+            
+            SmartDashboard.putData(
+                    "Shooting Mode Fixed",
+                    new SetShootingMode(shootingMode, ShootingMode.FIXED));
+            
+            SmartDashboard.putData(
+                    "Shooting Mode Shoot Into Hub",
+                    new SetShootingMode(shootingMode, ShootingMode.SHOOTING_HUB));
+            
+            SmartDashboard.putData(
+                    "Shooting Mode Shuttling",
+                    new SetShootingMode(shootingMode, ShootingMode.SHUTTLING));
         }
-       }
     //basic drive command
     Command driveDirectionTime = new DriveDirectionTime(drivebase, 0.1,0.1, true, 1);
     SmartDashboard.putData("Drive Command", driveDirectionTime);

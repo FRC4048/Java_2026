@@ -106,6 +106,7 @@ public class SwerveSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
+        addVisionMeasurement(new Pose2d(new Translation2d(16, 2), new Rotation2d()));
     }
 
     @Override

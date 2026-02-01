@@ -17,8 +17,8 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.drive.DriveDirectionTime;
 import frc.robot.commands.intake.SpinIntake;
 import frc.robot.autochooser.AutoAction;
+import frc.robot.autochooser.AutoChooser;
 import frc.robot.autochooser.FieldLocation;
-import frc.robot.autochooser.LoggedDashboardChooser;
 import frc.robot.autochooser.AutoEvent;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
@@ -48,7 +48,7 @@ public class RobotContainer {
   private final CommandJoystick driveJoystick = new CommandJoystick(Constants.DRIVE_JOYSTICK_PORT);
   private final CommandJoystick steerJoystick = new CommandJoystick(Constants.STEER_JOYSTICK_PORT);
   // Instantiate the autochooser.
-  private final LoggedDashboardChooser autoChooser = new LoggedDashboardChooser(
+  private final AutoChooser autoChooser = new AutoChooser(
       // This is where you choose what the key is on the dashboard.
       "Autonomous Chooser"
       );
@@ -182,7 +182,7 @@ public class RobotContainer {
     return robotVisualizer;
   }
 
-  public LoggedDashboardChooser getAutoChooser() {
+  public AutoChooser getAutoChooser() {
     return autoChooser;
   }
 

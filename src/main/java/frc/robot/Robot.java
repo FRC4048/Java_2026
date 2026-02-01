@@ -173,15 +173,17 @@ public class Robot extends LoggedRobot {
   @Override
   public void teleopPeriodic() {
     // Check who won autonomous.
-    if (autonomousWinner == null) determineAutonomousWinner();
-    else determineHubActive();
+    if (autonomousWinner == null) {
+      determineAutonomousWinner();
+    } else {
+      determineHubActive();
+    }
 
   }
 
   private void determineAutonomousWinner() {
     autonomousWinner = DriverStation.getGameSpecificMessage();
       if (autonomousWinner != null) {
-        System.out.println("Winner of autonomous: " + autonomousWinner);
         autoWinner = switch (autonomousWinner.toUpperCase()) {
           case "R" -> Alliance.Red;
           case "B" -> Alliance.Blue;

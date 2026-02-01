@@ -42,7 +42,7 @@ public enum FieldLocation {
   }
 
   public Pose2d getLocation() {
-    Alliance alliance = Robot.getAllianceColor().orElse(null);
+    Alliance alliance = Robot.allianceColor().orElse(null);
     if (alliance == null) {
       return new Pose2d(INVALID.xPose, INVALID.yPose, Rotation2d.fromDegrees(INVALID.angle));
     }

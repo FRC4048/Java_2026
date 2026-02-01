@@ -26,6 +26,11 @@ import frc.robot.utils.logging.io.gyro.ThreadedGyroSwerveIMU;
 import frc.robot.utils.simulation.RobotVisualizer;
 import swervelib.SwerveInputStream;
 import swervelib.imu.SwerveIMU;
+import frc.robot.utils.logging.io.BaseIo;
+import frc.robot.utils.logging.io.BaseIoImpl;
+import frc.robot.apriltags.ApriltagInputs;
+import frc.robot.apriltags.MockApriltag;
+import frc.robot.apriltags.TCPApriltag;
 
 import java.io.File;
 
@@ -54,6 +59,8 @@ public class RobotContainer {
      */
     public RobotContainer() {
         // Configure the trigger bindings
+        BaseIoImpl<ApriltagInputs> apriltagIO;
+        ApriltagInputs apriltagInputs = new ApriltagInputs();
         switch (Constants.currentMode) {
             case REAL -> {
                 //rollerSubsystem = new RollerSubsystem(RollerSubsystem.createRealIo());
@@ -65,6 +72,7 @@ public class RobotContainer {
                 gyroSubsystem = new GyroSubsystem(gyroIo);
                 SwerveIMU swerveIMU = new ThreadedGyroSwerveIMU(threadedGyro);
                 drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "YAGSL"), swerveIMU);
+                apriltagIO = new TCPApriltag("AprilTag", apriltagInputs);
             }
             case REPLAY -> {
                 //rollerSubsystem = new RollerSubsystem(RollerSubsystem.createMockIo());
@@ -73,6 +81,7 @@ public class RobotContainer {
                 // No GyroSubsystem in REPLAY for now
                 // create the drive subsystem with null gyro (use default json)
                 drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "YAGSL"), null);
+                apriltagIO = new MockApriltag("AprilTag", apriltagInputs);
             }
             case SIM -> {
                 robotVisualizer = new RobotVisualizer();
@@ -82,12 +91,14 @@ public class RobotContainer {
                 // No GyroSubsystem in REPLAY for now
                 // create the drive subsystem with null gyro (use default json)
                 drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "YAGSL"), null);
+                apriltagIO = new MockApriltag("AprilTag", apriltagInputs);
             }
 
             default -> {
                 throw new RuntimeException("Did not specify Robot Mode");
             }
         }
+
         configureBindings();
         putShuffleboardCommands();
     }

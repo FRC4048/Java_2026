@@ -14,9 +14,11 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.commands.feeder.SpinFeeder;
 import frc.robot.commands.drive.DriveDirectionTime;
 import frc.robot.commands.intake.SpinIntake;
 import frc.robot.constants.Constants;
+import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.constants.ShootingMode;
 import frc.robot.subsystems.GyroSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -41,6 +43,7 @@ public class RobotContainer {
     //private final RollerSubsystem rollerSubsystem;
     //private final TiltSubsystem tiltSubsystem;
     private final IntakeSubsystem intakeSubsystem;
+  private final FeederSubsystem feederSubsystem;
     private RobotVisualizer robotVisualizer = null;
     private SwerveSubsystem drivebase = null;
     private GyroSubsystem gyroSubsystem = null;
@@ -61,6 +64,7 @@ public class RobotContainer {
                 //rollerSubsystem = new RollerSubsystem(RollerSubsystem.createRealIo());
                 //tiltSubsystem = new TiltSubsystem(TiltSubsystem.createRealIo());
                 intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createRealIo(), IntakeSubsystem.createRealDeploymentSwitch());
+                feederSubsystem = new FeederSubsystem(FeederSubsystem.createRealIo());
 
                 RealGyroIo gyroIo = (RealGyroIo) GyroSubsystem.createRealIo();
                 ThreadedGyro threadedGyro = gyroIo.getThreadedGyro();
@@ -72,6 +76,7 @@ public class RobotContainer {
                 //rollerSubsystem = new RollerSubsystem(RollerSubsystem.createMockIo());
                 //tiltSubsystem = new TiltSubsystem(TiltSubsystem.createMockIo());
                 intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createMockIo(), IntakeSubsystem.createMockDeploymentSwitch());
+                feederSubsystem = new FeederSubsystem(FeederSubsystem.createMockIo());
                 // No GyroSubsystem in REPLAY for now
                 // create the drive subsystem with null gyro (use default json)
                 drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "YAGSL"), null);
@@ -81,6 +86,7 @@ public class RobotContainer {
                 //rollerSubsystem = new RollerSubsystem(RollerSubsystem.createSimIo(robotVisualizer));
                 //tiltSubsystem = new TiltSubsystem(TiltSubsystem.createSimIo(robotVisualizer));
                 intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createSimIo(robotVisualizer), IntakeSubsystem.createSimDeploymentSwitch());
+                feederSubsystem = new FeederSubsystem(FeederSubsystem.createSimIo(robotVisualizer));
                 // No GyroSubsystem in REPLAY for now
                 // create the drive subsystem with null gyro (use default json)
                 drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "YAGSL"), null);
@@ -155,6 +161,11 @@ public class RobotContainer {
             SmartDashboard.putData(
                     "Spin Intake",
                     new SpinIntake(intakeSubsystem));
+            
+            SmartDashboard.putData(
+                    "Spin Feeder",
+                    new SpinFeeder(feederSubsystem));
+        }
        }
     //basic drive command
     Command driveDirectionTime = new DriveDirectionTime(drivebase, 0.1,0.1, true, 1);

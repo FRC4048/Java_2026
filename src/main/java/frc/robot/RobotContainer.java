@@ -158,7 +158,7 @@ public class RobotContainer {
                     new SpinIntake(intakeSubsystem));
        }
     //basic drive command
-  if(Constants.TESTBED){
+  if(!Constants.TESTBED){
     Command driveDirectionTime = new DriveDirectionTime(drivebase, 0.1,0.1, true, 1);
     SmartDashboard.putData("Drive Command", driveDirectionTime);
   }

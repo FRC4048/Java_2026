@@ -17,6 +17,5 @@ public class ConstantsTestbed2026 extends Constants2026 {
    
    * public static final int EXAMPLE_ID = 99;
    */
-  public static final int INTAKE_MOTOR_ID = 50;
 
 }

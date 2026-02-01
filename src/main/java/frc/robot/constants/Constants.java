@@ -13,5 +13,5 @@ package frc.robot.constants;
  * constants are needed, to reduce verbosity.
  */
 
-public class Constants extends ConstantsTestbed2026 {}
+public class Constants extends Constants2026 {}
 

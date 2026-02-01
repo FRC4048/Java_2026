@@ -75,6 +75,11 @@ public class GameConstants {
 
     
 
-
+    // Shift timings
+    public static final int SHIFT_1_START = 130;
+    public static final int SHIFT_2_START = 105;
+    public static final int SHIFT_3_START = 80;
+    public static final int SHIFT_4_START = 55;
+    public static final int ENDGAME_START = 30;
 
 }

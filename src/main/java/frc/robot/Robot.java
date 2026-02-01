@@ -13,11 +13,9 @@ import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.networktables.NT4Publisher;
 import org.littletonrobotics.junction.wpilog.WPILOGReader;
 import org.littletonrobotics.junction.wpilog.WPILOGWriter;
-
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -35,10 +33,9 @@ public class Robot extends LoggedRobot {
   private final RobotContainer robotContainer;
   private static final AtomicReference<RobotMode> mode = new AtomicReference<>(RobotMode.DISABLED);
 
-  private static Character autonomousWinner;
+  private String autonomousWinner;
 
-  private static boolean hubActive;
-  private static Timer timer = new Timer();
+  private boolean hubActive;
   private static Alliance autoWinner;
 
   private static Optional<DriverStation.Alliance> allianceColor = Optional.empty();
@@ -113,14 +110,21 @@ public class Robot extends LoggedRobot {
             CommandLogger.get().log();
         }
 
+    if (Constants.DEBUG) {
+      SmartDashboard.putNumber("driverXbox.getLeftY()",driverXbox.getLeftY());
+      SmartDashboard.putNumber("driverXbox::getRightX", driverXbox.getRightX());
+      Logger.recordOutput("MyPose", robotContainer.getDriveBase().getPose());
+      // Puts data on the elastic dashboard
+      SmartDashboard.putString("Alliance Color", Robot.allianceColorString());
+      SmartDashboard.putBoolean("Hub Active?", hubActive());
+    }
+
     // Gets the alliance color.
     if (DriverStation.isDSAttached() && allianceColor.isEmpty()) {
       allianceColor = DriverStation.getAlliance();
     }
-        SmartDashboard.putNumber("driverXbox.getLeftY()",driverXbox.getLeftY());
-        SmartDashboard.putNumber("driverXbox::getRightX", driverXbox.getRightX());
-        Logger.recordOutput("MyPose", robotContainer.getDriveBase().getPose());
-      }
+    
+  }
 
   /** This function is called once each time the robot enters Disabled mode. */
   @Override
@@ -163,9 +167,6 @@ public class Robot extends LoggedRobot {
         if (autonomousCommand != null) {
             autonomousCommand.cancel();
         }
-    
-    // Start the timer to keep track of shifts.
-    timer.start();
   }
 
   /** This function is called periodically during operator control. */
@@ -173,28 +174,48 @@ public class Robot extends LoggedRobot {
   public void teleopPeriodic() {
     // Check who won autonomous.
     if (autonomousWinner == null) {
-      autonomousWinner = DriverStation.getGameSpecificMessage().charAt(0);
+      determineAutonomousWinner();
+    } else {
+      determineHubActive();
+    }
+
+  }
+
+  private void determineAutonomousWinner() {
+    autonomousWinner = DriverStation.getGameSpecificMessage();
       if (autonomousWinner != null) {
-        autoWinner = switch (autonomousWinner) {
-          case 'R' -> Alliance.Red;
-          case 'B' -> Alliance.Blue;
-          default -> throw new AssertionError("Data is corrupt - winner must be red or blue.");
+        autoWinner = switch (autonomousWinner.toUpperCase()) {
+          case "R" -> Alliance.Red;
+          case "B" -> Alliance.Blue;
+          default -> null;
         };
       }
-    } else {
-      // Determine whether the hub is active.
-      if (timer.hasElapsed(110)) {
-        hubActive = true; // end game
-      } else if (timer.hasElapsed(85)) {
-        hubActive = (allianceColor.get() == autoWinner); // shift 4
-      } else if (timer.hasElapsed(60)) {
-        hubActive = (allianceColor.get() != autoWinner); // shift 3
-      } else if (timer.hasElapsed(35)) {
-        hubActive = (allianceColor.get() == autoWinner); // shift 2
-      } else if (timer.hasElapsed(10)) {
-        hubActive = (allianceColor.get() != autoWinner); // shift 1
-      } else hubActive = true; // transition
-    }
+      else hubActive = true; // If game data has not been recieved, 
+      // it is transition period and the hub is active.
+  }
+
+  private void determineHubActive() {
+
+    // Determine whether the hub is active.
+    double timeLeft = DriverStation.getMatchTime();
+    if (timeLeft < 0) return; // Match has not started.
+
+    if (timeLeft <= Constants.ENDGAME_START) {
+      hubActive = true; // Hub is always active during endgame and transition
+
+    } else if (timeLeft <= Constants.SHIFT_4_START) {
+      hubActive = (allianceColor.get() == autoWinner); 
+      // Only the hub of the team that won autonomous is active during shifts 2 and 4.
+    } else if (timeLeft <= Constants.SHIFT_3_START) {
+      hubActive = (allianceColor.get() != autoWinner); 
+      // Only the hub of the team that didn't win autonomous is active during shifts 1 and 3.
+
+    } else if (timeLeft <= Constants.SHIFT_2_START) {
+      hubActive = (allianceColor.get() == autoWinner);
+    } else if (timeLeft <= Constants.SHIFT_1_START) {
+      hubActive = (allianceColor.get() != autoWinner);
+
+    } else hubActive = true; // transition
   }
 
   @Override
@@ -215,9 +236,8 @@ public class Robot extends LoggedRobot {
   @Override
   public void simulationPeriodic() {}
 
-  // getters
-  /** @return whether the hub is active */
-  public static boolean hubActive() {return hubActive;}
-  /** @return the alliance color */
-  public static Optional<DriverStation.Alliance> getAllianceColor() {return allianceColor;}
+  public boolean hubActive() {return hubActive;}
+  public static Optional<Alliance> allianceColor() {return allianceColor;}
+  public static String allianceColorString() {return String.valueOf(allianceColor.orElse(null));}
+
 }

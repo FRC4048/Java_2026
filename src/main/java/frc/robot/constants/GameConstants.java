@@ -46,12 +46,14 @@ public class GameConstants {
     public static final double TILT_SPEED = -0.5; // Arm motor is inverted - use negative speed
     public static final double INTAKE_SPEED = -0.5;
     public static final double HOPPER_SPEED = 0.1;
+    public static final double SHOOTER_SPEED = 0.1;
     public static final double MAX_SPEED = Units.feetToMeters(14.5);
 
     //Timeouts
     public static final double SPIN_TIMEOUT = 5;
     public static final double TILT_TIMEOUT = 5;
     public static final double HOPPER_TIMEOUT = 10;
+    public static final double SHOOTER_TIMEOUT = 10;
 
     //Angles
     public static final Rotation2d TILT_MIN_ANGLE = Rotation2d.fromDegrees(45);

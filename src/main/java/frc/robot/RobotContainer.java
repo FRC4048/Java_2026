@@ -136,18 +136,18 @@ public class RobotContainer {
 
     public void putShuffleboardCommands() {
         if (Constants.DEBUG) {
-        /*SmartDashboard.putData(
-                "Spin Roller",
-                new SpinRoller(rollerSubsystem));
+            /*SmartDashboard.putData(
+                    "Spin Roller",
+                    new SpinRoller(rollerSubsystem));
 
-        SmartDashboard.putData(
-                "Tilt Up",
-                new TiltUp(tiltSubsystem));
+            SmartDashboard.putData(
+                    "Tilt Up",
+                    new TiltUp(tiltSubsystem));
 
-        SmartDashboard.putData(
-                "Tilt Down",
-                new TiltDown(tiltSubsystem));
-          */
+            SmartDashboard.putData(
+                    "Tilt Down",
+                    new TiltDown(tiltSubsystem));
+              */
             // TODO: These commands do not REQUIRE the subsystem therefore cannot be used in production
             SmartDashboard.putData(
                     "Intake/Spin Forward",
@@ -183,15 +183,15 @@ public class RobotContainer {
             SmartDashboard.putData(
                     "Spin Intake",
                     new SpinIntake(intakeSubsystem));
-            
+
             SmartDashboard.putData(
                     "Spin Feeder",
                     new SpinFeeder(feederSubsystem));
         }
-       }
-    //basic drive command
-    Command driveDirectionTime = new DriveDirectionTime(drivebase, 0.1,0.1, true, 1);
-    SmartDashboard.putData("Drive Command", driveDirectionTime);
+
+        // basic drive command
+        Command driveDirectionTime = new DriveDirectionTime(drivebase, 0.1, 0.1, true, 1);
+        SmartDashboard.putData("Drive Command", driveDirectionTime);
     }
 
     /**
@@ -216,3 +216,4 @@ public class RobotContainer {
         return drivebase;
     }
 }
+

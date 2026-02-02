@@ -19,15 +19,6 @@ public class SimSparkMaxIo extends RealSparkMaxIo {
     }
 
     @Override
-    public void setPosition(double rotations) {
-        super.setPosition(rotations);
-
-        if (Constants.currentMode == Constants.Mode.SIM) {
-            motorSimulator.stepSimulation();
-        }
-    }
-
-    @Override
     public void updateInputs(MotorLoggableInputs inputs) {
         super.updateInputs(inputs);
         if (Constants.currentMode == Constants.Mode.SIM) {

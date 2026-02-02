@@ -62,6 +62,14 @@ public class GameConstants {
     public static final double TILT_GEARING = 45.0;
     public static final boolean TILT_SIMULATE_GRAVITY = false;
     public static final int NEO_CURRENT_LIMIT = 20;
+
+    // Angular (turret) PID
+    public static final double ANGULAR_P = 0.01;
+    public static final double ANGULAR_I = 0.0;
+    public static final double ANGULAR_D = 0.0;
+    public static final double ANGULAR_HOME_ROTATIONS = 0.0;
+    public static final double ANGULAR_LOW_ROTATIONS = -0.25;
+    public static final double ANGULAR_HIGH_ROTATIONS = 0.25;
     
     //swerve config
     public static final TelemetryVerbosity TELEMENTRY_VERBOSITY = TelemetryVerbosity.HIGH;

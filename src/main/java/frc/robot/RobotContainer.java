@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.drive.DriveDirectionTime;
 import frc.robot.commands.intake.SpinIntake;
 import frc.robot.constants.Constants;
+import frc.robot.subsystems.AngularSubsystem;
 import frc.robot.subsystems.GyroSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
@@ -39,6 +40,7 @@ public class RobotContainer {
     // The robot's subsystems and commands are defined here...
     //private final RollerSubsystem rollerSubsystem;
     //private final TiltSubsystem tiltSubsystem;
+    private final AngularSubsystem angularSubsystem;
     private final IntakeSubsystem intakeSubsystem;
     private RobotVisualizer robotVisualizer = null;
     private SwerveSubsystem drivebase = null;
@@ -58,6 +60,7 @@ public class RobotContainer {
             case REAL -> {
                 //rollerSubsystem = new RollerSubsystem(RollerSubsystem.createRealIo());
                 //tiltSubsystem = new TiltSubsystem(TiltSubsystem.createRealIo());
+                angularSubsystem = new AngularSubsystem(AngularSubsystem.createRealIo());
                 intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createRealIo(), IntakeSubsystem.createRealDeploymentSwitch());
 
                 RealGyroIo gyroIo = (RealGyroIo) GyroSubsystem.createRealIo();
@@ -69,6 +72,7 @@ public class RobotContainer {
             case REPLAY -> {
                 //rollerSubsystem = new RollerSubsystem(RollerSubsystem.createMockIo());
                 //tiltSubsystem = new TiltSubsystem(TiltSubsystem.createMockIo());
+                angularSubsystem = new AngularSubsystem(AngularSubsystem.createMockIo());
                 intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createMockIo(), IntakeSubsystem.createMockDeploymentSwitch());
                 // No GyroSubsystem in REPLAY for now
                 // create the drive subsystem with null gyro (use default json)
@@ -78,6 +82,7 @@ public class RobotContainer {
                 robotVisualizer = new RobotVisualizer();
                 //rollerSubsystem = new RollerSubsystem(RollerSubsystem.createSimIo(robotVisualizer));
                 //tiltSubsystem = new TiltSubsystem(TiltSubsystem.createSimIo(robotVisualizer));
+                angularSubsystem = new AngularSubsystem(AngularSubsystem.createSimIo(robotVisualizer));
                 intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createSimIo(robotVisualizer), IntakeSubsystem.createSimDeploymentSwitch());
                 // No GyroSubsystem in REPLAY for now
                 // create the drive subsystem with null gyro (use default json)
@@ -150,6 +155,25 @@ public class RobotContainer {
                     "Intake/Stop",
                     new InstantCommand(intakeSubsystem::stopMotors));
 
+            SmartDashboard.putNumber("Angular/TargetRotations", Constants.ANGULAR_HOME_ROTATIONS);
+            
+            SmartDashboard.putData(
+                    "Angular/Set Position",
+                    new InstantCommand(() -> angularSubsystem.setPosition(
+                            SmartDashboard.getNumber("Angular/TargetRotations", 0.0))));
+
+            SmartDashboard.putData(
+                    "Angular/Go Home",
+                    new InstantCommand(() -> angularSubsystem.setPosition(Constants.ANGULAR_HOME_ROTATIONS)));
+
+            SmartDashboard.putData(
+                    "Angular/Go Low",
+                    new InstantCommand(() -> angularSubsystem.setPosition(Constants.ANGULAR_LOW_ROTATIONS)));
+
+            SmartDashboard.putData(
+                    "Angular/Go High",
+                    new InstantCommand(() -> angularSubsystem.setPosition(Constants.ANGULAR_HIGH_ROTATIONS)));
+
             SmartDashboard.putData(
                     "Spin Intake",
                     new SpinIntake(intakeSubsystem));
@@ -181,4 +205,3 @@ public class RobotContainer {
         return drivebase;
     }
 }
-

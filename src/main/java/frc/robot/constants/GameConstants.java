@@ -47,11 +47,13 @@ public class GameConstants {
     public static final double ROLLER_SPEED = 0.25;
     public static final double TILT_SPEED = -0.5; // Arm motor is inverted - use negative speed
     public static final double INTAKE_SPEED = -0.5;
+    public static final double FEEDER_SPEED = 0.5;
     public static final double MAX_SPEED = Units.feetToMeters(14.5);
 
     //Timeouts
     public static final double SPIN_TIMEOUT = 5;
     public static final double TILT_TIMEOUT = 5;
+    public static final double FEEDER_TIMEOUT = 3;
 
     //Angles
     public static final Rotation2d TILT_MIN_ANGLE = Rotation2d.fromDegrees(45);
@@ -67,6 +69,7 @@ public class GameConstants {
     public static final double ANGULAR_P = 0.01;
     public static final double ANGULAR_I = 0.0;
     public static final double ANGULAR_D = 0.0;
+    public static final double ANGULAR_FF = 0.0;
     public static final double ANGULAR_HOME_ROTATIONS = 0.0;
     public static final double ANGULAR_LOW_ROTATIONS = -0.25;
     public static final double ANGULAR_HIGH_ROTATIONS = 0.25;
@@ -83,6 +86,11 @@ public class GameConstants {
 
     
 
-
+    // Shift timings
+    public static final int SHIFT_1_START = 130;
+    public static final int SHIFT_2_START = 105;
+    public static final int SHIFT_3_START = 80;
+    public static final int SHIFT_4_START = 55;
+    public static final int ENDGAME_START = 30;
 
 }

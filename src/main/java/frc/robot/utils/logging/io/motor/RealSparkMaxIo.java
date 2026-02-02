@@ -4,14 +4,10 @@
 
 package frc.robot.utils.logging.io.motor;
 
-import com.revrobotics.PersistMode;
-import com.revrobotics.ResetMode;
-import com.revrobotics.spark.FeedbackSensor;
-import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkMax;
-import com.revrobotics.spark.config.SparkMaxConfig;
 
-import frc.robot.constants.Constants;
+import frc.robot.Robot;
+import frc.robot.utils.diag.DiagSparkMaxEncoder;
 import frc.robot.utils.logging.input.MotorLoggableInputs;
 import frc.robot.utils.logging.io.BaseIoImpl;
 
@@ -49,13 +45,6 @@ public class RealSparkMaxIo extends BaseIoImpl<MotorLoggableInputs> implements S
     @Override
     public boolean isRevSwitchPressed() {
         return getInputs().getRevLimit();
-    }
-    
-
-    @Override
-    public void setPosition(double targetRotations) {
-        motor.getClosedLoopController()
-             .setReference(targetRotations, ControlType.kPosition);
     }
 
     @Override

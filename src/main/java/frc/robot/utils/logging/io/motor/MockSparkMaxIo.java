@@ -29,10 +29,6 @@ public class MockSparkMaxIo extends BaseIoImpl<MotorLoggableInputs> implements S
     }
 
     @Override
-    public void setPosition(double targetRotations) {
-    }
-
-    @Override
     public boolean isFwdSwitchPressed() {
         return getInputs().getFwdLimit();
     }

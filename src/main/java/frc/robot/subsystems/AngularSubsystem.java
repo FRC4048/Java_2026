@@ -59,9 +59,10 @@ public class AngularSubsystem extends SubsystemBase {
     private static SparkMaxPidConfig createPidConfig() {
         return new SparkMaxPidConfig(false)
                 .setCurrentLimit(Constants.NEO_CURRENT_LIMIT)
-                .setPid(
+                .setPidf(
                         Constants.ANGULAR_P,
                         Constants.ANGULAR_I,
-                        Constants.ANGULAR_D);
+                        Constants.ANGULAR_D,
+                        Constants.ANGULAR_FF);
     }
 }

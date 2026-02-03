@@ -14,12 +14,16 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.commands.feeder.SpinFeeder;
 import frc.robot.commands.drive.DriveDirectionTime;
 import frc.robot.commands.intake.SpinIntake;
 import frc.robot.autochooser.AutoAction;
 import frc.robot.autochooser.AutoChooser;
 import frc.robot.autochooser.FieldLocation;
 import frc.robot.autochooser.AutoEvent;
+import frc.robot.constants.Constants;
+import frc.robot.subsystems.FeederSubsystem;
+import frc.robot.subsystems.GyroSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import frc.robot.utils.logging.commands.DoNothingCommand;
@@ -41,16 +45,15 @@ import java.io.File;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
-  // The robot's subsystems and commands are defined here...
-  //private final TiltSubsystem tiltSubsystem;
-  private final IntakeSubsystem intakeSubsystem;
-  private RobotVisualizer robotVisualizer = null;
   private final CommandJoystick driveJoystick = new CommandJoystick(Constants.DRIVE_JOYSTICK_PORT);
   private final CommandJoystick steerJoystick = new CommandJoystick(Constants.STEER_JOYSTICK_PORT);
   // Instantiate the autochooser.
   private final AutoChooser autoChooser = new AutoChooser();
-    // The robot's subsystems and commands are defined here...
+  // The robot's subsystems and commands are defined here...
     //private final TiltSubsystem tiltSubsystem;
+    private final IntakeSubsystem intakeSubsystem;
+  private final FeederSubsystem feederSubsystem;
+    private RobotVisualizer robotVisualizer = null;
     private SwerveSubsystem drivebase = null;
     private GyroSubsystem gyroSubsystem = null;
 
@@ -64,6 +67,8 @@ public class RobotContainer {
         switch (Constants.currentMode) {
             case REAL -> {
                 intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createRealIo(), IntakeSubsystem.createRealDeploymentSwitch());
+                feederSubsystem = new FeederSubsystem(FeederSubsystem.createRealIo());
+
                 RealGyroIo gyroIo = (RealGyroIo) GyroSubsystem.createRealIo();
                 ThreadedGyro threadedGyro = gyroIo.getThreadedGyro();
                 gyroSubsystem = new GyroSubsystem(gyroIo);
@@ -72,6 +77,7 @@ public class RobotContainer {
             }
             case REPLAY -> {
                 intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createMockIo(), IntakeSubsystem.createMockDeploymentSwitch());
+                feederSubsystem = new FeederSubsystem(FeederSubsystem.createMockIo());
                 // No GyroSubsystem in REPLAY for now
                 // create the drive subsystem with null gyro (use default json)
                 drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "YAGSL"), null);
@@ -79,6 +85,7 @@ public class RobotContainer {
             case SIM -> {
                 robotVisualizer = new RobotVisualizer();
                 intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createSimIo(robotVisualizer), IntakeSubsystem.createSimDeploymentSwitch());
+                feederSubsystem = new FeederSubsystem(FeederSubsystem.createSimIo(robotVisualizer));
                 // No GyroSubsystem in REPLAY for now
                 // create the drive subsystem with null gyro (use default json)
                 drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "YAGSL"), null);
@@ -141,12 +148,16 @@ public class RobotContainer {
             SmartDashboard.putData(
                     "Spin Intake",
                     new SpinIntake(intakeSubsystem));
+            
+            SmartDashboard.putData(
+                    "Spin Feeder",
+                    new SpinFeeder(feederSubsystem));
+            //basic drive command
+            Command driveDirectionTime = new DriveDirectionTime(drivebase, 0.1,0.1, true, 1);
+            SmartDashboard.putData("Drive Command", driveDirectionTime);
         }
+    }
 
-    //basic drive command
-    Command driveDirectionTime = new DriveDirectionTime(drivebase, 0.1,0.1, true, 1);
-    SmartDashboard.putData("Drive Command", driveDirectionTime);
-   }
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *

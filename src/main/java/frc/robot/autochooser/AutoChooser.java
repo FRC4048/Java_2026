@@ -5,8 +5,6 @@ import java.util.Map;
 
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
-import frc.robot.utils.logging.commands.DoNothingCommand;
-import frc.robot.utils.logging.commands.DoSomethingCommand;
 import frc.robot.utils.logging.commands.LoggableCommand;
 
 public class AutoChooser {
@@ -75,6 +73,7 @@ public class AutoChooser {
         return get().getCommand();
     }
 
+    /** @return A human-readable description of the selected command. */
     public String getCommandDescription() {
         return get().getDescription();
     }

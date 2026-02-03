@@ -117,6 +117,8 @@ public class Robot extends LoggedRobot {
       // Puts data on the elastic dashboard
       SmartDashboard.putString("Alliance Color", Robot.allianceColorString());
       SmartDashboard.putBoolean("Hub Active?", hubActive());
+      SmartDashboard.putString("Selected Action:", 
+        robotContainer.getAutoChooser().getCommandDescription());
     }
 
     // Gets the alliance color.

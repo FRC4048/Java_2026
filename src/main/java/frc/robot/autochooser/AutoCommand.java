@@ -4,6 +4,7 @@ import frc.robot.utils.logging.commands.LoggableCommand;
 import frc.robot.utils.logging.commands.DoNothingCommand;
 import frc.robot.utils.logging.commands.DoSomethingCommand;
 
+/** An enum to associate commands with human-readable descriptions. */
 public enum AutoCommand {
 
     // Add commands here. Importantly, you should give each command
@@ -12,11 +13,11 @@ public enum AutoCommand {
     // drive team visual feedback on the elastic dashboard when
     // selecting an autonoumous command.
     DoNothingCommand(
-        "The robot will do nothing.",
+        "The robot won't do anything. This may happen due to an invalid selection.",
         new DoNothingCommand()
     ),
     DoSomethingCommand(
-        "This will just print something to the terminal.",
+        "Something will be printed to the terminal.",
         new DoSomethingCommand("""
             SUCCESSFULLY
 

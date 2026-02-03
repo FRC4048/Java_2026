@@ -155,6 +155,7 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     return autoChooser.getCommand();
   }
+  
   public RobotVisualizer getRobotVisualizer() {
     return robotVisualizer;
   }

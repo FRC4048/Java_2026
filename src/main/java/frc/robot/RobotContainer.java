@@ -48,10 +48,7 @@ public class RobotContainer {
   private final CommandJoystick driveJoystick = new CommandJoystick(Constants.DRIVE_JOYSTICK_PORT);
   private final CommandJoystick steerJoystick = new CommandJoystick(Constants.STEER_JOYSTICK_PORT);
   // Instantiate the autochooser.
-  private final AutoChooser autoChooser = new AutoChooser(
-      // This is where you choose what the key is on the dashboard.
-      "Autonomous Chooser"
-      );
+  private final AutoChooser autoChooser = new AutoChooser();
     // The robot's subsystems and commands are defined here...
     //private final TiltSubsystem tiltSubsystem;
     private SwerveSubsystem drivebase = null;
@@ -94,26 +91,6 @@ public class RobotContainer {
     configureBindings();
     putShuffleboardCommands();
     
-    // This is where options get added to the autoChooser.
-    autoChooser.addDefaultOption( // Adds a default option
-      new AutoEvent(AutoAction.DO_NOTHING, FieldLocation.ZERO), // Adds an action and a location
-      new DoNothingCommand() // Adds a corresponding command
-    );
-    // Adding more options using autoChooser.addOption(...)
-    autoChooser.addOption(new AutoEvent(AutoAction.DO_NOTHING, FieldLocation.LEFT), new DoNothingCommand());
-    autoChooser.addOption(new AutoEvent(AutoAction.DO_NOTHING, FieldLocation.RIGHT), new DoNothingCommand());
-    autoChooser.addOption(new AutoEvent(AutoAction.DO_NOTHING, FieldLocation.MIDDLE),
-     new DoSomethingCommand("""
-      
-     SUCCESSFULLY
-
-     DID
-
-     SOMETHING
-
-
-      """) // Bigger print message is easier to see in the logs.
-    ); 
   }
     /**
      * Use this method to define your trigger->command mappings. Triggers can be created via the
@@ -176,7 +153,7 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return autoChooser.get();
+    return autoChooser.getCommand();
   }
   public RobotVisualizer getRobotVisualizer() {
     return robotVisualizer;

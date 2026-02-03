@@ -104,7 +104,7 @@ public class Robot extends LoggedRobot {
             CommandScheduler.getInstance().run();
         }
 
-        SmartDashboard.putString("Shooting State", robotContainer.getShootingState().getShootState().toString());
+        Logger.recordOutput("shootingState/", robotContainer.getShootingState().getShootState().toString());
 
         if (Constants.currentMode.equals(Constants.Mode.SIM)) {
             robotContainer.getRobotVisualizer().logMechanism();

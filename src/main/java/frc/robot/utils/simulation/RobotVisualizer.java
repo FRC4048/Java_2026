@@ -16,6 +16,7 @@ public class RobotVisualizer {
     private final LoggedMechanismLigament2d rollerLigament;
     private final LoggedMechanismLigament2d intakeLigament;
     private final LoggedMechanismLigament2d hopperLigament;
+    private final LoggedMechanismLigament2d feederLigament;
 
     public RobotVisualizer() {
         LoggedMechanismRoot2d root =
@@ -54,7 +55,7 @@ public class RobotVisualizer {
                                 90.0,
                                 4,
                                 new Color8Bit(Color.kRed)));
-        
+
         LoggedMechanismRoot2d hopperRoot =
                 mech2d.getRoot("Hopper Root", Constants.DRIVE_BASE_LENGTH, Constants.INITIAL_ROBOT_HEIGHT);
 
@@ -72,7 +73,24 @@ public class RobotVisualizer {
                                 5,
                                 new Color8Bit(Color.kDarkOrchid)));
         
-    }
+        LoggedMechanismRoot2d feederRoot = 
+                mech2d.getRoot("Feeder Root", Constants.DRIVE_BASE_WIDTH * 2, Constants.INITIAL_ROBOT_HEIGHT);
+    
+        LoggedMechanismLigament2d feederRiserLigament = 
+                feederRoot.append(
+                        new LoggedMechanismLigament2d(
+                                "Feeder Riser", 0.35, 90, 5, new Color8Bit(Color.kDarkGray)));
+    
+        this.feederLigament =
+                feederRiserLigament.append(
+                        new LoggedMechanismLigament2d(
+                                "Feeder Wheel",
+                                0.15,
+                                90.0,
+                                4,
+                                new Color8Bit(Color.kYellow)));
+
+        }
 
     public LoggedMechanismLigament2d getRollerLigament() {
         return rollerLigament;
@@ -88,6 +106,10 @@ public class RobotVisualizer {
 
     public LoggedMechanismLigament2d getHopperLigament(){
         return hopperLigament;
+    }
+
+    public LoggedMechanismLigament2d getFeederLigament() {
+        return feederLigament;
     }
 
     public void logMechanism() {

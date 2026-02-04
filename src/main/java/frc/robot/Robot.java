@@ -103,6 +103,9 @@ public class Robot extends LoggedRobot {
             // block in order for anything in the Command-based framework to work.
             CommandScheduler.getInstance().run();
         }
+
+        Logger.recordOutput("shootingState/", robotContainer.getShootingState().getShootState().toString());
+
         if (Constants.currentMode.equals(Constants.Mode.SIM)) {
             robotContainer.getRobotVisualizer().logMechanism();
         }

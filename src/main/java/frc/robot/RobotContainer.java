@@ -112,17 +112,17 @@ public class RobotContainer {
         // m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
         // TODO: Clean this up a little - create command in method and only create the one actually needed
         if(!Constants.TESTBED){
-        SwerveInputStream driveAngularVelocity = SwerveInputStream.of(drivebase.getSwerveDrive(),
-                        () -> driveJoystick.getY() * -1,
-                        () -> driveJoystick.getX() * -1)
-                .withControllerRotationAxis(steerJoystick::getX)
-                .deadband(Constants.DEADBAND)
-                .scaleTranslation(0.8)
-                .allianceRelativeControl(true);
-        SwerveInputStream driveRobotOriented = driveAngularVelocity.copy().robotRelative(true)
-                .allianceRelativeControl(false);
-        Command driveFieldOrientedAnglularVelocity = drivebase.driveFieldOriented(driveAngularVelocity);
-        drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity);
+            SwerveInputStream driveAngularVelocity = SwerveInputStream.of(drivebase.getSwerveDrive(),
+                            () -> driveJoystick.getY() * -1,
+                            () -> driveJoystick.getX() * -1)
+                    .withControllerRotationAxis(steerJoystick::getX)
+                    .deadband(Constants.DEADBAND)
+                    .scaleTranslation(0.8)
+                    .allianceRelativeControl(true);
+            SwerveInputStream driveRobotOriented = driveAngularVelocity.copy().robotRelative(true)
+                    .allianceRelativeControl(false);
+            Command driveFieldOrientedAnglularVelocity = drivebase.driveFieldOriented(driveAngularVelocity);
+            drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity);
         }
     }
 
@@ -158,10 +158,10 @@ public class RobotContainer {
                     new SpinIntake(intakeSubsystem));
        }
     //basic drive command
-  if(!Constants.TESTBED){
-    Command driveDirectionTime = new DriveDirectionTime(drivebase, 0.1,0.1, true, 1);
-    SmartDashboard.putData("Drive Command", driveDirectionTime);
-  }
+        if(!Constants.TESTBED){
+            Command driveDirectionTime = new DriveDirectionTime(drivebase, 0.1,0.1, true, 1);
+            SmartDashboard.putData("Drive Command", driveDirectionTime);
+        }
     }
 
     /**

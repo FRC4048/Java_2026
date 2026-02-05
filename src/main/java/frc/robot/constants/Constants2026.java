@@ -20,4 +20,5 @@ public class Constants2026 extends GameConstants {
 
     public static final boolean TUNING_MODE = true;
 
+    public static final boolean TESTBED = false;
 }

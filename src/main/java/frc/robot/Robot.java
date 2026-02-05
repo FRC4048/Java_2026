@@ -117,8 +117,9 @@ public class Robot extends LoggedRobot {
     if (Constants.DEBUG) {
       SmartDashboard.putNumber("driverXbox.getLeftY()",driverXbox.getLeftY());
       SmartDashboard.putNumber("driverXbox::getRightX", driverXbox.getRightX());
-      Logger.recordOutput("MyPose", robotContainer.getDriveBase().getPose());
-      // Puts data on the elastic dashboard
+      if(!Constants.TESTBED){
+          Logger.recordOutput("MyPose", robotContainer.getDriveBase().getPose());
+        // Puts data on the elastic dashboard
       SmartDashboard.putString("Alliance Color", Robot.allianceColorString());
       SmartDashboard.putBoolean("Hub Active?", hubActive());
     }
@@ -126,9 +127,8 @@ public class Robot extends LoggedRobot {
     // Gets the alliance color.
     if (DriverStation.isDSAttached() && allianceColor.isEmpty()) {
       allianceColor = DriverStation.getAlliance();
+    }}
     }
-
-  }
 
   /** This function is called once each time the robot enters Disabled mode. */
   @Override

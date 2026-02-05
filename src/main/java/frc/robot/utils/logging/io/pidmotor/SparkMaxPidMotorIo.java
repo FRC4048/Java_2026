@@ -23,6 +23,14 @@ public interface SparkMaxPidMotorIo extends SparkMaxIo {
     void setPidPosition(double position);
 
     /**
+     * Set PID velocity.
+     * Set the velocity (in RPM) for the PidMotor to get to.
+     *
+     * @param velocity the position (in rotations) to drive to
+     */
+    void setPidVelocity(double velocity);
+
+    /**
      * Set new PID values for the PidMotor.
      * This will replace the existing PID values with the nerw ones
      * @param pidP P value to set

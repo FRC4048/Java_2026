@@ -86,6 +86,8 @@ public class GameConstants {
     public static final double RED_HUB_Y_POSITION = 4.0345;
     public static final double DRAG_K = 1.20; // experimental value -- needs testing
     public static final double DRAG_Q = 0.055; // experimental value -- needs testing
+    public static final double X_DISTANCE_BETWEEN_ROBOT_AND_TURRET = 0;
+    public static final double Y_DISTANCE_BETWEEN_ROBOT_AND_TURRET = 0;
 
 
 }

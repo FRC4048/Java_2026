@@ -65,7 +65,7 @@ public class AnglerSubsystem extends SubsystemBase {
     private static SparkMaxPidConfig createPidConfig() {
         return new SparkMaxPidConfig(false)
                 .setCurrentLimit(Constants.NEO_CURRENT_LIMIT)
-                .setCurrentLimit(Constants.NEO_CURRENT_LIMIT)
+                .setAllowedError(.1)
                 .setPidf(
                         Constants.ANGLER_P,
                         Constants.ANGLER_I,

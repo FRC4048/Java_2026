@@ -28,9 +28,8 @@ public class TCPApriltagIo extends BaseIoImpl<ApriltagInputs> implements Aprilta
         inputs.apriltagNumber = new int[queueSize];
         inputs.serverTime = new double[queueSize];
         inputs.timestamp = new double[queueSize];
-
-        Translation3d[] apriltagPoseArray = new Translation3d[queueSize];
-        Pose2d[] visionPoseArray = new Pose2d[queueSize];
+        inputs.visionPoseArray = new Pose2d[queueSize];
+        inputs.apriltagPoseArray = new Translation3d[queueSize];
 
         for (int i = 0; i < queueSize; i++) {
             ApriltagReading measurement = queue.poll();
@@ -43,15 +42,13 @@ public class TCPApriltagIo extends BaseIoImpl<ApriltagInputs> implements Aprilta
             inputs.serverTime[i] = measurement.measurementTime();
 
             Apriltag apriltag = Apriltag.of(measurement.apriltagNumber());
-            apriltagPoseArray[i] =
+            inputs.apriltagPoseArray[i] =
                     apriltag == null ? new Translation3d(0, 0, 0) : apriltag.getTranslation();
-            visionPoseArray[i] =
+            inputs.visionPoseArray[i] =
                     new Pose2d(
                             measurement.posX(),
                             measurement.posY(),
                             Rotation2d.fromDegrees(measurement.poseYaw()));
         }
-        Logger.recordOutput("Apriltag/TagPoses", apriltagPoseArray);
-        Logger.recordOutput("Apriltag/VisionPoses", visionPoseArray);
     }
 }

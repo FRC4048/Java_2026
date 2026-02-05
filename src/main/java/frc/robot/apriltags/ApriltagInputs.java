@@ -1,5 +1,7 @@
 package frc.robot.apriltags;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Translation3d;
 import org.littletonrobotics.junction.inputs.LoggableInputs;
 import org.littletonrobotics.junction.LogTable;
 
@@ -11,6 +13,8 @@ public class ApriltagInputs implements LoggableInputs {
     public double[] poseYaw = new double[0];
     public double[] distanceToTag = new double[0];
     public int[] apriltagNumber = new int[0];
+    public Translation3d[] apriltagPoseArray = new Translation3d[0];
+    public Pose2d[] visionPoseArray = new Pose2d[0];
 
 
 
@@ -23,6 +27,8 @@ public class ApriltagInputs implements LoggableInputs {
         table.put("poseYaw", poseYaw);
         table.put("distanceToTag", distanceToTag);
         table.put("apriltagNumber", apriltagNumber);
+        table.put("aprilTagPositions", apriltagPoseArray);
+        table.put("visionPoseArray", visionPoseArray);
     }
 
     @Override
@@ -34,5 +40,7 @@ public class ApriltagInputs implements LoggableInputs {
         poseYaw = table.get("poseYaw", poseYaw);
         distanceToTag = table.get("distanceToTag", distanceToTag);
         apriltagNumber = table.get("apriltagNumber", apriltagNumber);
+        apriltagPoseArray = table.get("aprilTagPositions", apriltagPoseArray);
+        visionPoseArray = table.get("visionPoseArray", visionPoseArray);
     }
 }

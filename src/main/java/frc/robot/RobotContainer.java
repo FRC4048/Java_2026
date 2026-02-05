@@ -42,7 +42,7 @@ public class RobotContainer {
     // The robot's subsystems and commands are defined here...
     //private final RollerSubsystem rollerSubsystem;
     //private final TiltSubsystem tiltSubsystem;
-    private final AnglerSubsystem angularSubsystem;
+    private final AnglerSubsystem anglerSubsystem;
     private final IntakeSubsystem intakeSubsystem;
     private final FeederSubsystem feederSubsystem;
     private RobotVisualizer robotVisualizer = null;
@@ -63,7 +63,7 @@ public class RobotContainer {
             case REAL -> {
                 //rollerSubsystem = new RollerSubsystem(RollerSubsystem.createRealIo());
                 //tiltSubsystem = new TiltSubsystem(TiltSubsystem.createRealIo());
-                angularSubsystem = new AnglerSubsystem(AnglerSubsystem.createRealIo());
+                anglerSubsystem = new AnglerSubsystem(AnglerSubsystem.createRealIo());
                 intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createRealIo(), IntakeSubsystem.createRealDeploymentSwitch());
                 feederSubsystem = new FeederSubsystem(FeederSubsystem.createRealIo());
 
@@ -76,7 +76,7 @@ public class RobotContainer {
             case REPLAY -> {
                 //rollerSubsystem = new RollerSubsystem(RollerSubsystem.createMockIo());
                 //tiltSubsystem = new TiltSubsystem(TiltSubsystem.createMockIo());
-                angularSubsystem = new AnglerSubsystem(AnglerSubsystem.createMockIo());
+                anglerSubsystem = new AnglerSubsystem(AnglerSubsystem.createMockIo());
                 intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createMockIo(), IntakeSubsystem.createMockDeploymentSwitch());
                 feederSubsystem = new FeederSubsystem(FeederSubsystem.createMockIo());
                 // No GyroSubsystem in REPLAY for now
@@ -87,7 +87,7 @@ public class RobotContainer {
                 robotVisualizer = new RobotVisualizer();
                 //rollerSubsystem = new RollerSubsystem(RollerSubsystem.createSimIo(robotVisualizer));
                 //tiltSubsystem = new TiltSubsystem(TiltSubsystem.createSimIo(robotVisualizer));
-                angularSubsystem = new AnglerSubsystem(AnglerSubsystem.createSimIo(robotVisualizer));
+                anglerSubsystem = new AnglerSubsystem(AnglerSubsystem.createSimIo(robotVisualizer));
                 intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createSimIo(robotVisualizer), IntakeSubsystem.createSimDeploymentSwitch());
                 feederSubsystem = new FeederSubsystem(FeederSubsystem.createSimIo(robotVisualizer));
                 // No GyroSubsystem in REPLAY for now
@@ -161,24 +161,24 @@ public class RobotContainer {
                     "Intake/Stop",
                     new InstantCommand(intakeSubsystem::stopMotors));
 
-            SmartDashboard.putNumber("Angular/TargetRotations", Constants.ANGULAR_HOME_ROTATIONS);
+            SmartDashboard.putNumber("angler/TargetRotations", Constants.ANGLER_HOME_ROTATIONS);
 
             SmartDashboard.putData(
-                    "Angular/Set Position",
-                    new InstantCommand(() -> angularSubsystem.setPosition(
-                            SmartDashboard.getNumber("Angular/TargetRotations", 0.0))));
+                    "angler/Set Position",
+                    new InstantCommand(() -> anglerSubsystem.setPosition(
+                            SmartDashboard.getNumber("angler/TargetRotations", 0.0))));
 
             SmartDashboard.putData(
-                    "Angular/Go Home",
-                    new InstantCommand(() -> angularSubsystem.setPosition(Constants.ANGULAR_HOME_ROTATIONS)));
+                    "angler/Go Home",
+                    new InstantCommand(() -> anglerSubsystem.setPosition(Constants.ANGLER_HOME_ROTATIONS)));
 
             SmartDashboard.putData(
-                    "Angular/Go Low",
-                    new InstantCommand(() -> angularSubsystem.setPosition(Constants.ANGULAR_LOW_ROTATIONS)));
+                    "angler/Go Low",
+                    new InstantCommand(() -> anglerSubsystem.setPosition(Constants.ANGLER_LOW_ROTATIONS)));
 
             SmartDashboard.putData(
-                    "Angular/Go High",
-                    new InstantCommand(() -> angularSubsystem.setPosition(Constants.ANGULAR_HIGH_ROTATIONS)));
+                    "angler/Go High",
+                    new InstantCommand(() -> anglerSubsystem.setPosition(Constants.ANGLER_HIGH_ROTATIONS)));
 
             SmartDashboard.putData(
                     "Spin Intake",

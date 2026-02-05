@@ -65,14 +65,14 @@ public class GameConstants {
     public static final boolean TILT_SIMULATE_GRAVITY = false;
     public static final int NEO_CURRENT_LIMIT = 20;
 
-    // Angular (turret) PID
+    // angler (turret) PID
     public static final double ANGLER_P = 0.01;
     public static final double ANGLER_I = 0.0;
     public static final double ANGLER_D = 0.0;
     public static final double ANGLER_FF = 0.0;
-    public static final double ANGULAR_HOME_ROTATIONS = 0.0;
-    public static final double ANGULAR_LOW_ROTATIONS = -0.25;
-    public static final double ANGULAR_HIGH_ROTATIONS = 0.25;
+    public static final double ANGLER_HOME_ROTATIONS = 0.0;
+    public static final double ANGLER_LOW_ROTATIONS = -0.25;
+    public static final double ANGLER_HIGH_ROTATIONS = 0.25;
     
     //swerve config
     public static final TelemetryVerbosity TELEMENTRY_VERBOSITY = TelemetryVerbosity.HIGH;

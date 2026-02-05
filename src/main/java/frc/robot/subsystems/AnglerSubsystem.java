@@ -53,7 +53,7 @@ public class AnglerSubsystem extends SubsystemBase {
     }
 
     private static SparkMaxPidMotor createMotor() {
-        return new SparkMaxPidMotor(Constants.ANGULAR_MOTOR_ID, createPidConfig());
+        return new SparkMaxPidMotor(Constants.ANGLER_MOTOR_ID, createPidConfig());
     }
 
     private static SparkMaxPidConfig createPidConfig() {

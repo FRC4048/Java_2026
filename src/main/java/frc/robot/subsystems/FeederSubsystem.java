@@ -24,16 +24,13 @@ import frc.robot.utils.logging.io.motor.SparkMaxIo;
 import frc.robot.utils.simulation.MotorSimulator;
 import frc.robot.utils.simulation.RobotVisualizer;
 
-public class IntakeSubsystem extends SubsystemBase {
-    
-    public static final String LOGGING_NAME = "IntakeSubsystem";
-    private final SparkMaxIo io;
-    private final DigitalInputIo intakeDeploymentSwitch;
+public class FeederSubsystem extends SubsystemBase {
 
-    public IntakeSubsystem(SparkMaxIo io, DigitalInputIo intakeDeploymentSwitch) {
+    public static final String LOGGING_NAME = "FeederSubsystem";
+    private final SparkMaxIo io;
+
+    public FeederSubsystem(SparkMaxIo io) {
         this.io = io;
-        this.intakeDeploymentSwitch = intakeDeploymentSwitch;
-        setDefaultCommand(new SpinIntake(this));
     }
 
     public void setSpeed(double speed) {
@@ -47,51 +44,24 @@ public class IntakeSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
         io.periodic();
-        intakeDeploymentSwitch.periodic();
-    }
-
-    public boolean isDeployed() {
-        return intakeDeploymentSwitch.isPressed();
     }
 
     public static SparkMaxIo createMockIo() {
         return new MockSparkMaxIo(LOGGING_NAME, MotorLoggableInputs.allMetrics());
     }
+
     public static SparkMaxIo createRealIo() {
         return new RealSparkMaxIo(LOGGING_NAME, createMotor(), MotorLoggableInputs.allMetrics());
     }
+
     public static SparkMaxIo createSimIo(RobotVisualizer visualizer) {
         SparkMax motor = createMotor();
         return new SimSparkMaxIo(LOGGING_NAME, motor, MotorLoggableInputs.allMetrics(),
-                new MotorSimulator(motor, visualizer.getIntakeLigament()));
+                new MotorSimulator(motor, visualizer.getFeederLigament()));
     }
 
-    public static DigitalInputIo createMockDeploymentSwitch() {
-    return new MockDigitalInputIo(
-            LOGGING_NAME + "/DeploymentSwitch",
-            new DigitalInputLoggableInputs()
-    );
-}
-
-public static DigitalInputIo createRealDeploymentSwitch() {
-    return new RealDigitalInputIo(
-            LOGGING_NAME + "/DeploymentSwitch",
-            new DigitalInput(Constants.INTAKE_DIGITAL_INPUT_CHANNEL),
-            new DigitalInputLoggableInputs()
-    );
-    
-}
-
-public static DigitalInputIo createSimDeploymentSwitch() {
-    return new SimDigitalInputIo(
-        LOGGING_NAME + "/DeploymentSwitch",
-        new DigitalInput(Constants.INTAKE_DIGITAL_INPUT_CHANNEL),
-        new DigitalInputLoggableInputs()
-    );
-}
-
     private static SparkMax createMotor() {
-        SparkMax motor = new SparkMax(Constants.INTAKE_MOTOR_ID, SparkLowLevel.MotorType.kBrushless);
+        SparkMax motor = new SparkMax(Constants.FEEDER_MOTOR_ID, SparkLowLevel.MotorType.kBrushless);
         SparkMaxConfig motorConfig = new SparkMaxConfig();
         motorConfig.idleMode(SparkBaseConfig.IdleMode.kBrake);
         motorConfig.smartCurrentLimit(Constants.NEO_CURRENT_LIMIT);
@@ -99,10 +69,8 @@ public static DigitalInputIo createSimDeploymentSwitch() {
                 motorConfig,
                 ResetMode.kResetSafeParameters,
                 PersistMode.kPersistParameters);
+
         return motor;
     }
     
-    public DigitalInputIo getDeploymentSwitchIo() {
-        return intakeDeploymentSwitch;
-    }
 }

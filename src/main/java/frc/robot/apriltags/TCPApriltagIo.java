@@ -7,10 +7,10 @@ import frc.robot.utils.logging.io.BaseIoImpl;
 import java.util.Queue;
 import org.littletonrobotics.junction.Logger;
 
-public class TCPApriltag extends BaseIoImpl<ApriltagInputs> implements ApriltagIO{
+public class TCPApriltagIo extends BaseIoImpl<ApriltagInputs> implements ApriltagIO{
     private final TCPApriltagServer server;
 
-    public TCPApriltag(String name, ApriltagInputs inputs) {
+    public TCPApriltagIo(String name, ApriltagInputs inputs) {
         super(name, inputs);
         server = new TCPApriltagServer(Constants.TCP_SERVER_PORT);
         server.start();

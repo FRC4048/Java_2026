@@ -10,10 +10,15 @@ import frc.robot.utils.logging.commands.LoggableSequentialCommandGroup;
 
 public class ExampleAuto extends LoggableSequentialCommandGroup{
     public ExampleAuto(SwerveSubsystem subsystem, AutoFactory auto, IntakeSubsystem intake) {
+        LoggableParallelCommandGroup parallel = new LoggableParallelCommandGroup();
+        parallel.addCommands(
+            auto.trajectoryCmd("ExamplePath"),
+            new PrintCommand("moving")
+        );
+
         addCommands(
             auto.resetOdometry("ExamplePath"),
-            auto.trajectoryCmd("ExamplePath"), 
-            new PrintCommand("Moving"));
-        
+            parallel
+        );
     }
 }

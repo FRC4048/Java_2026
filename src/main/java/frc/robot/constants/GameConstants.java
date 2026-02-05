@@ -75,6 +75,7 @@ public class GameConstants {
     public static final double ANGLER_HOME_ROTATIONS = 0.0;
     public static final double ANGLER_LOW_ROTATIONS = -0.25;
     public static final double ANGLER_HIGH_ROTATIONS = 0.25;
+    public static final double ANGLER_FIXED_ROTATIONS = 0.1;
     
     //swerve config
     public static final TelemetryVerbosity TELEMENTRY_VERBOSITY = TelemetryVerbosity.HIGH;

@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -15,6 +16,7 @@ import frc.robot.commands.hopper.SpinHopper;
 import frc.robot.commands.drive.DriveDirectionTime;
 import frc.robot.commands.feeder.SpinFeeder;
 import frc.robot.commands.intake.SpinIntake;
+import frc.robot.commands.angler.AimAngler;
 import frc.robot.commands.shooter.SetShootingState;
 import frc.robot.constants.Constants;
 import frc.robot.subsystems.AnglerSubsystem;
@@ -110,6 +112,12 @@ public class RobotContainer {
                 throw new RuntimeException("Did not specify Robot Mode");
             }
         }
+
+        anglerSubsystem.setDefaultCommand(new AimAngler(
+                anglerSubsystem,
+                () -> drivebase != null ? drivebase.getPose() : null,
+                shootState));
+
         configureBindings();
         putShuffleboardCommands();
     }
@@ -254,4 +262,3 @@ public class RobotContainer {
         return shootState;
     }
 }
-

@@ -7,6 +7,7 @@ public class ConstantsTestbed2026 extends Constants2026 {
     //Intake motor id (43) isn't real
     public static final int INTAKE_MOTOR_ID = 43;
     public static final int HOPPER_MOTOR_ID = 50;  
+    public static final int CLIMBER_MOTOR_ID = 50;
     /**
    * To use the TestBed constants, change Constants.java to read: public class Constants extends
    * ConstantsTestbedClean2025

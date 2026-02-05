@@ -13,6 +13,8 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.commands.climber.ClimberDown;
+import frc.robot.commands.climber.ClimberUp;
 import frc.robot.commands.hopper.SpinHopper;
 import frc.robot.commands.intake.SpinIntake;
 //import frc.robot.commands.roller.SpinRoller;
@@ -21,8 +23,7 @@ import frc.robot.commands.intake.SpinIntake;
 import frc.robot.constants.Constants;
 import frc.robot.subsystems.HopperSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
-import frc.robot.subsystems.shooter.ShooterFollowerSubsystem;
-import frc.robot.subsystems.shooter.ShooterLeaderSubsystem;
+import frc.robot.subsystems.ClimberSubsystem;
 //import frc.robot.subsystems.RollerSubsystem;
 //import frc.robot.subsystems.TiltSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
@@ -39,8 +40,7 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   //private final RollerSubsystem rollerSubsystem;
   //private final TiltSubsystem tiltSubsystem;
-  private final ShooterFollowerSubsystem shooterFollowerSubsystem;
-  private final ShooterLeaderSubsystem shooterLeaderSubsystem;
+  private final ClimberSubsystem climberSubsystem;
   private final IntakeSubsystem intakeSubsystem;
   private RobotVisualizer robotVisualizer = null;
   private final HopperSubsystem hopperSubsystem;
@@ -61,18 +61,14 @@ public class RobotContainer {
                 //tiltSubsystem = new TiltSubsystem(TiltSubsystem.createRealIo());
                 intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createRealIo(), IntakeSubsystem.createRealDeploymentSwitch());
                 hopperSubsystem = new HopperSubsystem(HopperSubsystem.createRealIo());
-                shooterLeaderSubsystem = new ShooterLeaderSubsystem(ShooterLeaderSubsystem.createRealIo());
-                shooterFollowerSubsystem = new ShooterFollowerSubsystem(ShooterFollowerSubsystem.createRealIo());
-
-
+                climberSubsystem = new ClimberSubsystem(ClimberSubsystem.createRealIo());
             }
             case REPLAY -> {
                 //rollerSubsystem = new RollerSubsystem(RollerSubsystem.createMockIo());
                 //tiltSubsystem = new TiltSubsystem(TiltSubsystem.createMockIo());
                 intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createMockIo(), IntakeSubsystem.createMockDeploymentSwitch());
                 hopperSubsystem = new HopperSubsystem(HopperSubsystem.createMockIo());
-                shooterLeaderSubsystem = new ShooterLeaderSubsystem(ShooterLeaderSubsystem.createMockIo());
-                shooterFollowerSubsystem = new ShooterFollowerSubsystem(ShooterFollowerSubsystem.createMockIo());
+                climberSubsystem = new ClimberSubsystem(ClimberSubsystem.createMockIo());
             }
             case SIM -> {
                 robotVisualizer = new RobotVisualizer();
@@ -80,8 +76,7 @@ public class RobotContainer {
                 //tiltSubsystem = new TiltSubsystem(TiltSubsystem.createSimIo(robotVisualizer));
                 intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createSimIo(robotVisualizer), IntakeSubsystem.createSimDeploymentSwitch());
                 hopperSubsystem = new HopperSubsystem(HopperSubsystem.createSimIo(robotVisualizer));
-                shooterLeaderSubsystem = new ShooterLeaderSubsystem(ShooterLeaderSubsystem.createSimIo(robotVisualizer));
-                shooterFollowerSubsystem = new ShooterFollowerSubsystem(ShooterFollowerSubsystem.createSimIo(robotVisualizer));
+                climberSubsystem = new ClimberSubsystem(ClimberSubsystem.createSimIo(robotVisualizer));
             }
             
             default -> {
@@ -154,7 +149,16 @@ public class RobotContainer {
             SmartDashboard.putData(
                     "Start Hopper",
                     new SpinHopper(hopperSubsystem));
-        }
+            
+            SmartDashboard.putData(
+                    "Climber Up",
+                    new ClimberUp(climberSubsystem));
+
+            SmartDashboard.putData(
+                    "Climber Down",
+                    new ClimberDown(climberSubsystem));
+
+        }  
     }
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
@@ -173,12 +177,8 @@ public class RobotContainer {
     return intakeSubsystem;
   }
 
-  public ShooterLeaderSubsystem getShooterLeaderSubsystem() {
-    return shooterLeaderSubsystem;
-  }
-
-  public ShooterFollowerSubsystem getShooterFollowerSubsystem() {
-    return shooterFollowerSubsystem;
+  public ClimberSubsystem getClimberSubsystem() {
+    return climberSubsystem;
   }
 
     public SwerveSubsystem getDriveBase(){

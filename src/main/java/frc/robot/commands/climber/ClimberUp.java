@@ -1,17 +1,17 @@
-package frc.robot.commands.shooter;
+package frc.robot.commands.climber;
 
 import edu.wpi.first.wpilibj.Timer;
 import frc.robot.constants.Constants;
-import frc.robot.subsystems.shooter.ShooterLeaderSubsystem;
+import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.utils.logging.commands.LoggableCommand;
 
-public class SpinShooter extends LoggableCommand{
+public class ClimberUp extends LoggableCommand{
     
-    public final ShooterLeaderSubsystem subsystem;
+    public final ClimberSubsystem subsystem;
     public final Timer timer;
     
 
-    public SpinShooter(ShooterLeaderSubsystem subsystem){
+    public ClimberUp(ClimberSubsystem subsystem){
         timer = new Timer();
         this.subsystem = subsystem;
         addRequirements(subsystem);
@@ -24,7 +24,7 @@ public class SpinShooter extends LoggableCommand{
 
     @Override
     public void execute() {
-            subsystem.setSpeed(Constants.SHOOTER_SPEED);
+            subsystem.setSpeed(1 * Constants.CLIMBER_SPEED);
     }
 
     @Override
@@ -34,7 +34,7 @@ public class SpinShooter extends LoggableCommand{
 
     @Override
     public boolean isFinished() {
-        if (timer.hasElapsed(Constants.SHOOTER_TIMEOUT)){
+        if (timer.hasElapsed(Constants.CLIMBER_TIMEOUT)){
             return true;
         }
         else{
@@ -45,3 +45,4 @@ public class SpinShooter extends LoggableCommand{
 
     
 }
+

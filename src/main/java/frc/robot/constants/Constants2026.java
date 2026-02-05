@@ -8,9 +8,8 @@ public class Constants2026 extends GameConstants {
     public static final int TILT_MOTOR_ID = 2;
     public static final int INTAKE_MOTOR_ID = 3;
     public static final int HOPPER_MOTOR_ID = 4;
-    public static final int SHOOTER_LEADER_MOTOR_ID = 6;
-    public static final int SHOOTER_FOLLOWER_MOTOR_ID = 7;
-    
+    public static final int CLIMBER_MOTOR_ID = 6;
+
     public static final double DRIVE_BASE_WIDTH = 0.635;
     public static final double DRIVE_BASE_LENGTH = 0.635;
     public static final double INITIAL_ROBOT_HEIGHT = 0;

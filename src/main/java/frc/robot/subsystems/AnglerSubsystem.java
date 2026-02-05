@@ -1,5 +1,12 @@
 package frc.robot.subsystems;
 
+import com.revrobotics.PersistMode;
+import com.revrobotics.ResetMode;
+import com.revrobotics.spark.SparkLowLevel;
+import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.config.SparkBaseConfig;
+import com.revrobotics.spark.config.SparkMaxConfig;
+
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.constants.Constants;
 import frc.robot.utils.logging.input.MotorLoggableInputs;
@@ -9,6 +16,8 @@ import frc.robot.utils.logging.io.pidmotor.SimSparkMaxPidMotorIo;
 import frc.robot.utils.logging.io.pidmotor.SparkMaxPidConfig;
 import frc.robot.utils.logging.io.pidmotor.SparkMaxPidMotor;
 import frc.robot.utils.logging.io.pidmotor.SparkMaxPidMotorIo;
+import frc.robot.utils.simulation.ArmParameters;
+import frc.robot.utils.simulation.ArmSimulator;
 import frc.robot.utils.simulation.MotorSimulator;
 import frc.robot.utils.simulation.RobotVisualizer;
 
@@ -45,24 +54,38 @@ public class AnglerSubsystem extends SubsystemBase {
 
     public static SparkMaxPidMotorIo createSimIo(RobotVisualizer visualizer) {
         SparkMaxPidMotor motor = createMotor();
+        ArmSimulator simulator = new ArmSimulator(motor.getNeoMotor(), createParams(), visualizer.getAnglerLigament());
         return new SimSparkMaxPidMotorIo(
                 LOGGING_NAME,
                 motor,
                 MotorLoggableInputs.allMetrics(),
-                new MotorSimulator(motor.getNeoMotor(), null));
-    }
-
-    private static SparkMaxPidMotor createMotor() {
-        return new SparkMaxPidMotor(Constants.ANGLER_MOTOR_ID, createPidConfig());
+                simulator);
     }
 
     private static SparkMaxPidConfig createPidConfig() {
         return new SparkMaxPidConfig(false)
+                .setCurrentLimit(Constants.NEO_CURRENT_LIMIT)
                 .setCurrentLimit(Constants.NEO_CURRENT_LIMIT)
                 .setPidf(
                         Constants.ANGLER_P,
                         Constants.ANGLER_I,
                         Constants.ANGLER_D,
                         Constants.ANGLER_FF);
+    }
+
+    private static SparkMaxPidMotor createMotor() {
+        return new SparkMaxPidMotor(Constants.ANGLER_MOTOR_ID, createPidConfig());
+    }
+
+    private static ArmParameters createParams() {
+        ArmParameters params = new ArmParameters();
+        params.name = "ANGLER";
+        params.armGearing = Constants.TILT_GEARING;
+        params.armInertia = Constants.TILT_INERTIA;
+        params.armLength = Constants.TILT_LENGTH;
+        params.armMinAngle = Constants.TILT_MIN_ANGLE;
+        params.armMaxAngle = Constants.TILT_MAX_ANGLE;
+        params.armSimulateGravity = Constants.TILT_SIMULATE_GRAVITY;
+        return params;
     }
 }

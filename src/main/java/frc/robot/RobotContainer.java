@@ -18,7 +18,7 @@ import frc.robot.commands.drive.DriveDirectionTime;
 import frc.robot.commands.feeder.SpinFeeder;
 import frc.robot.commands.intake.SpinIntake;
 import frc.robot.constants.Constants;
-import frc.robot.subsystems.AngularSubsystem;
+import frc.robot.subsystems.AnglerSubsystem;
 import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.subsystems.GyroSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -42,7 +42,7 @@ public class RobotContainer {
     // The robot's subsystems and commands are defined here...
     //private final RollerSubsystem rollerSubsystem;
     //private final TiltSubsystem tiltSubsystem;
-    private final AngularSubsystem angularSubsystem;
+    private final AnglerSubsystem angularSubsystem;
     private final IntakeSubsystem intakeSubsystem;
     private final FeederSubsystem feederSubsystem;
     private RobotVisualizer robotVisualizer = null;
@@ -63,7 +63,7 @@ public class RobotContainer {
             case REAL -> {
                 //rollerSubsystem = new RollerSubsystem(RollerSubsystem.createRealIo());
                 //tiltSubsystem = new TiltSubsystem(TiltSubsystem.createRealIo());
-                angularSubsystem = new AngularSubsystem(AngularSubsystem.createRealIo());
+                angularSubsystem = new AnglerSubsystem(AnglerSubsystem.createRealIo());
                 intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createRealIo(), IntakeSubsystem.createRealDeploymentSwitch());
                 feederSubsystem = new FeederSubsystem(FeederSubsystem.createRealIo());
 
@@ -76,7 +76,7 @@ public class RobotContainer {
             case REPLAY -> {
                 //rollerSubsystem = new RollerSubsystem(RollerSubsystem.createMockIo());
                 //tiltSubsystem = new TiltSubsystem(TiltSubsystem.createMockIo());
-                angularSubsystem = new AngularSubsystem(AngularSubsystem.createMockIo());
+                angularSubsystem = new AnglerSubsystem(AnglerSubsystem.createMockIo());
                 intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createMockIo(), IntakeSubsystem.createMockDeploymentSwitch());
                 feederSubsystem = new FeederSubsystem(FeederSubsystem.createMockIo());
                 // No GyroSubsystem in REPLAY for now
@@ -87,7 +87,7 @@ public class RobotContainer {
                 robotVisualizer = new RobotVisualizer();
                 //rollerSubsystem = new RollerSubsystem(RollerSubsystem.createSimIo(robotVisualizer));
                 //tiltSubsystem = new TiltSubsystem(TiltSubsystem.createSimIo(robotVisualizer));
-                angularSubsystem = new AngularSubsystem(AngularSubsystem.createSimIo(robotVisualizer));
+                angularSubsystem = new AnglerSubsystem(AnglerSubsystem.createSimIo(robotVisualizer));
                 intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createSimIo(robotVisualizer), IntakeSubsystem.createSimDeploymentSwitch());
                 feederSubsystem = new FeederSubsystem(FeederSubsystem.createSimIo(robotVisualizer));
                 // No GyroSubsystem in REPLAY for now

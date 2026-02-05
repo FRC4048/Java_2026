@@ -12,13 +12,13 @@ import frc.robot.utils.logging.io.pidmotor.SparkMaxPidMotorIo;
 import frc.robot.utils.simulation.MotorSimulator;
 import frc.robot.utils.simulation.RobotVisualizer;
 
-public class AngularSubsystem extends SubsystemBase {
+public class AnglerSubsystem extends SubsystemBase {
 
-    public static final String LOGGING_NAME = "AngularSubsystem";
+    public static final String LOGGING_NAME = "AnglerSubsystem";
 
     private final SparkMaxPidMotorIo io;
 
-    public AngularSubsystem(SparkMaxPidMotorIo io) {
+    public AnglerSubsystem(SparkMaxPidMotorIo io) {
         this.io = io;
     }
 
@@ -60,9 +60,9 @@ public class AngularSubsystem extends SubsystemBase {
         return new SparkMaxPidConfig(false)
                 .setCurrentLimit(Constants.NEO_CURRENT_LIMIT)
                 .setPidf(
-                        Constants.ANGULAR_P,
-                        Constants.ANGULAR_I,
-                        Constants.ANGULAR_D,
-                        Constants.ANGULAR_FF);
+                        Constants.ANGLER_P,
+                        Constants.ANGLER_I,
+                        Constants.ANGLER_D,
+                        Constants.ANGLER_FF);
     }
 }

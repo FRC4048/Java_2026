@@ -77,21 +77,23 @@ public class GameConstants {
     public static final boolean SET_MODULE_ENCODER_AUTO_SYNCHRONIZE = false;
     public static final double SET_MODULE_ENCODER_AUTO_SYNCHRONIZE_DEADBAND = 1;
 
-    public static final double DRIVE_BASE_WIDTH = 0.635;
-    public static final double DRIVE_BASE_LENGTH = 0.635;
-    public static final double INITIAL_ROBOT_HEIGHT = 0;
+    // turret pan angle and launch angle calculations constants
     public static final double HUB_HEIGHT = 1.83;
     public static final double SHOOTER_HEIGHT = 0.5;
-
-    
     public static final double BLUE_HUB_X_POSITION = 4.6256;
     public static final double BLUE_HUB_Y_POSITION = 4.0345;
     public static final double RED_HUB_X_POSITION = 11.9154;
     public static final double RED_HUB_Y_POSITION = 4.0345;
     public static final double DRAG_K = 1.20; // experimental value -- needs testing
     public static final double DRAG_Q = 0.055; // experimental value -- needs testing
-    public static final double X_DISTANCE_BETWEEN_ROBOT_AND_TURRET = 0;
-    public static final double Y_DISTANCE_BETWEEN_ROBOT_AND_TURRET = 0;
+    public static final double X_DISTANCE_BETWEEN_ROBOT_AND_TURRET = .4; // needs value from hardware
+    public static final double Y_DISTANCE_BETWEEN_ROBOT_AND_TURRET = .4; // needs value from hardware
 
+    // Shift timings
+    public static final int SHIFT_1_START = 130;
+    public static final int SHIFT_2_START = 105;
+    public static final int SHIFT_3_START = 80;
+    public static final int SHIFT_4_START = 55;
+    public static final int ENDGAME_START = 30;
 
 }

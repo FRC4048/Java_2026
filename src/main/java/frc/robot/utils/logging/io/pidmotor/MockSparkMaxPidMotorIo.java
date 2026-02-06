@@ -24,6 +24,10 @@ public class MockSparkMaxPidMotorIo extends MockSparkMaxIo implements SparkMaxPi
     }
 
     @Override
+    public void setPidVelocity(double velocity) {
+    }
+
+    @Override
     public void setPid(double pidP, double pidI, double pidD) {
     }
 

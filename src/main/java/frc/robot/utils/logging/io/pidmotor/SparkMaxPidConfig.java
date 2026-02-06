@@ -18,7 +18,7 @@ public class SparkMaxPidConfig {
     private double d = DEFAULT_D;
     private double iZone = DEFAULT_IZONE;
     private double ff = DEFAULT_FF;
-    private int currentLimit; // TODO: SHould this be set to 40 as a default?
+    private int currentLimit = 20;
     /**
      * This is the cruise velocity for the MAX_MOTION config.
      */

@@ -16,7 +16,7 @@ public class AutoChooser {
     /** Structure for mapping possible choices to commands. */
     private final Map<AutoEvent, AutoCommand> commandMap = new HashMap<>();
 
-    private final AutoCommand DEFAULT_COMMAND = AutoCommand.DoNothingCommand;
+    private final AutoCommand DEFAULT_COMMAND = AutoCommand.Invalid;
 
     public AutoChooser() {
         this.locationChooser = new LoggedDashboardChooser<>(
@@ -56,9 +56,9 @@ public class AutoChooser {
     private void populateMap() {
         // Currently, we have some example mappings.
         commandMap.put(new AutoEvent(AutoAction.DO_NOTHING, FieldLocation.LEFT),
-            AutoCommand.DoNothingCommand);
+            AutoCommand.DoNothing);
         commandMap.put(new AutoEvent(AutoAction.DO_NOTHING, FieldLocation.RIGHT), 
-            AutoCommand.DoSomethingCommand);
+            AutoCommand.DoSomething);
     }
 
     private AutoCommand get() {

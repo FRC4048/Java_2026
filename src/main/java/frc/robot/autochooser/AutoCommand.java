@@ -12,11 +12,12 @@ public enum AutoCommand {
     // the robot will actually do. This will be used to give the
     // drive team visual feedback on the elastic dashboard when
     // selecting an autonoumous command.
-    DoNothingCommand(
-        "The robot won't do anything. This may happen due to an invalid selection.",
+    Invalid(
+        "The selection is invalid. (The robot won't do anything.)",
         new DoNothingCommand()
     ),
-    DoSomethingCommand(
+    DoNothing("The robot won't do anything.", new DoNothingCommand()),
+    DoSomething(
         "Something will be printed to the terminal.",
         new DoSomethingCommand("""
             SUCCESSFULLY

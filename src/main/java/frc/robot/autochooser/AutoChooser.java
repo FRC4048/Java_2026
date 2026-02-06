@@ -78,4 +78,8 @@ public class AutoChooser {
         return get().getDescription();
     }
 
+    public FieldLocation getLocation() {
+        return locationChooser.get();
+    }
+
 }

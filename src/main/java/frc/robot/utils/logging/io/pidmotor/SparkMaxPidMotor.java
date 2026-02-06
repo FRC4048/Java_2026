@@ -29,8 +29,8 @@ public class SparkMaxPidMotor {
     // The built-in PID controller
     private final SparkClosedLoopController pidController;
 
-    // The desired motor position
-    private double setPosition = 0.0;
+    // The desired motor setpoint (for position, velocity, etc.)
+    private double setPoint = 0.0;
 
     /**
      * Constructor using reasonable default values
@@ -107,18 +107,28 @@ public class SparkMaxPidMotor {
 
     /**
      * Set the desired position using the relative encoder as a reference.
-     * TODO: Change to SetPoint in name and docs, so can be used for VelocityPid
      *
      * @param position the desired motor position
      */
     public void setPidPosition(double position) {
         SparkBase.ControlType type = pidConfig.getUsesMaxMotion() ? SparkBase.ControlType.kMAXMotionPositionControl : SparkBase.ControlType.kPosition;
         pidController.setSetpoint(position, type);
-        this.setPosition = position;
+        this.setPoint = position;
     }
 
-    public double getPidPosition() {
-        return setPosition;
+    /**
+     * Set the desired velocity (in RPM) using the relative encoder as a reference.
+     *
+     * @param velocity the desired motor velocity
+     */
+    public void setPidVelocity(double velocity) {
+        SparkBase.ControlType type = pidConfig.getUsesMaxMotion() ? SparkBase.ControlType.kMAXMotionVelocityControl : SparkBase.ControlType.kVelocity;
+        pidController.setSetpoint(velocity, type);
+        this.setPoint = velocity;
+    }
+
+    public double getPidSetPoint() {
+        return setPoint;
     }
 
     public void setPid(double pidP, double pidI, double pidD) {

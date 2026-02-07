@@ -20,7 +20,6 @@ import frc.robot.subsystems.swervedrive.vision.truster.BasicVisionFilter;
 import frc.robot.subsystems.swervedrive.vision.truster.SquareVisionTruster;
 import frc.robot.subsystems.swervedrive.vision.truster.VisionMeasurement;
 import frc.robot.utils.Apriltag;
-import frc.robot.utils.logging.LoggableIO;
 import frc.robot.utils.math.ArrayUtils;
 
 import java.util.Arrays;
@@ -58,7 +57,6 @@ public class PoseEstimator {
       SwerveModule frontRightMotor,
       SwerveModule backLeftMotor,
       SwerveModule backRightMotor,*/
-      LoggableIO<ApriltagInputs> apriltagIO,
       SwerveDriveKinematics kinematics,
       SwerveSubsystem drivebase,
       double initGyroValueDeg) {
@@ -66,7 +64,7 @@ public class PoseEstimator {
     this.frontRight = frontRightMotor;
     this.backLeft = backLeftMotor;
     this.backRight = backRightMotor;*/
-    this.apriltagSystem = new LoggableSystem<>(apriltagIO, new ApriltagInputs("Apriltag"));
+    this.apriltagSystem = //create new april tag object here;
     /*OdometryMeasurement initMeasurement =
         new OdometryMeasurement(
             new SwerveModulePosition[] {
@@ -117,16 +115,16 @@ public class PoseEstimator {
   private void updateVision(int... invalidApriltagNumbers) {
     long start = System.currentTimeMillis();
     if (Constants.ENABLE_VISION && Robot.getMode() != RobotMode.DISABLED) {
-      for (int i = 0; i < apriltagSystem.getInputs().timestamp.length; i++) {
+      for (int i = 0; i < apriltagSystem.timestamp.length; i++) {
         double[] pos =
             new double[] {
-              apriltagSystem.getInputs().posX[i],
-              apriltagSystem.getInputs().posY[i],
-              apriltagSystem.getInputs().poseYaw[i]
+              apriltagSystem.posX[i],
+              apriltagSystem.posY[i],
+              apriltagSystem.poseYaw[i]
             };
         if (validAprilTagPose(pos)
             && !ArrayUtils.contains(
-                invalidApriltagNumbers, apriltagSystem.getInputs().apriltagNumber[i])) {
+                invalidApriltagNumbers, apriltagSystem.apriltagNumber[i])) {
           VisionMeasurement measurement = getVisionMeasurement(pos, i);
           poseManager.registerVisionMeasurement(measurement);
         } else {
@@ -141,11 +139,11 @@ public class PoseEstimator {
   }
 
   private VisionMeasurement getVisionMeasurement(double[] pos, int index) {
-    double serverTime = apriltagSystem.getInputs().serverTime[index];
+    double serverTime = apriltagSystem.serverTime[index];
     double timestamp = 0; // latency is not right we are assuming zero
     double latencyInSec = (serverTime - timestamp) / 1000;
     Pose2d visionPose = new Pose2d(pos[0], pos[1], getEstimatedPose().getRotation());
-    double distanceFromTag = apriltagSystem.getInputs().distanceToTag[index];
+    double distanceFromTag = apriltagSystem.distanceToTag[index];
     return new VisionMeasurement(visionPose, distanceFromTag, latencyInSec);
   }
 

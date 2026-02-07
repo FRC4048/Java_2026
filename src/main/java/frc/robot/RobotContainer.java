@@ -47,8 +47,6 @@ import java.io.File;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
-    private final CommandJoystick driveJoystick = new CommandJoystick(Constants.DRIVE_JOYSTICK_PORT);
-    private final CommandJoystick steerJoystick = new CommandJoystick(Constants.STEER_JOYSTICK_PORT);
     // Instantiate the autochooser.
     private final AutoChooser autoChooser = new AutoChooser();
     // The robot's subsystems and commands are defined here...
@@ -59,8 +57,11 @@ public class RobotContainer {
     private final HopperSubsystem hopperSubsystem;
     private SwerveSubsystem drivebase = null;
     private GyroSubsystem gyroSubsystem = null;
+    private final CommandJoystick driveJoystick = new CommandJoystick(Constants.DRIVE_JOYSTICK_PORT);
+    private final CommandJoystick steerJoystick = new CommandJoystick(Constants.STEER_JOYSTICK_PORT);
     private ShootingState shootState = new ShootingState(ShootState.STOPPED);
 
+        // Replace with CommandPS4Controller or CommandJoystick if needed
     //new CommandXboxController(OperatorConstants.kDriverControllerPort);private final CommandXboxController controller = new CommandXboxController(Constants.XBOX_CONTROLLER_PORT);
 
     /**
@@ -70,6 +71,8 @@ public class RobotContainer {
         // Configure the trigger bindings
         switch (Constants.currentMode) {
             case REAL -> {
+                //rollerSubsystem = new RollerSubsystem(RollerSubsystem.createRealIo());
+                //rollerSubsystem = new RollerSubsystem(RollerSubsystem.createRealIo());
                 intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createRealIo(), IntakeSubsystem.createRealDeploymentSwitch());
                 hopperSubsystem = new HopperSubsystem(HopperSubsystem.createRealIo());
 
@@ -83,6 +86,8 @@ public class RobotContainer {
                 drivebase = !Constants.TESTBED ? new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "YAGSL"), swerveIMU) : null;
             }
             case REPLAY -> {
+                //rollerSubsystem = new RollerSubsystem(RollerSubsystem.createMockIo());
+                //tiltSubsystem = new TiltSubsystem(TiltSubsystem.createMockIo());
                 intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createMockIo(), IntakeSubsystem.createMockDeploymentSwitch());
                 hopperSubsystem = new HopperSubsystem(HopperSubsystem.createMockIo());
                 feederSubsystem = new FeederSubsystem(FeederSubsystem.createMockIo());
@@ -91,6 +96,8 @@ public class RobotContainer {
                 drivebase = !Constants.TESTBED ? new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "YAGSL"), null) : null;
             }
             case SIM -> {
+                //rollerSubsystem = new RollerSubsystem(RollerSubsystem.createSimIo(robotVisualizer));
+                //tiltSubsystem = new TiltSubsystem(TiltSubsystem.createSimIo(robotVisualizer));
                 robotVisualizer = new RobotVisualizer();
                 intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createSimIo(robotVisualizer), IntakeSubsystem.createSimDeploymentSwitch());
                 hopperSubsystem = new HopperSubsystem(HopperSubsystem.createSimIo(robotVisualizer));
@@ -213,7 +220,7 @@ public class RobotContainer {
     public Command getAutonomousCommand() {
       return autoChooser.getCommand();
     }
-  
+
     public RobotVisualizer getRobotVisualizer() {
       return robotVisualizer;
     }

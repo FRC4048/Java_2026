@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 import frc.robot.RobotMode;
 import frc.robot.constants.Constants;
+import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import frc.robot.subsystems.swervedrive.vision.truster.BasicVisionFilter;
 import frc.robot.subsystems.swervedrive.vision.truster.SquareVisionTruster;
 import frc.robot.subsystems.swervedrive.vision.truster.VisionMeasurement;
@@ -59,6 +60,7 @@ public class PoseEstimator {
       SwerveModule backRightMotor,*/
       LoggableIO<ApriltagInputs> apriltagIO,
       SwerveDriveKinematics kinematics,
+      SwerveSubsystem drivebase,
       double initGyroValueDeg) {
    /*this.frontLeft = frontLeftMotor;
     this.frontRight = frontRightMotor;
@@ -78,9 +80,9 @@ public class PoseEstimator {
         TimeInterpolatableBuffer.createBuffer(Constants.POSE_BUFFER_STORAGE_TIME);
     this.poseManager =
         new FilterablePoseManager(
-            stateStdDevs1,
             visionMeasurementStdDevs2,
-            kinematics,
+            kinematics, 
+            drivebase,
             m1Buffer,
             new BasicVisionFilter(m1Buffer) {
               @Override

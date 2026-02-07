@@ -196,11 +196,11 @@ public class RobotContainer {
 
             SmartDashboard.putData(
                     "angler/Go Low",
-                    new InstantCommand(() -> anglerSubsystem.setPosition(Constants.ANGLER_LOW_ROTATIONS)));
+                    new InstantCommand(() -> anglerSubsystem.setPosition(Constants.ANGLER_ENCODER_LOW)));
 
             SmartDashboard.putData(
                     "angler/Go High",
-                    new InstantCommand(() -> anglerSubsystem.setPosition(Constants.ANGLER_HIGH_ROTATIONS)));
+                    new InstantCommand(() -> anglerSubsystem.setPosition(Constants.ANGLER_ENCODER_HIGH)));
 
             SmartDashboard.putData(
                     "Spin Intake",

@@ -73,8 +73,10 @@ public class GameConstants {
     public static final double ANGLER_D = 0.0;
     public static final double ANGLER_FF = 0.0;
     public static final double ANGLER_HOME_ROTATIONS = 0.0;
-    public static final double ANGLER_LOW_ROTATIONS = -50;
-    public static final double ANGLER_HIGH_ROTATIONS = 50;
+    public static final double ANGLER_ENCODER_LOW = 10;
+    public static final double ANGLER_ENCODER_HIGH = 20;
+    public static final double ANGLER_ANGLE_LOW = -10;
+    public static final double ANGLER_ANGLE_HIGH = 50;
     public static final double ANGLER_FIXED_ROTATIONS = 0.1;
     
     //swerve config

@@ -7,6 +7,7 @@ import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.constants.Constants;
 import frc.robot.utils.logging.input.MotorLoggableInputs;
@@ -50,7 +51,7 @@ public class AnglerSubsystem extends SubsystemBase {
     public void setAngle(double targetAngle) {
         double multipler = (Constants.ANGLER_ENCODER_HIGH - Constants.ANGLER_ENCODER_LOW) / (Constants.ANGLER_ANGLE_HIGH - Constants.ANGLER_ANGLE_LOW);
         double targetRotations = targetAngle * multipler - (multipler * Constants.ANGLER_ANGLE_HIGH - Constants.ANGLER_ENCODER_HIGH);
-        setPosition(targetRotations);
+        setPosition(MathUtil.clamp(targetRotations, Constants.ANGLER_ENCODER_LOW, Constants.ANGLER_ENCODER_HIGH));
     }
 
     public void stopMotors() {

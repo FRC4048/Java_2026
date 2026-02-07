@@ -74,15 +74,15 @@ public class GameConstants {
     public static final int NEO_CURRENT_LIMIT = 20;
 
     // angler (turret) PID
-    public static final double ANGLER_P = 0.05;
-    public static final double ANGLER_I = 0.0;
+    public static final double ANGLER_P = 0.1;
+    public static final double ANGLER_I = 0.000001;
     public static final double ANGLER_D = 0.0;
     public static final double ANGLER_FF = 0.0;
     public static final double ANGLER_HOME_ROTATIONS = 0.0;
-    public static final double ANGLER_ENCODER_LOW = 10;
-    public static final double ANGLER_ENCODER_HIGH = 20;
-    public static final double ANGLER_ANGLE_LOW = -10;
-    public static final double ANGLER_ANGLE_HIGH = 50;
+    public static final double ANGLER_ENCODER_LOW = 0;
+    public static final double ANGLER_ENCODER_HIGH = 100;
+    public static final double ANGLER_ANGLE_LOW = 0;
+    public static final double ANGLER_ANGLE_HIGH = 45;
     public static final double ANGLER_FIXED_ROTATIONS = 0.1;
     public static final double ANGLER_LIMIT_SPEED = 0.2;
 

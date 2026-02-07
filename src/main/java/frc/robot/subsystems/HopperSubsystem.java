@@ -1,16 +1,12 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 package frc.robot.subsystems;
 
 import com.revrobotics.PersistMode;
 import com.revrobotics.ResetMode;
-import com.revrobotics.spark.SparkBase;
 import com.revrobotics.spark.SparkLowLevel;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
+
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.constants.Constants;
 import frc.robot.utils.logging.input.MotorLoggableInputs;
@@ -21,26 +17,31 @@ import frc.robot.utils.logging.io.motor.SparkMaxIo;
 import frc.robot.utils.simulation.MotorSimulator;
 import frc.robot.utils.simulation.RobotVisualizer;
 
-// The Roller subsystem spins the wheel that releases the algae.
+//the hopper subsystem spins the hopper such that the fuel can be transported to the feeder
 
-public class RollerSubsystem extends SubsystemBase {
-    public static final String LOGGING_NAME = "RollerSubsystem";
+public class HopperSubsystem extends SubsystemBase{
+    public static final String LOGGING_NAME = "HopperSubsystem";
     private final SparkMaxIo io;
 
-    public RollerSubsystem(SparkMaxIo io) {
+    public HopperSubsystem(SparkMaxIo io) {
         this.io = io;
     }
 
-    public void setSpeed(double speed) {
+    public void setSpeed(double speed){
         io.set(speed);
     }
 
-    public void stopMotors() {
+    public void stopMotors(){
         io.stopMotor();
+    }
+
+    public boolean isLimitSwitchPressed(){
+        return io.isFwdSwitchPressed();
     }
 
     @Override
     public void periodic() {
+        // TODO Auto-generated method stub
         io.periodic();
     }
 
@@ -55,11 +56,11 @@ public class RollerSubsystem extends SubsystemBase {
     public static SparkMaxIo createSimIo(RobotVisualizer visualizer) {
         SparkMax motor = createMotor();
         return new SimSparkMaxIo(LOGGING_NAME, motor, MotorLoggableInputs.allMetrics(),
-                new MotorSimulator(motor, visualizer.getRollerLigament()));
+                new MotorSimulator(motor, visualizer.getHopperLigament()));
     }
 
-    private static SparkMax createMotor() {
-        SparkMax motor = new SparkMax(Constants.ROLLER_MOTOR_ID, SparkLowLevel.MotorType.kBrushless);
+     private static SparkMax createMotor() {
+        SparkMax motor = new SparkMax(Constants.HOPPER_MOTOR_ID, SparkLowLevel.MotorType.kBrushless);
         SparkMaxConfig motorConfig = new SparkMaxConfig();
         motorConfig.idleMode(SparkBaseConfig.IdleMode.kBrake);
         motorConfig.smartCurrentLimit(Constants.NEO_CURRENT_LIMIT);
@@ -67,7 +68,8 @@ public class RollerSubsystem extends SubsystemBase {
                 motorConfig,
                 ResetMode.kResetSafeParameters,
                 PersistMode.kPersistParameters);
-
+        
         return motor;
+     }
     }
-}
+

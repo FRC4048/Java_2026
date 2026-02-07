@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.hopper.SpinHopper;
 import frc.robot.commands.feeder.SpinFeeder;
 import frc.robot.commands.drive.DriveDirectionTime;
+import frc.robot.commands.drive.FakeVision;
 import frc.robot.commands.intake.SpinIntake;
 import frc.robot.commands.shooter.SetShootingState;
 import frc.robot.constants.Constants;
@@ -79,7 +80,8 @@ public class RobotContainer {
                 ThreadedGyro threadedGyro = gyroIo.getThreadedGyro();
                 gyroSubsystem = new GyroSubsystem(gyroIo);
                 SwerveIMU swerveIMU = new ThreadedGyroSwerveIMU(threadedGyro);
-                drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "YAGSL"), swerveIMU);
+                
+                drivebase = !Constants.TESTBED ? new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "YAGSL"), swerveIMU) : null;
             }
             case REPLAY -> {
                 //rollerSubsystem = new RollerSubsystem(RollerSubsystem.createMockIo());
@@ -89,7 +91,7 @@ public class RobotContainer {
                 feederSubsystem = new FeederSubsystem(FeederSubsystem.createMockIo());
                 // No GyroSubsystem in REPLAY for now
                 // create the drive subsystem with null gyro (use default json)
-                drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "YAGSL"), null);
+                drivebase = !Constants.TESTBED ? new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "YAGSL"), null) : null;
             }
             case SIM -> {
                 robotVisualizer = new RobotVisualizer();
@@ -100,7 +102,7 @@ public class RobotContainer {
                 feederSubsystem = new FeederSubsystem(FeederSubsystem.createSimIo(robotVisualizer));
                 // No GyroSubsystem in REPLAY for now
                 // create the drive subsystem with null gyro (use default json)
-                drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "YAGSL"), null);
+                drivebase = !Constants.TESTBED ? new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "YAGSL"), null) : null;
             }
 
             default -> {
@@ -129,17 +131,17 @@ public class RobotContainer {
         // cancelling on release.
         // m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
         // TODO: Clean this up a little - create command in method and only create the one actually needed
-        SwerveInputStream driveAngularVelocity = SwerveInputStream.of(drivebase.getSwerveDrive(),
-                        () -> driveJoystick.getY() * -1,
-                        () -> driveJoystick.getX() * -1)
-                .withControllerRotationAxis(steerJoystick::getX)
-                .deadband(Constants.DEADBAND)
-                .scaleTranslation(0.8)
-                .allianceRelativeControl(true);
-        SwerveInputStream driveRobotOriented = driveAngularVelocity.copy().robotRelative(true)
-                .allianceRelativeControl(false);
-        Command driveFieldOrientedAnglularVelocity = drivebase.driveFieldOriented(driveAngularVelocity);
-        drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity);
+        if(!Constants.TESTBED){
+            SwerveInputStream driveAngularVelocity = SwerveInputStream.of(drivebase.getSwerveDrive(),
+                            () -> driveJoystick.getY() * -1,
+                            () -> driveJoystick.getX() * -1)
+                    .withControllerRotationAxis(steerJoystick::getX)
+                    .deadband(Constants.DEADBAND)
+                    .scaleTranslation(0.8)
+                    .allianceRelativeControl(true);
+            Command driveFieldOrientedAnglularVelocity = drivebase.driveFieldOriented(driveAngularVelocity);
+            drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity);
+        }
     }
 
     public void putShuffleboardCommands() {
@@ -199,8 +201,12 @@ public class RobotContainer {
             
         }
     //basic drive command
-    Command driveDirectionTime = new DriveDirectionTime(drivebase, 0.1,0.1, true, 1);
-    SmartDashboard.putData("Drive Command", driveDirectionTime);
+        if(!Constants.TESTBED){
+            Command driveDirectionTime = new DriveDirectionTime(drivebase, 0.1,0.1, true, 1);
+            SmartDashboard.putData("Drive Command", driveDirectionTime);
+            SmartDashboard.putData("Fake vision", new FakeVision(drivebase));
+        }
+
     }
 
     /**
@@ -220,9 +226,8 @@ public class RobotContainer {
     public IntakeSubsystem getIntakeSubsystem() {
         return intakeSubsystem;
     }
-
-    public SwerveSubsystem getDriveBase() {
-        return drivebase;
+    public SwerveSubsystem getDriveBase(){
+      return drivebase;
     }
 
     public ShootingState getShootingState() {

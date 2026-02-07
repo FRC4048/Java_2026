@@ -70,12 +70,11 @@ public class SparkMaxPidMotor {
                     .allowedProfileError(pidConfig.getAllowedError());
         }
 
-        config
-                .limitSwitch
-                .forwardLimitSwitchEnabled(true)
-                .forwardLimitSwitchType(LimitSwitchConfig.Type.kNormallyOpen)
-                .reverseLimitSwitchEnabled(true)
-                .forwardLimitSwitchType(LimitSwitchConfig.Type.kNormallyOpen);
+        config.limitSwitch
+        .forwardLimitSwitchType(LimitSwitchConfig.Type.kNormallyOpen)
+        .forwardLimitSwitchTriggerBehavior(LimitSwitchConfig.Behavior.kStopMovingMotor) 
+        .reverseLimitSwitchType(LimitSwitchConfig.Type.kNormallyOpen)
+        .reverseLimitSwitchTriggerBehavior(LimitSwitchConfig.Behavior.kStopMovingMotor);
 
         neoMotor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     }

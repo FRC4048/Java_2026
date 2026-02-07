@@ -47,16 +47,16 @@ import java.io.File;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
-  private final CommandJoystick driveJoystick = new CommandJoystick(Constants.DRIVE_JOYSTICK_PORT);
-  private final CommandJoystick steerJoystick = new CommandJoystick(Constants.STEER_JOYSTICK_PORT);
-  // Instantiate the autochooser.
-  private final AutoChooser autoChooser = new AutoChooser();
-  // The robot's subsystems and commands are defined here...
+    private final CommandJoystick driveJoystick = new CommandJoystick(Constants.DRIVE_JOYSTICK_PORT);
+    private final CommandJoystick steerJoystick = new CommandJoystick(Constants.STEER_JOYSTICK_PORT);
+    // Instantiate the autochooser.
+    private final AutoChooser autoChooser = new AutoChooser();
+    // The robot's subsystems and commands are defined here...
     //private final TiltSubsystem tiltSubsystem;
     private final IntakeSubsystem intakeSubsystem;
-  private final FeederSubsystem feederSubsystem;
+    private final FeederSubsystem feederSubsystem;
     private RobotVisualizer robotVisualizer = null;
-  private final HopperSubsystem hopperSubsystem;
+    private final HopperSubsystem hopperSubsystem;
     private SwerveSubsystem drivebase = null;
     private GyroSubsystem gyroSubsystem = null;
     private ShootingState shootState = new ShootingState(ShootState.STOPPED);
@@ -103,11 +103,11 @@ public class RobotContainer {
             default -> {
                 throw new RuntimeException("Did not specify Robot Mode");
             }
-       }
+        }
     configureBindings();
     putShuffleboardCommands();
-    
-  }
+    }
+
     /**
      * Use this method to define your trigger->command mappings. Triggers can be created via the
      * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with an arbitrary
@@ -143,15 +143,15 @@ public class RobotContainer {
 
     public void putShuffleboardCommands() {
         if (Constants.DEBUG) {
-        /*SmartDashboard.putData(
+            /*SmartDashboard.putData(
                 "Spin Roller",
                 new SpinRoller(rollerSubsystem));
 
-        SmartDashboard.putData(
+            SmartDashboard.putData(
                 "Tilt Up",
                 new TiltUp(tiltSubsystem));
 
-        SmartDashboard.putData(
+            SmartDashboard.putData(
                 "Tilt Down",
                 new TiltDown(tiltSubsystem));*/
           
@@ -197,29 +197,30 @@ public class RobotContainer {
                     new SetShootingState(shootState, ShootState.SHUTTLING));
             
         }
+
     //basic drive command
-        if(!Constants.TESTBED){
+        if(!Constants.TESTBED) {
             Command driveDirectionTime = new DriveDirectionTime(drivebase, 0.1,0.1, true, 1);
             SmartDashboard.putData("Drive Command", driveDirectionTime);
         }
     }
 
-  /**
-   * Use this to pass the autonomous command to the main {@link Robot} class.
-   *
-   * @return the command to run in autonomous
-   */
-  public Command getAutonomousCommand() {
-    return autoChooser.getCommand();
-  }
+    /**
+     * Use this to pass the autonomous command to the main {@link Robot} class.
+     *
+     * @return the command to run in autonomous
+     */
+    public Command getAutonomousCommand() {
+      return autoChooser.getCommand();
+    }
   
-  public RobotVisualizer getRobotVisualizer() {
-    return robotVisualizer;
-  }
+    public RobotVisualizer getRobotVisualizer() {
+      return robotVisualizer;
+    }
 
-  public AutoChooser getAutoChooser() {
-    return autoChooser;
-  }
+    public AutoChooser getAutoChooser() {
+      return autoChooser;
+    }
 
     public IntakeSubsystem getIntakeSubsystem() {
         return intakeSubsystem;

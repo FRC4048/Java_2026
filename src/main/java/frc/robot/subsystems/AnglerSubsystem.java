@@ -64,6 +64,8 @@ public class AnglerSubsystem extends SubsystemBase {
             double encoderLow,
             double angleHigh,
             double angleLow) {
+
+        //Range Translate Code
         double multipler = (encoderHigh - encoderLow) / (angleHigh - angleLow);
         double targetRotations = targetAngle * multipler - (multipler * angleHigh - encoderHigh);
         return MathUtil.clamp(targetRotations, encoderLow, encoderHigh);

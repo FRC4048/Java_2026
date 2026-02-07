@@ -27,6 +27,11 @@ public class RealSparkMaxPidMotorIo extends RealSparkMaxIo implements SparkMaxPi
     }
 
     @Override
+    public void setPidVelocity(double velocity) {
+        pidMotor.setPidVelocity(velocity);
+    }
+
+    @Override
     public void setPid(double pidP, double pidI, double pidD) {
         pidMotor.setPid(pidP, pidI, pidD);
     }

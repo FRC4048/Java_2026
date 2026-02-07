@@ -43,6 +43,12 @@ public class AnglerSubsystem extends SubsystemBase {
         io.setPidPosition(targetRotations);
     }
 
+    public void setAngle(double targetAngle) {
+        double multipler = (Constants.ANGLERENCODERMAX - Constants.ANGLERENCODERMIN) / (Constants.ANGLERANGLEMAX - Constants.ANGLERANGLEMIN);
+        double targetRotations = targetAngle * multipler + (multipler * Constants.ANGLERANGLEMAX - );
+        io.setPosition(mul)
+    }
+
     public void stopMotors() {
         io.stopMotor();
     }

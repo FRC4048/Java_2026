@@ -13,5 +13,10 @@ package frc.robot.constants;
  * constants are needed, to reduce verbosity.
  */
 
-public class Constants extends Constants2026 {}
+public class Constants extends Constants2026 {
+
+	public static final int ANGLERENCODERMAX = 0;
+    public static final int ANGLERENCODERMIN = 0;
+    public static final int ANGLERANGLEMAX = 0;
+    public static final int ANGLERANGLEMIN = 0;}
 

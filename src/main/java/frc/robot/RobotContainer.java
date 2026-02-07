@@ -57,7 +57,7 @@ public class RobotContainer {
     private GyroSubsystem gyroSubsystem = null;
     private final CommandJoystick driveJoystick = new CommandJoystick(Constants.DRIVE_JOYSTICK_PORT);
     private final CommandJoystick steerJoystick = new CommandJoystick(Constants.STEER_JOYSTICK_PORT);
-    private ShootingState shootState = new ShootingState(ShootState.STOPPED);
+    private ShootingState shootState = new ShootingState(ShootState.SHOOTING_HUB);
 
     // Replace with CommandPS4Controller or CommandJoystick if needed
     //new CommandXboxController(OperatorConstants.kDriverControllerPort);private final CommandXboxController controller = new CommandXboxController(Constants.XBOX_CONTROLLER_PORT);

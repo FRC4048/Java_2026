@@ -24,28 +24,29 @@ public class AimAngler extends LoggableCommand {
     private final Supplier<Pose2d> poseSupplier;
     private final ShootingState shootingState;
 
-    // =========================
-    // TUNING CONSTANTS (EASY EDIT)
-    // =========================
-
+    //TODO: Test and change numbers for real robot
+    
     // Where we want to aim relative to the field for each shooting mode.
     private static final Pose2d HUB_TARGET_POSE = new Pose2d(4.0, 4.0, Rotation2d.fromDegrees(0));
     private static final Pose2d SHUTTLE_TARGET_POSE = new Pose2d(1.0, 7.0, Rotation2d.fromDegrees(0));
 
     private static final String MANUAL_POSE_X_KEY = "angler/ManualPoseX";
     private static final String MANUAL_POSE_Y_KEY = "angler/ManualPoseY";
+    private static final String CALC_ROTATIONS_KEY = "angler/CalculatedRotations";
+    private static final String CALC_DISTANCE_KEY = "angler/CalculatedDistanceMeters";
+    private static final String USING_MANUAL_POSE_KEY = "angler/UsingManualPose";
 
     private static final AimConfig HUB_CONFIG = new AimConfig(
             HUB_TARGET_POSE,
             0.00,
-            0.05,
+            6,
             Constants.ANGLER_LOW_ROTATIONS,
             Constants.ANGLER_HIGH_ROTATIONS);
 
     private static final AimConfig SHUTTLE_CONFIG = new AimConfig(
             SHUTTLE_TARGET_POSE,
-            -0.05,
-            0.03,
+            0,
+            6,
             Constants.ANGLER_LOW_ROTATIONS,
             Constants.ANGLER_HIGH_ROTATIONS);
 
@@ -62,10 +63,12 @@ public class AimAngler extends LoggableCommand {
     @Override
     public void execute() {
         Pose2d robotPose = poseSupplier.get();
-        if (shouldUseManual(robotPose)) {
+        boolean usingManual = shouldUseManual(robotPose);
+        if (usingManual) {
             robotPose = getManualPose();
         }
 
+        SmartDashboard.putBoolean(USING_MANUAL_POSE_KEY, usingManual);
         ShootState state = shootingState.getShootState();
         handleState(state, robotPose);
     }
@@ -90,13 +93,13 @@ public class AimAngler extends LoggableCommand {
         double rotations = config.baseRotations + (config.rotationsPerMeter * distanceMeters);
         double clampedRotations = MathUtil.clamp(rotations, config.minRotations, config.maxRotations);
 
+        SmartDashboard.putNumber(CALC_DISTANCE_KEY, distanceMeters);
+        SmartDashboard.putNumber(CALC_ROTATIONS_KEY, clampedRotations);
         angler.setPosition(clampedRotations);
     }
 
     private boolean shouldUseManual(Pose2d robotPose) {
-        return Constants.TESTBED
-                || Constants.currentMode == Constants.Mode.SIM
-                || robotPose == null;
+        return (Constants.currentMode == Constants.Mode.SIM) || Constants.TESTBED;
     }
 
     private Pose2d getManualPose() {

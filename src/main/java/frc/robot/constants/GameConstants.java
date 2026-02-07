@@ -68,13 +68,13 @@ public class GameConstants {
     public static final int NEO_CURRENT_LIMIT = 20;
 
     // angler (turret) PID
-    public static final double ANGLER_P = 0.01;
+    public static final double ANGLER_P = 0.05;
     public static final double ANGLER_I = 0.0;
     public static final double ANGLER_D = 0.0;
     public static final double ANGLER_FF = 0.0;
     public static final double ANGLER_HOME_ROTATIONS = 0.0;
-    public static final double ANGLER_LOW_ROTATIONS = -0.25;
-    public static final double ANGLER_HIGH_ROTATIONS = 0.25;
+    public static final double ANGLER_LOW_ROTATIONS = -50;
+    public static final double ANGLER_HIGH_ROTATIONS = 50;
     public static final double ANGLER_FIXED_ROTATIONS = 0.1;
     
     //swerve config

@@ -18,21 +18,24 @@ import frc.robot.utils.logging.io.pidmotor.SparkMaxPidMotor;
 import frc.robot.utils.logging.io.pidmotor.SparkMaxPidMotorIo;
 import frc.robot.utils.simulation.ArmParameters;
 import frc.robot.utils.simulation.ArmSimulator;
-import frc.robot.utils.simulation.MotorSimulator;
 import frc.robot.utils.simulation.RobotVisualizer;
+import frc.robot.utils.motor.TunablePIDManager;
 
 public class AnglerSubsystem extends SubsystemBase {
 
     public static final String LOGGING_NAME = "AnglerSubsystem";
 
     private final SparkMaxPidMotorIo io;
+    private final TunablePIDManager pidManager;
 
     public AnglerSubsystem(SparkMaxPidMotorIo io) {
         this.io = io;
+        this.pidManager = new TunablePIDManager(LOGGING_NAME, io, createPidConfig());
     }
 
     @Override
     public void periodic() {
+        pidManager.periodic();
         io.periodic();
     }
 

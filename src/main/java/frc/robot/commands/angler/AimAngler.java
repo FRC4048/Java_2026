@@ -16,7 +16,7 @@ import java.util.function.Supplier;
  * Default command that aims the angler based on robot pose and shooting state.
  *
  * NOTE: All numbers here are placeholders for initial testing and should be
- * tuned on the real robot.
+ * tuned on the real robot. This is just experimental, and probably shouldn't be used in main currently.
  */
 public class AimAngler extends LoggableCommand {
 
@@ -25,7 +25,7 @@ public class AimAngler extends LoggableCommand {
     private final ShootingState shootingState;
 
     //TODO: Test and change numbers for real robot
-    
+
     // Where we want to aim relative to the field for each shooting mode.
     private static final Pose2d HUB_TARGET_POSE = new Pose2d(4.0, 4.0, Rotation2d.fromDegrees(0));
     private static final Pose2d SHUTTLE_TARGET_POSE = new Pose2d(1.0, 7.0, Rotation2d.fromDegrees(0));

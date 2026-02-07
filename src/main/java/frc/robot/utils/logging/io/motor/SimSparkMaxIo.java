@@ -5,7 +5,6 @@ import com.revrobotics.spark.SparkMax;
 import frc.robot.constants.Constants;
 import frc.robot.utils.logging.input.MotorLoggableInputs;
 import frc.robot.utils.simulation.Simulator;
-import org.littletonrobotics.junction.mechanism.LoggedMechanismLigament2d;
 
 /**
  * IO Implementation for a simulated SparkMax IO controller.

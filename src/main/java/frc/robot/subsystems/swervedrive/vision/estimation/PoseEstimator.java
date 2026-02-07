@@ -19,6 +19,7 @@ import frc.robot.subsystems.swervedrive.vision.truster.BasicVisionFilter;
 import frc.robot.subsystems.swervedrive.vision.truster.SquareVisionTruster;
 import frc.robot.subsystems.swervedrive.vision.truster.VisionMeasurement;
 import frc.robot.utils.Apriltag;
+import frc.robot.utils.logging.LoggableIO;
 import frc.robot.utils.math.ArrayUtils;
 
 import java.util.Arrays;

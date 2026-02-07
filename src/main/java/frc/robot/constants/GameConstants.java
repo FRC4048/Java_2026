@@ -78,6 +78,7 @@ public class GameConstants {
     public static final double SET_MODULE_ENCODER_AUTO_SYNCHRONIZE_DEADBAND = 1;
 
     // turret pan angle and launch angle calculations constants
+    public static final double GRAVITY = 9.81;
     public static final double HUB_HEIGHT = 1.83;
     public static final double SHOOTER_HEIGHT = 0.5;
     public static final double BLUE_HUB_X_POSITION = 4.6256;

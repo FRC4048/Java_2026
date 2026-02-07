@@ -20,29 +20,23 @@ public class TurretCalculations {
     // All angles are in radians, all distances are in meters, all velocities in m/s
 
 
+    // pan angle is what we are trying to found - the angle between the turret and the right side of the robot
     // panAngleUnadjusted gives the turret's pan angle assuming the robot is facing directly to the right 
     // basically, it doesn't account for the robot's rotation
-    private static double panAngle;
-
     // pan angle is what we are trying to found - the angle between the turret and the right side of the robot
-    private static double panAngleUnadjusted;
-
     // hubPosX and hubPosY are given values from the constants file -- gives the x and y positions of the hub (in meters)
-    private static double hubPosX;
-    private static double hubPosY;
-
     // turretPosX and turretPosY are the x and y values of the center of the turret, in meters, from the origin
-    private static double turretPosX;
-    private static double turretPosY;
-
     // robotPosX and robotPosY are given values from the robot pose, the center of the robot
     // robotRotation is the angle between the horizontal (by the alliance side chute) and the robot
     public static double calculateTurretAngle(double robotPosX, double robotPosY, double robotRotation, boolean isBlueAlliance) {
         
         // calculates the position of the turret with respect to the origin using the robot center 
         // and the constant distance between the robot center and the turret.
-        turretPosX = robotPosX + GameConstants.X_DISTANCE_BETWEEN_ROBOT_AND_TURRET;
-        turretPosY = robotPosY + GameConstants.Y_DISTANCE_BETWEEN_ROBOT_AND_TURRET;
+        double turretPosX = robotPosX + GameConstants.X_DISTANCE_BETWEEN_ROBOT_AND_TURRET;
+        double turretPosY = robotPosY + GameConstants.Y_DISTANCE_BETWEEN_ROBOT_AND_TURRET;
+
+        double hubPosX;
+        double hubPosY;
 
         if (isBlueAlliance) {
             // hub position determined by which alliance robot is on
@@ -61,14 +55,14 @@ public class TurretCalculations {
          * of the input numbers.
          * 
          */
-        panAngleUnadjusted = Math.atan2(hubPosY - turretPosY, hubPosX - turretPosX);
+        double panAngleUnadjusted = Math.atan2(hubPosY - turretPosY, hubPosX - turretPosX);
 
         /*
          * Adjusts the pan angle to account for the robot's current rotation. We subtract the
          * angle of the robot's rotation from the unadjusted angle of the turret to find the 
          * pan angle, which is the proper angle of the turret adjusted for the robot's rotation.
          */
-        panAngle = panAngleUnadjusted - robotRotation;
+        double panAngle = panAngleUnadjusted - robotRotation;
 
         return panAngle;
 

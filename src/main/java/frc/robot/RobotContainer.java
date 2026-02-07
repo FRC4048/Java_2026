@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.hopper.SpinHopper;
 import frc.robot.commands.drive.DriveDirectionTime;
 import frc.robot.commands.feeder.SpinFeeder;
+import frc.robot.commands.drive.FakeVision;
 import frc.robot.commands.intake.SpinIntake;
 import frc.robot.commands.angler.AimAngler;
 import frc.robot.commands.shooter.SetShootingState;
@@ -234,7 +235,9 @@ public class RobotContainer {
         if(!Constants.TESTBED){
             Command driveDirectionTime = new DriveDirectionTime(drivebase, 0.1,0.1, true, 1);
             SmartDashboard.putData("Drive Command", driveDirectionTime);
+            SmartDashboard.putData("Fake vision", new FakeVision(drivebase));
         }
+
     }
 
     /**

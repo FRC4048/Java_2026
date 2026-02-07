@@ -57,6 +57,45 @@ public class AnglerSubsystem extends SubsystemBase {
         io.stopMotor();
     }
 
+    /**
+     * Drive toward the forward limit switch and stop once it is pressed.
+     * Call this repeatedly from a command while homing.
+     */
+    public void runToForwardLimit() {
+        if (io.isFwdSwitchPressed()) {
+            io.stopMotor();
+            return;
+        }
+        io.set(Math.abs(Constants.ANGLER_LIMIT_SPEED));
+    }
+
+    /**
+     * Drive toward the reverse limit switch and stop once it is pressed.
+     * Call this repeatedly from a command while homing.
+     */
+    public void runToReverseLimit() {
+        if (io.isRevSwitchPressed()) {
+            io.stopMotor();
+            return;
+        }
+        io.set(-Math.abs(Constants.ANGLER_LIMIT_SPEED));
+    }
+
+    /**
+     * Reset the encoder position to zero.
+     */
+    public void resetEncoderToZero() {
+        io.resetEncoderPosition(0.0);
+    }
+
+    public boolean isAtForwardLimit() {
+        return io.isFwdSwitchPressed();
+    }
+
+    public boolean isAtReverseLimit() {
+        return io.isRevSwitchPressed();
+    }
+
     public static SparkMaxPidMotorIo createMockIo() {
         return new MockSparkMaxPidMotorIo(LOGGING_NAME, MotorLoggableInputs.allMetrics());
     }

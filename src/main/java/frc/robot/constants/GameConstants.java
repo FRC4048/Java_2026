@@ -84,6 +84,8 @@ public class GameConstants {
     public static final double ANGLER_ANGLE_LOW = -10;
     public static final double ANGLER_ANGLE_HIGH = 50;
     public static final double ANGLER_FIXED_ROTATIONS = 0.1;
+    public static final double ANGLER_LIMIT_SPEED = 0.2;
+
     
     //swerve config
     public static final TelemetryVerbosity TELEMENTRY_VERBOSITY = TelemetryVerbosity.HIGH;

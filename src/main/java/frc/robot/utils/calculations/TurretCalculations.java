@@ -61,7 +61,7 @@ public class TurretCalculations {
          * of the input numbers.
          * 
          */
-        panAngleUnadjusted = Math.atan2(hubPosY - robotPosY, hubPosX - robotPosX);
+        panAngleUnadjusted = Math.atan2(hubPosY - turretPosY, hubPosX - turretPosX);
 
         /*
          * Adjusts the pan angle to account for the robot's current rotation. We subtract the

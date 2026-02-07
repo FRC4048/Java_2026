@@ -47,7 +47,7 @@ public class SwerveSubsystem extends SubsystemBase {
      * Swerve drive object.
      */
     private final SwerveDrive swerveDrive;
-
+    private Vector<N3> variance;
     /**
      * Initialize {@link SwerveDrive} with the directory provided.
      * The SwerveIMU (which can be null) is the instance of the SwerveIMU to use. If non-null,
@@ -465,8 +465,10 @@ public class SwerveSubsystem extends SubsystemBase {
     public SwerveDrive getSwerveDrive() {
         return swerveDrive;
     }
+    public void setVariance(Vector<N3> variance){
+        this.variance = variance;
+    }
     public void addVisionMeasurement(Pose2d pose){
-        double variance = 10;
-        swerveDrive.addVisionMeasurement(pose, Timer.getFPGATimestamp(), new Vector<N3>(N3.instance).plus(VecBuilder.fill(variance, variance, variance)));
+        swerveDrive.addVisionMeasurement(pose, Timer.getFPGATimestamp(), variance);
     }
 }

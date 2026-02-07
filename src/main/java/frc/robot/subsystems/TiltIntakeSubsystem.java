@@ -22,13 +22,13 @@ import frc.robot.utils.simulation.ArmParameters;
 import frc.robot.utils.simulation.ArmSimulator;
 import frc.robot.utils.simulation.RobotVisualizer;
 
-// The Tilt subsystem extends and retracts the Algae-Go-Bye-Bye mechanism.
+// The Tilt subsystem extends and retracts the intake mechanism.
 
-public class TiltSubsystem extends SubsystemBase {
-    public static final String LOGGING_NAME = "TiltSubsystem";
+public class TiltIntakeSubsystem extends SubsystemBase {
+    public static final String LOGGING_NAME = "TiltIntakeSubsystem";
     private final SparkMaxIo io;
 
-    public TiltSubsystem(SparkMaxIo io) {
+    public TiltIntakeSubsystem(SparkMaxIo io) {
         this.io = io;
     }
 
@@ -70,7 +70,7 @@ public class TiltSubsystem extends SubsystemBase {
     }
 
     private static SparkMax createMotor() {
-        SparkMax motor = new SparkMax(Constants.TILT_MOTOR_ID, SparkLowLevel.MotorType.kBrushless);
+        SparkMax motor = new SparkMax(Constants.INTAKETILT_MOTOR_ID, SparkLowLevel.MotorType.kBrushless);
         SparkMaxConfig motorConfig = new SparkMaxConfig();
         motorConfig.idleMode(SparkBaseConfig.IdleMode.kBrake);
         motorConfig.smartCurrentLimit(Constants.NEO_CURRENT_LIMIT);

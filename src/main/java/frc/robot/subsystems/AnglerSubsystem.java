@@ -49,9 +49,24 @@ public class AnglerSubsystem extends SubsystemBase {
     }
 
     public void setAngle(double targetAngle) {
-        double multipler = (Constants.ANGLER_ENCODER_HIGH - Constants.ANGLER_ENCODER_LOW) / (Constants.ANGLER_ANGLE_HIGH - Constants.ANGLER_ANGLE_LOW);
-        double targetRotations = targetAngle * multipler - (multipler * Constants.ANGLER_ANGLE_HIGH - Constants.ANGLER_ENCODER_HIGH);
-        setPosition(MathUtil.clamp(targetRotations, Constants.ANGLER_ENCODER_LOW, Constants.ANGLER_ENCODER_HIGH));
+        double targetRotations = calculateRotationsForAngle(
+                targetAngle,
+                Constants.ANGLER_ENCODER_HIGH,
+                Constants.ANGLER_ENCODER_LOW,
+                Constants.ANGLER_ANGLE_HIGH,
+                Constants.ANGLER_ANGLE_LOW);
+        setPosition(targetRotations);
+    }
+
+    public static double calculateRotationsForAngle(
+            double targetAngle,
+            double encoderHigh,
+            double encoderLow,
+            double angleHigh,
+            double angleLow) {
+        double multipler = (encoderHigh - encoderLow) / (angleHigh - angleLow);
+        double targetRotations = targetAngle * multipler - (multipler * angleHigh - encoderHigh);
+        return MathUtil.clamp(targetRotations, encoderLow, encoderHigh);
     }
 
     public void stopMotors() {

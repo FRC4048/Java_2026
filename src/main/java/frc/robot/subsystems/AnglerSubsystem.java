@@ -39,8 +39,12 @@ public class AnglerSubsystem extends SubsystemBase {
         io.periodic();
     }
 
-    public void setPosition(double targetRotations) {
-        io.setPidPosition(targetRotations);
+/**
+   * Gets the desired Encoder Position and uses a PID controller to get the motor there
+   * Planning to add a setPosition based on an angle position soon
+   */
+    public void setPosition(double targetEncoderPosition) {
+        io.setPidPosition(targetEncoderPosition);
     }
 
     public void setAngle(double targetAngle) {
@@ -89,12 +93,12 @@ public class AnglerSubsystem extends SubsystemBase {
     private static ArmParameters createParams() {
         ArmParameters params = new ArmParameters();
         params.name = "ANGLER";
-        params.armGearing = Constants.TILT_GEARING;
-        params.armInertia = Constants.TILT_INERTIA;
-        params.armLength = Constants.TILT_LENGTH;
-        params.armMinAngle = Constants.TILT_MIN_ANGLE;
-        params.armMaxAngle = Constants.TILT_MAX_ANGLE;
-        params.armSimulateGravity = Constants.TILT_SIMULATE_GRAVITY;
+        params.armGearing = Constants.ANGLER_GEARING;
+        params.armInertia = Constants.ANGLER_INERTIA;
+        params.armLength = Constants.ANGLER_LENGTH;
+        params.armMinAngle = Constants.ANGLER_MIN_ANGLE;
+        params.armMaxAngle = Constants.ANGLER_MAX_ANGLE;
+        params.armSimulateGravity = Constants.ANGLER_SIMULATE_GRAVITY;
         return params;
     }
 }

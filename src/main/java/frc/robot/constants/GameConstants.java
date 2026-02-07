@@ -60,11 +60,17 @@ public class GameConstants {
     //Angles
     public static final Rotation2d TILT_MIN_ANGLE = Rotation2d.fromDegrees(45);
     public static final Rotation2d TILT_MAX_ANGLE = Rotation2d.fromDegrees(90);
+    public static final Rotation2d ANGLER_MIN_ANGLE = Rotation2d.fromDegrees(45);
+    public static final Rotation2d ANGLER_MAX_ANGLE = Rotation2d.fromDegrees(90);
 
     public static final double TILT_LENGTH = 0.2;
     public static final double TILT_INERTIA = 0.5;
     public static final double TILT_GEARING = 45.0;
     public static final boolean TILT_SIMULATE_GRAVITY = false;
+    public static final double ANGLER_LENGTH = 0.2;
+    public static final double ANGLER_INERTIA = 0.5;
+    public static final double ANGLER_GEARING = 45.0;
+    public static final boolean ANGLER_SIMULATE_GRAVITY = false;
     public static final int NEO_CURRENT_LIMIT = 20;
 
     // angler (turret) PID

@@ -58,7 +58,7 @@ public class RobotContainer {
     private GyroSubsystem gyroSubsystem = null;
     private final CommandJoystick driveJoystick = new CommandJoystick(Constants.DRIVE_JOYSTICK_PORT);
     private final CommandJoystick steerJoystick = new CommandJoystick(Constants.STEER_JOYSTICK_PORT);
-    private ShootingState shootState = new ShootingState(ShootState.SHOOTING_HUB);
+    private ShootingState shootState = new ShootingState(ShootState.STOPPED);
 
     // Replace with CommandPS4Controller or CommandJoystick if needed
     //new CommandXboxController(OperatorConstants.kDriverControllerPort);private final CommandXboxController controller = new CommandXboxController(Constants.XBOX_CONTROLLER_PORT);
@@ -136,11 +136,15 @@ public class RobotContainer {
         // cancelling on release.
         // m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
         // TODO: Clean this up a little - create command in method and only create the one actually needed
-        
-        anglerSubsystem.setDefaultCommand(new AimAngler(
+
+
+        //example default command for angler- disabled for now
+        if (false) {
+        new AimAngler(
                 anglerSubsystem,
                 () -> drivebase != null ? drivebase.getPose() : null,
-                shootState));
+                shootState);
+        }
 
         if(!Constants.TESTBED){
             SwerveInputStream driveAngularVelocity = SwerveInputStream.of(drivebase.getSwerveDrive(),

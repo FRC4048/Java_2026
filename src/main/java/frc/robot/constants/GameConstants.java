@@ -86,4 +86,5 @@ public class GameConstants {
     public static final int SHIFT_4_START = 55;
     public static final int ENDGAME_START = 30;
 
+    public static final double VISION_CONSISTANCY_THRESHOLD = 0.25;
 }

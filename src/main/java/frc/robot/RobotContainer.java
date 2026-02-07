@@ -114,11 +114,6 @@ public class RobotContainer {
             }
         }
 
-        anglerSubsystem.setDefaultCommand(new AimAngler(
-                anglerSubsystem,
-                () -> drivebase != null ? drivebase.getPose() : null,
-                shootState));
-
         configureBindings();
         putShuffleboardCommands();
     }
@@ -141,6 +136,12 @@ public class RobotContainer {
         // cancelling on release.
         // m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
         // TODO: Clean this up a little - create command in method and only create the one actually needed
+        
+        anglerSubsystem.setDefaultCommand(new AimAngler(
+                anglerSubsystem,
+                () -> drivebase != null ? drivebase.getPose() : null,
+                shootState));
+
         if(!Constants.TESTBED){
             SwerveInputStream driveAngularVelocity = SwerveInputStream.of(drivebase.getSwerveDrive(),
                             () -> driveJoystick.getY() * -1,
@@ -156,6 +157,7 @@ public class RobotContainer {
 
     public void putShuffleboardCommands() {
         if (Constants.DEBUG) {
+                
             /*SmartDashboard.putData(
                     "Spin Roller",
                     new SpinRoller(rollerSubsystem));

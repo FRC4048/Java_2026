@@ -22,7 +22,7 @@ import frc.robot.utils.simulation.ArmParameters;
 import frc.robot.utils.simulation.ArmSimulator;
 import frc.robot.utils.simulation.RobotVisualizer;
 
-// The Tilt subsystem extends and retracts the intake mechanism.
+// The Tilt subsystem extends and retracts the tilt-intake mechanism.
 
 public class TiltIntakeSubsystem extends SubsystemBase {
     public static final String LOGGING_NAME = "TiltIntakeSubsystem";
@@ -42,12 +42,12 @@ public class TiltIntakeSubsystem extends SubsystemBase {
 
     public boolean isAtTop() {
         // Arm motor is inverted - rev switch is at top
-        return io.isRevSwitchPressed();
+        return io.isRetracted();
     }
 
     public boolean isAtBottom() {
         // Arm motor is inverted - fwd switch is at bottom
-        return io.isFwdSwitchPressed();
+        return io.isDeployed();
     }
 
     @Override

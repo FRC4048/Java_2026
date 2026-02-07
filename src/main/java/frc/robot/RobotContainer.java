@@ -19,6 +19,8 @@ import frc.robot.commands.feeder.SpinFeeder;
 import frc.robot.commands.drive.DriveDirectionTime;
 import frc.robot.commands.intake.SpinIntake;
 import frc.robot.commands.shooter.SetShootingState;
+import frc.robot.commands.tilt.TiltDown;
+import frc.robot.commands.tilt.TiltUp;
 import frc.robot.constants.Constants;
 import frc.robot.subsystems.HopperSubsystem;
 import frc.robot.subsystems.FeederSubsystem;
@@ -26,8 +28,8 @@ import frc.robot.constants.ShootingState;
 import frc.robot.constants.ShootingState.ShootState;
 import frc.robot.subsystems.GyroSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.TiltIntakeSubsystem;
 //import frc.robot.subsystems.RollerSubsystem;
-//import frc.robot.subsystems.TiltSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import frc.robot.utils.logging.io.gyro.RealGyroIo;
 import frc.robot.utils.logging.io.gyro.ThreadedGyro;
@@ -47,7 +49,7 @@ import java.io.File;
 public class RobotContainer {
     // The robot's subsystems and commands are defined here...
     //private final RollerSubsystem rollerSubsystem;
-    //private final TiltSubsystem tiltSubsystem;
+    private final TiltIntakeSubsystem tiltintakeSubsystem;
     private final IntakeSubsystem intakeSubsystem;
   private final FeederSubsystem feederSubsystem;
     private RobotVisualizer robotVisualizer = null;
@@ -69,7 +71,7 @@ public class RobotContainer {
         switch (Constants.currentMode) {
             case REAL -> {
                 //rollerSubsystem = new RollerSubsystem(RollerSubsystem.createRealIo());
-                //tiltSubsystem = new TiltSubsystem(TiltSubsystem.createRealIo());
+                tiltintakeSubsystem = new TiltIntakeSubsystem(TiltIntakeSubsystem.createRealIo());
                 intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createRealIo(), IntakeSubsystem.createRealDeploymentSwitch());
                 hopperSubsystem = new HopperSubsystem(HopperSubsystem.createRealIo());
 
@@ -84,7 +86,7 @@ public class RobotContainer {
             }
             case REPLAY -> {
                 //rollerSubsystem = new RollerSubsystem(RollerSubsystem.createMockIo());
-                //tiltSubsystem = new TiltSubsystem(TiltSubsystem.createMockIo());
+                tiltintakeSubsystem = new TiltIntakeSubsystem(TiltIntakeSubsystem.createMockIo());
                 intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createMockIo(), IntakeSubsystem.createMockDeploymentSwitch());
                 hopperSubsystem = new HopperSubsystem(HopperSubsystem.createMockIo());
                 feederSubsystem = new FeederSubsystem(FeederSubsystem.createMockIo());
@@ -95,7 +97,7 @@ public class RobotContainer {
             case SIM -> {
                 robotVisualizer = new RobotVisualizer();
                 //rollerSubsystem = new RollerSubsystem(RollerSubsystem.createSimIo(robotVisualizer));
-                //tiltSubsystem = new TiltSubsystem(TiltSubsystem.createSimIo(robotVisualizer));
+                tiltintakeSubsystem = new TiltIntakeSubsystem(TiltIntakeSubsystem.createSimIo(robotVisualizer));
                 intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createSimIo(robotVisualizer), IntakeSubsystem.createSimDeploymentSwitch());
                 hopperSubsystem = new HopperSubsystem(HopperSubsystem.createSimIo(robotVisualizer));
                 feederSubsystem = new FeederSubsystem(FeederSubsystem.createSimIo(robotVisualizer));
@@ -150,14 +152,14 @@ public class RobotContainer {
         /*SmartDashboard.putData(
                 "Spin Roller",
                 new SpinRoller(rollerSubsystem));
-
+        */
         SmartDashboard.putData(
                 "Tilt Up",
-                new TiltUp(tiltSubsystem));
+                new TiltUp(tiltintakeSubsystem));
 
         SmartDashboard.putData(
                 "Tilt Down",
-                new TiltDown(tiltSubsystem));*/
+                new TiltDown(tiltintakeSubsystem));
           
             // TODO: These commands do not REQUIRE the subsystem therefore cannot be used in production
             SmartDashboard.putData(

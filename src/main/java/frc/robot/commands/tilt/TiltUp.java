@@ -2,16 +2,16 @@ package frc.robot.commands.tilt;
 
 import edu.wpi.first.wpilibj.Timer;
 import frc.robot.constants.Constants;
-import frc.robot.subsystems.TiltSubsystem;
+import frc.robot.subsystems.TiltIntakeSubsystem;
 import frc.robot.utils.logging.commands.LoggableCommand;
-// This command makes thing tilt up
+// This command makes intake tilt up
 
-// This command tilts the thing up.
+// This command tilts the intake up.
 public class TiltUp extends LoggableCommand {
-    private final TiltSubsystem subsystem;
+    private final TiltIntakeSubsystem subsystem;
     private final Timer timer;
 
-    public TiltUp(TiltSubsystem subsystem) {
+    public TiltUp(TiltIntakeSubsystem subsystem) {
         timer = new Timer();
         this.subsystem = subsystem;
         addRequirements(subsystem);

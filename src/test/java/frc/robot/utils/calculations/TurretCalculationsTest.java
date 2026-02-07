@@ -15,16 +15,6 @@ public class TurretCalculationsTest {
 
     private int index;
 
-    @BeforeEach // this method will run before each test
-    void setup() {
-        
-    }
-
-    @AfterEach // this method will run after each test
-    void shutdown() throws Exception {
-        
-    }
-
     private double toRadians(double degree) {
         return degree * Math.PI / 180;
     }

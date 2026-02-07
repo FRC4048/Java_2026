@@ -60,12 +60,28 @@ public class GameConstants {
     //Angles
     public static final Rotation2d TILT_MIN_ANGLE = Rotation2d.fromDegrees(45);
     public static final Rotation2d TILT_MAX_ANGLE = Rotation2d.fromDegrees(90);
+    public static final Rotation2d ANGLER_MIN_ANGLE = Rotation2d.fromDegrees(45);
+    public static final Rotation2d ANGLER_MAX_ANGLE = Rotation2d.fromDegrees(90);
 
     public static final double TILT_LENGTH = 0.2;
     public static final double TILT_INERTIA = 0.5;
     public static final double TILT_GEARING = 45.0;
     public static final boolean TILT_SIMULATE_GRAVITY = false;
+    public static final double ANGLER_LENGTH = 0.2;
+    public static final double ANGLER_INERTIA = 0.5;
+    public static final double ANGLER_GEARING = 45.0;
+    public static final boolean ANGLER_SIMULATE_GRAVITY = false;
     public static final int NEO_CURRENT_LIMIT = 20;
+
+    // angler (turret) PID
+    public static final double ANGLER_P = 0.05;
+    public static final double ANGLER_I = 0.0;
+    public static final double ANGLER_D = 0.0;
+    public static final double ANGLER_FF = 0.0;
+    public static final double ANGLER_HOME_ROTATIONS = 0.0; //Where Angler usually is
+    public static final double ANGLER_LOW_ROTATIONS = -50; //Lowest position of Angler
+    public static final double ANGLER_HIGH_ROTATIONS = 50; //Highest position of Angler
+    public static final double ANGLER_FIXED_ROTATIONS = 0.1; //Fixed position of Angler in Fixed ShootState
     
     //swerve config
     public static final TelemetryVerbosity TELEMENTRY_VERBOSITY = TelemetryVerbosity.HIGH;
@@ -78,6 +94,7 @@ public class GameConstants {
     public static final double SET_MODULE_ENCODER_AUTO_SYNCHRONIZE_DEADBAND = 1;
 
     // turret pan angle and launch angle calculations constants
+    public static final double GRAVITY = 9.81;
     public static final double HUB_HEIGHT = 1.83;
     public static final double SHOOTER_HEIGHT = 0.5;
     public static final double BLUE_HUB_X_POSITION = 4.6256;

@@ -42,12 +42,14 @@ public class AnglerSubsystem extends SubsystemBase {
 
 /**
    * Gets the desired Encoder Position and uses a PID controller to get the motor there
-   * Planning to add a setPosition based on an angle position soon
    */
     public void setPosition(double targetEncoderPosition) {
         io.setPidPosition(targetEncoderPosition);
     }
 
+/**
+   * Gets the desired Angle Position and uses a PID controller to get the motor there
+   */
     public void setAngle(double targetAngle) {
         double targetRotations = calculateRotationsForAngle(
                 targetAngle,
@@ -58,6 +60,7 @@ public class AnglerSubsystem extends SubsystemBase {
         setPosition(targetRotations);
     }
 
+    //Range translate code with a clamp
     public static double calculateRotationsForAngle(
             double targetAngle,
             double encoderHigh,
@@ -65,7 +68,6 @@ public class AnglerSubsystem extends SubsystemBase {
             double angleHigh,
             double angleLow) {
 
-        //Range Translate Code
         double multipler = (encoderHigh - encoderLow) / (angleHigh - angleLow);
         double targetRotations = targetAngle * multipler - (multipler * angleHigh - encoderHigh);
         return MathUtil.clamp(targetRotations, encoderLow, encoderHigh);

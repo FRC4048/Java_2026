@@ -139,8 +139,6 @@ public class RobotContainer {
                     .deadband(Constants.DEADBAND)
                     .scaleTranslation(0.8)
                     .allianceRelativeControl(true);
-            SwerveInputStream driveRobotOriented = driveAngularVelocity.copy().robotRelative(true)
-                    .allianceRelativeControl(false);
             Command driveFieldOrientedAnglularVelocity = drivebase.driveFieldOriented(driveAngularVelocity);
             drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity);
         }

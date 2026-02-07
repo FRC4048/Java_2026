@@ -37,6 +37,16 @@ public class MockSparkMaxIo extends BaseIoImpl<MotorLoggableInputs> implements S
     public boolean isRevSwitchPressed() {
         return getInputs().getRevLimit();
     }
+    @Override
+    public boolean isDeployed() {
+        return getInputs().getFwdLimit();
+    }
+
+    @Override
+    public boolean isRetracted() {
+        return getInputs().getRevLimit();
+    }
+    
 
     @Override
     protected void updateInputs(MotorLoggableInputs inputs) {

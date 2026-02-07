@@ -51,4 +51,16 @@ public class RealSparkMaxIo extends BaseIoImpl<MotorLoggableInputs> implements S
     protected void updateInputs(MotorLoggableInputs inputs) {
         inputs.fromHardware(motor);
     }
+
+    @Override
+    public boolean isRetracted() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'isRetracted'");
+    }
+
+    @Override
+    public boolean isDeployed() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'isDeployed'");
+    }
 }

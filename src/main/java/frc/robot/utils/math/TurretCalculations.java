@@ -1,4 +1,4 @@
-package frc.robot.utils.calculations;
+package frc.robot.utils.math;
 
 import frc.robot.constants.GameConstants;
 
@@ -25,7 +25,7 @@ public class TurretCalculations {
     // basically, it doesn't account for the robot's rotation
     // pan angle is what we are trying to found - the angle between the turret and the right side of the robot
     // hubPosX and hubPosY are given values from the constants file -- gives the x and y positions of the hub (in meters)
-    // turretPosX and turretPosY are the x and y values of the center of the turret, in meters, from the origin
+    // turretPosX and turretPosY is the field position of the turret
     // robotPosX and robotPosY are given values from the robot pose, the center of the robot
     // robotRotation is the angle between the horizontal (by the alliance side chute) and the robot
     public static double calculateTurretAngle(double robotPosX, double robotPosY, double robotRotation, boolean isBlueAlliance) {

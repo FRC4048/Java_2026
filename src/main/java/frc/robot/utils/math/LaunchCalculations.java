@@ -1,4 +1,4 @@
-package frc.robot.utils.calculations;
+package frc.robot.utils.math;
 
 import frc.robot.constants.GameConstants;
 

@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.hopper.SpinHopper;
 import frc.robot.commands.feeder.SpinFeeder;
 import frc.robot.commands.drive.DriveDirectionTime;
+import frc.robot.commands.drive.FakeVision;
 import frc.robot.commands.intake.SpinIntake;
 import frc.robot.commands.shooter.SetShootingState;
 import frc.robot.constants.Constants;
@@ -138,8 +139,6 @@ public class RobotContainer {
                     .deadband(Constants.DEADBAND)
                     .scaleTranslation(0.8)
                     .allianceRelativeControl(true);
-            SwerveInputStream driveRobotOriented = driveAngularVelocity.copy().robotRelative(true)
-                    .allianceRelativeControl(false);
             Command driveFieldOrientedAnglularVelocity = drivebase.driveFieldOriented(driveAngularVelocity);
             drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity);
         }
@@ -205,7 +204,9 @@ public class RobotContainer {
         if(!Constants.TESTBED){
             Command driveDirectionTime = new DriveDirectionTime(drivebase, 0.1,0.1, true, 1);
             SmartDashboard.putData("Drive Command", driveDirectionTime);
+            SmartDashboard.putData("Fake vision", new FakeVision(drivebase));
         }
+
     }
 
     /**

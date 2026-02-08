@@ -90,7 +90,8 @@ public class Robot extends LoggedRobot {
                                   drive::followTrajectory, 
                                   true, 
                                   robotContainer.getDriveBase());
-    path = autoFactory.trajectoryCmd("AnotherPath");
+    path = autoFactory.trajectoryCmd("ExamplePath");
+
   }
 
   public static RobotMode getMode() {

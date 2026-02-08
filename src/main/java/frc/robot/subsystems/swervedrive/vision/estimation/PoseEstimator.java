@@ -38,6 +38,7 @@ public class PoseEstimator {
   private final SwerveModule backRight;*/
  // private final LoggableSystem<LoggableIO<ApriltagInputs>, ApriltagInputs> apriltagSystem;
   private int invalidCounter = 0;
+  private final apriltagsmth aprilTagSystem;
 
   /* standard deviation of robot states, the lower the numbers arm, the more we trust odometry */
   public static final Vector<N3> stateStdDevs1 = VecBuilder.fill(0.075, 0.075, 0.001);
@@ -59,12 +60,12 @@ public class PoseEstimator {
       SwerveModule backRightMotor,*/
       SwerveDriveKinematics kinematics,
       SwerveSubsystem drivebase,
-      double initGyroValueDeg) {
+      double initGyroValueDeg,apriltagsmth aprilTagSystem) {
    /*this.frontLeft = frontLeftMotor;
     this.frontRight = frontRightMotor;
     this.backLeft = backLeftMotor;
     this.backRight = backRightMotor;*/
-    this.apriltagSystem;//create new april tag object here;
+    this.apriltagSystem = aprilTagSystem;//create new april tag object here;
     /*OdometryMeasurement initMeasurement =
         new OdometryMeasurement(
             new SwerveModulePosition[] {

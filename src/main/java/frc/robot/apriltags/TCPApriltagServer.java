@@ -39,4 +39,5 @@ public class TCPApriltagServer extends TCPServer<ApriltagReading> {
         }
         return new ApriltagReading(posX, posY, poseYaw, distanceToTag, apriltagNumber, timestamp, now);
     }
+
 }

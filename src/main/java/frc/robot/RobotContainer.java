@@ -11,6 +11,8 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.commands.AddTunableApriltagReading;
+import frc.robot.commands.AddApriltagReading;
 import frc.robot.commands.hopper.SpinHopper;
 import frc.robot.commands.feeder.SpinFeeder;
 import frc.robot.commands.drive.DriveDirectionTime;
@@ -35,6 +37,7 @@ import swervelib.SwerveInputStream;
 import swervelib.imu.SwerveIMU;
 import frc.robot.utils.logging.io.BaseIoImpl;
 import frc.robot.apriltags.ApriltagInputs;
+import frc.robot.apriltags.ApriltagReading;
 import frc.robot.apriltags.MockApriltagIo;
 import frc.robot.apriltags.TCPApriltagIo;
 
@@ -105,7 +108,7 @@ public class RobotContainer {
                 intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createSimIo(robotVisualizer), IntakeSubsystem.createSimDeploymentSwitch());
                 hopperSubsystem = new HopperSubsystem(HopperSubsystem.createSimIo(robotVisualizer));
                 feederSubsystem = new FeederSubsystem(FeederSubsystem.createSimIo(robotVisualizer));
-                apriltagSubsystem = new ApriltagSubsystem(ApriltagSubsystem.createMockIo());
+                apriltagSubsystem = new ApriltagSubsystem(ApriltagSubsystem.createSimIo());
                 // No GyroSubsystem in REPLAY for now
                 // create the drive subsystem with null gyro (use default json)
                 drivebase = !Constants.TESTBED ? new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "YAGSL"), null) : null;
@@ -207,6 +210,9 @@ public class RobotContainer {
             SmartDashboard.putData(
                     "Shooting State: Shuttling",
                     new SetShootingState(shootState, ShootState.SHUTTLING));
+
+            SmartDashboard.putData("AddTunedApriltagReading", new AddTunableApriltagReading(apriltagSubsystem));
+            SmartDashboard.putData("AddApriltagReading", new AddApriltagReading(apriltagSubsystem,new ApriltagReading(0, 0, 0, 0, 0, 0, 0)));
             
         }
     //basic drive command

@@ -7,13 +7,12 @@ import frc.robot.utils.logging.io.BaseIoImpl;
 import java.util.Queue;
 import org.littletonrobotics.junction.Logger;
 
-public class TCPApriltagIo extends BaseIoImpl<ApriltagInputs> implements ApriltagIO{
-    private final TCPApriltagServer server;
+public class SimApriltagIO extends BaseIoImpl<ApriltagInputs> implements ApriltagIO{
+    private final SimTCPServer server;
 
-    public TCPApriltagIo(String name, ApriltagInputs inputs) {
+    public SimApriltagIO(String name, ApriltagInputs inputs) {
         super(name, inputs);
-        server = new TCPApriltagServer(Constants.TCP_SERVER_PORT);
-        server.start();
+        server = new SimTCPServer(Constants.TCP_SERVER_PORT);
     }
 
     @Override
@@ -51,6 +50,7 @@ public class TCPApriltagIo extends BaseIoImpl<ApriltagInputs> implements Aprilta
                             Rotation2d.fromDegrees(measurement.poseYaw()));
         }
     }
+
     @Override
     public void addReading(ApriltagReading reading) {
         server.addReading(reading);

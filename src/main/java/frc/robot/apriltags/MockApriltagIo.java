@@ -8,4 +8,6 @@ public class MockApriltagIo extends BaseIoImpl<ApriltagInputs> implements Aprilt
     }
     @Override
     protected void updateInputs(ApriltagInputs inputs) {}
+    @Override
+    public void addReading(ApriltagReading reading) {}
 }

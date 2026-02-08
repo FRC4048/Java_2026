@@ -1,10 +1,7 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.apriltags.ApriltagIO;
-import frc.robot.apriltags.ApriltagInputs;
-import frc.robot.apriltags.MockApriltagIo;
-import frc.robot.apriltags.TCPApriltagIo;
+import frc.robot.apriltags.*;
 import frc.robot.utils.logging.io.BaseIoImpl;
 
 public class ApriltagSubsystem extends SubsystemBase {
@@ -24,6 +21,13 @@ public class ApriltagSubsystem extends SubsystemBase {
         return new MockApriltagIo(LOGGING_NAME, new ApriltagInputs());
     }
 
+    public static ApriltagIO createSimIo() {
+        return new SimApriltagIO(LOGGING_NAME, new ApriltagInputs());
+    }
+
+    public void addSimReading(ApriltagReading reading) {
+        io.addReading(reading);
+    }
     @Override
     public void periodic() {
         io.periodic();

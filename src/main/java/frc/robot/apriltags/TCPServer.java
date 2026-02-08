@@ -20,7 +20,7 @@ public abstract class TCPServer<T> extends Thread {
     private DataInputStream dataInputStream;
     private BufferedInputStream bufferedInputStream;
     private boolean running = false;
-    private final LinkedTransferQueue<T> readings = new LinkedTransferQueue<>();
+    protected final LinkedTransferQueue<T> readings = new LinkedTransferQueue<>();
 
     /**
      * @param port for network communication. Port must match between client and server (range
@@ -111,7 +111,9 @@ public abstract class TCPServer<T> extends Thread {
             CommandLogger.get().logMessage("TCP Client Connection Status", false);
         }
     }
-
+    public void addReading(T reading) {
+        readings.add(reading);
+    }
     public Queue<T> flush() {
         Queue<T> queue = new LinkedList<>();
         readings.drainTo(queue);

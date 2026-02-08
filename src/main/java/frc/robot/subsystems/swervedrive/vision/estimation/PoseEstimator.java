@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 import frc.robot.RobotMode;
 import frc.robot.constants.Constants;
+import frc.robot.subsystems.ApriltagSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import frc.robot.subsystems.swervedrive.vision.truster.BasicVisionFilter;
 import frc.robot.subsystems.swervedrive.vision.truster.SquareVisionTruster;
@@ -38,7 +39,7 @@ public class PoseEstimator {
   private final SwerveModule backRight;*/
  // private final LoggableSystem<LoggableIO<ApriltagInputs>, ApriltagInputs> apriltagSystem;
   private int invalidCounter = 0;
-  private final apriltagsmth aprilTagSystem;
+  private final ApriltagSubsystem apriltagSystem;
 
   /* standard deviation of robot states, the lower the numbers arm, the more we trust odometry */
   public static final Vector<N3> stateStdDevs1 = VecBuilder.fill(0.075, 0.075, 0.001);
@@ -60,12 +61,12 @@ public class PoseEstimator {
       SwerveModule backRightMotor,*/
       SwerveDriveKinematics kinematics,
       SwerveSubsystem drivebase,
-      double initGyroValueDeg,apriltagsmth aprilTagSystem) {
+      double initGyroValueDeg,ApriltagSubsystem apriltagSystem) {
    /*this.frontLeft = frontLeftMotor;
     this.frontRight = frontRightMotor;
     this.backLeft = backLeftMotor;
     this.backRight = backRightMotor;*/
-    this.apriltagSystem = aprilTagSystem;//create new april tag object here;
+    this.apriltagSystem = apriltagSystem;//create new april tag object here;
     /*OdometryMeasurement initMeasurement =
         new OdometryMeasurement(
             new SwerveModulePosition[] {
@@ -93,9 +94,6 @@ public class PoseEstimator {
     SmartDashboard.putData(field);
   }
 
-  public void updateInputs() {
-    apriltagSystem.updateInputs();
-  }
 
   /**
    * updates odometry, should be called in periodic
@@ -111,21 +109,24 @@ public class PoseEstimator {
 
   private boolean validAprilTagPose(double[] measurement) {
     return !ArrayUtils.allMatch(measurement, -1.0) && measurement.length == 3;
+  
   }
-
+  public void updateInputs(){
+      apriltagSystem.getIO().updateInputs(apriltagSystem.getInputs());
+  }
   private void updateVision(int... invalidApriltagNumbers) {
     long start = System.currentTimeMillis();
     if (Constants.ENABLE_VISION && Robot.getMode() != RobotMode.DISABLED) {
-      for (int i = 0; i < apriltagSystem.timestamp.length; i++) {
+      for (int i = 0; i < apriltagSystem.getInputs().timestamp.length; i++) {
         double[] pos =
             new double[] {
-              apriltagSystem.posX[i],
-              apriltagSystem.posY[i],
-              apriltagSystem.poseYaw[i]
+              apriltagSystem.getInputs().posX[i],
+              apriltagSystem.getInputs().posY[i],
+              apriltagSystem.getInputs().poseYaw[i]
             };
         if (validAprilTagPose(pos)
             && !ArrayUtils.contains(
-                invalidApriltagNumbers, apriltagSystem.apriltagNumber[i])) {
+                invalidApriltagNumbers, apriltagSystem.getInputs().apriltagNumber[i])) {
           VisionMeasurement measurement = getVisionMeasurement(pos, i);
           poseManager.registerVisionMeasurement(measurement);
         } else {
@@ -140,11 +141,11 @@ public class PoseEstimator {
   }
 
   private VisionMeasurement getVisionMeasurement(double[] pos, int index) {
-    double serverTime = apriltagSystem.serverTime[index];
+    double serverTime = apriltagSystem.getInputs().serverTime[index];
     double timestamp = 0; // latency is not right we are assuming zero
     double latencyInSec = (serverTime - timestamp) / 1000;
     Pose2d visionPose = new Pose2d(pos[0], pos[1], getEstimatedPose().getRotation());
-    double distanceFromTag = apriltagSystem.distanceToTag[index];
+    double distanceFromTag = apriltagSystem.getInputs().distanceToTag[index];
     return new VisionMeasurement(visionPose, distanceFromTag, latencyInSec);
   }
 

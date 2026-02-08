@@ -22,7 +22,7 @@ public class TCPApriltagIo extends BaseIoImpl<ApriltagInputs> implements Aprilta
         this.server.start();
     }
     @Override
-    protected void updateInputs(ApriltagInputs inputs) {
+    public void updateInputs(ApriltagInputs inputs) {
         Queue<ApriltagReading> queue = server.flush();
         int queueSize = queue.size();
         Logger.recordOutput("VisionMeasurementsThisTick", queueSize);

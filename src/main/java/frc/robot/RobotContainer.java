@@ -88,7 +88,7 @@ public class RobotContainer {
 
 
                 feederSubsystem = new FeederSubsystem(FeederSubsystem.createRealIo());
-                apriltagSubsystem = new ApriltagSubsystem(ApriltagSubsystem.createRealIo());
+                apriltagSubsystem = new ApriltagSubsystem(ApriltagSubsystem.createRealIo(), drivebase);
                 RealGyroIo gyroIo = (RealGyroIo) GyroSubsystem.createRealIo();
                 ThreadedGyro threadedGyro = gyroIo.getThreadedGyro();
                 gyroSubsystem = new GyroSubsystem(gyroIo);
@@ -103,7 +103,7 @@ public class RobotContainer {
                 intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createMockIo(), IntakeSubsystem.createMockDeploymentSwitch());
                 hopperSubsystem = new HopperSubsystem(HopperSubsystem.createMockIo());
                 feederSubsystem = new FeederSubsystem(FeederSubsystem.createMockIo());
-                apriltagSubsystem = new ApriltagSubsystem(ApriltagSubsystem.createMockIo());
+                apriltagSubsystem = new ApriltagSubsystem(ApriltagSubsystem.createMockIo(), drivebase);
                 // No GyroSubsystem in REPLAY for now
                 // create the drive subsystem with null gyro (use default json)
                 drivebase = !Constants.TESTBED ? new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "YAGSL"), null) : null;
@@ -116,7 +116,7 @@ public class RobotContainer {
                 intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createSimIo(robotVisualizer), IntakeSubsystem.createSimDeploymentSwitch());
                 hopperSubsystem = new HopperSubsystem(HopperSubsystem.createSimIo(robotVisualizer));
                 feederSubsystem = new FeederSubsystem(FeederSubsystem.createSimIo(robotVisualizer));
-                apriltagSubsystem = new ApriltagSubsystem(ApriltagSubsystem.createSimIo());
+                apriltagSubsystem = new ApriltagSubsystem(ApriltagSubsystem.createSimIo(), drivebase);
                 // No GyroSubsystem in REPLAY for now
                 // create the drive subsystem with null gyro (use default json)
                 drivebase = !Constants.TESTBED ? new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "YAGSL"), null) : null;

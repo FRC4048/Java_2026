@@ -468,7 +468,7 @@ public class SwerveSubsystem extends SubsystemBase {
     public void setVariance(Vector<N3> variance){
         this.variance = variance;
     }
-    public void addVisionMeasurement(Pose2d pose){
-        swerveDrive.addVisionMeasurement(pose, Timer.getFPGATimestamp(), variance);
+    public void addVisionMeasurement(Pose2d pose, double visionTimestamp){
+        swerveDrive.addVisionMeasurement(pose, visionTimestamp, variance);
     }
 }

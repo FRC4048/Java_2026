@@ -79,7 +79,7 @@ public class PoseManager {
   }
 
   protected void addVisionMeasurement(VisionMeasurement measurement) {
-  
+    drivebase.addVisionMeasurement(measurement.measurement(), measurement.timeOfMeasurement());
   }
 
   protected void setVisionSTD(Vector<N3> visionMeasurementStdDevs) {

@@ -60,8 +60,8 @@ public class RobotContainer {
     //private final TiltSubsystem tiltSubsystem;
     private final AnglerSubsystem anglerSubsystem;
     private final IntakeSubsystem intakeSubsystem;
-  private final FeederSubsystem feederSubsystem;
-  private final ApriltagSubsystem apriltagSubsystem;
+    private final FeederSubsystem feederSubsystem;
+    private final ApriltagSubsystem apriltagSubsystem;
     private RobotVisualizer robotVisualizer = null;
     private final HopperSubsystem hopperSubsystem;
     private SwerveSubsystem drivebase = null;
@@ -85,6 +85,7 @@ public class RobotContainer {
                 anglerSubsystem = new AnglerSubsystem(AnglerSubsystem.createRealIo());
                 intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createRealIo(), IntakeSubsystem.createRealDeploymentSwitch());
                 hopperSubsystem = new HopperSubsystem(HopperSubsystem.createRealIo());
+
 
                 feederSubsystem = new FeederSubsystem(FeederSubsystem.createRealIo());
                 apriltagSubsystem = new ApriltagSubsystem(ApriltagSubsystem.createRealIo());
@@ -245,7 +246,6 @@ public class RobotContainer {
             SmartDashboard.putData(
                     "Shooting State: Shuttling",
                     new SetShootingState(shootState, ShootState.SHUTTLING));
-
             SmartDashboard.putData("AddTunedApriltagReading", new AddTunableApriltagReading(apriltagSubsystem));
             SmartDashboard.putData("AddApriltagReading", new AddApriltagReading(apriltagSubsystem,new ApriltagReading(0, 0, 0, 0, 0, 0, 0)));
 

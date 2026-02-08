@@ -173,8 +173,12 @@ public class RobotContainer {
                     new SetShootingState(shootState, ShootState.STOPPED));
             
             SmartDashboard.putData(
-                    "Shooting State: Fixed",
-                    new SetShootingState(shootState, ShootState.FIXED));
+                    "Shooting State: Manual 1",
+                    new SetShootingState(shootState, ShootState.MANUAL_1));
+            
+            SmartDashboard.putData(
+                    "Shooting State: Manual 2",
+                    new SetShootingState(shootState, ShootState.MANUAL_2));
 
             SmartDashboard.putData(
                     "Shooting State: Into Hub",

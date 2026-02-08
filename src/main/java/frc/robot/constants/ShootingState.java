@@ -5,9 +5,10 @@ public class ShootingState {
     public enum ShootState {
 
         STOPPED,        // Shooting motor does not run
-        FIXED,          // Shooting motor runs at a constant speed
-        SHOOTING_HUB,   // Used for shooting into the hub
-        SHUTTLING       // Used for shuttling into our alliance zone
+        MANUAL_1,       // Shoot from a known location
+        MANUAL_2,       // Shoot from another known location
+        SHOOTING_HUB,   // Auto-aim into the hub
+        SHUTTLING       // Auti aim into alliance zone
 
     }
 

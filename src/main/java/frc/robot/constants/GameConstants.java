@@ -87,4 +87,6 @@ public class GameConstants {
     public static final int ENDGAME_START = 30;
 
     public static final double VISION_CONSISTANCY_THRESHOLD = 0.25;
+    public static final boolean ENABLE_VISION = true;
+    public static final double POSE_BUFFER_STORAGE_TIME = 2;
 }

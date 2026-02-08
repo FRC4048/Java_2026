@@ -471,4 +471,7 @@ public class SwerveSubsystem extends SubsystemBase {
     public void addVisionMeasurement(Pose2d pose, double visionTimestamp){
         swerveDrive.addVisionMeasurement(pose, visionTimestamp, variance);
     }
+    public void addVisionMeasurement(Pose2d pose){
+        swerveDrive.addVisionMeasurement(pose, Timer.getFPGATimestamp(), variance);
+    }
 }

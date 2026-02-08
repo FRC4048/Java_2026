@@ -17,6 +17,7 @@ import frc.robot.utils.logging.io.motor.SparkMaxIo;
 import frc.robot.utils.logging.io.pidmotor.MockSparkMaxPidMotorIo;
 import frc.robot.utils.logging.io.pidmotor.RealSparkMaxPidMotorIo;
 import frc.robot.utils.logging.io.pidmotor.SimSparkMaxPidMotorIo;
+import frc.robot.utils.logging.io.pidmotor.SparkMaxPidConfig;
 import frc.robot.utils.logging.io.pidmotor.SparkMaxPidMotor;
 import frc.robot.utils.logging.io.pidmotor.SparkMaxPidMotorIo;
 import frc.robot.utils.simulation.MotorSimulator;
@@ -32,6 +33,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
     public ShooterSubsystem(SparkMaxPidMotorIo io) {
         this.io = io;
+        io.setPid(0.000002, 0.000015, 0.000015); // Pid needs tuning
         followerMotor = new SparkMax(Constants.SHOOTER_FOLLOWER_MOTOR_ID, SparkLowLevel.MotorType.kBrushless);
         followerConfig = new SparkMaxConfig();
         followerConfig.follow(Constants.SHOOTER_MOTOR_ID, true);
@@ -52,7 +54,7 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public void setPidVelocity(double velocity) {
-    
+        io.setPidVelocity(velocity);
     }
 
     @Override

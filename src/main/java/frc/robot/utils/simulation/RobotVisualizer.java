@@ -119,7 +119,7 @@ public class RobotVisualizer {
                         new LoggedMechanismLigament2d(
                                 "Shooter Tilt",
                                 0.5,
-                                135.0,
+                                -45.0,
                                 4,
                                 new Color8Bit(Color.kPurple)));
         
@@ -128,7 +128,7 @@ public class RobotVisualizer {
                         new LoggedMechanismLigament2d(
                                 "Shooter Wheel",
                                 0.15,
-                                135.0,
+                                -45.0,
                                 4,
                                 new Color8Bit(Color.kOrange)));
         

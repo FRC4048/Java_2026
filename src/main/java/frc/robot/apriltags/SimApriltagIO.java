@@ -8,10 +8,7 @@ import java.util.Queue;
 import org.littletonrobotics.junction.Logger;
 
 public class SimApriltagIO extends TCPApriltagIo {
-    private final SimTCPServer server;
-
     public SimApriltagIO(String name, ApriltagInputs inputs, SimTCPServer server) {
-        super(name, inputs);
-        this.server = server;
+        super(name, inputs, server);
     }
 }

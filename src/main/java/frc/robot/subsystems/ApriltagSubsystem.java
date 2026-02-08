@@ -12,8 +12,10 @@ public class ApriltagSubsystem extends SubsystemBase {
     private final ApriltagIO io;
     private final PoseEstimator estimator;
     private static ApriltagInputs inputs;
+    private final SwerveSubsystem drivebase;
 
     public ApriltagSubsystem(ApriltagIO io, SwerveSubsystem drivebase) {
+        this.drivebase = drivebase;
         this.io = io;
         inputs = new ApriltagInputs();
         estimator = new PoseEstimator(drivebase.getKinematics(), drivebase, 0, this);
@@ -45,6 +47,7 @@ public class ApriltagSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
+        drivebase.addVisionMeasurement(estimator.getEstimatedPose());
         io.periodic();
     }
 }

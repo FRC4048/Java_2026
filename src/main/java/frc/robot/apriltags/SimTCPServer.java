@@ -13,7 +13,7 @@ import java.util.Queue;
 import java.util.concurrent.LinkedTransferQueue;
 
 public class SimTCPServer extends TCPApriltagServer {
-    public SimTCPServer(int port) {
+    public SimTCPServer(int port) { //port doesnt matter at all
         super(port);
     }
     @Override

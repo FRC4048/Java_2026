@@ -7,52 +7,11 @@ import frc.robot.utils.logging.io.BaseIoImpl;
 import java.util.Queue;
 import org.littletonrobotics.junction.Logger;
 
-public class SimApriltagIO extends BaseIoImpl<ApriltagInputs> implements ApriltagIO{
+public class SimApriltagIO extends TCPApriltagIo {
     private final SimTCPServer server;
 
-    public SimApriltagIO(String name, ApriltagInputs inputs) {
+    public SimApriltagIO(String name, ApriltagInputs inputs, SimTCPServer server) {
         super(name, inputs);
-        server = new SimTCPServer(Constants.TCP_SERVER_PORT);
-    }
-
-    @Override
-    protected void updateInputs(ApriltagInputs inputs) {
-        Queue<ApriltagReading> queue = server.flush();
-        int queueSize = queue.size();
-        Logger.recordOutput("VisionMeasurementsThisTick", queueSize);
-        inputs.posX = new double[queueSize];
-        inputs.posY = new double[queueSize];
-        inputs.poseYaw = new double[queueSize];
-        inputs.distanceToTag = new double[queueSize];
-        inputs.apriltagNumber = new int[queueSize];
-        inputs.serverTime = new double[queueSize];
-        inputs.timestamp = new double[queueSize];
-        inputs.visionPoseArray = new Pose2d[queueSize];
-        inputs.apriltagPoseArray = new Translation3d[queueSize];
-
-        for (int i = 0; i < queueSize; i++) {
-            ApriltagReading measurement = queue.poll();
-            inputs.posX[i] = measurement.posX();
-            inputs.posY[i] = measurement.posY();
-            inputs.poseYaw[i] = measurement.poseYaw();
-            inputs.distanceToTag[i] = measurement.distanceToTag();
-            inputs.apriltagNumber[i] = measurement.apriltagNumber();
-            inputs.timestamp[i] = measurement.latency();
-            inputs.serverTime[i] = measurement.measurementTime();
-
-            Apriltag apriltag = Apriltag.of(measurement.apriltagNumber());
-            inputs.apriltagPoseArray[i] =
-                    apriltag == null ? new Translation3d(0, 0, 0) : apriltag.getTranslation();
-            inputs.visionPoseArray[i] =
-                    new Pose2d(
-                            measurement.posX(),
-                            measurement.posY(),
-                            Rotation2d.fromDegrees(measurement.poseYaw()));
-        }
-    }
-
-    @Override
-    public void addReading(ApriltagReading reading) {
-        server.addReading(reading);
+        this.server = server;
     }
 }

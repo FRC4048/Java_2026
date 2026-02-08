@@ -72,8 +72,6 @@ public class RobotContainer {
      */
     public RobotContainer() {
         // Configure the trigger bindings
-        BaseIoImpl<ApriltagInputs> apriltagIO;
-        ApriltagInputs apriltagInputs = new ApriltagInputs();
         switch (Constants.currentMode) {
             case REAL -> {
                 //rollerSubsystem = new RollerSubsystem(RollerSubsystem.createRealIo());

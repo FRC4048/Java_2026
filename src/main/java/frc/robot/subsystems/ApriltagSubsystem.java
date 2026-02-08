@@ -22,9 +22,9 @@ public class ApriltagSubsystem extends SubsystemBase {
     }
 
     public static ApriltagIO createSimIo() {
-        return new SimApriltagIO(LOGGING_NAME, new ApriltagInputs());
+        return new SimApriltagIO(LOGGING_NAME, new ApriltagInputs(), new SimTCPServer(0)); // port doesnt matter at all
     }
-
+    // This is used to inject april tag readings manually and will pretty much only be used for simulation.
     public void addSimReading(ApriltagReading reading) {
         io.addReading(reading);
     }

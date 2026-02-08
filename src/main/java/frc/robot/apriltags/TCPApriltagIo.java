@@ -16,6 +16,11 @@ public class TCPApriltagIo extends BaseIoImpl<ApriltagInputs> implements Aprilta
         server.start();
     }
 
+    protected TCPApriltagIo(String name, ApriltagInputs inputs, TCPApriltagServer server) {
+        super(name, inputs);
+        this.server = server;
+        this.server.start();
+    }
     @Override
     protected void updateInputs(ApriltagInputs inputs) {
         Queue<ApriltagReading> queue = server.flush();
@@ -51,6 +56,7 @@ public class TCPApriltagIo extends BaseIoImpl<ApriltagInputs> implements Aprilta
                             Rotation2d.fromDegrees(measurement.poseYaw()));
         }
     }
+    // This is used to inject april tag readings manually and will pretty much only be used for simulation.
     @Override
     public void addReading(ApriltagReading reading) {
         server.addReading(reading);

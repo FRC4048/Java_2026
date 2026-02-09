@@ -23,15 +23,15 @@ public class ApriltagSubsystem extends SubsystemBase {
 
     public static ApriltagIO createRealIo() {
         
-        return new TCPApriltagIo(LOGGING_NAME, inputs);
+        return new TCPApriltagIo(LOGGING_NAME, new ApriltagInputs());
     }
 
     public static ApriltagIO createMockIo() {
-        return new MockApriltagIo(LOGGING_NAME, inputs);
+        return new MockApriltagIo(LOGGING_NAME, new ApriltagInputs());
     }
 
     public static ApriltagIO createSimIo() {
-        return new SimApriltagIO(LOGGING_NAME, inputs, new SimTCPServer(0)); // port doesnt matter at all
+        return new SimApriltagIO(LOGGING_NAME, new ApriltagInputs(), new SimTCPServer(0)); // port doesnt matter at all
     }
     // This is used to inject april tag readings manually and will pretty much only be used for simulation.
     public void addSimReading(ApriltagReading reading) {

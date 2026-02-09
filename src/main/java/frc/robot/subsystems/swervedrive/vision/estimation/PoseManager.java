@@ -86,6 +86,7 @@ public class PoseManager {
     Logger.recordOutput(
         "Apriltag/VisionAppliedCovariance",
         new double[] {visionMeasurementStdDevs.get(0), visionMeasurementStdDevs.get(1)});
+        
     drivebase.setVariance(visionMeasurementStdDevs);
   }
 /* 

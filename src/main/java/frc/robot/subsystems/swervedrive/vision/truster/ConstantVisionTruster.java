@@ -12,6 +12,7 @@ public class ConstantVisionTruster extends DistanceVisionTruster {
 
   @Override
   public Vector<N3> calculateTrust(VisionMeasurement measurement) {
+    System.out.println("Thisbroooo it like sort kinda works cuz its like amazing and it will work cuz immmm sooooo coool");
     return initialSTD;
   }
 }

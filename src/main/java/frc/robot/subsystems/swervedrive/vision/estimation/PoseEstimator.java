@@ -18,6 +18,7 @@ import frc.robot.constants.Constants;
 import frc.robot.subsystems.ApriltagSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import frc.robot.subsystems.swervedrive.vision.truster.BasicVisionFilter;
+import frc.robot.subsystems.swervedrive.vision.truster.ConstantVisionTruster;
 import frc.robot.subsystems.swervedrive.vision.truster.SquareVisionTruster;
 import frc.robot.subsystems.swervedrive.vision.truster.VisionMeasurement;
 import frc.robot.utils.Apriltag;
@@ -90,7 +91,7 @@ public class PoseEstimator {
                 return measurement.measurement();
               }
             },
-            new SquareVisionTruster(visionMeasurementStdDevs2, 0.4));
+            new ConstantVisionTruster(visionMeasurementStdDevs2));
     SmartDashboard.putData(field);
   }
 

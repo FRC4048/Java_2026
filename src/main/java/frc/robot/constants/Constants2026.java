@@ -7,6 +7,7 @@ public class Constants2026 extends GameConstants {
     public static final int ROLLER_MOTOR_ID = 1;
     public static final int TILT_MOTOR_ID = 2;
     public static final int INTAKE_MOTOR_ID = 3;
+    public static final int ANGLER_MOTOR_ID = 6;
     public static final int HOPPER_MOTOR_ID = 4;
     public static final int FEEDER_MOTOR_ID = 5;
     public static final int CLIMBER_MOTOR_ID = 6;
@@ -22,4 +23,11 @@ public class Constants2026 extends GameConstants {
     public static final boolean TUNING_MODE = true;
 
     public static final boolean TESTBED = false;
+
+    // other
+    public static final int SERVER_SOCKET_ATTEMPT_DELAY = 100;
+    public static final int TCP_SERVER_PORT = 5806;
+    
+
+
 }

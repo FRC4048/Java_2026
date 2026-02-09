@@ -50,8 +50,8 @@ public class GameConstants {
     public static final double HOPPER_SPEED = 0.1;
     public static final double FEEDER_SPEED = 0.5;
     public static final double MAX_SPEED = Units.feetToMeters(14.5);
-    public static final double SHOOTER_SPEED_FIXED = 0.05;
-    public static final double SHOOTER_SPEED_FIXED_2 = 0.1;
+    public static final double SHOOTER_SPEED_FIXED = 100;
+    public static final double SHOOTER_SPEED_FIXED_2 = 200;
 
     //Timeouts
     public static final double SPIN_TIMEOUT = 5;

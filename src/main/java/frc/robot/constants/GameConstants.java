@@ -2,7 +2,9 @@ package frc.robot.constants;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.units.measure.Time;
 import edu.wpi.first.wpilibj.RobotBase;
+import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
 
 public class GameConstants {
     
@@ -47,6 +49,7 @@ public class GameConstants {
     public static final double INTAKE_SPEED = -0.5;
     public static final double HOPPER_SPEED = 0.1;
     public static final double CLIMBER_SPEED = 0.1;
+    public static final double FEEDER_SPEED = 0.5;
     public static final double MAX_SPEED = Units.feetToMeters(14.5);
 
     //Timeouts
@@ -54,6 +57,7 @@ public class GameConstants {
     public static final double TILT_TIMEOUT = 5;
     public static final double HOPPER_TIMEOUT = 10;
     public static final double CLIMBER_TIMEOUT = 10;
+    public static final double FEEDER_TIMEOUT = 3;
 
     //Angles
     public static final Rotation2d TILT_MIN_ANGLE = Rotation2d.fromDegrees(45);
@@ -64,5 +68,24 @@ public class GameConstants {
     public static final double TILT_GEARING = 45.0;
     public static final boolean TILT_SIMULATE_GRAVITY = false;
     public static final int NEO_CURRENT_LIMIT = 20;
+    
+    //swerve config
+    public static final TelemetryVerbosity TELEMENTRY_VERBOSITY = TelemetryVerbosity.HIGH;
+    public static final boolean SET_HEADING_CORRECTION = false;
+    public static final boolean COSIN_COMPENSATOR = false;
+    public static final boolean USE_ANGULAR_VELOCITY_COMPENSATION_IN_TELEOP = true;
+    public static final boolean USE_ANGULAR_VELOCITY_COMPENSATION_IN_AUTO = true;
+    public static final double ANGULAR_VELOCITY_COEFFICENT = 0.1;
+    public static final boolean SET_MODULE_ENCODER_AUTO_SYNCHRONIZE = false;
+    public static final double SET_MODULE_ENCODER_AUTO_SYNCHRONIZE_DEADBAND = 1;
+
+    
+
+    // Shift timings
+    public static final int SHIFT_1_START = 130;
+    public static final int SHIFT_2_START = 105;
+    public static final int SHIFT_3_START = 80;
+    public static final int SHIFT_4_START = 55;
+    public static final int ENDGAME_START = 30;
 
 }

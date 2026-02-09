@@ -17,6 +17,7 @@ public class RobotVisualizer {
     private final LoggedMechanismLigament2d intakeLigament;
     private final LoggedMechanismLigament2d hopperLigament;
     private final LoggedMechanismLigament2d climberLigament;
+    private final LoggedMechanismLigament2d feederLigament;
 
     public RobotVisualizer() {
         LoggedMechanismRoot2d root =
@@ -55,7 +56,7 @@ public class RobotVisualizer {
                                 90.0,
                                 4,
                                 new Color8Bit(Color.kRed)));
-        
+
         LoggedMechanismRoot2d hopperRoot =
                 mech2d.getRoot("Hopper Root", Constants.DRIVE_BASE_LENGTH, Constants.INITIAL_ROBOT_HEIGHT);
 
@@ -91,7 +92,24 @@ public class RobotVisualizer {
                                 new Color8Bit(Color.kDarkBlue)));
         
         
-    }
+        LoggedMechanismRoot2d feederRoot = 
+                mech2d.getRoot("Feeder Root", Constants.DRIVE_BASE_WIDTH * 2, Constants.INITIAL_ROBOT_HEIGHT);
+    
+        LoggedMechanismLigament2d feederRiserLigament = 
+                feederRoot.append(
+                        new LoggedMechanismLigament2d(
+                                "Feeder Riser", 0.35, 90, 5, new Color8Bit(Color.kDarkGray)));
+    
+        this.feederLigament =
+                feederRiserLigament.append(
+                        new LoggedMechanismLigament2d(
+                                "Feeder Wheel",
+                                0.15,
+                                90.0,
+                                4,
+                                new Color8Bit(Color.kYellow)));
+
+        }
 
     public LoggedMechanismLigament2d getRollerLigament() {
         return rollerLigament;
@@ -109,9 +127,14 @@ public class RobotVisualizer {
         return hopperLigament;
     }
 
-    public LoggedMechanismLigament2d getClimberLigament(){
-        return climberLigament;
+    public LoggedMechanismLigament2d getFeederLigament() {
+        return feederLigament;
     }
+
+    public LoggedMechanismLigament2d getClimberLigament() {
+        return climberLigament;
+}
+
     public void logMechanism() {
         Logger.recordOutput("Mechanism2d/", mech2d);
     }
@@ -119,4 +142,6 @@ public class RobotVisualizer {
     public void close() {
         mech2d.close();
     }
+
+
 }

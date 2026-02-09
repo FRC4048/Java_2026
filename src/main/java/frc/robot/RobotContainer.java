@@ -4,9 +4,10 @@
 
 package frc.robot;
 
-import java.io.File;
-
 import edu.wpi.first.wpilibj.Filesystem;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -16,19 +17,29 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.climber.ClimberDown;
 import frc.robot.commands.climber.ClimberUp;
 import frc.robot.commands.hopper.SpinHopper;
+import frc.robot.commands.feeder.SpinFeeder;
+import frc.robot.commands.drive.DriveDirectionTime;
 import frc.robot.commands.intake.SpinIntake;
-//import frc.robot.commands.roller.SpinRoller;
-//import frc.robot.commands.tilt.TiltDown;
-//import frc.robot.commands.tilt.TiltUp;
+import frc.robot.commands.shooter.SetShootingState;
 import frc.robot.constants.Constants;
 import frc.robot.subsystems.HopperSubsystem;
+import frc.robot.subsystems.FeederSubsystem;
+import frc.robot.constants.ShootingState;
+import frc.robot.constants.ShootingState.ShootState;
+import frc.robot.subsystems.GyroSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ClimberSubsystem;
 //import frc.robot.subsystems.RollerSubsystem;
 //import frc.robot.subsystems.TiltSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
+import frc.robot.utils.logging.io.gyro.RealGyroIo;
+import frc.robot.utils.logging.io.gyro.ThreadedGyro;
+import frc.robot.utils.logging.io.gyro.ThreadedGyroSwerveIMU;
 import frc.robot.utils.simulation.RobotVisualizer;
 import swervelib.SwerveInputStream;
+import swervelib.imu.SwerveIMU;
+
+import java.io.File;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -42,26 +53,41 @@ public class RobotContainer {
   //private final TiltSubsystem tiltSubsystem;
   private final ClimberSubsystem climberSubsystem;
   private final IntakeSubsystem intakeSubsystem;
-  private RobotVisualizer robotVisualizer = null;
+    // The robot's subsystems and commands are defined here...
+    //private final RollerSubsystem rollerSubsystem;
+    //private final TiltSubsystem tiltSubsystem;
+  private final FeederSubsystem feederSubsystem;
+    private RobotVisualizer robotVisualizer = null;
   private final HopperSubsystem hopperSubsystem;
+    private SwerveSubsystem drivebase = null;
+    private GyroSubsystem gyroSubsystem = null;
+    private final CommandJoystick driveJoystick = new CommandJoystick(Constants.DRIVE_JOYSTICK_PORT);
+    private final CommandJoystick steerJoystick = new CommandJoystick(Constants.STEER_JOYSTICK_PORT);
+    private ShootingState shootState = new ShootingState(ShootState.STOPPED);
 
-  private final SwerveSubsystem drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),"YAGSL"));
-  private final CommandJoystick driveJoystick = new CommandJoystick(Constants.DRIVE_JOYSTICK_PORT);
-  private final CommandJoystick steerJoystick = new CommandJoystick(Constants.STEER_JOYSTICK_PORT);
-  // Replace with CommandPS4Controller or CommandJoystick if needed
-      //new CommandXboxController(OperatorConstants.kDriverControllerPort);
-  private final CommandXboxController controller = new CommandXboxController(Constants.XBOX_CONTROLLER_PORT);
+    // Replace with CommandPS4Controller or CommandJoystick if needed
+    //new CommandXboxController(OperatorConstants.kDriverControllerPort);private final CommandXboxController controller = new CommandXboxController(Constants.XBOX_CONTROLLER_PORT);
 
-  /** The container for the robot. Contains subsystems, OI devices, and commands. */
-  public RobotContainer() {
-    // Configure the trigger bindings
-    switch (Constants.currentMode) {
+    /**
+     * The container for the robot. Contains subsystems, OI devices, and commands.
+     */
+    public RobotContainer() {
+        // Configure the trigger bindings
+        switch (Constants.currentMode) {
             case REAL -> {
                 //rollerSubsystem = new RollerSubsystem(RollerSubsystem.createRealIo());
                 //tiltSubsystem = new TiltSubsystem(TiltSubsystem.createRealIo());
                 intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createRealIo(), IntakeSubsystem.createRealDeploymentSwitch());
                 hopperSubsystem = new HopperSubsystem(HopperSubsystem.createRealIo());
                 climberSubsystem = new ClimberSubsystem(ClimberSubsystem.createRealIo());
+                feederSubsystem = new FeederSubsystem(FeederSubsystem.createRealIo());
+
+                RealGyroIo gyroIo = (RealGyroIo) GyroSubsystem.createRealIo();
+                ThreadedGyro threadedGyro = gyroIo.getThreadedGyro();
+                gyroSubsystem = new GyroSubsystem(gyroIo);
+                SwerveIMU swerveIMU = new ThreadedGyroSwerveIMU(threadedGyro);
+                
+                drivebase = !Constants.TESTBED ? new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "YAGSL"), swerveIMU) : null;
             }
             case REPLAY -> {
                 //rollerSubsystem = new RollerSubsystem(RollerSubsystem.createMockIo());
@@ -69,6 +95,10 @@ public class RobotContainer {
                 intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createMockIo(), IntakeSubsystem.createMockDeploymentSwitch());
                 hopperSubsystem = new HopperSubsystem(HopperSubsystem.createMockIo());
                 climberSubsystem = new ClimberSubsystem(ClimberSubsystem.createMockIo());
+                feederSubsystem = new FeederSubsystem(FeederSubsystem.createMockIo());
+                // No GyroSubsystem in REPLAY for now
+                // create the drive subsystem with null gyro (use default json)
+                drivebase = !Constants.TESTBED ? new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "YAGSL"), null) : null;
             }
             case SIM -> {
                 robotVisualizer = new RobotVisualizer();
@@ -77,45 +107,54 @@ public class RobotContainer {
                 intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createSimIo(robotVisualizer), IntakeSubsystem.createSimDeploymentSwitch());
                 hopperSubsystem = new HopperSubsystem(HopperSubsystem.createSimIo(robotVisualizer));
                 climberSubsystem = new ClimberSubsystem(ClimberSubsystem.createSimIo(robotVisualizer));
+                feederSubsystem = new FeederSubsystem(FeederSubsystem.createSimIo(robotVisualizer));
+                // No GyroSubsystem in REPLAY for now
+                // create the drive subsystem with null gyro (use default json)
+                drivebase = !Constants.TESTBED ? new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "YAGSL"), null) : null;
             }
-            
+
             default -> {
                 throw new RuntimeException("Did not specify Robot Mode");
             }
-       }
-    configureBindings();
-    putShuffleboardCommands();
- }
- SwerveInputStream driveAngularVelocity = SwerveInputStream.of(drivebase.getSwerveDrive(),
-                                                                () -> driveJoystick.getY() * -1,
-                                                                () -> driveJoystick.getX() * -1)
-                                                            .withControllerRotationAxis(() -> steerJoystick.getX() * -1)
-                                                            .deadband(Constants.DEADBAND)
-                                                            .scaleTranslation(0.8)
-                                                            .allianceRelativeControl(true);
+        }
+        configureBindings();
+        putShuffleboardCommands();
+    }
 
+    /**
+     * Use this method to define your trigger->command mappings. Triggers can be created via the
+     * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with an arbitrary
+     * predicate, or via the named factories in {@link
+     * edu.wpi.first.wpilibj2.command.button.CommandGenericHID}'s subclasses for {@link
+     * CommandXboxController Xbox}/{@link edu.wpi.first.wpilibj2.command.button.CommandPS4Controller
+     * PS4} controllers or {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
+     * joysticks}.
+     */
+    private void configureBindings() {
+        // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
+        //new Trigger(m_exampleSubsystem::exampleCondition)
+        //  .onTrue(new ExampleCommand(m_exampleSubsystem));
 
-  /**
-   * Use this method to define your trigger->command mappings. Triggers can be created via the
-   * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with an arbitrary
-   * predicate, or via the named factories in {@link
-   * edu.wpi.first.wpilibj2.command.button.CommandGenericHID}'s subclasses for {@link
-   * CommandXboxController Xbox}/{@link edu.wpi.first.wpilibj2.command.button.CommandPS4Controller
-   * PS4} controllers or {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
-   * joysticks}.
-   */
-  private void configureBindings() {
-    // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-    //new Trigger(m_exampleSubsystem::exampleCondition)
-      //  .onTrue(new ExampleCommand(m_exampleSubsystem));
+        // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
+        // cancelling on release.
+        // m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
+        // TODO: Clean this up a little - create command in method and only create the one actually needed
+        if(!Constants.TESTBED){
+            SwerveInputStream driveAngularVelocity = SwerveInputStream.of(drivebase.getSwerveDrive(),
+                            () -> driveJoystick.getY() * -1,
+                            () -> driveJoystick.getX() * -1)
+                    .withControllerRotationAxis(steerJoystick::getX)
+                    .deadband(Constants.DEADBAND)
+                    .scaleTranslation(0.8)
+                    .allianceRelativeControl(true);
+            SwerveInputStream driveRobotOriented = driveAngularVelocity.copy().robotRelative(true)
+                    .allianceRelativeControl(false);
+            Command driveFieldOrientedAnglularVelocity = drivebase.driveFieldOriented(driveAngularVelocity);
+            drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity);
+        }
+    }
 
-    // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
-    // cancelling on release.
-   // m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
-    Command driveFieldOrientedAnglularVelocity = drivebase.driveFieldOriented(driveAngularVelocity);
-    drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity);
-  }
-  public void putShuffleboardCommands() {
+    public void putShuffleboardCommands() {
         if (Constants.DEBUG) {
         /*SmartDashboard.putData(
                 "Spin Roller",
@@ -158,30 +197,61 @@ public class RobotContainer {
                     "Climber Down",
                     new ClimberDown(climberSubsystem));
 
-        }  
-    }
-  /**
-   * Use this to pass the autonomous command to the main {@link Robot} class.
-   *
-   * @return the command to run in autonomous
-   */
-  public Command getAutonomousCommand() {
-    // An example command will be run in autonomous
-    return null;
-  }
-  public RobotVisualizer getRobotVisualizer() {
-    return robotVisualizer;
-  }
+          SmartDashboard.putData(
+                    "Spin Feeder",
+                    new SpinFeeder(feederSubsystem));
 
-  public IntakeSubsystem getIntakeSubsystem() {
-    return intakeSubsystem;
-  }
+            SmartDashboard.putData(
+                    "Shooting State: Stopped",
+                    new SetShootingState(shootState, ShootState.STOPPED));
+            
+            SmartDashboard.putData(
+                    "Shooting State: Fixed",
+                    new SetShootingState(shootState, ShootState.FIXED));
+
+            SmartDashboard.putData(
+                    "Shooting State: Into Hub",
+                    new SetShootingState(shootState, ShootState.SHOOTING_HUB));
+
+            SmartDashboard.putData(
+                    "Shooting State: Shuttling",
+                    new SetShootingState(shootState, ShootState.SHUTTLING));
+            
+        }
+    //basic drive command
+        if(!Constants.TESTBED){
+            Command driveDirectionTime = new DriveDirectionTime(drivebase, 0.1,0.1, true, 1);
+            SmartDashboard.putData("Drive Command", driveDirectionTime);
+        }
+    }
+
+    /**
+     * Use this to pass the autonomous command to the main {@link Robot} class.
+     *
+     * @return the command to run in autonomous
+     */
+    public Command getAutonomousCommand() {
+        // An example command will be run in autonomous
+        return null;
+    }
 
   public ClimberSubsystem getClimberSubsystem() {
     return climberSubsystem;
   }
 
+    public RobotVisualizer getRobotVisualizer() {
+        return robotVisualizer;
+    }
+
+    public IntakeSubsystem getIntakeSubsystem() {
+        return intakeSubsystem;
+    }
     public SwerveSubsystem getDriveBase(){
-        return drivebase;
+      return drivebase;
+    }
+
+    public ShootingState getShootingState() {
+        return shootState;
     }
 }
+

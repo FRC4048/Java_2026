@@ -41,6 +41,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
     }
 
+    // setSpeed expects a power value from -1 to 1
     public void setSpeed(double speed) {
         io.set(speed);
     }
@@ -49,10 +50,7 @@ public class ShooterSubsystem extends SubsystemBase {
         io.stopMotor();
     }
 
-    public void setPidPosition(double position) {
-        io.setPidPosition(position);
-    }
-
+    // setPidVelocity expects a speed in RPM
     public void setPidVelocity(double velocity) {
         io.setPidVelocity(velocity);
     }

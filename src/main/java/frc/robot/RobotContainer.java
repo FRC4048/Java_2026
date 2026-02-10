@@ -20,12 +20,13 @@ import frc.robot.commands.drive.DriveDirectionTime;
 import frc.robot.commands.feeder.SpinFeeder;
 import frc.robot.commands.drive.FakeVision;
 import frc.robot.commands.intake.SpinIntake;
+import frc.robot.autochooser.AutoChooser;
 import frc.robot.commands.angler.AimAngler;
 import frc.robot.commands.shooter.SetShootingState;
 import frc.robot.constants.Constants;
 import frc.robot.subsystems.AnglerSubsystem;
-import frc.robot.subsystems.HopperSubsystem;
 import frc.robot.subsystems.ApriltagSubsystem;
+import frc.robot.subsystems.HopperSubsystem;
 import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.constants.ShootingState;
 import frc.robot.constants.ShootingState.ShootState;
@@ -55,8 +56,9 @@ import java.io.File;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
+    // Instantiate the autochooser.
+    private final AutoChooser autoChooser = new AutoChooser();
     // The robot's subsystems and commands are defined here...
-    //private final RollerSubsystem rollerSubsystem;
     //private final TiltSubsystem tiltSubsystem;
     private final AnglerSubsystem anglerSubsystem;
     private final IntakeSubsystem intakeSubsystem;
@@ -70,7 +72,7 @@ public class RobotContainer {
     private final CommandJoystick steerJoystick = new CommandJoystick(Constants.STEER_JOYSTICK_PORT);
     private ShootingState shootState = new ShootingState(ShootState.STOPPED);
 
-    // Replace with CommandPS4Controller or CommandJoystick if needed
+        // Replace with CommandPS4Controller or CommandJoystick if needed
     //new CommandXboxController(OperatorConstants.kDriverControllerPort);private final CommandXboxController controller = new CommandXboxController(Constants.XBOX_CONTROLLER_PORT);
 
     /**
@@ -183,7 +185,7 @@ public class RobotContainer {
                     "Tilt Up",
                     new TiltUp(tiltSubsystem));
 
-        SmartDashboard.putData(
+            SmartDashboard.putData(
                 "Tilt Down",
                 new TiltDown(tiltSubsystem));*/
           
@@ -250,8 +252,9 @@ public class RobotContainer {
             SmartDashboard.putData("AddApriltagReading", new AddApriltagReading(apriltagSubsystem,new ApriltagReading(0, 0, 0, 0, 0, 0, 0)));
 
         }
+
     //basic drive command
-        if(!Constants.TESTBED){
+        if(!Constants.TESTBED) {
             Command driveDirectionTime = new DriveDirectionTime(drivebase, 0.1,0.1, true, 1);
             SmartDashboard.putData("Drive Command", driveDirectionTime);
             SmartDashboard.putData("Fake vision", new FakeVision(drivebase));
@@ -265,12 +268,15 @@ public class RobotContainer {
      * @return the command to run in autonomous
      */
     public Command getAutonomousCommand() {
-        // An example command will be run in autonomous
-        return null;
+      return autoChooser.getCommand();
     }
 
     public RobotVisualizer getRobotVisualizer() {
-        return robotVisualizer;
+      return robotVisualizer;
+    }
+
+    public AutoChooser getAutoChooser() {
+      return autoChooser;
     }
 
     public IntakeSubsystem getIntakeSubsystem() {

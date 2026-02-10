@@ -4,15 +4,18 @@ import javax.lang.model.util.ElementScanner14;
 
 import frc.robot.constants.Constants;
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.utils.logging.LoggedTunableNumber;
 import frc.robot.utils.logging.commands.LoggableCommand;
 
 public class SpinIntake extends LoggableCommand {
     
     private final IntakeSubsystem subsystem;
+    private final LoggedTunableNumber speed;
   
     public SpinIntake(IntakeSubsystem subsystem) {
         this.subsystem = subsystem;
         addRequirements(subsystem);
+        speed = new LoggedTunableNumber("Intake_Speed",10);
     }
 
     @Override
@@ -21,13 +24,10 @@ public class SpinIntake extends LoggableCommand {
 
     @Override
     public void execute() {
-        if (subsystem.isDeployed()) {
-            subsystem.setSpeed(Constants.INTAKE_SPEED);
-        } else {
-            subsystem.setSpeed(0);
-        }
+       if (speed.hasChanged(0)) {
+        subsystem.setSpeed(speed.get());
+       }
     }
-
     @Override
     public boolean isFinished() {
         return false;

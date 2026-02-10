@@ -18,7 +18,7 @@ public class ApriltagSubsystem extends SubsystemBase {
         this.drivebase = drivebase;
         this.io = io;
         inputs = new ApriltagInputs();
-        estimator = new PoseEstimator(drivebase.getKinematics(), drivebase, 0, this);
+       estimator = new PoseEstimator(drivebase.getKinematics(), drivebase, 0, this);
     }
 
     public static ApriltagIO createRealIo() {
@@ -47,7 +47,7 @@ public class ApriltagSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-        drivebase.addVisionMeasurement(estimator.getEstimatedPose());
+      drivebase.addVisionMeasurement(estimator.getEstimatedPose());
         io.periodic();
     }
 }

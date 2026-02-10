@@ -14,6 +14,8 @@ import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.networktables.NT4Publisher;
 import org.littletonrobotics.junction.wpilog.WPILOGReader;
 import org.littletonrobotics.junction.wpilog.WPILOGWriter;
+
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
@@ -260,5 +262,6 @@ public class Robot extends LoggedRobot {
   public static Optional<Alliance> allianceColor() {return allianceColor;}
   public static String allianceColorString() {return String.valueOf(allianceColor.orElse(null));}
   public FieldLocation location() {return robotContainer.getAutoChooser().getLocation();}
+  public Pose2d getStartingLocation() {return location().getLocation();}
 
 }

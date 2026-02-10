@@ -10,7 +10,7 @@ public class Constants2026 extends GameConstants {
     public static final int ANGLER_MOTOR_ID = 6;
     public static final int HOPPER_MOTOR_ID = 4;
     public static final int FEEDER_MOTOR_ID = 5;
-    public static final int CLIMBER_MOTOR_ID = 6;
+    public static final int CLIMBER_MOTOR_ID = 8;
 
     public static final double DRIVE_BASE_WIDTH = 0.635;
     public static final double DRIVE_BASE_LENGTH = 0.635;

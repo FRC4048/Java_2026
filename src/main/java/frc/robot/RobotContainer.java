@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -12,6 +13,8 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.commands.AddTunableApriltagReading;
+import frc.robot.commands.AddApriltagReading;
 import frc.robot.commands.hopper.SpinHopper;
 import frc.robot.commands.drive.DriveDirectionTime;
 import frc.robot.commands.feeder.SpinFeeder;
@@ -23,6 +26,7 @@ import frc.robot.commands.shooter.SpinShooter;
 import frc.robot.constants.Constants;
 import frc.robot.subsystems.AnglerSubsystem;
 import frc.robot.subsystems.HopperSubsystem;
+import frc.robot.subsystems.ApriltagSubsystem;
 import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.constants.ShootingState;
 import frc.robot.constants.ShootingState.ShootState;
@@ -38,6 +42,11 @@ import frc.robot.utils.logging.io.gyro.ThreadedGyroSwerveIMU;
 import frc.robot.utils.simulation.RobotVisualizer;
 import swervelib.SwerveInputStream;
 import swervelib.imu.SwerveIMU;
+import frc.robot.utils.logging.io.BaseIoImpl;
+import frc.robot.apriltags.ApriltagInputs;
+import frc.robot.apriltags.ApriltagReading;
+import frc.robot.apriltags.MockApriltagIo;
+import frc.robot.apriltags.TCPApriltagIo;
 
 import java.io.File;
 
@@ -54,6 +63,7 @@ public class RobotContainer {
     private final AnglerSubsystem anglerSubsystem;
     private final IntakeSubsystem intakeSubsystem;
     private final FeederSubsystem feederSubsystem;
+    private final ApriltagSubsystem apriltagSubsystem;
     private final ShooterSubsystem shooterSubsystem;
     private RobotVisualizer robotVisualizer = null;
     private final HopperSubsystem hopperSubsystem;
@@ -78,9 +88,10 @@ public class RobotContainer {
                 anglerSubsystem = new AnglerSubsystem(AnglerSubsystem.createRealIo());
                 intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createRealIo(), IntakeSubsystem.createRealDeploymentSwitch());
                 hopperSubsystem = new HopperSubsystem(HopperSubsystem.createRealIo());
+
                 feederSubsystem = new FeederSubsystem(FeederSubsystem.createRealIo());
                 shooterSubsystem = new ShooterSubsystem(ShooterSubsystem.createRealIo());
-
+                apriltagSubsystem = new ApriltagSubsystem(ApriltagSubsystem.createRealIo());
                 RealGyroIo gyroIo = (RealGyroIo) GyroSubsystem.createRealIo();
                 ThreadedGyro threadedGyro = gyroIo.getThreadedGyro();
                 gyroSubsystem = new GyroSubsystem(gyroIo);
@@ -95,6 +106,7 @@ public class RobotContainer {
                 intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createMockIo(), IntakeSubsystem.createMockDeploymentSwitch());
                 hopperSubsystem = new HopperSubsystem(HopperSubsystem.createMockIo());
                 feederSubsystem = new FeederSubsystem(FeederSubsystem.createMockIo());
+                apriltagSubsystem = new ApriltagSubsystem(ApriltagSubsystem.createMockIo());
                 shooterSubsystem = new ShooterSubsystem(ShooterSubsystem.createMockIo());
                 // No GyroSubsystem in REPLAY for now
                 // create the drive subsystem with null gyro (use default json)
@@ -108,6 +120,7 @@ public class RobotContainer {
                 intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createSimIo(robotVisualizer), IntakeSubsystem.createSimDeploymentSwitch());
                 hopperSubsystem = new HopperSubsystem(HopperSubsystem.createSimIo(robotVisualizer));
                 feederSubsystem = new FeederSubsystem(FeederSubsystem.createSimIo(robotVisualizer));
+                apriltagSubsystem = new ApriltagSubsystem(ApriltagSubsystem.createSimIo());
                 shooterSubsystem = new ShooterSubsystem(ShooterSubsystem.createSimIo(robotVisualizer));
                 // No GyroSubsystem in REPLAY for now
                 // create the drive subsystem with null gyro (use default json)
@@ -166,7 +179,7 @@ public class RobotContainer {
 
     public void putShuffleboardCommands() {
         if (Constants.DEBUG) {
-                
+
             /*SmartDashboard.putData(
                     "Spin Roller",
                     new SpinRoller(rollerSubsystem));
@@ -246,7 +259,9 @@ public class RobotContainer {
             SmartDashboard.putData(
                     "Shooting State: Shuttling",
                     new SetShootingState(shootState, ShootState.SHUTTLING));
-            
+            SmartDashboard.putData("AddTunedApriltagReading", new AddTunableApriltagReading(apriltagSubsystem));
+            SmartDashboard.putData("AddApriltagReading", new AddApriltagReading(apriltagSubsystem,new ApriltagReading(0, 0, 0, 0, 0, 0, 0)));
+
         }
     //basic drive command
         if(!Constants.TESTBED){

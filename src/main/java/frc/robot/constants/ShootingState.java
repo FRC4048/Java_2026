@@ -8,7 +8,7 @@ public class ShootingState {
         FIXED,          // Shoot from a known location
         FIXED_2,        // Shoot from another known location
         SHOOTING_HUB,   // Auto-aim into the hub
-        SHUTTLING       // Auti aim into alliance zone
+        SHUTTLING       // Auto-aim into alliance zone
 
     }
 

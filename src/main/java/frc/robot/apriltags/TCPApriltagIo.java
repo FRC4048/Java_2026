@@ -61,4 +61,8 @@ public class TCPApriltagIo extends BaseIoImpl<ApriltagInputs> implements Aprilta
     public void addReading(ApriltagReading reading) {
         server.addReading(reading);
     }
+    @Override
+    public ApriltagInputs getInputs() {
+        return inputs;
+    }
 }

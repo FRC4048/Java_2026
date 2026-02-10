@@ -28,11 +28,10 @@ public class AddTunableApriltagReading extends LoggableCommand {
 
     @Override
     public void execute() {
-        if (posX.hasChanged(0) || posY.hasChanged(0) || poseYaw.hasChanged(0)
-        || distanceToTag.hasChanged(0) || apriltagNumber.hasChanged(0) || latency.hasChanged(0)) {
+
             april.addSimReading(new ApriltagReading(posX.getAsDouble(), posY.getAsDouble(),
             poseYaw.getAsDouble(), distanceToTag.getAsDouble(), (int) apriltagNumber.getAsDouble(),
             latency.getAsDouble(), measurementTime.getAsDouble()));
-        }
+
     }
 }

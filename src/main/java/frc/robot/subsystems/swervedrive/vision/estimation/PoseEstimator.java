@@ -113,21 +113,21 @@ public class PoseEstimator {
   
   }
   public void updateInputs(){
-      apriltagSystem.getIO().updateInputs(apriltagSystem.getInputs());
+      apriltagSystem.getIO().updateInputs(apriltagSystem.getIO().getInputs());
   }
   private void updateVision(int... invalidApriltagNumbers) {
     long start = System.currentTimeMillis();
     if (Constants.ENABLE_VISION && Robot.getMode() != RobotMode.DISABLED) {
-      for (int i = 0; i < apriltagSystem.getInputs().timestamp.length; i++) {
+      for (int i = 0; i < apriltagSystem.getIO().getInputs().timestamp.length; i++) {
         double[] pos =
             new double[] {
-              apriltagSystem.getInputs().posX[i],
-              apriltagSystem.getInputs().posY[i],
-              apriltagSystem.getInputs().poseYaw[i]
+              apriltagSystem.getIO().getInputs().posX[i],
+              apriltagSystem.getIO().getInputs().posY[i],
+              apriltagSystem.getIO().getInputs().poseYaw[i]
             };
         if (validAprilTagPose(pos)
             && !ArrayUtils.contains(
-                invalidApriltagNumbers, apriltagSystem.getInputs().apriltagNumber[i])) {
+                invalidApriltagNumbers, apriltagSystem.getIO().getInputs().apriltagNumber[i])) {
           VisionMeasurement measurement = getVisionMeasurement(pos, i);
           poseManager.registerVisionMeasurement(measurement);
         } else {
@@ -142,11 +142,11 @@ public class PoseEstimator {
   }
 
   private VisionMeasurement getVisionMeasurement(double[] pos, int index) {
-    double serverTime = apriltagSystem.getInputs().serverTime[index];
+    double serverTime = apriltagSystem.getIO().getInputs().serverTime[index];
     double timestamp = 0; // latency is not right we are assuming zero
     double latencyInSec = (serverTime - timestamp) / 1000;
     Pose2d visionPose = new Pose2d(pos[0], pos[1], getEstimatedPose().getRotation());
-    double distanceFromTag = apriltagSystem.getInputs().distanceToTag[index];
+    double distanceFromTag = apriltagSystem.getIO().getInputs().distanceToTag[index];
     return new VisionMeasurement(visionPose, distanceFromTag, latencyInSec);
   }
 

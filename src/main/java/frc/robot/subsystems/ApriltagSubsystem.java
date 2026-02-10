@@ -12,13 +12,11 @@ public class ApriltagSubsystem extends SubsystemBase {
     public static final String LOGGING_NAME = "ApriltagSubsystem";
     private final ApriltagIO io;
     private final PoseEstimator estimator;
-    private static ApriltagInputs inputs;
     private final SwerveSubsystem drivebase;
 
     public ApriltagSubsystem(ApriltagIO io, SwerveSubsystem drivebase) {
         this.drivebase = drivebase;
         this.io = io;
-        inputs = new ApriltagInputs();
         drivebase.setVariance(VecBuilder.fill(10,10,10));
        estimator = new PoseEstimator(drivebase.getKinematics(), drivebase, 0, this);
     }
@@ -39,10 +37,6 @@ public class ApriltagSubsystem extends SubsystemBase {
     public void addSimReading(ApriltagReading reading) {
         io.addReading(reading);
     }
-    public ApriltagInputs getInputs(){
-        return inputs;
-    }
-
     public ApriltagIO getIO(){
         return io;
     }

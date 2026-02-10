@@ -47,7 +47,7 @@ public class SwerveSubsystem extends SubsystemBase {
      * Swerve drive object.
      */
     private final SwerveDrive swerveDrive;
-    private Vector<N3> variance;
+    private Vector<N3> variance = VecBuilder.fill(0.1,0.1,0.1);
     /**
      * Initialize {@link SwerveDrive} with the directory provided.
      * The SwerveIMU (which can be null) is the instance of the SwerveIMU to use. If non-null,

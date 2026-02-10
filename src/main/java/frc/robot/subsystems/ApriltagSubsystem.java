@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.apriltags.*;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
@@ -18,6 +19,7 @@ public class ApriltagSubsystem extends SubsystemBase {
         this.drivebase = drivebase;
         this.io = io;
         inputs = new ApriltagInputs();
+        drivebase.setVariance(VecBuilder.fill(10,10,10));
        estimator = new PoseEstimator(drivebase.getKinematics(), drivebase, 0, this);
     }
 
@@ -47,7 +49,9 @@ public class ApriltagSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-      drivebase.addVisionMeasurement(estimator.getEstimatedPose());
+        estimator.updateInputs();
+        estimator.updateVision();
+        drivebase.addVisionMeasurement(estimator.getEstimatedPose());
         io.periodic();
     }
 }

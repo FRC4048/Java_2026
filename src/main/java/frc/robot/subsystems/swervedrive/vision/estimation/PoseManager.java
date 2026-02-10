@@ -82,12 +82,12 @@ public class PoseManager {
     drivebase.addVisionMeasurement(measurement.measurement(), measurement.timeOfMeasurement());
   }
 
-  protected void setVisionSTD(Vector<N3> visionMeasurementStdDevs) {
+  protected void setVisionSTD(Vector<N3> visionMeasurementStdDevs123) {
     Logger.recordOutput(
         "Apriltag/VisionAppliedCovariance",
-        new double[] {visionMeasurementStdDevs.get(0), visionMeasurementStdDevs.get(1)});
+        new double[] {visionMeasurementStdDevs123.get(0), visionMeasurementStdDevs123.get(1)});
         
-    drivebase.setVariance(visionMeasurementStdDevs);
+    drivebase.setVariance(visionMeasurementStdDevs123);
   }
 /* 
   public void resetPose(OdometryMeasurement m, Translation2d initialPose) {

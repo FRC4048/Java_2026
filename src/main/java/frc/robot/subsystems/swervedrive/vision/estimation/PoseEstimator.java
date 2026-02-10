@@ -112,9 +112,6 @@ public class PoseEstimator {
     return !ArrayUtils.allMatch(measurement, -1.0) && measurement.length == 3;
   
   }
-  public void updateInputs(){
-      apriltagSystem.getIO().updateInputs(apriltagSystem.getIO().getInputs());
-  }
   private void updateVision(int... invalidApriltagNumbers) {
     long start = System.currentTimeMillis();
     if (Constants.ENABLE_VISION && Robot.getMode() != RobotMode.DISABLED) {

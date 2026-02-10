@@ -92,12 +92,16 @@ public class RobotVisualizer {
                                 new Color8Bit(Color.kYellow)));
         
         LoggedMechanismRoot2d tiltIntakeRoot =
-                mech2d.getRoot("Tilt Intake Root", Constants.DRIVE_BASE_WIDTH / 2, Constants.INITIAL_ROBOT_HEIGHT);
+                mech2d.getRoot("Tilt Intake Root", Constants.DRIVE_BASE_WIDTH * 3, Constants.INITIAL_ROBOT_HEIGHT);
 
         LoggedMechanismLigament2d tiltIntakeLigament =
         tiltIntakeRoot.append(
                         new LoggedMechanismLigament2d(
-                                "Tilt Intake Ligament", 0.5, 90, 5, new Color8Bit(Color.kDarkGray)));
+                                "Tilt Intake Ligament", 
+                                0.8, 
+                                90, 
+                                5, 
+                                new Color8Bit(Color.kGreenYellow)));
     
         this.tiltIntakeLigament =
                 tiltIntakeLigament.append(

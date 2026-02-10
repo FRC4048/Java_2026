@@ -49,7 +49,7 @@ import java.io.File;
 public class RobotContainer {
     // The robot's subsystems and commands are defined here...
     //private final RollerSubsystem rollerSubsystem;
-    private final TiltIntakeSubsystem tiltintakeSubsystem;
+    private final TiltIntakeSubsystem tiltIntakeSubsystem;
     private final IntakeSubsystem intakeSubsystem;
   private final FeederSubsystem feederSubsystem;
     private RobotVisualizer robotVisualizer = null;
@@ -71,7 +71,7 @@ public class RobotContainer {
         switch (Constants.currentMode) {
             case REAL -> {
                 //rollerSubsystem = new RollerSubsystem(RollerSubsystem.createRealIo());
-                tiltintakeSubsystem = new TiltIntakeSubsystem(TiltIntakeSubsystem.createRealIo());
+                tiltIntakeSubsystem = new TiltIntakeSubsystem(TiltIntakeSubsystem.createRealIo());
                 intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createRealIo(), IntakeSubsystem.createRealDeploymentSwitch());
                 hopperSubsystem = new HopperSubsystem(HopperSubsystem.createRealIo());
 
@@ -86,7 +86,7 @@ public class RobotContainer {
             }
             case REPLAY -> {
                 //rollerSubsystem = new RollerSubsystem(RollerSubsystem.createMockIo());
-                tiltintakeSubsystem = new TiltIntakeSubsystem(TiltIntakeSubsystem.createMockIo());
+                tiltIntakeSubsystem = new TiltIntakeSubsystem(TiltIntakeSubsystem.createMockIo());
                 intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createMockIo(), IntakeSubsystem.createMockDeploymentSwitch());
                 hopperSubsystem = new HopperSubsystem(HopperSubsystem.createMockIo());
                 feederSubsystem = new FeederSubsystem(FeederSubsystem.createMockIo());
@@ -97,7 +97,7 @@ public class RobotContainer {
             case SIM -> {
                 robotVisualizer = new RobotVisualizer();
                 //rollerSubsystem = new RollerSubsystem(RollerSubsystem.createSimIo(robotVisualizer));
-                tiltintakeSubsystem = new TiltIntakeSubsystem(TiltIntakeSubsystem.createSimIo(robotVisualizer));
+                tiltIntakeSubsystem = new TiltIntakeSubsystem(TiltIntakeSubsystem.createSimIo(robotVisualizer));
                 intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createSimIo(robotVisualizer), IntakeSubsystem.createSimDeploymentSwitch());
                 hopperSubsystem = new HopperSubsystem(HopperSubsystem.createSimIo(robotVisualizer));
                 feederSubsystem = new FeederSubsystem(FeederSubsystem.createSimIo(robotVisualizer));
@@ -155,11 +155,11 @@ public class RobotContainer {
         */
         SmartDashboard.putData(
                 "Tilt Up",
-                new TiltUp(tiltintakeSubsystem));
+                new TiltUp(tiltIntakeSubsystem));
 
         SmartDashboard.putData(
                 "Tilt Down",
-                new TiltDown(tiltintakeSubsystem));
+                new TiltDown(tiltIntakeSubsystem));
           
             // TODO: These commands do not REQUIRE the subsystem therefore cannot be used in production
             SmartDashboard.putData(
@@ -227,6 +227,7 @@ public class RobotContainer {
     public IntakeSubsystem getIntakeSubsystem() {
         return intakeSubsystem;
     }
+  
     public SwerveSubsystem getDriveBase(){
       return drivebase;
     }

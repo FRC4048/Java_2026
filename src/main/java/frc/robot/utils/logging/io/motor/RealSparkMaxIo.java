@@ -54,13 +54,11 @@ public class RealSparkMaxIo extends BaseIoImpl<MotorLoggableInputs> implements S
 
     @Override
     public boolean isRetracted() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'isRetracted'");
+        return getInputs().getRevLimit();
     }
 
     @Override
     public boolean isDeployed() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'isDeployed'");
+        return getInputs().getFwdLimit();
     }
 }

@@ -65,7 +65,7 @@ public class TiltIntakeSubsystem extends SubsystemBase {
 
     public static SparkMaxIo createSimIo(RobotVisualizer visualizer) {
         SparkMax motor = createMotor();
-        ArmSimulator simulator = new ArmSimulator(motor, createParams(), visualizer.getTiltLigament());
+        ArmSimulator simulator = new ArmSimulator(motor, createParams(), visualizer.getTiltIntakeLigament());
         return new SimSparkMaxIo(LOGGING_NAME, motor, MotorLoggableInputs.allMetrics(), simulator);
     }
 

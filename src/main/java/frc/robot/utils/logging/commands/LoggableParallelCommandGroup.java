@@ -2,6 +2,7 @@ package frc.robot.utils.logging.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.ProxyCommand;
 
 public class LoggableParallelCommandGroup extends ParallelCommandGroup implements Loggable {
@@ -18,7 +19,11 @@ public class LoggableParallelCommandGroup extends ParallelCommandGroup implement
     addCommands(proxyCommands);
   }
 
-  @Override
+  public LoggableParallelCommandGroup(Command trajectoryCmd, PrintCommand printCommand) {
+    //TODO Auto-generated constructor stub
+}
+
+@Override
   public String getBasicName() {
     return basicName;
   }

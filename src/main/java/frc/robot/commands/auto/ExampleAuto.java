@@ -10,15 +10,27 @@ import frc.robot.utils.logging.commands.LoggableSequentialCommandGroup;
 
 public class ExampleAuto extends LoggableSequentialCommandGroup{
     public ExampleAuto(SwerveSubsystem subsystem, AutoFactory auto, IntakeSubsystem intake) {
-        LoggableParallelCommandGroup parallel = new LoggableParallelCommandGroup();
-        parallel.addCommands(
-            auto.trajectoryCmd("ExamplePath"),
-            new PrintCommand("moving")
+        LoggableParallelCommandGroup pathOne = new LoggableParallelCommandGroup(
+            auto.trajectoryCmd("ExamplePathOne"),
+            new PrintCommand("Started ExamplePathOne")
         );
-
+        LoggableSequentialCommandGroup pathOneEnd = new LoggableSequentialCommandGroup(
+            pathOne,
+            new PrintCommand("Ending ExamplePathOne")
+        );
+        LoggableParallelCommandGroup pathTwo = new LoggableParallelCommandGroup(
+            auto.trajectoryCmd("ExamplePathTwo"),
+            new PrintCommand("Started ExamplePathTwo")
+        );
+        LoggableSequentialCommandGroup pathTwoEnd = new LoggableSequentialCommandGroup(
+            pathTwo,
+            new PrintCommand("Ending ExamplePathTwo")
+        );
         addCommands(
-            auto.resetOdometry("ExamplePath"),
-            parallel
+            auto.resetOdometry("ExamplePathOne"),
+            pathOneEnd,
+            auto.resetOdometry("ExamplePathTwo"),
+            pathTwoEnd
         );
     }
 }

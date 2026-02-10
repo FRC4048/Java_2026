@@ -1,5 +1,5 @@
 {
- "name":"path",
+ "name":"Untitled",
  "version":2,
  "type":"Swerve",
  "variables":{
@@ -28,8 +28,8 @@
    }
   },
   "mass":{
-   "exp":"115 lbs",
-   "val":52.16312255
+   "exp":"150 lbs",
+   "val":68.0388555
   },
   "inertia":{
    "exp":"6 kg m ^ 2",
@@ -44,8 +44,8 @@
    "val":0.0508
   },
   "vmax":{
-   "exp":"4660 RPM",
-   "val":487.9940588576145
+   "exp":"6000 RPM",
+   "val":628.3185307179587
   },
   "tmax":{
    "exp":"1.2 N * m",
@@ -76,7 +76,7 @@
  },
  "generationFeatures":[],
  "codegen":{
-  "root":"Users/michael/Downloads",
+  "root":"Users/michael/Developer/FRC2026_Java/src/main/deploy/choreo",
   "genVars":true,
   "genTrajData":true,
   "useChoreoLib":true

@@ -225,7 +225,7 @@ public class RobotContainer {
 
             SmartDashboard.putData(
                     "Spin Shooter",
-                    new SpinShooter(shooterSubsystem, shootState));
+                    new SpinShooter(shooterSubsystem, Constants.SHOOTER_SPEED));
 
             SmartDashboard.putData(
                     "Shooting State: Stopped",

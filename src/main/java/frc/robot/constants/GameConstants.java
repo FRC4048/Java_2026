@@ -50,14 +50,14 @@ public class GameConstants {
     public static final double HOPPER_SPEED = 0.1;
     public static final double FEEDER_SPEED = 0.5;
     public static final double MAX_SPEED = Units.feetToMeters(14.5);
-    public static final double SHOOTER_SPEED_FIXED = 100;
-    public static final double SHOOTER_SPEED_FIXED_2 = 200;
+    public static final double SHOOTER_SPEED = 100;
 
     //Timeouts
     public static final double SPIN_TIMEOUT = 5;
     public static final double TILT_TIMEOUT = 5;
     public static final double HOPPER_TIMEOUT = 10;
     public static final double FEEDER_TIMEOUT = 3;
+    public static final double SHOOTER_TIMEOUT = 5;
 
     //Angles
     public static final Rotation2d TILT_MIN_ANGLE = Rotation2d.fromDegrees(45);

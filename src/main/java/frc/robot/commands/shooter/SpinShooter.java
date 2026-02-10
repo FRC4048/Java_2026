@@ -1,57 +1,36 @@
 package frc.robot.commands.shooter;
 
+import edu.wpi.first.wpilibj.Timer;
 import frc.robot.constants.Constants;
-import frc.robot.constants.ShootingState;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.utils.logging.commands.LoggableCommand;
 
 public class SpinShooter extends LoggableCommand{
     
     private final ShooterSubsystem subsystem;
-    private final ShootingState shootingState;
+    private final double speed;
+    private final Timer timer;
   
-    public SpinShooter(ShooterSubsystem subsystem, ShootingState shootingState) {
+    public SpinShooter(ShooterSubsystem subsystem, double speed) {
         this.subsystem = subsystem;
-        this.shootingState = shootingState;
+        this.speed = speed;
+        timer = new Timer();
         addRequirements(subsystem);
     }
 
     @Override
     public void initialize() {
+        timer.restart();
     }  
 
     @Override
     public void execute() {
-       switch (shootingState.getShootState()) {
-            
-            case STOPPED -> {
-                break;
-            }
-
-            case FIXED -> {
-                subsystem.setPidVelocity(Constants.SHOOTER_SPEED_FIXED);
-                break;
-            }
-
-            case FIXED_2 -> {
-                subsystem.setPidVelocity(Constants.SHOOTER_SPEED_FIXED_2);
-                break;
-            }
-
-            case SHOOTING_HUB -> {
-                break;
-            }
-
-            case SHUTTLING -> {
-                break;
-            }
-
-       }
+        subsystem.setPidVelocity(speed);
     }
 
     @Override
     public boolean isFinished() {
-        return false;
+        return timer.hasElapsed(Constants.SHOOTER_TIMEOUT);
     }
 
     @Override

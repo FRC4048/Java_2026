@@ -57,6 +57,7 @@ public class GameConstants {
     public static final double HOPPER_TIMEOUT = 10;
     public static final double FEEDER_TIMEOUT = 3;
     public static final double ANGLER_TIMEOUT = 5;
+    public static final int SERVER_SOCKET_CONNECTION_TIMEOUT = 2000;
 
     //Angles
     public static final Rotation2d TILT_MIN_ANGLE = Rotation2d.fromDegrees(45);

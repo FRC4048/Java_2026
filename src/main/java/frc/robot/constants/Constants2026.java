@@ -22,4 +22,11 @@ public class Constants2026 extends GameConstants {
     public static final boolean TUNING_MODE = true;
 
     public static final boolean TESTBED = false;
+
+    // other
+    public static final int SERVER_SOCKET_ATTEMPT_DELAY = 100;
+    public static final int TCP_SERVER_PORT = 5806;
+    
+
+
 }

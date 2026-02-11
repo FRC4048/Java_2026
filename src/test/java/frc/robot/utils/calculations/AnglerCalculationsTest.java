@@ -2,12 +2,16 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 
-import frc.robot.constants.Constants;
 import frc.robot.subsystems.AnglerSubsystem;
 
 public class AnglerCalculationsTest {
 
     static final double DELTA = 0.1;
+
+    private static final double ENCODER_HIGH = 100.0;
+    private static final double ENCODER_LOW = 0.0;
+    private static final double ANGLE_HIGH = 45.0;
+    private static final double ANGLE_LOW = 0.0;
 
     double[] angles = {0, 45, 20, -20, 60, 30};
     double[] expectedRotations = {
@@ -24,10 +28,10 @@ public class AnglerCalculationsTest {
     private double calculate(double angle) {
         return AnglerSubsystem.calculateRotationsForAngle(
                 angle,
-                Constants.ANGLER_ENCODER_HIGH,
-                Constants.ANGLER_ENCODER_LOW,
-                Constants.ANGLER_ANGLE_HIGH,
-                Constants.ANGLER_ANGLE_LOW);
+                ENCODER_HIGH,
+                ENCODER_LOW,
+                ANGLE_HIGH,
+                ANGLE_LOW);
     }
 
     @Test

@@ -49,7 +49,9 @@ public class AnglerSubsystem extends SubsystemBase {
 
 /**
    * Gets the desired Angle Position and uses a PID controller to get the motor there
+   * @param targetAngle Desired angle position of Angler in degrees
    */
+  
     public void setAngle(double targetAngle) {
         double targetRotations = calculateRotationsForAngle(
                 targetAngle,
@@ -78,26 +80,16 @@ public class AnglerSubsystem extends SubsystemBase {
     }
 
     /**
-     * Drive toward the forward limit switch and stop once it is pressed.
-     * Call this repeatedly from a command while homing.
+     * Drive forward at the homing speed. Command should stop when limit is hit.
      */
-    public void runToForwardLimit() {
-        if (io.isFwdSwitchPressed()) {
-            io.stopMotor();
-            return;
-        }
+    public void runForward() {
         io.set(Math.abs(Constants.ANGLER_LIMIT_SPEED));
     }
 
     /**
-     * Drive toward the reverse limit switch and stop once it is pressed.
-     * Call this repeatedly from a command while homing.
+     * Drive reverse at the homing speed. Command should stop when limit is hit.
      */
-    public void runToReverseLimit() {
-        if (io.isRevSwitchPressed()) {
-            io.stopMotor();
-            return;
-        }
+    public void runReverse() {
         io.set(-Math.abs(Constants.ANGLER_LIMIT_SPEED));
     }
 

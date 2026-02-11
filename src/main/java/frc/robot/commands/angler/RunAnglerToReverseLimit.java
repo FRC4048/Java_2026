@@ -1,5 +1,7 @@
 package frc.robot.commands.angler;
 
+import edu.wpi.first.wpilibj.Timer;
+import frc.robot.constants.Constants;
 import frc.robot.subsystems.AnglerSubsystem;
 import frc.robot.utils.logging.commands.LoggableCommand;
 
@@ -9,6 +11,7 @@ import frc.robot.utils.logging.commands.LoggableCommand;
 public class RunAnglerToReverseLimit extends LoggableCommand {
     private final AnglerSubsystem angler;
     private boolean finished = false;
+    private final Timer timer = new Timer();
 
     public RunAnglerToReverseLimit(AnglerSubsystem angler) {
         this.angler = angler;
@@ -18,11 +21,12 @@ public class RunAnglerToReverseLimit extends LoggableCommand {
     @Override
     public void initialize() {
         finished = false;
+        timer.restart();
     }
 
     @Override
     public void execute() {
-        angler.runToReverseLimit();
+        angler.runReverse();
         if (angler.isAtReverseLimit()) {
             angler.resetEncoderToZero();
             finished = true;
@@ -36,6 +40,6 @@ public class RunAnglerToReverseLimit extends LoggableCommand {
 
     @Override
     public boolean isFinished() {
-        return finished;
+        return finished || timer.hasElapsed(Constants.ANGLER_TIMEOUT);
     }
 }

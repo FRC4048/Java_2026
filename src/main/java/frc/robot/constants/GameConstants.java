@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj.RobotBase;
 import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
 
 public class GameConstants {
-    
+
     public enum Mode {
         /**
          * Running on a real robot.
@@ -56,6 +56,7 @@ public class GameConstants {
     public static final double TILT_TIMEOUT = 5;
     public static final double HOPPER_TIMEOUT = 10;
     public static final double FEEDER_TIMEOUT = 3;
+    public static final double ANGLER_TIMEOUT = 5;
 
     //Angles
     public static final Rotation2d TILT_MIN_ANGLE = Rotation2d.fromDegrees(45);
@@ -79,11 +80,11 @@ public class GameConstants {
     public static final double ANGLER_D = 0.0;
     public static final double ANGLER_FF = 0.0;
     public static final double ANGLER_HOME_ROTATIONS = 0.0;
-    public static final double ANGLER_ENCODER_LOW = 0;
-    public static final double ANGLER_ENCODER_HIGH = 100;
-    public static final double ANGLER_ANGLE_LOW = 0;
-    public static final double ANGLER_ANGLE_HIGH = 45;
-    public static final double ANGLER_FIXED_ROTATIONS = 0.1;
+    public static final double ANGLER_ENCODER_LOW = 0; //Lowest encoder position of Angler
+    public static final double ANGLER_ENCODER_HIGH = 100; //Highest encoder position of Angler
+    public static final double ANGLER_ANGLE_LOW = 0; //Lowest angle position of Angler
+    public static final double ANGLER_ANGLE_HIGH = 45; //Highest angle position of Angler
+    public static final double ANGLER_FIXED_ROTATIONS = 0.1; //Fixed encoder position of Angler in Fixed ShootState
     public static final double ANGLER_LIMIT_SPEED = 0.2;
 
     

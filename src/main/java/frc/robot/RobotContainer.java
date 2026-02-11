@@ -217,12 +217,12 @@ public class RobotContainer {
 
             SmartDashboard.putData(
                     "angler/Run To Fwd Limit",
-                    new RunCommand(anglerSubsystem::runToForwardLimit, anglerSubsystem)
+                    new RunCommand(anglerSubsystem::runForward, anglerSubsystem)
                             .until(anglerSubsystem::isAtForwardLimit));
 
             SmartDashboard.putData(
                     "angler/Run To Rev Limit",
-                    new RunCommand(anglerSubsystem::runToReverseLimit, anglerSubsystem)
+                    new RunCommand(anglerSubsystem::runReverse, anglerSubsystem)
                             .until(anglerSubsystem::isAtReverseLimit));
 
             SmartDashboard.putData(

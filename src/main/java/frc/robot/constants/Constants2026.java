@@ -17,6 +17,7 @@ public class Constants2026 extends GameConstants {
     public static final double INITIAL_ROBOT_HEIGHT = 0;
 
     public static final int INTAKE_DIGITAL_INPUT_CHANNEL = 0;
+    public static final int CLIMBER_DIGITAL_INPUT_CHANNEL = 40;
     
     public static final double GYRO_DIAGS_ANGLE = 30;
 

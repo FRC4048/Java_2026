@@ -27,9 +27,11 @@ public class ClimberSubsystem extends SubsystemBase {
     
     public static final String LOGGING_NAME = "ClimberSubsystem";
     private final SparkMaxIo io;
+    private final DigitalInputIo limitSwitch;
 
-    public ClimberSubsystem(SparkMaxIo io) {
+    public ClimberSubsystem(SparkMaxIo io, DigitalInputIo limitSwitch) {
        this.io = io;
+       this.limitSwitch = limitSwitch;
     }
 
     public void setSpeed(double speed) {
@@ -66,6 +68,26 @@ public class ClimberSubsystem extends SubsystemBase {
     );
 }    
 
+public static DigitalInputIo createSimDeploymentSwitch() {
+    return new SimDigitalInputIo(
+        LOGGING_NAME + "/DeploymentSwitch",
+        new DigitalInput(Constants.CLIMBER_DIGITAL_INPUT_CHANNEL),
+        new DigitalInputLoggableInputs()
+    );
+}
+
+public static DigitalInputIo createRealDeploymentSwitch() {
+    return new RealDigitalInputIo(
+            LOGGING_NAME + "/DeploymentSwitch",
+            new DigitalInput(Constants.CLIMBER_DIGITAL_INPUT_CHANNEL),
+            new DigitalInputLoggableInputs()
+    );
+
+}
+
+public DigitalInputIo getLimitSwitch() { 
+    return limitSwitch;
+}
     private static SparkMax createMotor() {
         SparkMax motor = new SparkMax(Constants.CLIMBER_MOTOR_ID, SparkLowLevel.MotorType.kBrushless);
         SparkMaxConfig motorConfig = new SparkMaxConfig();

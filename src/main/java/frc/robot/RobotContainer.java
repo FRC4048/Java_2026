@@ -92,8 +92,7 @@ public class RobotContainer {
                 anglerSubsystem = new AnglerSubsystem(AnglerSubsystem.createRealIo());
                 intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createRealIo(), IntakeSubsystem.createRealDeploymentSwitch());
                 hopperSubsystem = new HopperSubsystem(HopperSubsystem.createRealIo());
-
-                climberSubsystem = new ClimberSubsystem(ClimberSubsystem.createRealIo());
+                climberSubsystem = new ClimberSubsystem(ClimberSubsystem.createRealIo(), ClimberSubsystem.createRealDeploymentSwitch());
                 feederSubsystem = new FeederSubsystem(FeederSubsystem.createRealIo());
                 apriltagSubsystem = new ApriltagSubsystem(ApriltagSubsystem.createRealIo());
                 RealGyroIo gyroIo = (RealGyroIo) GyroSubsystem.createRealIo();
@@ -109,7 +108,7 @@ public class RobotContainer {
                 anglerSubsystem = new AnglerSubsystem(AnglerSubsystem.createMockIo());
                 intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createMockIo(), IntakeSubsystem.createMockDeploymentSwitch());
                 hopperSubsystem = new HopperSubsystem(HopperSubsystem.createMockIo());
-                climberSubsystem = new ClimberSubsystem(ClimberSubsystem.createMockIo());
+                climberSubsystem = new ClimberSubsystem(ClimberSubsystem.createMockIo(), ClimberSubsystem.createMockDeploymentSwitch());
                 feederSubsystem = new FeederSubsystem(FeederSubsystem.createMockIo());
                 apriltagSubsystem = new ApriltagSubsystem(ApriltagSubsystem.createMockIo());
                 // No GyroSubsystem in REPLAY for now
@@ -123,7 +122,7 @@ public class RobotContainer {
                 anglerSubsystem = new AnglerSubsystem(AnglerSubsystem.createSimIo(robotVisualizer));
                 intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createSimIo(robotVisualizer), IntakeSubsystem.createSimDeploymentSwitch());
                 hopperSubsystem = new HopperSubsystem(HopperSubsystem.createSimIo(robotVisualizer));
-                climberSubsystem = new ClimberSubsystem(ClimberSubsystem.createSimIo(robotVisualizer));
+                climberSubsystem = new ClimberSubsystem(ClimberSubsystem.createSimIo(robotVisualizer), ClimberSubsystem.createSimDeploymentSwitch());
                 feederSubsystem = new FeederSubsystem(FeederSubsystem.createSimIo(robotVisualizer));
                 apriltagSubsystem = new ApriltagSubsystem(ApriltagSubsystem.createSimIo());
                 // No GyroSubsystem in REPLAY for now

@@ -237,8 +237,16 @@ public class RobotContainer {
                     new SpinFeeder(feederSubsystem));
 
             SmartDashboard.putData(
-                    "Spin Shooter",
+                    "Spin Shooter (100 RPM)",
                     new SpinShooter(shooterSubsystem, Constants.SHOOTER_SPEED));
+                
+            SmartDashboard.putData(
+                        "Spin Shooter (500 RPM)",
+                        new SpinShooter(shooterSubsystem, 500));
+        
+            SmartDashboard.putData(
+                    "Spin Shooter (1000 RPM)",
+                    new SpinShooter(shooterSubsystem, 1000));
 
             SmartDashboard.putData(
                     "Shooting State: Stopped",

@@ -20,6 +20,7 @@ import frc.robot.utils.logging.io.pidmotor.SimSparkMaxPidMotorIo;
 import frc.robot.utils.logging.io.pidmotor.SparkMaxPidConfig;
 import frc.robot.utils.logging.io.pidmotor.SparkMaxPidMotor;
 import frc.robot.utils.logging.io.pidmotor.SparkMaxPidMotorIo;
+import frc.robot.utils.motor.TunablePIDManager;
 import frc.robot.utils.simulation.MotorSimulator;
 import frc.robot.utils.simulation.RobotVisualizer;
 
@@ -28,16 +29,18 @@ public class ShooterSubsystem extends SubsystemBase {
     public static final String LOGGING_NAME = "ShooterSubsystem";
     
     private final SparkMaxPidMotorIo io;
-    private final SparkMax followerMotor;
-    private final SparkMaxConfig followerConfig;
+    //private final SparkMax followerMotor;
+    //private final SparkMaxConfig followerConfig;
+    private final TunablePIDManager pidManager;
 
     public ShooterSubsystem(SparkMaxPidMotorIo io) {
         this.io = io;
         io.setPid(0.0000002, 0.000015, 0.000015); // Pid needs tuning
-        followerMotor = new SparkMax(Constants.SHOOTER_FOLLOWER_MOTOR_ID, SparkLowLevel.MotorType.kBrushless);
-        followerConfig = new SparkMaxConfig();
-        followerConfig.follow(Constants.SHOOTER_MOTOR_ID, true);
-        followerMotor.configure(followerConfig, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
+        //followerMotor = new SparkMax(Constants.SHOOTER_FOLLOWER_MOTOR_ID, SparkLowLevel.MotorType.kBrushless);
+        //followerConfig = new SparkMaxConfig();
+        //followerConfig.follow(Constants.SHOOTER_MOTOR_ID, true);
+        //followerMotor.configure(followerConfig, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
+        pidManager = new TunablePIDManager("Shooter", io, new SparkMaxPidConfig(true));
 
     }
 
@@ -58,6 +61,7 @@ public class ShooterSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
         io.periodic();
+        pidManager.periodic();
     }
 
     public static SparkMaxPidMotorIo createMockIo() {

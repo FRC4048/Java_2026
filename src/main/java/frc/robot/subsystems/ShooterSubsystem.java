@@ -33,7 +33,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
     public ShooterSubsystem(SparkMaxPidMotorIo io) {
         this.io = io;
-        io.setPid(0.000002, 0.000015, 0.000015); // Pid needs tuning
+        io.setPid(0.0000002, 0.000015, 0.000015); // Pid needs tuning
         followerMotor = new SparkMax(Constants.SHOOTER_FOLLOWER_MOTOR_ID, SparkLowLevel.MotorType.kBrushless);
         followerConfig = new SparkMaxConfig();
         followerConfig.follow(Constants.SHOOTER_MOTOR_ID, true);

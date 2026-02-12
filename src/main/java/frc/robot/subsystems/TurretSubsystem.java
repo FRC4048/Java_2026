@@ -1,92 +1,96 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 package frc.robot.subsystems;
 
-import com.revrobotics.spark.SparkBase;
+import com.revrobotics.PersistMode;
+import com.revrobotics.ResetMode;
 import com.revrobotics.spark.SparkLowLevel;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
+
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.constants.Constants;
 import frc.robot.utils.logging.input.MotorLoggableInputs;
-import frc.robot.utils.logging.io.motor.MockSparkMaxIo;
-import frc.robot.utils.logging.io.motor.RealSparkMaxIo;
-import frc.robot.utils.logging.io.motor.SimSparkMaxIo;
-import frc.robot.utils.logging.io.motor.SparkMaxIo;
+import frc.robot.utils.logging.io.pidmotor.MockSparkMaxPidMotorIo;
+import frc.robot.utils.logging.io.pidmotor.RealSparkMaxPidMotorIo;
+import frc.robot.utils.logging.io.pidmotor.SimSparkMaxPidMotorIo;
+import frc.robot.utils.logging.io.pidmotor.SparkMaxPidConfig;
+import frc.robot.utils.logging.io.pidmotor.SparkMaxPidMotor;
+import frc.robot.utils.logging.io.pidmotor.SparkMaxPidMotorIo;
 import frc.robot.utils.simulation.ArmParameters;
 import frc.robot.utils.simulation.ArmSimulator;
 import frc.robot.utils.simulation.RobotVisualizer;
+import frc.robot.utils.motor.TunablePIDManager;
 
 public class TurretSubsystem extends SubsystemBase {
-    public static final String LOGGING_NAME = "TurretSubsystem";
-    private final SparkMaxIo io;
 
-    public TurretSubsystem(SparkMaxIo io) {
+    public static final String LOGGING_NAME = "TurretSubsystem";
+
+    private final SparkMaxPidMotorIo io;
+    private final TunablePIDManager pidManager;
+
+    public TurretSubsystem(SparkMaxPidMotorIo io) {
         this.io = io;
+        this.pidManager = new TunablePIDManager(LOGGING_NAME, io, createPidConfig());
     }
 
-    public void setSpeed(double speed) {
-        io.set(speed);
+    @Override
+    public void periodic() {
+        pidManager.periodic();
+        io.periodic();
+    }
+
+/**
+   * Gets the desired Encoder Position and uses a PID controller to get the motor there
+   */
+    public void setPosition(double targetEncoderPosition) {
+        io.setPidPosition(targetEncoderPosition);
     }
 
     public void stopMotors() {
         io.stopMotor();
     }
 
-    public boolean isRight() {
-        // Arm motor is inverted - rev switch is at right of turret
-        return io.isRevSwitchPressed();
+    public static SparkMaxPidMotorIo createMockIo() {
+        return new MockSparkMaxPidMotorIo(LOGGING_NAME, MotorLoggableInputs.allMetrics());
     }
 
-    public boolean isLeft() {
-        // Arm motor is inverted - fwd switch is at left of turret
-        return io.isFwdSwitchPressed();
+    public static SparkMaxPidMotorIo createRealIo() {
+        return new RealSparkMaxPidMotorIo(LOGGING_NAME, createMotor(), MotorLoggableInputs.allMetrics());
     }
 
-    @Override
-    public void periodic() {
-        io.periodic();
+    public static SparkMaxPidMotorIo createSimIo(RobotVisualizer visualizer) {
+        SparkMaxPidMotor motor = createMotor();
+        ArmSimulator simulator = new ArmSimulator(motor.getNeoMotor(), createParams(), visualizer.getTurretLigament());
+        return new SimSparkMaxPidMotorIo(
+                LOGGING_NAME,
+                motor,
+                MotorLoggableInputs.allMetrics(),
+                simulator);
     }
 
-    public static SparkMaxIo createMockIo() {
-        return new MockSparkMaxIo(LOGGING_NAME, MotorLoggableInputs.allMetrics());
+    private static SparkMaxPidConfig createPidConfig() {
+        return new SparkMaxPidConfig(false)
+                .setCurrentLimit(Constants.NEO_CURRENT_LIMIT)
+                .setAllowedError(.1)
+                .setPidf(
+                        Constants.TURRET_P,
+                        Constants.TURRET_I,
+                        Constants.TURRET_D,
+                        Constants.TURRET_FF);
     }
 
-    public static SparkMaxIo createRealIo() {
-        return new RealSparkMaxIo(LOGGING_NAME, createMotor(), MotorLoggableInputs.allMetrics());
-    }
-
-    public static SparkMaxIo createSimIo(RobotVisualizer visualizer) {
-        SparkMax motor = createMotor();
-        ArmSimulator simulator = new ArmSimulator(motor, createParams(), visualizer.getTiltLigament());
-        return new SimSparkMaxIo(LOGGING_NAME, motor, MotorLoggableInputs.allMetrics(), simulator);
-    }
-
-    private static SparkMax createMotor() {
-        SparkMax motor = new SparkMax(Constants.TURRET_MOTOR_ID, SparkLowLevel.MotorType.kBrushless);
-        SparkMaxConfig motorConfig = new SparkMaxConfig();
-        motorConfig.idleMode(SparkBaseConfig.IdleMode.kBrake);
-        motorConfig.smartCurrentLimit(Constants.NEO_CURRENT_LIMIT);
-        motor.configure(
-                motorConfig,
-                SparkBase.ResetMode.kResetSafeParameters,
-                SparkBase.PersistMode.kPersistParameters);
-
-        return motor;
+    private static SparkMaxPidMotor createMotor() {
+        return new SparkMaxPidMotor(Constants.TURRET_MOTOR_ID, createPidConfig());
     }
 
     private static ArmParameters createParams() {
         ArmParameters params = new ArmParameters();
-        params.name = "Turret";
-        params.armGearing = Constants.TILT_GEARING;
-        params.armInertia = Constants.TILT_INERTIA;
-        params.armLength = Constants.TILT_LENGTH;
-        params.armMinAngle = Constants.TILT_MIN_ANGLE;
-        params.armMaxAngle = Constants.TILT_MAX_ANGLE;
-        params.armSimulateGravity = Constants.TILT_SIMULATE_GRAVITY;
+        params.name = "TURRET";
+        params.armGearing = Constants.TURRET_GEARING;
+        params.armInertia = Constants.TURRET_INERTIA;
+        params.armLength = Constants.TURRET_LENGTH;
+        params.armMinAngle = Constants.TURRET_LEFT_ANGLE;
+        params.armMaxAngle = Constants.TURRET_RIGHT_ANGLE;
         return params;
     }
 }

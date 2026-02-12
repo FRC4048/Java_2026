@@ -63,6 +63,8 @@ public class GameConstants {
     public static final Rotation2d TILT_MAX_ANGLE = Rotation2d.fromDegrees(90);
     public static final Rotation2d ANGLER_MIN_ANGLE = Rotation2d.fromDegrees(45);
     public static final Rotation2d ANGLER_MAX_ANGLE = Rotation2d.fromDegrees(90);
+    public static final Rotation2d TURRET_LEFT_ANGLE = Rotation2d.fromDegrees(-90);
+    public static final Rotation2d TURRET_RIGHT_ANGLE = Rotation2d.fromDegrees(90);
 
     public static final double TILT_LENGTH = 0.2;
     public static final double TILT_INERTIA = 0.5;
@@ -73,6 +75,9 @@ public class GameConstants {
     public static final double ANGLER_GEARING = 45.0;
     public static final boolean ANGLER_SIMULATE_GRAVITY = false;
     public static final int NEO_CURRENT_LIMIT = 20;
+    public static final double TURRET_LENGTH = 0.4;
+    public static final double TURRET_INERTIA = 0.5;
+    public static final double TURRET_GEARING = 45.0;
 
     // angler (turret) PID
     public static final double ANGLER_P = 0.05;
@@ -84,6 +89,15 @@ public class GameConstants {
     public static final double ANGLER_HIGH_ROTATIONS = 50; //Highest position of Angler
     public static final double ANGLER_FIXED_ROTATIONS = 0.1; //Fixed position of Angler in Fixed ShootState
     
+ // turret (pan angle) PID
+    public static final double TURRET_P = 0.05;
+    public static final double TURRET_I = 0.0;
+    public static final double TURRET_D = 0.0;
+    public static final double TURRET_FF = 0.0;
+    public static final double TURRET_HOME_ROTATIONS = 0.0; //Where Turret usually is
+    public static final double TURRET_LEFT_BOUND = -50; //Lowest position of Turret
+    public static final double TURRET_RIGHT_BOUND = 50; //Highest position of Turret
+
     //swerve config
     public static final TelemetryVerbosity TELEMENTRY_VERBOSITY = TelemetryVerbosity.HIGH;
     public static final boolean SET_HEADING_CORRECTION = false;

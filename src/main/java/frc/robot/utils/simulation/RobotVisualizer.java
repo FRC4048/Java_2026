@@ -18,6 +18,7 @@ public class RobotVisualizer {
     private final LoggedMechanismLigament2d hopperLigament;
     private final LoggedMechanismLigament2d feederLigament;
     private final LoggedMechanismLigament2d anglerLigament;
+    private final LoggedMechanismLigament2d turretLigament;
 
     public RobotVisualizer() {
         LoggedMechanismRoot2d root =
@@ -104,6 +105,23 @@ public class RobotVisualizer {
                                 4,
                                 new Color8Bit(Color.kYellow)));
 
+                LoggedMechanismRoot2d turretRoot =
+                mech2d.getRoot("Turret Root", Constants.DRIVE_BASE_WIDTH * 2, Constants.INITIAL_ROBOT_HEIGHT);
+
+        LoggedMechanismLigament2d turretRiserLigament =
+                intakeRoot.append(
+                        new LoggedMechanismLigament2d(
+                                "Turret Riser", 0.5, 45, 8, new Color8Bit(Color.kMediumPurple)));
+                            
+        this.turretLigament =
+                turretRiserLigament.append(
+                        new LoggedMechanismLigament2d(
+                                "Intake Wheel",
+                                0.1,
+                                90.0,
+                                4,
+                                new Color8Bit(Color.kRed)));
+
         }
 
     public LoggedMechanismLigament2d getRollerLigament() {
@@ -128,6 +146,10 @@ public class RobotVisualizer {
 
     public LoggedMechanismLigament2d getAnglerLigament() {
         return anglerLigament;
+    }
+
+    public LoggedMechanismLigament2d getTurretLigament() {
+        return turretLigament;
     }
 
     public void logMechanism() {

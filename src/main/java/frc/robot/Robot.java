@@ -35,7 +35,6 @@ public class Robot extends LoggedRobot {
   private Command autonomousCommand;
   private final Drive drive;
   private final AutoFactory autoFactory;
-  private final Command path;
 
   private static final Diagnostics diagnostics = new Diagnostics();
   private final RobotContainer robotContainer;
@@ -85,13 +84,14 @@ public class Robot extends LoggedRobot {
     // autonomous chooser on the dashboard.
     robotContainer = new RobotContainer();
     drive = new Drive(robotContainer.getDriveBase());
+
+
+    //Sets up Choreo with pose, odometry, drivebase, and a follow trajectory command
     autoFactory = new AutoFactory(robotContainer.getDriveBase()::getPose, 
                                   robotContainer.getDriveBase()::resetOdometry, 
                                   drive::followTrajectory, 
                                   true, 
                                   robotContainer.getDriveBase());
-    path = autoFactory.trajectoryCmd("ExamplePath");
-
   }
 
   public static RobotMode getMode() {

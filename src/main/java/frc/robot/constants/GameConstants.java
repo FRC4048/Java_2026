@@ -56,6 +56,7 @@ public class GameConstants {
     public static final double TILT_TIMEOUT = 5;
     public static final double HOPPER_TIMEOUT = 10;
     public static final double FEEDER_TIMEOUT = 3;
+    public static final double TURRET_TIMEOUT = 5;
     public static final int SERVER_SOCKET_CONNECTION_TIMEOUT = 2000;
 
     //Angles
@@ -63,8 +64,8 @@ public class GameConstants {
     public static final Rotation2d TILT_MAX_ANGLE = Rotation2d.fromDegrees(90);
     public static final Rotation2d ANGLER_MIN_ANGLE = Rotation2d.fromDegrees(45);
     public static final Rotation2d ANGLER_MAX_ANGLE = Rotation2d.fromDegrees(90);
-    public static final Rotation2d TURRET_LEFT_ANGLE = Rotation2d.fromDegrees(-90);
-    public static final Rotation2d TURRET_RIGHT_ANGLE = Rotation2d.fromDegrees(90);
+    public static final Rotation2d TURRET_MIN_ANGLE = Rotation2d.fromDegrees(-90);
+    public static final Rotation2d TURRET_MAX_ANGLE = Rotation2d.fromDegrees(90);
 
     public static final double TILT_LENGTH = 0.2;
     public static final double TILT_INERTIA = 0.5;
@@ -95,8 +96,12 @@ public class GameConstants {
     public static final double TURRET_D = 0.0;
     public static final double TURRET_FF = 0.0;
     public static final double TURRET_HOME_ROTATIONS = 0.0; //Where Turret usually is
-    public static final double TURRET_LEFT_BOUND = -50; //Lowest position of Turret
-    public static final double TURRET_RIGHT_BOUND = 50; //Highest position of Turret
+    public static final double TURRET_ENCODER_MIN = -50; //Lowest (leftmost) position of Turret
+    public static final double TURRET_ENCODER_MAX = 50; //Highest (rightmost) position of Turret
+    public static final double TURRET_FIXED_ROTATIONS = 0.1; //Fixed position of Turret in Fixed ShootState
+    public static final double TURRET_LEFT_ANGLE = -90;
+    public static final double TURRET_RIGHT_ANGLE = 90;
+    public static final double TURRET_LIMIT_SPEED = 0.2;
 
     //swerve config
     public static final TelemetryVerbosity TELEMENTRY_VERBOSITY = TelemetryVerbosity.HIGH;

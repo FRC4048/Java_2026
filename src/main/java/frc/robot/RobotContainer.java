@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -23,6 +24,7 @@ import frc.robot.commands.intake.SpinIntake;
 import frc.robot.autochooser.AutoChooser;
 import frc.robot.commands.angler.AimAngler;
 import frc.robot.commands.shooter.SetShootingState;
+import frc.robot.commands.turret.RunTurretToRevLimit;
 import frc.robot.constants.Constants;
 import frc.robot.subsystems.AnglerSubsystem;
 import frc.robot.subsystems.ApriltagSubsystem;
@@ -32,6 +34,7 @@ import frc.robot.constants.ShootingState;
 import frc.robot.constants.ShootingState.ShootState;
 import frc.robot.subsystems.GyroSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.TurretSubsystem;
 //import frc.robot.subsystems.RollerSubsystem;
 //import frc.robot.subsystems.TiltSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
@@ -66,6 +69,7 @@ public class RobotContainer {
     private final ApriltagSubsystem apriltagSubsystem;
     private RobotVisualizer robotVisualizer = null;
     private final HopperSubsystem hopperSubsystem;
+    private final TurretSubsystem turretSubsystem;
     private SwerveSubsystem drivebase = null;
     private GyroSubsystem gyroSubsystem = null;
     private final CommandJoystick driveJoystick = new CommandJoystick(Constants.DRIVE_JOYSTICK_PORT);
@@ -87,6 +91,8 @@ public class RobotContainer {
                 anglerSubsystem = new AnglerSubsystem(AnglerSubsystem.createRealIo());
                 intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createRealIo(), IntakeSubsystem.createRealDeploymentSwitch());
                 hopperSubsystem = new HopperSubsystem(HopperSubsystem.createRealIo());
+                turretSubsystem = new TurretSubsystem(TurretSubsystem.createRealIo());
+
 
 
                 feederSubsystem = new FeederSubsystem(FeederSubsystem.createRealIo());
@@ -105,6 +111,7 @@ public class RobotContainer {
                 intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createMockIo(), IntakeSubsystem.createMockDeploymentSwitch());
                 hopperSubsystem = new HopperSubsystem(HopperSubsystem.createMockIo());
                 feederSubsystem = new FeederSubsystem(FeederSubsystem.createMockIo());
+                turretSubsystem = new TurretSubsystem(TurretSubsystem.createMockIo());
                 apriltagSubsystem = new ApriltagSubsystem(ApriltagSubsystem.createMockIo());
                 // No GyroSubsystem in REPLAY for now
                 // create the drive subsystem with null gyro (use default json)
@@ -118,6 +125,7 @@ public class RobotContainer {
                 intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createSimIo(robotVisualizer), IntakeSubsystem.createSimDeploymentSwitch());
                 hopperSubsystem = new HopperSubsystem(HopperSubsystem.createSimIo(robotVisualizer));
                 feederSubsystem = new FeederSubsystem(FeederSubsystem.createSimIo(robotVisualizer));
+                turretSubsystem = new TurretSubsystem(TurretSubsystem.createSimIo(robotVisualizer));
                 apriltagSubsystem = new ApriltagSubsystem(ApriltagSubsystem.createSimIo());
                 // No GyroSubsystem in REPLAY for now
                 // create the drive subsystem with null gyro (use default json)
@@ -220,6 +228,46 @@ public class RobotContainer {
             SmartDashboard.putData(
                     "angler/Go High",
                     new InstantCommand(() -> anglerSubsystem.setPosition(Constants.ANGLER_HIGH_ROTATIONS)));
+
+            SmartDashboard.putData(
+                    "turret/Set Turret Position",
+                    new InstantCommand(() -> turretSubsystem.setPosition(
+                            SmartDashboard.getNumber("turret/TargetRotations", 0.0))));
+
+            SmartDashboard.putData(
+                    "turret/Set Turret Angle",
+                    new InstantCommand(() -> turretSubsystem.setAngle(
+                            SmartDashboard.getNumber("turret/TargetAngle", 0.0))));
+
+            SmartDashboard.putData(
+                    "turret/Turret Go Home",
+                    new InstantCommand(() -> turretSubsystem.setPosition(Constants.TURRET_HOME_ROTATIONS)));
+
+            SmartDashboard.putData(
+                    "turret/Turret Go Low",
+                    new InstantCommand(() -> turretSubsystem.setPosition(Constants.TURRET_ENCODER_MIN)));
+
+            SmartDashboard.putData(
+                    "turret/Turret Go High",
+                    new InstantCommand(() -> turretSubsystem.setPosition(Constants.TURRET_ENCODER_MAX)));
+
+            SmartDashboard.putData(
+                    "turret/Run Turret To Fwd Limit",
+                    new RunCommand(turretSubsystem::runForward, turretSubsystem)
+                            .until(turretSubsystem::isAtForwardLimit));
+
+            SmartDashboard.putData(
+                    "turret/Run Turret To Rev Limit",
+                    new RunCommand(turretSubsystem::runReverse, turretSubsystem)
+                            .until(turretSubsystem::isAtReverseLimit));
+
+            SmartDashboard.putData(
+                    "turret/Reset Turret Encoder",
+                    new InstantCommand(turretSubsystem::resetEncoderToZero));
+
+            SmartDashboard.putData(
+                    "turret/Home Rev (Reset) for Turret",
+                    new RunTurretToRevLimit(turretSubsystem));
 
             SmartDashboard.putData(
                     "Spin Intake",

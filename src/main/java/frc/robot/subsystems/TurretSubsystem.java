@@ -7,6 +7,7 @@ import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.constants.Constants;
 import frc.robot.constants.GameConstants;
@@ -46,6 +47,62 @@ public class TurretSubsystem extends SubsystemBase {
     public void setPosition(double targetEncoderPosition) {
         io.setPidPosition(targetEncoderPosition);
     }   
+
+    /**
+   * Gets the desired Turret Position and uses a PID controller to get the motor there
+   * @param targetAngle Desired angle position of turret in degrees */
+  
+    public void setAngle(double targetAngle) {
+        double targetRotations = calculateRotationsForAngle(
+                targetAngle,
+                Constants.TURRET_ENCODER_MAX,
+                Constants.TURRET_ENCODER_MIN,
+                Constants.TURRET_RIGHT_ANGLE,
+                Constants.TURRET_LEFT_ANGLE);
+        setPosition(targetRotations);
+    }
+
+    //Range translate code with a clamp
+    public static double calculateRotationsForAngle(
+            double targetAngle,
+            double encoderHigh,
+            double encoderLow,
+            double angleHigh,
+            double angleLow) {
+
+        double multipler = (encoderHigh - encoderLow) / (angleHigh - angleLow);
+        double targetRotations = targetAngle * multipler - (multipler * angleHigh - encoderHigh);
+        return MathUtil.clamp(targetRotations, encoderLow, encoderHigh);
+    }
+
+    /**
+     * Drive forward at the homing speed. Command should stop when limit is hit.
+     */
+    public void runForward() {
+        io.set(Math.abs(Constants.TURRET_LIMIT_SPEED));
+    }
+
+    /**
+     * Drive reverse at the homing speed. Command should stop when limit is hit.
+     */
+    public void runReverse() {
+        io.set(-Math.abs(Constants.TURRET_LIMIT_SPEED));
+    }
+
+    /**
+     * Reset the encoder position to zero.
+     */
+    public void resetEncoderToZero() {
+        io.resetEncoderPosition(0.0);
+    }
+
+    public boolean isAtForwardLimit() {
+        return io.isFwdSwitchPressed();
+    }
+
+    public boolean isAtReverseLimit() {
+        return io.isRevSwitchPressed();
+    }
 
     public void stopMotors() {
         io.stopMotor();
@@ -90,8 +147,8 @@ public class TurretSubsystem extends SubsystemBase {
         params.armGearing = Constants.TURRET_GEARING;
         params.armInertia = Constants.TURRET_INERTIA;
         params.armLength = Constants.TURRET_LENGTH;
-        params.armMinAngle = Constants.TURRET_LEFT_ANGLE;
-        params.armMaxAngle = Constants.TURRET_RIGHT_ANGLE;
+        params.armMinAngle = Constants.TURRET_MIN_ANGLE;
+        params.armMaxAngle = Constants.TURRET_MAX_ANGLE;
         return params;
     }
 }

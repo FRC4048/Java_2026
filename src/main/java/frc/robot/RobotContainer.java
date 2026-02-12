@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.AddTunableApriltagReading;
 import frc.robot.commands.AddApriltagReading;
+import frc.robot.commands.AddGarbageReading;
 import frc.robot.commands.hopper.SpinHopper;
 import frc.robot.commands.drive.DriveDirectionTime;
 import frc.robot.commands.feeder.SpinFeeder;
@@ -247,7 +248,7 @@ public class RobotContainer {
                     new SetShootingState(shootState, ShootState.SHUTTLING));
             SmartDashboard.putData("AddTunedApriltagReading", new AddTunableApriltagReading(apriltagSubsystem));
             SmartDashboard.putData("AddApriltagReading", new AddApriltagReading(apriltagSubsystem,new ApriltagReading(0, 0, 0, 0, 0, 0, 0)));
-
+            SmartDashboard.putData("AddGarbageReading", new AddGarbageReading(apriltagSubsystem));
         }
     //basic drive command
         if(!Constants.TESTBED){

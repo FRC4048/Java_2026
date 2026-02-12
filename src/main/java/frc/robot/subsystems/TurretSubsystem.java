@@ -9,6 +9,7 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.constants.Constants;
+import frc.robot.constants.GameConstants;
 import frc.robot.utils.logging.input.MotorLoggableInputs;
 import frc.robot.utils.logging.io.pidmotor.MockSparkMaxPidMotorIo;
 import frc.robot.utils.logging.io.pidmotor.RealSparkMaxPidMotorIo;
@@ -44,7 +45,7 @@ public class TurretSubsystem extends SubsystemBase {
    */
     public void setPosition(double targetEncoderPosition) {
         io.setPidPosition(targetEncoderPosition);
-    }
+    }   
 
     public void stopMotors() {
         io.stopMotor();

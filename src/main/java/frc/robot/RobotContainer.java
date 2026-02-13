@@ -6,20 +6,26 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.commands.AddTunableApriltagReading;
+import frc.robot.commands.AddApriltagReading;
 import frc.robot.commands.hopper.SpinHopper;
-import frc.robot.commands.feeder.SpinFeeder;
 import frc.robot.commands.drive.DriveDirectionTime;
+import frc.robot.commands.feeder.SpinFeeder;
+import frc.robot.commands.drive.FakeVision;
 import frc.robot.commands.intake.SpinIntake;
+import frc.robot.autochooser.AutoChooser;
+import frc.robot.commands.angler.AimAngler;
 import frc.robot.commands.shooter.SetShootingState;
 import frc.robot.constants.Constants;
+import frc.robot.subsystems.AnglerSubsystem;
+import frc.robot.subsystems.ApriltagSubsystem;
 import frc.robot.subsystems.HopperSubsystem;
 import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.constants.ShootingState;
@@ -35,6 +41,11 @@ import frc.robot.utils.logging.io.gyro.ThreadedGyroSwerveIMU;
 import frc.robot.utils.simulation.RobotVisualizer;
 import swervelib.SwerveInputStream;
 import swervelib.imu.SwerveIMU;
+import frc.robot.utils.logging.io.BaseIoImpl;
+import frc.robot.apriltags.ApriltagInputs;
+import frc.robot.apriltags.ApriltagReading;
+import frc.robot.apriltags.MockApriltagIo;
+import frc.robot.apriltags.TCPApriltagIo;
 
 import java.io.File;
 
@@ -45,20 +56,23 @@ import java.io.File;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
+    // Instantiate the autochooser.
+    private final AutoChooser autoChooser = new AutoChooser();
     // The robot's subsystems and commands are defined here...
-    //private final RollerSubsystem rollerSubsystem;
     //private final TiltSubsystem tiltSubsystem;
+    private final AnglerSubsystem anglerSubsystem;
     private final IntakeSubsystem intakeSubsystem;
-  private final FeederSubsystem feederSubsystem;
+    private final FeederSubsystem feederSubsystem;
+    private final ApriltagSubsystem apriltagSubsystem;
     private RobotVisualizer robotVisualizer = null;
-  private final HopperSubsystem hopperSubsystem;
+    private final HopperSubsystem hopperSubsystem;
     private SwerveSubsystem drivebase = null;
     private GyroSubsystem gyroSubsystem = null;
     private final CommandJoystick driveJoystick = new CommandJoystick(Constants.DRIVE_JOYSTICK_PORT);
     private final CommandJoystick steerJoystick = new CommandJoystick(Constants.STEER_JOYSTICK_PORT);
     private ShootingState shootState = new ShootingState(ShootState.STOPPED);
 
-    // Replace with CommandPS4Controller or CommandJoystick if needed
+        // Replace with CommandPS4Controller or CommandJoystick if needed
     //new CommandXboxController(OperatorConstants.kDriverControllerPort);private final CommandXboxController controller = new CommandXboxController(Constants.XBOX_CONTROLLER_PORT);
 
     /**
@@ -70,43 +84,51 @@ public class RobotContainer {
             case REAL -> {
                 //rollerSubsystem = new RollerSubsystem(RollerSubsystem.createRealIo());
                 //tiltSubsystem = new TiltSubsystem(TiltSubsystem.createRealIo());
+                anglerSubsystem = new AnglerSubsystem(AnglerSubsystem.createRealIo());
                 intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createRealIo(), IntakeSubsystem.createRealDeploymentSwitch());
                 hopperSubsystem = new HopperSubsystem(HopperSubsystem.createRealIo());
 
-                feederSubsystem = new FeederSubsystem(FeederSubsystem.createRealIo());
 
+                feederSubsystem = new FeederSubsystem(FeederSubsystem.createRealIo());
+                apriltagSubsystem = new ApriltagSubsystem(ApriltagSubsystem.createRealIo());
                 RealGyroIo gyroIo = (RealGyroIo) GyroSubsystem.createRealIo();
                 ThreadedGyro threadedGyro = gyroIo.getThreadedGyro();
                 gyroSubsystem = new GyroSubsystem(gyroIo);
                 SwerveIMU swerveIMU = new ThreadedGyroSwerveIMU(threadedGyro);
-                drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "YAGSL"), swerveIMU);
+                
+                drivebase = !Constants.TESTBED ? new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "YAGSL"), swerveIMU) : null;
             }
             case REPLAY -> {
                 //rollerSubsystem = new RollerSubsystem(RollerSubsystem.createMockIo());
                 //tiltSubsystem = new TiltSubsystem(TiltSubsystem.createMockIo());
+                anglerSubsystem = new AnglerSubsystem(AnglerSubsystem.createMockIo());
                 intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createMockIo(), IntakeSubsystem.createMockDeploymentSwitch());
                 hopperSubsystem = new HopperSubsystem(HopperSubsystem.createMockIo());
                 feederSubsystem = new FeederSubsystem(FeederSubsystem.createMockIo());
+                apriltagSubsystem = new ApriltagSubsystem(ApriltagSubsystem.createMockIo());
                 // No GyroSubsystem in REPLAY for now
                 // create the drive subsystem with null gyro (use default json)
-                drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "YAGSL"), null);
+                drivebase = !Constants.TESTBED ? new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "YAGSL"), null) : null;
             }
             case SIM -> {
                 robotVisualizer = new RobotVisualizer();
                 //rollerSubsystem = new RollerSubsystem(RollerSubsystem.createSimIo(robotVisualizer));
                 //tiltSubsystem = new TiltSubsystem(TiltSubsystem.createSimIo(robotVisualizer));
+                anglerSubsystem = new AnglerSubsystem(AnglerSubsystem.createSimIo(robotVisualizer));
                 intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createSimIo(robotVisualizer), IntakeSubsystem.createSimDeploymentSwitch());
                 hopperSubsystem = new HopperSubsystem(HopperSubsystem.createSimIo(robotVisualizer));
                 feederSubsystem = new FeederSubsystem(FeederSubsystem.createSimIo(robotVisualizer));
+                apriltagSubsystem = new ApriltagSubsystem(ApriltagSubsystem.createSimIo());
                 // No GyroSubsystem in REPLAY for now
                 // create the drive subsystem with null gyro (use default json)
-                drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "YAGSL"), null);
+                drivebase = !Constants.TESTBED ? new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "YAGSL"), null) : null;
             }
 
             default -> {
                 throw new RuntimeException("Did not specify Robot Mode");
             }
         }
+
         configureBindings();
         putShuffleboardCommands();
     }
@@ -129,30 +151,41 @@ public class RobotContainer {
         // cancelling on release.
         // m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
         // TODO: Clean this up a little - create command in method and only create the one actually needed
-        SwerveInputStream driveAngularVelocity = SwerveInputStream.of(drivebase.getSwerveDrive(),
-                        () -> driveJoystick.getY() * -1,
-                        () -> driveJoystick.getX() * -1)
-                .withControllerRotationAxis(steerJoystick::getX)
-                .deadband(Constants.DEADBAND)
-                .scaleTranslation(0.8)
-                .allianceRelativeControl(true);
-        SwerveInputStream driveRobotOriented = driveAngularVelocity.copy().robotRelative(true)
-                .allianceRelativeControl(false);
-        Command driveFieldOrientedAnglularVelocity = drivebase.driveFieldOriented(driveAngularVelocity);
-        drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity);
+
+
+        //example default command for angler- disabled for now
+        if (false) {
+        new AimAngler(
+                anglerSubsystem,
+                () -> drivebase != null ? drivebase.getPose() : null,
+                shootState);
+        }
+
+        if(!Constants.TESTBED){
+            SwerveInputStream driveAngularVelocity = SwerveInputStream.of(drivebase.getSwerveDrive(),
+                            () -> driveJoystick.getY() * -1,
+                            () -> driveJoystick.getX() * -1)
+                    .withControllerRotationAxis(steerJoystick::getX)
+                    .deadband(Constants.DEADBAND)
+                    .scaleTranslation(0.8)
+                    .allianceRelativeControl(true);
+            Command driveFieldOrientedAnglularVelocity = drivebase.driveFieldOriented(driveAngularVelocity);
+            drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity);
+        }
     }
 
     public void putShuffleboardCommands() {
         if (Constants.DEBUG) {
-        /*SmartDashboard.putData(
-                "Spin Roller",
-                new SpinRoller(rollerSubsystem));
 
-        SmartDashboard.putData(
-                "Tilt Up",
-                new TiltUp(tiltSubsystem));
+            /*SmartDashboard.putData(
+                    "Spin Roller",
+                    new SpinRoller(rollerSubsystem));
 
-        SmartDashboard.putData(
+            SmartDashboard.putData(
+                    "Tilt Up",
+                    new TiltUp(tiltSubsystem));
+
+            SmartDashboard.putData(
                 "Tilt Down",
                 new TiltDown(tiltSubsystem));*/
           
@@ -168,6 +201,25 @@ public class RobotContainer {
             SmartDashboard.putData(
                     "Intake/Stop",
                     new InstantCommand(intakeSubsystem::stopMotors));
+
+            SmartDashboard.putNumber("angler/TargetRotations", Constants.ANGLER_HOME_ROTATIONS);
+
+            SmartDashboard.putData(
+                    "angler/Set Position",
+                    new InstantCommand(() -> anglerSubsystem.setPosition(
+                            SmartDashboard.getNumber("angler/TargetRotations", 0.0))));
+
+            SmartDashboard.putData(
+                    "angler/Go Home",
+                    new InstantCommand(() -> anglerSubsystem.setPosition(Constants.ANGLER_HOME_ROTATIONS)));
+
+            SmartDashboard.putData(
+                    "angler/Go Low",
+                    new InstantCommand(() -> anglerSubsystem.setPosition(Constants.ANGLER_LOW_ROTATIONS)));
+
+            SmartDashboard.putData(
+                    "angler/Go High",
+                    new InstantCommand(() -> anglerSubsystem.setPosition(Constants.ANGLER_HIGH_ROTATIONS)));
 
             SmartDashboard.putData(
                     "Spin Intake",
@@ -196,11 +248,18 @@ public class RobotContainer {
             SmartDashboard.putData(
                     "Shooting State: Shuttling",
                     new SetShootingState(shootState, ShootState.SHUTTLING));
-            
+            SmartDashboard.putData("AddTunedApriltagReading", new AddTunableApriltagReading(apriltagSubsystem));
+            SmartDashboard.putData("AddApriltagReading", new AddApriltagReading(apriltagSubsystem,new ApriltagReading(0, 0, 0, 0, 0, 0, 0)));
+
         }
+
     //basic drive command
-    Command driveDirectionTime = new DriveDirectionTime(drivebase, 0.1,0.1, true, 1);
-    SmartDashboard.putData("Drive Command", driveDirectionTime);
+        if(!Constants.TESTBED) {
+            Command driveDirectionTime = new DriveDirectionTime(drivebase, 0.1,0.1, true, 1);
+            SmartDashboard.putData("Drive Command", driveDirectionTime);
+            SmartDashboard.putData("Fake vision", new FakeVision(drivebase));
+        }
+
     }
 
     /**
@@ -209,24 +268,25 @@ public class RobotContainer {
      * @return the command to run in autonomous
      */
     public Command getAutonomousCommand() {
-        // An example command will be run in autonomous
-        return null;
+      return autoChooser.getCommand();
     }
 
     public RobotVisualizer getRobotVisualizer() {
-        return robotVisualizer;
+      return robotVisualizer;
+    }
+
+    public AutoChooser getAutoChooser() {
+      return autoChooser;
     }
 
     public IntakeSubsystem getIntakeSubsystem() {
         return intakeSubsystem;
     }
-
-    public SwerveSubsystem getDriveBase() {
-        return drivebase;
+    public SwerveSubsystem getDriveBase(){
+      return drivebase;
     }
 
     public ShootingState getShootingState() {
         return shootState;
     }
 }
-

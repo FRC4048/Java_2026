@@ -16,12 +16,14 @@ import org.littletonrobotics.junction.wpilog.WPILOGReader;
 import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 
 import choreo.auto.AutoFactory;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.autochooser.FieldLocation;
 import frc.robot.constants.Constants;
 import frc.robot.commands.auto.ExampleAuto;
 import frc.robot.utils.logging.commands.CommandLogger;
@@ -132,18 +134,25 @@ public class Robot extends LoggedRobot {
     if (Constants.DEBUG) {
       SmartDashboard.putNumber("driverXbox.getLeftY()",driverXbox.getLeftY());
       SmartDashboard.putNumber("driverXbox::getRightX", driverXbox.getRightX());
-      Logger.recordOutput("MyPose", robotContainer.getDriveBase().getPose());
-      // Puts data on the elastic dashboard
+      if(!Constants.TESTBED){
+          Logger.recordOutput("MyPose", robotContainer.getDriveBase().getPose());
+        // Puts data on the elastic dashboard
       SmartDashboard.putString("Alliance Color", Robot.allianceColorString());
       SmartDashboard.putBoolean("Hub Active?", hubActive());
     }
 
+    // Puts data on the elastic dashboard
+    SmartDashboard.putString("Alliance Color", Robot.allianceColorString());
+    SmartDashboard.putBoolean("Hub Active?", hubActive());
+    SmartDashboard.putString("Selected Action", 
+      robotContainer.getAutoChooser().getCommandDescription());
+    SmartDashboard.putString("Starting Location", location().toString());
+
     // Gets the alliance color.
     if (DriverStation.isDSAttached() && allianceColor.isEmpty()) {
       allianceColor = DriverStation.getAlliance();
+    }}
     }
-
-  }
 
   /** This function is called once each time the robot enters Disabled mode. */
   @Override
@@ -165,7 +174,7 @@ public class Robot extends LoggedRobot {
 
     // schedule the autonomous command (example)
     if (autonomousCommand != null) {
-      autonomousCommand.schedule();
+      CommandScheduler.getInstance().schedule(autonomousCommand);
     }
 
     // Hub is always active during autonomous.
@@ -262,8 +271,11 @@ public class Robot extends LoggedRobot {
         return diagnostics;
     }
 
+  // Getters
   public boolean hubActive() {return hubActive;}
   public static Optional<Alliance> allianceColor() {return allianceColor;}
   public static String allianceColorString() {return String.valueOf(allianceColor.orElse(null));}
+  public FieldLocation location() {return robotContainer.getAutoChooser().getLocation();}
+  public Pose2d getStartingLocation() {return location().getLocation();}
 
 }

@@ -25,6 +25,7 @@ import frc.robot.autochooser.AutoChooser;
 import frc.robot.commands.angler.AimAngler;
 import frc.robot.commands.angler.RunAnglerToReverseLimit;
 import frc.robot.commands.shooter.SetShootingState;
+import frc.robot.commands.shooter.SpinShooter;
 import frc.robot.constants.Constants;
 import frc.robot.subsystems.AnglerSubsystem;
 import frc.robot.subsystems.ApriltagSubsystem;
@@ -34,6 +35,7 @@ import frc.robot.constants.ShootingState;
 import frc.robot.constants.ShootingState.ShootState;
 import frc.robot.subsystems.GyroSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
 //import frc.robot.subsystems.RollerSubsystem;
 //import frc.robot.subsystems.TiltSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
@@ -66,6 +68,7 @@ public class RobotContainer {
     private final IntakeSubsystem intakeSubsystem;
     private final FeederSubsystem feederSubsystem;
     private final ApriltagSubsystem apriltagSubsystem;
+    private final ShooterSubsystem shooterSubsystem;
     private RobotVisualizer robotVisualizer = null;
     private final HopperSubsystem hopperSubsystem;
     private SwerveSubsystem drivebase = null;
@@ -90,8 +93,8 @@ public class RobotContainer {
                 intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createRealIo(), IntakeSubsystem.createRealDeploymentSwitch());
                 hopperSubsystem = new HopperSubsystem(HopperSubsystem.createRealIo());
 
-
                 feederSubsystem = new FeederSubsystem(FeederSubsystem.createRealIo());
+                shooterSubsystem = new ShooterSubsystem(ShooterSubsystem.createRealIo());
                 apriltagSubsystem = new ApriltagSubsystem(ApriltagSubsystem.createRealIo());
                 RealGyroIo gyroIo = (RealGyroIo) GyroSubsystem.createRealIo();
                 ThreadedGyro threadedGyro = gyroIo.getThreadedGyro();
@@ -108,6 +111,7 @@ public class RobotContainer {
                 hopperSubsystem = new HopperSubsystem(HopperSubsystem.createMockIo());
                 feederSubsystem = new FeederSubsystem(FeederSubsystem.createMockIo());
                 apriltagSubsystem = new ApriltagSubsystem(ApriltagSubsystem.createMockIo());
+                shooterSubsystem = new ShooterSubsystem(ShooterSubsystem.createMockIo());
                 // No GyroSubsystem in REPLAY for now
                 // create the drive subsystem with null gyro (use default json)
                 drivebase = !Constants.TESTBED ? new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "YAGSL"), null) : null;
@@ -121,6 +125,7 @@ public class RobotContainer {
                 hopperSubsystem = new HopperSubsystem(HopperSubsystem.createSimIo(robotVisualizer));
                 feederSubsystem = new FeederSubsystem(FeederSubsystem.createSimIo(robotVisualizer));
                 apriltagSubsystem = new ApriltagSubsystem(ApriltagSubsystem.createSimIo());
+                shooterSubsystem = new ShooterSubsystem(ShooterSubsystem.createSimIo(robotVisualizer));
                 // No GyroSubsystem in REPLAY for now
                 // create the drive subsystem with null gyro (use default json)
                 drivebase = !Constants.TESTBED ? new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "YAGSL"), null) : null;
@@ -261,12 +266,20 @@ public class RobotContainer {
                     new SpinFeeder(feederSubsystem));
 
             SmartDashboard.putData(
+                    "Spin Shooter",
+                    new SpinShooter(shooterSubsystem, Constants.SHOOTER_SPEED));
+
+            SmartDashboard.putData(
                     "Shooting State: Stopped",
                     new SetShootingState(shootState, ShootState.STOPPED));
             
             SmartDashboard.putData(
                     "Shooting State: Fixed",
                     new SetShootingState(shootState, ShootState.FIXED));
+            
+            SmartDashboard.putData(
+                    "Shooting State: Fixed 2",
+                    new SetShootingState(shootState, ShootState.FIXED_2));
 
             SmartDashboard.putData(
                     "Shooting State: Into Hub",

@@ -15,6 +15,7 @@ public class AddTunableApriltagReading extends LoggableCommand {
     private LoggedTunableNumber apriltagNumber;
     private LoggedTunableNumber latency;
     private LoggedTunableNumber measurementTime;
+    private LoggedTunableNumber numReadings;
     public AddTunableApriltagReading(ApriltagSubsystem april) {
         this.april = april;
         posX = new LoggedTunableNumber("SimAprilTagX", 0);
@@ -24,14 +25,15 @@ public class AddTunableApriltagReading extends LoggableCommand {
         apriltagNumber = new LoggedTunableNumber("SimAprilTagApriltagNum", 0);
         latency = new LoggedTunableNumber("SimAprilTagLatency", 0);
         measurementTime = new LoggedTunableNumber("SimAprilTagMeasurementTime", 0);
+        numReadings = new LoggedTunableNumber("NumReadingsPerTick", 1);
     }
 
     @Override
     public void execute() {
-
+        for (int i=0; i<numReadings.get(); i++) {
             april.addSimReading(new ApriltagReading(posX.getAsDouble(), posY.getAsDouble(),
             poseYaw.getAsDouble(), distanceToTag.getAsDouble(), (int) apriltagNumber.getAsDouble(),
             latency.getAsDouble(), measurementTime.getAsDouble()));
-
+        }
     }
 }

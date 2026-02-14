@@ -1,6 +1,7 @@
 package frc.robot.commands;
 
-import edu.wpi.first.epilogue.Logged;
+import org.littletonrobotics.junction.Logger;
+
 import frc.robot.apriltags.ApriltagReading;
 import frc.robot.subsystems.ApriltagSubsystem;
 import frc.robot.utils.logging.LoggedTunableNumber;
@@ -14,7 +15,6 @@ public class AddTunableApriltagReading extends LoggableCommand {
     private LoggedTunableNumber distanceToTag;
     private LoggedTunableNumber apriltagNumber;
     private LoggedTunableNumber latency;
-    private LoggedTunableNumber measurementTime;
     private LoggedTunableNumber numReadings;
     public AddTunableApriltagReading(ApriltagSubsystem april) {
         this.april = april;
@@ -24,7 +24,6 @@ public class AddTunableApriltagReading extends LoggableCommand {
         distanceToTag = new LoggedTunableNumber("SimAprilTagDistanceToTag", 0);
         apriltagNumber = new LoggedTunableNumber("SimAprilTagApriltagNum", 0);
         latency = new LoggedTunableNumber("SimAprilTagLatency", 0);
-        measurementTime = new LoggedTunableNumber("SimAprilTagMeasurementTime", 0);
         numReadings = new LoggedTunableNumber("NumReadingsPerTick", 1);
     }
 
@@ -33,7 +32,7 @@ public class AddTunableApriltagReading extends LoggableCommand {
         for (int i=0; i<numReadings.get(); i++) {
             april.addSimReading(new ApriltagReading(posX.getAsDouble(), posY.getAsDouble(),
             poseYaw.getAsDouble(), distanceToTag.getAsDouble(), (int) apriltagNumber.getAsDouble(),
-            latency.getAsDouble(), measurementTime.getAsDouble()));
+            latency.getAsDouble(), Logger.getTimestamp()));
         }
     }
 }

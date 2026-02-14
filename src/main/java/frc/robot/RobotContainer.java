@@ -23,8 +23,10 @@ import frc.robot.commands.drive.FakeVision;
 import frc.robot.commands.intake.SpinIntake;
 import frc.robot.autochooser.AutoChooser;
 import frc.robot.commands.angler.AimAngler;
+import frc.robot.commands.angler.RunAnglerToReverseLimit;
 import frc.robot.commands.shooter.SetShootingState;
 import frc.robot.commands.turret.RunTurretToRevLimit;
+import frc.robot.commands.shooter.SpinShooter;
 import frc.robot.constants.Constants;
 import frc.robot.subsystems.AnglerSubsystem;
 import frc.robot.subsystems.ApriltagSubsystem;
@@ -35,6 +37,7 @@ import frc.robot.constants.ShootingState.ShootState;
 import frc.robot.subsystems.GyroSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.TurretSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
 //import frc.robot.subsystems.RollerSubsystem;
 //import frc.robot.subsystems.TiltSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
@@ -67,6 +70,7 @@ public class RobotContainer {
     private final IntakeSubsystem intakeSubsystem;
     private final FeederSubsystem feederSubsystem;
     private final ApriltagSubsystem apriltagSubsystem;
+    private final ShooterSubsystem shooterSubsystem;
     private RobotVisualizer robotVisualizer = null;
     private final HopperSubsystem hopperSubsystem;
     private final TurretSubsystem turretSubsystem;
@@ -96,6 +100,7 @@ public class RobotContainer {
 
 
                 feederSubsystem = new FeederSubsystem(FeederSubsystem.createRealIo());
+                shooterSubsystem = new ShooterSubsystem(ShooterSubsystem.createRealIo());
                 apriltagSubsystem = new ApriltagSubsystem(ApriltagSubsystem.createRealIo());
                 RealGyroIo gyroIo = (RealGyroIo) GyroSubsystem.createRealIo();
                 ThreadedGyro threadedGyro = gyroIo.getThreadedGyro();
@@ -113,6 +118,7 @@ public class RobotContainer {
                 feederSubsystem = new FeederSubsystem(FeederSubsystem.createMockIo());
                 turretSubsystem = new TurretSubsystem(TurretSubsystem.createMockIo());
                 apriltagSubsystem = new ApriltagSubsystem(ApriltagSubsystem.createMockIo());
+                shooterSubsystem = new ShooterSubsystem(ShooterSubsystem.createMockIo());
                 // No GyroSubsystem in REPLAY for now
                 // create the drive subsystem with null gyro (use default json)
                 drivebase = !Constants.TESTBED ? new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "YAGSL"), null) : null;
@@ -127,6 +133,7 @@ public class RobotContainer {
                 feederSubsystem = new FeederSubsystem(FeederSubsystem.createSimIo(robotVisualizer));
                 turretSubsystem = new TurretSubsystem(TurretSubsystem.createSimIo(robotVisualizer));
                 apriltagSubsystem = new ApriltagSubsystem(ApriltagSubsystem.createSimIo());
+                shooterSubsystem = new ShooterSubsystem(ShooterSubsystem.createSimIo(robotVisualizer));
                 // No GyroSubsystem in REPLAY for now
                 // create the drive subsystem with null gyro (use default json)
                 drivebase = !Constants.TESTBED ? new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "YAGSL"), null) : null;
@@ -212,10 +219,17 @@ public class RobotContainer {
 
             SmartDashboard.putNumber("angler/TargetRotations", Constants.ANGLER_HOME_ROTATIONS);
 
+            SmartDashboard.putNumber("angler/TargetAngle", 0);
+
             SmartDashboard.putData(
                     "angler/Set Position",
                     new InstantCommand(() -> anglerSubsystem.setPosition(
                             SmartDashboard.getNumber("angler/TargetRotations", 0.0))));
+
+            SmartDashboard.putData(
+                    "angler/Set Angle",
+                    new InstantCommand(() -> anglerSubsystem.setAngle(
+                            SmartDashboard.getNumber("angler/TargetAngle", 0.0))));
 
             SmartDashboard.putData(
                     "angler/Go Home",
@@ -223,11 +237,29 @@ public class RobotContainer {
 
             SmartDashboard.putData(
                     "angler/Go Low",
-                    new InstantCommand(() -> anglerSubsystem.setPosition(Constants.ANGLER_LOW_ROTATIONS)));
+                    new InstantCommand(() -> anglerSubsystem.setPosition(Constants.ANGLER_ENCODER_LOW)));
 
             SmartDashboard.putData(
                     "angler/Go High",
-                    new InstantCommand(() -> anglerSubsystem.setPosition(Constants.ANGLER_HIGH_ROTATIONS)));
+                    new InstantCommand(() -> anglerSubsystem.setPosition(Constants.ANGLER_ENCODER_HIGH)));
+
+            SmartDashboard.putData(
+                    "angler/Run To Fwd Limit",
+                    new RunCommand(anglerSubsystem::runForward, anglerSubsystem)
+                            .until(anglerSubsystem::isAtForwardLimit));
+
+            SmartDashboard.putData(
+                    "angler/Run To Rev Limit",
+                    new RunCommand(anglerSubsystem::runReverse, anglerSubsystem)
+                            .until(anglerSubsystem::isAtReverseLimit));
+
+            SmartDashboard.putData(
+                    "angler/Reset Encoder",
+                    new InstantCommand(anglerSubsystem::resetEncoderToZero));
+
+            SmartDashboard.putData(
+                    "angler/Home Rev (Reset)",
+                    new RunAnglerToReverseLimit(anglerSubsystem));
 
             SmartDashboard.putData(
                     "turret/Set Turret Position",
@@ -282,12 +314,20 @@ public class RobotContainer {
                     new SpinFeeder(feederSubsystem));
 
             SmartDashboard.putData(
+                    "Spin Shooter",
+                    new SpinShooter(shooterSubsystem, Constants.SHOOTER_SPEED));
+
+            SmartDashboard.putData(
                     "Shooting State: Stopped",
                     new SetShootingState(shootState, ShootState.STOPPED));
             
             SmartDashboard.putData(
                     "Shooting State: Fixed",
                     new SetShootingState(shootState, ShootState.FIXED));
+            
+            SmartDashboard.putData(
+                    "Shooting State: Fixed 2",
+                    new SetShootingState(shootState, ShootState.FIXED_2));
 
             SmartDashboard.putData(
                     "Shooting State: Into Hub",

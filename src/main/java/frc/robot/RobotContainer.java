@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -22,6 +23,7 @@ import frc.robot.commands.drive.FakeVision;
 import frc.robot.commands.intake.SpinIntake;
 import frc.robot.autochooser.AutoChooser;
 import frc.robot.commands.angler.AimAngler;
+import frc.robot.commands.angler.RunAnglerToReverseLimit;
 import frc.robot.commands.shooter.SetShootingState;
 import frc.robot.constants.Constants;
 import frc.robot.subsystems.AnglerSubsystem;
@@ -204,10 +206,17 @@ public class RobotContainer {
 
             SmartDashboard.putNumber("angler/TargetRotations", Constants.ANGLER_HOME_ROTATIONS);
 
+            SmartDashboard.putNumber("angler/TargetAngle", 0);
+
             SmartDashboard.putData(
                     "angler/Set Position",
                     new InstantCommand(() -> anglerSubsystem.setPosition(
                             SmartDashboard.getNumber("angler/TargetRotations", 0.0))));
+
+            SmartDashboard.putData(
+                    "angler/Set Angle",
+                    new InstantCommand(() -> anglerSubsystem.setAngle(
+                            SmartDashboard.getNumber("angler/TargetAngle", 0.0))));
 
             SmartDashboard.putData(
                     "angler/Go Home",
@@ -215,11 +224,29 @@ public class RobotContainer {
 
             SmartDashboard.putData(
                     "angler/Go Low",
-                    new InstantCommand(() -> anglerSubsystem.setPosition(Constants.ANGLER_LOW_ROTATIONS)));
+                    new InstantCommand(() -> anglerSubsystem.setPosition(Constants.ANGLER_ENCODER_LOW)));
 
             SmartDashboard.putData(
                     "angler/Go High",
-                    new InstantCommand(() -> anglerSubsystem.setPosition(Constants.ANGLER_HIGH_ROTATIONS)));
+                    new InstantCommand(() -> anglerSubsystem.setPosition(Constants.ANGLER_ENCODER_HIGH)));
+
+            SmartDashboard.putData(
+                    "angler/Run To Fwd Limit",
+                    new RunCommand(anglerSubsystem::runForward, anglerSubsystem)
+                            .until(anglerSubsystem::isAtForwardLimit));
+
+            SmartDashboard.putData(
+                    "angler/Run To Rev Limit",
+                    new RunCommand(anglerSubsystem::runReverse, anglerSubsystem)
+                            .until(anglerSubsystem::isAtReverseLimit));
+
+            SmartDashboard.putData(
+                    "angler/Reset Encoder",
+                    new InstantCommand(anglerSubsystem::resetEncoderToZero));
+
+            SmartDashboard.putData(
+                    "angler/Home Rev (Reset)",
+                    new RunAnglerToReverseLimit(anglerSubsystem));
 
             SmartDashboard.putData(
                     "Spin Intake",

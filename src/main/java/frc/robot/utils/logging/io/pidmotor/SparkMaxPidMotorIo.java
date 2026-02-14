@@ -31,6 +31,13 @@ public interface SparkMaxPidMotorIo extends SparkMaxIo {
     void setPidVelocity(double velocity);
 
     /**
+     * Reset the relative encoder position.
+     *
+     * @param positionRotations the position (in rotations) to set the encoder to
+     */
+    void resetEncoderPosition(double positionRotations);
+
+    /**
      * Set new PID values for the PidMotor.
      * This will replace the existing PID values with the nerw ones
      * @param pidP P value to set

@@ -40,4 +40,9 @@ public class RealSparkMaxPidMotorIo extends RealSparkMaxIo implements SparkMaxPi
     public void setPid(double pidP, double pidI, double pidD, double iZone, double pidFF) {
         pidMotor.setPid(pidP, pidI, pidD, iZone, pidFF);
     }
+
+    @Override
+    public void resetEncoderPosition(double positionRotations) {
+        pidMotor.getEncoder().setPosition(positionRotations);
+    }
 }

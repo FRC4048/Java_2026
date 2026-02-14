@@ -19,10 +19,6 @@ public class LoggableParallelCommandGroup extends ParallelCommandGroup implement
     addCommands(proxyCommands);
   }
 
-  public LoggableParallelCommandGroup(Command trajectoryCmd, PrintCommand printCommand) {
-    //TODO Auto-generated constructor stub
-  }
-
   @Override
   public String getBasicName() {
     return basicName;

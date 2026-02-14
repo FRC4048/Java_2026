@@ -42,8 +42,8 @@ public class Robot extends LoggedRobot {
   private Command autonomousCommand;
   private final Drive drive;
   private final AutoFactory autoFactory;
-  private final AutoRoutine straightRoutine;
-  private final AutoTrajectory straightTrajectory;
+  public static AutoRoutine straightRoutine;
+  public static AutoTrajectory straightTrajectory;
 
   private static final Diagnostics diagnostics = new Diagnostics();
   private final RobotContainer robotContainer;
@@ -102,6 +102,7 @@ public class Robot extends LoggedRobot {
                                   true, 
                                   robotContainer.getDriveBase());
     autoFactory.bind("Print", new PrintCommand("Testing"));
+    //binding an event marker that's called Print -> to print "Testing" using a printCommand
 
 
 
@@ -224,7 +225,7 @@ public class Robot extends LoggedRobot {
 
     // schedule the autonomous command (example)
     mode.set(RobotMode.AUTONOMOUS);
-    autonomousCommand = straightRoutine.cmd(straightTrajectory.done());
+    autonomousCommand = robotContainer.getAutonomousCommand();
     // new ExampleAuto(robotContainer.getDriveBase(), autoFactory, robotContainer.getIntakeSubsystem());
 
     // schedule the autonomous command (example)

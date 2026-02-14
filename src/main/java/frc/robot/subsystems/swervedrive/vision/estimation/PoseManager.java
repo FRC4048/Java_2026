@@ -52,12 +52,12 @@ public class PoseManager {
       TimeInterpolatableBuffer<Pose2d> estimatedPoseBuffer) {
     this(new PoseDeviation(visionStd), kinematics, drivebase, estimatedPoseBuffer);
   }
-/* 
-  public void addOdomMeasurement(OdometryMeasurement m, long timestamp) {
-    Rotation2d gyroVal = Rotation2d.fromDegrees(m.gyroValueDeg());
-    Pose2d pose = poseEstimator.update(gyroVal, m.modulePosition());
+
+  public void addOdomMeasurement(Pose2d pose, long timestamp) {
+   // Rotation2d gyroVal = Rotation2d.fromDegrees(pose.getRotation());
+    //Pose2d pose = poseEstimator.update(gyroVal, m.modulePosition());
     estimatedPoseBuffer.addSample(timestamp, pose);
-  }*/
+  }
 
   public void registerVisionMeasurement(VisionMeasurement measurement) {
     if (measurement == null) {

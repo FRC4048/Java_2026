@@ -44,6 +44,7 @@ public class ApriltagSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
         estimator.updateVision();
+        estimator.updatePosition(drivebase.getOdom());
         drivebase.addVisionMeasurement(estimator.getEstimatedPose());
         io.periodic();
     }

@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj.RobotBase;
 import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
 
 public class GameConstants {
-    
+
     public enum Mode {
         /**
          * Running on a real robot.
@@ -50,13 +50,16 @@ public class GameConstants {
     public static final double HOPPER_SPEED = 0.1;
     public static final double FEEDER_SPEED = 0.5;
     public static final double MAX_SPEED = Units.feetToMeters(14.5);
+    public static final double SHOOTER_SPEED = 100;
 
     //Timeouts
     public static final double SPIN_TIMEOUT = 5;
     public static final double TILT_TIMEOUT = 5;
     public static final double HOPPER_TIMEOUT = 10;
     public static final double FEEDER_TIMEOUT = 3;
+    public static final double ANGLER_TIMEOUT = 5;
     public static final int SERVER_SOCKET_CONNECTION_TIMEOUT = 2000;
+    public static final double SHOOTER_TIMEOUT = 5;
 
     //Angles
     public static final Rotation2d TILT_MIN_ANGLE = Rotation2d.fromDegrees(45);
@@ -75,14 +78,18 @@ public class GameConstants {
     public static final int NEO_CURRENT_LIMIT = 20;
 
     // angler (turret) PID
-    public static final double ANGLER_P = 0.05;
-    public static final double ANGLER_I = 0.0;
+    public static final double ANGLER_P = 0.1;
+    public static final double ANGLER_I = 0.000001;
     public static final double ANGLER_D = 0.0;
     public static final double ANGLER_FF = 0.0;
-    public static final double ANGLER_HOME_ROTATIONS = 0.0; //Where Angler usually is
-    public static final double ANGLER_LOW_ROTATIONS = -50; //Lowest position of Angler
-    public static final double ANGLER_HIGH_ROTATIONS = 50; //Highest position of Angler
-    public static final double ANGLER_FIXED_ROTATIONS = 0.1; //Fixed position of Angler in Fixed ShootState
+    public static final double ANGLER_HOME_ROTATIONS = 0.0;
+    public static final double ANGLER_ENCODER_LOW = 0; //Lowest encoder position of Angler
+    public static final double ANGLER_ENCODER_HIGH = 100; //Highest encoder position of Angler
+    public static final double ANGLER_ANGLE_LOW = 0; //Lowest angle position of Angler
+    public static final double ANGLER_ANGLE_HIGH = 45; //Highest angle position of Angler
+    public static final double ANGLER_FIXED_ROTATIONS = 0.1; //Fixed encoder position of Angler in Fixed ShootState
+    public static final double ANGLER_LIMIT_SPEED = 0.2;
+
     
     //swerve config
     public static final TelemetryVerbosity TELEMENTRY_VERBOSITY = TelemetryVerbosity.HIGH;

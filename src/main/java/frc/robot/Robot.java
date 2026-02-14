@@ -14,12 +14,15 @@ import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.networktables.NT4Publisher;
 import org.littletonrobotics.junction.wpilog.WPILOGReader;
 import org.littletonrobotics.junction.wpilog.WPILOGWriter;
+
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.autochooser.FieldLocation;
 import frc.robot.constants.Constants;
 import frc.robot.utils.logging.commands.CommandLogger;
 
@@ -123,6 +126,13 @@ public class Robot extends LoggedRobot {
       SmartDashboard.putString("Alliance Color", Robot.allianceColorString());
       SmartDashboard.putBoolean("Hub Active?", hubActive());
     }
+
+    // Puts data on the elastic dashboard
+    SmartDashboard.putString("Alliance Color", Robot.allianceColorString());
+    SmartDashboard.putBoolean("Hub Active?", hubActive());
+    SmartDashboard.putString("Selected Action", 
+      robotContainer.getAutoChooser().getCommandDescription());
+    SmartDashboard.putString("Starting Location", location().toString());
 
     // Gets the alliance color.
     if (DriverStation.isDSAttached() && allianceColor.isEmpty()) {
@@ -247,8 +257,11 @@ public class Robot extends LoggedRobot {
         return diagnostics;
     }
 
+  // Getters
   public boolean hubActive() {return hubActive;}
   public static Optional<Alliance> allianceColor() {return allianceColor;}
   public static String allianceColorString() {return String.valueOf(allianceColor.orElse(null));}
+  public FieldLocation location() {return robotContainer.getAutoChooser().getLocation();}
+  public Pose2d getStartingLocation() {return location().getLocation();}
 
 }

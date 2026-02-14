@@ -24,6 +24,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.autochooser.FieldLocation;
@@ -102,12 +103,51 @@ public class Robot extends LoggedRobot {
                                   robotContainer.getDriveBase());
     autoFactory.bind("Print", new PrintCommand("Testing"));
 
+
+
+
+
+    // Uses autofactory to create a new routine
     straightRoutine = autoFactory.newRoutine("StraightRoutine");
+
+    /*
+    Loads a trajectory created in Choreo given the name
+    Can load multiple trajectories from the same routine
+
+    i.e. 
+    AutoRoutine routine = autoFactory.newRoutine("grabAndScore");
+    AutoTrajectory grabTraj = routine.trajectory("grabPiece");
+    AutoTrajectory scoreTraj = routine.trajectory("scorePiece");
+    */
     straightTrajectory = straightRoutine.trajectory("StraightPath");
+
+    /* 
+    .active() is a trigger that becomes true when the routine is running
+    .onTrue() starts a command when the trigger becomes true (i.e. when the routine starts)
+
+    Use commands.sequence() to sequence multiple commands (i.e. reset odometry, then follow trajectory)
+    */
     straightRoutine.active().onTrue(
         straightTrajectory.resetOdometry()
             .andThen(straightTrajectory.cmd())
     );
+
+    /*
+    ------------------------------------------------------------------------------------------------
+    Trajectory Triggers (read more on docs page https://choreo.autos/choreolib/auto-factory/):
+    ------------------------------------------------------------------------------------------------
+      
+    trajectory.atTime(String)
+    trajectory.atTime(double time)
+    trajectory.done()
+    trajectory.active()
+    trajectory.inactive()
+    trajectory.atPose(String, double, double)
+    trajectory.atPose(Pose2d, double, double)
+    trajectory.doneDelayed(int)
+    trajectory.doneFor(int)
+    trajectory.recentlyDone()
+    */
   }
 
   public static RobotMode getMode() {

@@ -3,10 +3,13 @@ package frc.robot.constants;
 public class ConstantsTestbed2026 extends Constants2026 {
     
     public static final int ROLLER_MOTOR_ID = 30;
+    public static final int TILT_MOTOR_ID = 42;
     public static final int INTAKE_MOTOR_ID = 50;
     public static final int ANGLER_MOTOR_ID = 40;
     public static final int HOPPER_MOTOR_ID = 44;
     public static final int FEEDER_MOTOR_ID = 32;
+    public static final int SHOOTER_MOTOR_ID = 33;
+    public static final int SHOOTER_FOLLOWER_MOTOR_ID = 34;
 
     /**
    * To use the TestBed constants, change Constants.java to read: public class Constants extends

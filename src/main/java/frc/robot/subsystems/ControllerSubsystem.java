@@ -27,6 +27,8 @@ public class ControllerSubsystem extends SubsystemBase {
     private static final String TARGET_ANGLER_ANGLE_KEY = "controller/TargetAnglerAngleDegrees";
     private static final String TARGET_SHOOTER_VELOCITY_KEY = "controller/TargetShooterVelocity";
     private static final String TARGET_TURRET_ANGLE_KEY = "controller/TargetTurretAngleDegrees";
+    private static final String TARGET_FEEDER_SPEED_KEY = "controller/TargetFeederSpeed";
+    private static final String TARGET_HOPPER_SPEED_KEY = "controller/TargetHopperSpeed";
 
     // Placeholder fixed-state settings.
     private static final ShotTargets STOPPED_TARGETS =
@@ -51,6 +53,9 @@ public class ControllerSubsystem extends SubsystemBase {
     private double targetShooterVelocityRpm;
     private double targetTurretAngleDegrees;
     private double distanceMeters;
+    private double feederSpeed;
+    private double hopperSpeed;
+
 
     public ControllerSubsystem(Supplier<Pose2d> poseSupplier, ShootingState shootingState) {
         this.poseSupplier = poseSupplier;
@@ -60,6 +65,8 @@ public class ControllerSubsystem extends SubsystemBase {
         this.targetShooterVelocityRpm = 0.0;
         this.targetTurretAngleDegrees = 0.0;
         this.distanceMeters = 0.0;
+        this.feederSpeed = 0.0;
+        this.hopperSpeed = 0.0;
 
         SmartDashboard.putNumber(MANUAL_POSE_X_KEY, 0.0);
         SmartDashboard.putNumber(MANUAL_POSE_Y_KEY, 0.0);
@@ -78,6 +85,8 @@ public class ControllerSubsystem extends SubsystemBase {
         SmartDashboard.putNumber(TARGET_ANGLER_ANGLE_KEY, targetAnglerAngleDegrees);
         SmartDashboard.putNumber(TARGET_SHOOTER_VELOCITY_KEY, targetShooterVelocityRpm);
         SmartDashboard.putNumber(TARGET_TURRET_ANGLE_KEY, targetTurretAngleDegrees);
+        SmartDashboard.putNumber(TARGET_FEEDER_SPEED_KEY, feederSpeed);
+        SmartDashboard.putNumber(TARGET_HOPPER_SPEED_KEY, hopperSpeed);
 
         previousState = currentState;
     }
@@ -120,6 +129,8 @@ public class ControllerSubsystem extends SubsystemBase {
         targetAnglerAngleDegrees = STOPPED_TARGETS.anglerAngleDegrees;
         targetTurretAngleDegrees = STOPPED_TARGETS.turretAngleDegrees;
         distanceMeters = STOPPED_TARGETS.distanceMeters;
+        feederSpeed = 0.0;
+        hopperSpeed = 0.0;
 
         if (stopDelayTimer.hasElapsed(STOP_DELAY_SECONDS)) {
             targetShooterVelocityRpm = 0.0;
@@ -131,6 +142,8 @@ public class ControllerSubsystem extends SubsystemBase {
         targetShooterVelocityRpm = shotTargets.shooterVelocityRpm;
         targetTurretAngleDegrees = shotTargets.turretAngleDegrees;
         distanceMeters = shotTargets.distanceMeters;
+        feederSpeed = Constants.FEEDER_SPEED;
+        hopperSpeed = Constants.HOPPER_SPEED;
     }
 
     private ShotTargets calculateTargetsFromPose(PoseControlProfile profile, Pose2d robotPose) {
@@ -175,6 +188,14 @@ public class ControllerSubsystem extends SubsystemBase {
 
     public double getDistanceMeters() {
         return distanceMeters;
+    }
+
+    public double getFeederSpeed() {
+        return feederSpeed;
+    }
+
+    public double getHopperSpeed() {
+        return hopperSpeed;
     }
 
 

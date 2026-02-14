@@ -165,20 +165,44 @@ public class RobotContainer {
         // TODO: Clean this up a little - create command in method and only create the one actually needed
 
 
-        anglerSubsystem.setDefaultCommand(new RunCommand(
-                () -> anglerSubsystem.setAngle(controllerSubsystem.getTargetAnglerAngleDegrees()),
-                anglerSubsystem));
+        if (controllerSubsystem != null) {
+            anglerSubsystem.setDefaultCommand(new RunCommand(
+                    () -> anglerSubsystem.setAngle(controllerSubsystem.getTargetAnglerAngleDegrees()),
+                    anglerSubsystem));
 
-        shooterSubsystem.setDefaultCommand(new RunCommand(
-                () -> {
-                    double targetShooterVelocity = controllerSubsystem.getTargetShooterVelocityRpm();
-                    if (targetShooterVelocity > 0.0) {
-                        shooterSubsystem.setPidVelocity(targetShooterVelocity);
-                    } else {
-                        shooterSubsystem.stopMotors();
-                    }
-                },
-                shooterSubsystem));
+            shooterSubsystem.setDefaultCommand(new RunCommand(
+                    () -> {
+                        double targetShooterVelocity = controllerSubsystem.getTargetShooterVelocityRpm();
+                        if (targetShooterVelocity > 0.0) {
+                            shooterSubsystem.setPidVelocity(targetShooterVelocity);
+                        } else {
+                            shooterSubsystem.stopMotors();
+                        }
+                    },
+                    shooterSubsystem));
+
+            feederSubsystem.setDefaultCommand(new RunCommand(
+                    () -> {
+                        double targetFeederSpeed = controllerSubsystem.getFeederSpeed();
+                        if (targetFeederSpeed != 0.0) {
+                            feederSubsystem.setSpeed(targetFeederSpeed);
+                        } else {
+                            feederSubsystem.stopMotors();
+                        }
+                    },
+                    feederSubsystem));
+
+            hopperSubsystem.setDefaultCommand(new RunCommand(
+                    () -> {
+                        double targetHopperSpeed = controllerSubsystem.getHopperSpeed();
+                        if (targetHopperSpeed != 0.0) {
+                            hopperSubsystem.setSpeed(targetHopperSpeed);
+                        } else {
+                            hopperSubsystem.stopMotors();
+                        }
+                    },
+                    hopperSubsystem));
+        }
 
         if(!Constants.TESTBED){
             SwerveInputStream driveAngularVelocity = SwerveInputStream.of(drivebase.getSwerveDrive(),

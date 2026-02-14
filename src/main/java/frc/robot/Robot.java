@@ -16,16 +16,20 @@ import org.littletonrobotics.junction.wpilog.WPILOGReader;
 import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 
 import choreo.auto.AutoFactory;
+import choreo.auto.AutoRoutine;
+import choreo.auto.AutoTrajectory;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.autochooser.FieldLocation;
 import frc.robot.constants.Constants;
 import frc.robot.commands.auto.ExampleAuto;
+import frc.robot.commands.intake.SpinIntake;
 import frc.robot.utils.logging.commands.CommandLogger;
 
 /**
@@ -37,6 +41,8 @@ public class Robot extends LoggedRobot {
   private Command autonomousCommand;
   private final Drive drive;
   private final AutoFactory autoFactory;
+  private final AutoRoutine straightRoutine;
+  private final AutoTrajectory straightTrajectory;
 
   private static final Diagnostics diagnostics = new Diagnostics();
   private final RobotContainer robotContainer;
@@ -94,6 +100,14 @@ public class Robot extends LoggedRobot {
                                   drive::followTrajectory, 
                                   true, 
                                   robotContainer.getDriveBase());
+    autoFactory.bind("Print", new PrintCommand("Testing"));
+
+    straightRoutine = autoFactory.newRoutine("StraightRoutine");
+    straightTrajectory = straightRoutine.trajectory("StraightPath");
+    straightRoutine.active().onTrue(
+        straightTrajectory.resetOdometry()
+            .andThen(straightTrajectory.cmd())
+    );
   }
 
   public static RobotMode getMode() {
@@ -170,7 +184,8 @@ public class Robot extends LoggedRobot {
 
     // schedule the autonomous command (example)
     mode.set(RobotMode.AUTONOMOUS);
-    autonomousCommand = new ExampleAuto(robotContainer.getDriveBase(), autoFactory, robotContainer.getIntakeSubsystem());
+    autonomousCommand = straightRoutine.cmd(straightTrajectory.done());
+    // new ExampleAuto(robotContainer.getDriveBase(), autoFactory, robotContainer.getIntakeSubsystem());
 
     // schedule the autonomous command (example)
     if (autonomousCommand != null) {

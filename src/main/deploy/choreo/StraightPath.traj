@@ -339,5 +339,6 @@
     {"t":14.10745, "x":15.80986, "y":5.58513, "heading":0.0, "vx":0.0, "vy":0.0, "omega":0.0, "ax":0.0, "ay":0.0, "alpha":0.0, "fx":[0.0,0.0,0.0,0.0], "fy":[0.0,0.0,0.0,0.0]}],
   "splits":[0]
  },
- "events":[]
+ "events":[
+   {"name":"Print", "from":{"target":0, "targetTimestamp":0.0, "offset":{"exp":"1 s", "val":1.0}}, "event":null}]
 }

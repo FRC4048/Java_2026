@@ -22,13 +22,13 @@ import frc.robot.commands.feeder.SpinFeeder;
 import frc.robot.commands.drive.FakeVision;
 import frc.robot.commands.intake.SpinIntake;
 import frc.robot.autochooser.AutoChooser;
-import frc.robot.commands.angler.AimAngler;
 import frc.robot.commands.angler.RunAnglerToReverseLimit;
 import frc.robot.commands.shooter.SetShootingState;
 import frc.robot.commands.shooter.SpinShooter;
 import frc.robot.constants.Constants;
 import frc.robot.subsystems.AnglerSubsystem;
 import frc.robot.subsystems.ApriltagSubsystem;
+import frc.robot.subsystems.ControllerSubsystem;
 import frc.robot.subsystems.HopperSubsystem;
 import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.constants.ShootingState;
@@ -69,6 +69,7 @@ public class RobotContainer {
     private final FeederSubsystem feederSubsystem;
     private final ApriltagSubsystem apriltagSubsystem;
     private final ShooterSubsystem shooterSubsystem;
+    private final ControllerSubsystem controllerSubsystem;
     private RobotVisualizer robotVisualizer = null;
     private final HopperSubsystem hopperSubsystem;
     private SwerveSubsystem drivebase = null;
@@ -102,6 +103,8 @@ public class RobotContainer {
                 SwerveIMU swerveIMU = new ThreadedGyroSwerveIMU(threadedGyro);
                 
                 drivebase = !Constants.TESTBED ? new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "YAGSL"), swerveIMU) : null;
+                controllerSubsystem = !Constants.TESTBED ? new ControllerSubsystem(() -> drivebase.getPose(), shootState) : null;
+
             }
             case REPLAY -> {
                 //rollerSubsystem = new RollerSubsystem(RollerSubsystem.createMockIo());
@@ -115,6 +118,7 @@ public class RobotContainer {
                 // No GyroSubsystem in REPLAY for now
                 // create the drive subsystem with null gyro (use default json)
                 drivebase = !Constants.TESTBED ? new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "YAGSL"), null) : null;
+                controllerSubsystem = !Constants.TESTBED ? new ControllerSubsystem(() -> drivebase.getPose(), shootState) : null;
             }
             case SIM -> {
                 robotVisualizer = new RobotVisualizer();
@@ -129,6 +133,7 @@ public class RobotContainer {
                 // No GyroSubsystem in REPLAY for now
                 // create the drive subsystem with null gyro (use default json)
                 drivebase = !Constants.TESTBED ? new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "YAGSL"), null) : null;
+                controllerSubsystem = !Constants.TESTBED ? new ControllerSubsystem(() -> drivebase.getPose(), shootState) : null;
             }
 
             default -> {
@@ -160,13 +165,20 @@ public class RobotContainer {
         // TODO: Clean this up a little - create command in method and only create the one actually needed
 
 
-        //example default command for angler- disabled for now
-        if (false) {
-        new AimAngler(
-                anglerSubsystem,
-                () -> drivebase != null ? drivebase.getPose() : null,
-                shootState);
-        }
+        anglerSubsystem.setDefaultCommand(new RunCommand(
+                () -> anglerSubsystem.setAngle(controllerSubsystem.getTargetAnglerAngleDegrees()),
+                anglerSubsystem));
+
+        shooterSubsystem.setDefaultCommand(new RunCommand(
+                () -> {
+                    double targetShooterVelocity = controllerSubsystem.getTargetShooterVelocityRpm();
+                    if (targetShooterVelocity > 0.0) {
+                        shooterSubsystem.setPidVelocity(targetShooterVelocity);
+                    } else {
+                        shooterSubsystem.stopMotors();
+                    }
+                },
+                shooterSubsystem));
 
         if(!Constants.TESTBED){
             SwerveInputStream driveAngularVelocity = SwerveInputStream.of(drivebase.getSwerveDrive(),

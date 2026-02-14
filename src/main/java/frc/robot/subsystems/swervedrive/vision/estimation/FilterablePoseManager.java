@@ -11,6 +11,7 @@ import frc.robot.subsystems.swervedrive.vision.truster.PoseDeviation;
 import frc.robot.subsystems.swervedrive.vision.truster.VisionFilter;
 import frc.robot.subsystems.swervedrive.vision.truster.VisionMeasurement;
 import frc.robot.subsystems.swervedrive.vision.truster.VisionTruster;
+import frc.robot.subsystems.swervedrive.vision.VisionInputs;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -25,15 +26,16 @@ import org.littletonrobotics.junction.Logger;
 public class FilterablePoseManager extends PoseManager {
   private final VisionFilter filter;
   private final VisionTruster visionTruster;
+  public static final String LOGGING_NAME = "Vision";
 
-  public FilterablePoseManager(
+  public FilterablePoseManager(String name, VisionInputs inputs,
       PoseDeviation PoseDeviation,
       SwerveDriveKinematics kinematics,
       SwerveSubsystem drivebase,
       TimeInterpolatableBuffer<Pose2d> estimatedPoseBuffer,
       VisionFilter filter,
       VisionTruster visionTruster) {
-    super(PoseDeviation, kinematics, drivebase, estimatedPoseBuffer);
+    super(name,inputs,PoseDeviation, kinematics, drivebase, estimatedPoseBuffer);
     this.filter = filter;
     this.visionTruster = visionTruster;
   }
@@ -45,39 +47,51 @@ public class FilterablePoseManager extends PoseManager {
       TimeInterpolatableBuffer<Pose2d> estimatedPoseBuffer,
       VisionFilter filter,
       VisionTruster visionTruster) {
-    this(
+    this(LOGGING_NAME, new VisionInputs(),
         new PoseDeviation(visionStd),
         kinematics, drivebase,
         estimatedPoseBuffer,
         filter,
         visionTruster);
   }
-
   @Override
-  public void processQueue() {
+  public void updateInputs(VisionInputs inputs) {
     LinkedHashMap<VisionMeasurement, FilterResult> filteredData =
         filter.filter(visionMeasurementQueue);
+    int queueSize = filteredData.size();
     visionMeasurementQueue.clear();
-    List<Pose2d> validMeasurements = new ArrayList<>();
-    List<Pose2d> invalidMeasurements = new ArrayList<>();
-    for (Map.Entry<VisionMeasurement, FilterResult> entry : filteredData.entrySet()) {
+    inputs.filterResults = new FilterResult[queueSize];
+    inputs.distanceFromTag = new double[queueSize];
+    inputs.timestamp = new double[queueSize];
+    inputs.position = new Pose2d[queueSize];
+    inputs.serverTime = new double[queueSize];
+    List<VisionMeasurement> validMeasurements = new ArrayList<>();
+    List<VisionMeasurement> invalidMeasurements = new ArrayList<>();
+    Object[] filteredDataList = filteredData.entrySet().toArray();
+    for (int i=0; i<filteredData.size(); i++) {
+      Map.Entry<VisionMeasurement, FilterResult> entry = (Map.Entry<VisionMeasurement, FilterResult>) filteredDataList[i];
       VisionMeasurement v = entry.getKey();
       FilterResult r = entry.getValue();
       switch (r) {
         case ACCEPTED -> {
           setVisionSTD(visionTruster.calculateTrust(v));
-          validMeasurements.add(v.measurement());
+          validMeasurements.add(v);
           addVisionMeasurement(v);
         }
         case NOT_PROCESSED -> visionMeasurementQueue.add(v);
         case REJECTED -> {
-          invalidMeasurements.add(v.measurement());
+          invalidMeasurements.add(v);
         }
       }
+      inputs.filterResults[i] = r;
+      inputs.distanceFromTag[i] = v.distanceFromTag();
+      inputs.timestamp[i] = v.timeOfMeasurement();
+      inputs.serverTime[i] = v.timeOfMeasurement();
+      inputs.position[i] = v.measurement();
     }
-    Logger.recordOutput("Apriltag/acceptedMeasurements", validMeasurements.toArray(Pose2d[]::new));
+    Logger.recordOutput("Apriltag/acceptedMeasurements", validMeasurements.toArray(VisionMeasurement[]::new));
     Logger.recordOutput(
-        "Apriltag/rejectedMeasurements", invalidMeasurements.toArray(Pose2d[]::new));
+        "Apriltag/rejectedMeasurements", invalidMeasurements.toArray(VisionMeasurement[]::new));
   }
 
   public VisionTruster getVisionTruster() {

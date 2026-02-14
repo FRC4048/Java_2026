@@ -8,9 +8,12 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.interpolation.TimeInterpolatableBuffer;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.numbers.N3;
+import frc.robot.apriltags.ApriltagInputs;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
+import frc.robot.subsystems.swervedrive.vision.VisionInputs;
 import frc.robot.subsystems.swervedrive.vision.truster.PoseDeviation;
 import frc.robot.subsystems.swervedrive.vision.truster.VisionMeasurement;
+import frc.robot.utils.logging.io.BaseIoImpl;
 import swervelib.SwerveDrive;
 
 import java.util.LinkedList;
@@ -21,13 +24,14 @@ import org.littletonrobotics.junction.Logger;
  * Processes swerve odometry. Feeds odometry measurements and vision measurements into a Kalman
  * Filter which outputs a combined robot position
  */
-public class PoseManager {
+public class PoseManager extends BaseIoImpl<VisionInputs> {
   private final TimeInterpolatableBuffer<Pose2d> estimatedPoseBuffer;
   //private final SwerveDrivePoseEstimator poseEstimator;
   protected final Queue<VisionMeasurement> visionMeasurementQueue = new LinkedList<>();
   private final SwerveSubsystem drivebase;
+  public static final String LOGGING_NAME = "Vision";
 
-  public PoseManager(
+  public PoseManager(String name, VisionInputs inputs,
       PoseDeviation PoseDeviation,
       SwerveDriveKinematics kinematics,
       SwerveSubsystem drivebase,
@@ -41,6 +45,7 @@ public class PoseManager {
             new Pose2d(),
             PoseDeviation.getWheelStd(),
             PoseDeviation.getVisionStd());*/
+    super(name, inputs);
     this.estimatedPoseBuffer = estimatedPoseBuffer;
     this.drivebase = drivebase;
   }
@@ -50,7 +55,7 @@ public class PoseManager {
       SwerveDriveKinematics kinematics,
       SwerveSubsystem drivebase,
       TimeInterpolatableBuffer<Pose2d> estimatedPoseBuffer) {
-    this(new PoseDeviation(visionStd), kinematics, drivebase, estimatedPoseBuffer);
+    this(LOGGING_NAME, new VisionInputs(), new PoseDeviation(visionStd), kinematics, drivebase, estimatedPoseBuffer);
   }
 
   public void addOdomMeasurement(Pose2d pose, long timestamp) {
@@ -70,7 +75,8 @@ public class PoseManager {
   }
 
   // override for filtering
-  public void processQueue() {
+  @Override
+  public void updateInputs(VisionInputs inputs) {
     VisionMeasurement m = visionMeasurementQueue.poll();
     while (m != null) {
       addVisionMeasurement(m);

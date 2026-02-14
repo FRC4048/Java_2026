@@ -34,7 +34,7 @@ public class ClimberUp extends LoggableCommand{
 
     @Override
     public boolean isFinished() {
-        if (timer.hasElapsed(Constants.CLIMBER_TIMEOUT)){
+        if (timer.hasElapsed(Constants.CLIMBER_TIMEOUT) || subsystem.forwardSwitchPressed()){
             return true;
         }
         else{

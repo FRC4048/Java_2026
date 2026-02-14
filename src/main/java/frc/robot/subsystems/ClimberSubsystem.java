@@ -78,5 +78,12 @@ public class ClimberSubsystem extends SubsystemBase {
 
         return motor;
     }
+    public boolean reverseSwitchPressed() {
+        return io.isRevSwitchPressed();
+    }
+
+    public boolean forwardSwitchPressed() {
+        return io.isFwdSwitchPressed();
+    }
  
 }

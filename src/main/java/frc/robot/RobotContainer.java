@@ -95,7 +95,7 @@ public class RobotContainer {
                 gyroSubsystem = new GyroSubsystem(gyroIo);
                 SwerveIMU swerveIMU = new ThreadedGyroSwerveIMU(threadedGyro);
                 drivebase = !Constants.TESTBED ? new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "YAGSL"), swerveIMU) : null;
-                apriltagSubsystem = new ApriltagSubsystem(ApriltagSubsystem.createRealIo(), drivebase);
+                apriltagSubsystem = !Constants.TESTBED ? new ApriltagSubsystem(ApriltagSubsystem.createRealIo(), drivebase) : null;
             }
             case REPLAY -> {
                 //rollerSubsystem = new RollerSubsystem(RollerSubsystem.createMockIo());
@@ -108,7 +108,7 @@ public class RobotContainer {
                 // No GyroSubsystem in REPLAY for now
                 // create the drive subsystem with null gyro (use default json)
                 drivebase = !Constants.TESTBED ? new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "YAGSL"), null) : null;
-                apriltagSubsystem = new ApriltagSubsystem(ApriltagSubsystem.createMockIo(), drivebase);
+                apriltagSubsystem = !Constants.TESTBED ? new ApriltagSubsystem(ApriltagSubsystem.createMockIo(), drivebase) : null;
             }
             case SIM -> {
                 robotVisualizer = new RobotVisualizer();
@@ -122,7 +122,7 @@ public class RobotContainer {
                 // No GyroSubsystem in REPLAY for now
                 // create the drive subsystem with null gyro (use default json)
                 drivebase = !Constants.TESTBED ? new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "YAGSL"), null) : null;
-                apriltagSubsystem = new ApriltagSubsystem(ApriltagSubsystem.createSimIo(), drivebase);
+                apriltagSubsystem = !Constants.TESTBED ? new ApriltagSubsystem(ApriltagSubsystem.createSimIo(), drivebase) : null;
             }
 
             default -> {

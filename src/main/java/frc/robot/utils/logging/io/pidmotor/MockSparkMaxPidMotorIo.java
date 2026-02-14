@@ -34,4 +34,8 @@ public class MockSparkMaxPidMotorIo extends MockSparkMaxIo implements SparkMaxPi
     @Override
     public void setPid(double pidP, double pidI, double pidD, double iZone, double pidFF) {
     }
+
+    @Override
+    public void resetEncoderPosition(double positionRotations) {
+    }
 }

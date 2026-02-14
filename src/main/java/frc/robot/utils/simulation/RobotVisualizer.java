@@ -18,6 +18,8 @@ public class RobotVisualizer {
     private final LoggedMechanismLigament2d hopperLigament;
     private final LoggedMechanismLigament2d feederLigament;
     private final LoggedMechanismLigament2d anglerLigament;
+    private final LoggedMechanismLigament2d shooterTiltLigament;
+    private final LoggedMechanismLigament2d shooterLigament;
 
     public RobotVisualizer() {
         LoggedMechanismRoot2d root =
@@ -104,7 +106,34 @@ public class RobotVisualizer {
                                 4,
                                 new Color8Bit(Color.kYellow)));
 
-        }
+        LoggedMechanismRoot2d shooterRoot = 
+                mech2d.getRoot("Shooter Root", Constants.DRIVE_BASE_WIDTH * 2.5, Constants.INITIAL_ROBOT_HEIGHT);
+
+        LoggedMechanismLigament2d shooterRiserLigament = 
+                shooterRoot.append(
+                        new LoggedMechanismLigament2d(
+                                "Shooter Riser", 0.25, 90, 5, new Color8Bit(Color.kDarkGray)));
+
+        this.shooterTiltLigament =
+                shooterRiserLigament.append(
+                        new LoggedMechanismLigament2d(
+                                "Shooter Tilt",
+                                0.5,
+                                -45.0,
+                                4,
+                                new Color8Bit(Color.kPurple)));
+        
+        this.shooterLigament =
+                shooterTiltLigament.append(
+                        new LoggedMechanismLigament2d(
+                                "Shooter Wheel",
+                                0.15,
+                                -45.0,
+                                4,
+                                new Color8Bit(Color.kOrange)));
+        
+    }
+
 
     public LoggedMechanismLigament2d getRollerLigament() {
         return rollerLigament;
@@ -128,6 +157,14 @@ public class RobotVisualizer {
 
     public LoggedMechanismLigament2d getAnglerLigament() {
         return anglerLigament;
+    }
+
+    public LoggedMechanismLigament2d getShooterTiltLigament() {
+        return shooterTiltLigament;
+    }
+
+    public LoggedMechanismLigament2d getShooterLigament() {
+        return shooterLigament;
     }
 
     public void logMechanism() {

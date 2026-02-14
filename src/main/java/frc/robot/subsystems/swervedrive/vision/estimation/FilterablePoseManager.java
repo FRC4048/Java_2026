@@ -25,6 +25,11 @@ import org.littletonrobotics.junction.Logger;
 public class FilterablePoseManager extends PoseManager {
   private final VisionFilter filter;
   private final VisionTruster visionTruster;
+  private double lastTime = 0;
+  private int numAccepted = 0;
+  private int numRejected = 0;
+  private double timeElapsed = 0;
+
 
   public FilterablePoseManager(
       PoseDeviation PoseDeviation,
@@ -55,6 +60,12 @@ public class FilterablePoseManager extends PoseManager {
 
   @Override
   public void processQueue() {
+    if (Logger.getTimestamp() - lastTime > 100) {
+      timeElapsed = (Logger.getTimestamp() - lastTime) / 1000000.0;
+      lastTime = Logger.getTimestamp();
+      numAccepted = 0;
+      numRejected = 0;
+    }
     LinkedHashMap<VisionMeasurement, FilterResult> filteredData =
         filter.filter(visionMeasurementQueue);
     visionMeasurementQueue.clear();
@@ -68,9 +79,11 @@ public class FilterablePoseManager extends PoseManager {
           setVisionSTD(visionTruster.calculateTrust(v));
           validMeasurements.add(v.measurement());
           addVisionMeasurement(v);
+          numAccepted++;
         }
         case NOT_PROCESSED -> visionMeasurementQueue.add(v);
         case REJECTED -> {
+          numRejected++;
           invalidMeasurements.add(v.measurement());
         }
       }
@@ -78,6 +91,8 @@ public class FilterablePoseManager extends PoseManager {
     Logger.recordOutput("Apriltag/acceptedMeasurements", validMeasurements.toArray(Pose2d[]::new));
     Logger.recordOutput(
         "Apriltag/rejectedMeasurements", invalidMeasurements.toArray(Pose2d[]::new));
+    Logger.recordOutput("Apriltag/acceptedRate", numAccepted/timeElapsed);
+    Logger.recordOutput("Apriltag/rejectedRate", numRejected/timeElapsed);
   }
 
   public VisionTruster getVisionTruster() {

@@ -12,6 +12,7 @@ import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.commands.intakeDeployment.RunDeployer;
 import frc.robot.constants.Constants;
 import frc.robot.constants.enums.DeploymentState;
 import frc.robot.utils.logging.input.MotorLoggableInputs;
@@ -29,6 +30,7 @@ public class IntakeDeployer extends SubsystemBase {
 
   public IntakeDeployer(SparkMaxIo io) {
     this.io = io;
+    setDefaultCommand(new RunDeployer(this, this::getDeploymentState));
   }
 
   public void setSpeed(double speed) {

@@ -13,7 +13,5 @@ package frc.robot.constants;
  * constants are needed, to reduce verbosity.
  */
 
-public class Constants extends Constants2026 {
-
-    public static final int INTAKE_DEPLOYMENT_ID = 0;}
+public class Constants extends Constants2026 {}
 

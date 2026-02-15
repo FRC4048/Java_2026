@@ -5,7 +5,6 @@ import edu.wpi.first.math.Vector;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.interpolation.TimeInterpolatableBuffer;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
@@ -19,7 +18,6 @@ import frc.robot.subsystems.ApriltagSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import frc.robot.subsystems.swervedrive.vision.truster.BasicVisionFilter;
 import frc.robot.subsystems.swervedrive.vision.truster.ConstantVisionTruster;
-import frc.robot.subsystems.swervedrive.vision.truster.SquareVisionTruster;
 import frc.robot.subsystems.swervedrive.vision.truster.VisionMeasurement;
 import frc.robot.utils.Apriltag;
 import frc.robot.utils.math.ArrayUtils;
@@ -82,7 +80,7 @@ public class PoseEstimator {
     this.poseManager =
         new FilterablePoseManager(
             visionMeasurementStdDevs2,
-            kinematics, 
+            kinematics,
             drivebase,
             m1Buffer,
             new BasicVisionFilter(m1Buffer) {
@@ -105,7 +103,10 @@ public class PoseEstimator {
     if (!Robot.getMode().equals(RobotMode.DISABLED)) {
       poseManager.addOdomMeasurement(pose, Logger.getTimestamp());
     }
-    field.setRobotPose(poseManager.getEstimatedPosition());
+    Pose2d estimatedPosition = poseManager.getEstimatedPosition();
+    if (estimatedPosition != null) {
+        field.setRobotPose(estimatedPosition);
+    }
   }
 
   private boolean validAprilTagPose(double[] measurement) {

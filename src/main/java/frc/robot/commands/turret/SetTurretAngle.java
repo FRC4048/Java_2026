@@ -12,6 +12,7 @@ import frc.robot.utils.logging.commands.LoggableCommand;
 public class SetTurretAngle extends LoggableCommand {
     private final TurretSubsystem turret;
     private double targetAngle;
+    private final Timer timer = new Timer();
 
     public SetTurretAngle(TurretSubsystem turret, double targetAngle) {
         this.turret = turret;
@@ -21,12 +22,12 @@ public class SetTurretAngle extends LoggableCommand {
 
     @Override
     public void initialize() {
-        turret.setAngle(targetAngle);
+        timer.restart();
     }
 
     @Override
     public void execute() {
-    
+        turret.setAngle(targetAngle);
     }
 
     @Override
@@ -36,6 +37,6 @@ public class SetTurretAngle extends LoggableCommand {
 
     @Override
     public boolean isFinished() {
-        return true;
+        return timer.hasElapsed(GameConstants.TURRET_TIMEOUT);
     }
 }

@@ -20,11 +20,11 @@ public class AddTunableApriltagReading extends LoggableCommand {
     private LoggedTunableNumber numReadings;
     public AddTunableApriltagReading(ApriltagSubsystem april) {
         this.april = april;
-        posX = new LoggedTunableNumber("SimAprilTagX", 0);
-        posY = new LoggedTunableNumber("SimAprilTagY", 0);
+        posX = new LoggedTunableNumber("SimAprilTagX", 1);
+        posY = new LoggedTunableNumber("SimAprilTagY", 1);
         poseYaw = new LoggedTunableNumber("SimAprilTagYaw", 0);
         distanceToTag = new LoggedTunableNumber("SimAprilTagDistanceToTag", 0);
-        apriltagNumber = new LoggedTunableNumber("SimAprilTagApriltagNum", 0);
+        apriltagNumber = new LoggedTunableNumber("SimAprilTagApriltagNum", 1);
         latency = new LoggedTunableNumber("SimAprilTagLatency", 0);
         numReadings = new LoggedTunableNumber("NumReadingsPerTick", 1);
     }

@@ -20,6 +20,8 @@ public class RobotVisualizer {
     private final LoggedMechanismLigament2d anglerLigament;
     private final LoggedMechanismLigament2d shooterTiltLigament;
     private final LoggedMechanismLigament2d shooterLigament;
+    private final LoggedMechanismLigament2d intakeDeploymentLigament;
+
 
     public RobotVisualizer() {
         LoggedMechanismRoot2d root =
@@ -131,9 +133,23 @@ public class RobotVisualizer {
                                 -45.0,
                                 4,
                                 new Color8Bit(Color.kOrange)));
+        LoggedMechanismRoot2d intakeDeployerRoot = 
+                        mech2d.getRoot("Intake Deployment Root", Constants.DRIVE_BASE_WIDTH * 2.5, Constants.INITIAL_ROBOT_HEIGHT);
+
+        LoggedMechanismLigament2d intakeDeploymentLigament = 
+                intakeDeployerRoot.append(
+                        new LoggedMechanismLigament2d(
+                                "Intake Deployment", 0.4, -45, 10, new Color8Bit(Color.kAquamarine)));
+        this.intakeDeploymentLigament =
+                intakeDeploymentLigament.append(
+                        new LoggedMechanismLigament2d(
+                                "Intake Deployment",
+                                10,
+                                0,
+                                10,
+                                new Color8Bit(Color.kBrown)));
         
     }
-
 
     public LoggedMechanismLigament2d getRollerLigament() {
         return rollerLigament;
@@ -165,6 +181,9 @@ public class RobotVisualizer {
 
     public LoggedMechanismLigament2d getShooterLigament() {
         return shooterLigament;
+    }
+    public LoggedMechanismLigament2d getIntakeDeploymentLigament() {
+        return intakeDeploymentLigament;
     }
 
     public void logMechanism() {

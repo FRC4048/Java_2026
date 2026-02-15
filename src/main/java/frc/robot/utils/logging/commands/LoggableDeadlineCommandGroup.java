@@ -8,17 +8,30 @@ public class LoggableDeadlineCommandGroup extends ParallelDeadlineGroup implemen
   private String basicName = getClass().getSimpleName();
   private Command parent = new BlankCommand();
 
-  @SafeVarargs
-  public <T extends Command & Loggable> LoggableDeadlineCommandGroup(T deadline, T... others) {
+  public LoggableDeadlineCommandGroup(Command deadline, Command... others) {
     super(new Command() {});
     ProxyCommand[] proxyCommands = new ProxyCommand[others.length];
     for (int i = 0; i < others.length; i++) {
-      others[i].setParent(this);
-      proxyCommands[i] = others[i].asProxy();
+      Command command = others[i];
+      if (command instanceof Loggable) {
+        ((Loggable) command).setParent(this);
+        proxyCommands[i] = command.asProxy();
+      } else {
+        LoggableCommandWrapper wrapper = LoggableCommandWrapper.wrap(command);
+        wrapper.setParent(this);
+        proxyCommands[i] = wrapper.asProxy();
+      }
     }
     addCommands(proxyCommands);
-    deadline.setParent(this);
-    setDeadline(deadline.asProxy());
+    Command deadlineCommand = deadline;
+    if (deadlineCommand instanceof Loggable) {
+      ((Loggable) deadlineCommand).setParent(this);
+      setDeadline(deadlineCommand.asProxy());
+    } else {
+      LoggableCommandWrapper wrapper = LoggableCommandWrapper.wrap(deadlineCommand);
+      wrapper.setParent(this);
+      setDeadline(wrapper.asProxy());
+    }
   }
 
   @Override

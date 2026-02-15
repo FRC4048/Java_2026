@@ -2,16 +2,28 @@ package frc.robot.commands.auto;
 
 
 import choreo.auto.AutoFactory;
+import edu.wpi.first.wpilibj2.command.PrintCommand;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
+import frc.robot.utils.logging.commands.LoggableParallelCommandGroup;
 import frc.robot.utils.logging.commands.LoggableSequentialCommandGroup;
 
 public class ExampleAuto extends LoggableSequentialCommandGroup{
     public ExampleAuto(SwerveSubsystem subsystem, AutoFactory auto, IntakeSubsystem intake) {
         addCommands(
-            auto.resetOdometry("ExamplePathOne"),
-            auto.trajectoryCmd("ExamplePathOne"),
-            auto.trajectoryCmd("ExamplePathTwo")
+                auto.resetOdometry("ExamplePathOne"),
+
+                new LoggableParallelCommandGroup(
+                        auto.trajectoryCmd("ExamplePathOne"),
+                        new PrintCommand("Started ExamplePathOne")
+                ),
+                new PrintCommand("Finished ExamplePathOne"),
+
+                new LoggableParallelCommandGroup(
+                        auto.trajectoryCmd("ExamplePathTwo"),
+                        new PrintCommand("Started ExamplePathTwo")
+                ),
+                new PrintCommand("Finished ExamplePathTwo")
         );
     }
 }

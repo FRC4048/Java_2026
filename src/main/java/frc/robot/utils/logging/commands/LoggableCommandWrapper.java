@@ -10,6 +10,7 @@ public class LoggableCommandWrapper extends LoggableCommand {
 
   public LoggableCommandWrapper(Command toWrap) {
     this.wrap = toWrap;
+    withBasicName(toWrap.getClass().getSimpleName());
   }
 
   public static LoggableCommandWrapper wrap(Command toWrap) {

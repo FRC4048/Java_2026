@@ -2,28 +2,29 @@ package frc.robot.utils.logging.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.ProxyCommand;
 
 public class LoggableParallelCommandGroup extends ParallelCommandGroup implements Loggable {
   private String basicName = getClass().getSimpleName();
   private Command parent = new BlankCommand();
 
-  @SafeVarargs
-  public <T extends Command & Loggable> LoggableParallelCommandGroup(T... commands) {
+  public LoggableParallelCommandGroup(Command... commands) {
     ProxyCommand[] proxyCommands = new ProxyCommand[commands.length];
     for (int i = 0; i < commands.length; i++) {
-      commands[i].setParent(this);
-      proxyCommands[i] = commands[i].asProxy();
+      Command command = commands[i];
+      if (command instanceof Loggable) {
+        ((Loggable) command).setParent(this);
+        proxyCommands[i] = command.asProxy();
+      } else {
+        LoggableCommandWrapper wrapper = LoggableCommandWrapper.wrap(command);
+        wrapper.setParent(this);
+        proxyCommands[i] = wrapper.asProxy();
+      }
     }
     addCommands(proxyCommands);
   }
 
-  public LoggableParallelCommandGroup(Command trajectoryCmd, PrintCommand printCommand) {
-    //TODO Auto-generated constructor stub
-}
-
-@Override
+  @Override
   public String getBasicName() {
     return basicName;
   }

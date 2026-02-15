@@ -8,12 +8,18 @@ public class LoggableRaceCommandGroup extends ParallelRaceGroup implements Logga
   private String basicName = getClass().getSimpleName();
   private Command parent = new BlankCommand();
 
-  @SafeVarargs
-  public <T extends Command & Loggable> LoggableRaceCommandGroup(T... commands) {
+  public LoggableRaceCommandGroup(Command... commands) {
     ProxyCommand[] proxyCommands = new ProxyCommand[commands.length];
     for (int i = 0; i < commands.length; i++) {
-      commands[i].setParent(this);
-      proxyCommands[i] = commands[i].asProxy();
+      Command command = commands[i];
+      if (command instanceof Loggable) {
+        ((Loggable) command).setParent(this);
+        proxyCommands[i] = command.asProxy();
+      } else {
+        LoggableCommandWrapper wrapper = LoggableCommandWrapper.wrap(command);
+        wrapper.setParent(this);
+        proxyCommands[i] = wrapper.asProxy();
+      }
     }
     addCommands(proxyCommands);
   }

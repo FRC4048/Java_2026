@@ -5,6 +5,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.interpolation.TimeInterpolatableBuffer;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.numbers.N3;
+import frc.robot.constants.Constants;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import frc.robot.subsystems.swervedrive.vision.truster.FilterResult;
 import frc.robot.subsystems.swervedrive.vision.truster.PoseDeviation;
@@ -16,6 +17,8 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
+
 import org.littletonrobotics.junction.Logger;
 
 /**
@@ -55,7 +58,9 @@ public class FilterablePoseManager extends PoseManager {
 
   @Override
   public void processQueue() {
-    LinkedHashMap<VisionMeasurement, FilterResult> filteredData =
+    for (int i=0; i < Constants.NUMBER_OF_CAMERAS; i++) {
+      Queue<VisionMeasurement> visionMeasurementQueue = visionMeasurmentQueueMap.get(i);
+      LinkedHashMap<VisionMeasurement, FilterResult> filteredData =
         filter.filter(visionMeasurementQueue);
     visionMeasurementQueue.clear();
     List<Pose2d> validMeasurements = new ArrayList<>();
@@ -75,9 +80,11 @@ public class FilterablePoseManager extends PoseManager {
         }
       }
     }
-    Logger.recordOutput("Apriltag/acceptedMeasurements", validMeasurements.toArray(Pose2d[]::new));
+    Logger.recordOutput("Apriltag/acceptedMeasurementsCamera" + i, validMeasurements.toArray(Pose2d[]::new));
     Logger.recordOutput(
-        "Apriltag/rejectedMeasurements", invalidMeasurements.toArray(Pose2d[]::new));
+        "Apriltag/rejectedMeasurementsCamera" + i, invalidMeasurements.toArray(Pose2d[]::new));
+    }
+    
   }
 
   public VisionTruster getVisionTruster() {

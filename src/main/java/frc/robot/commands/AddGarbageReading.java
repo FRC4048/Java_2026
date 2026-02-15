@@ -5,6 +5,7 @@ import frc.robot.apriltags.ApriltagReading;
 import frc.robot.subsystems.ApriltagSubsystem;
 import frc.robot.utils.logging.LoggedTunableNumber;
 import frc.robot.utils.logging.commands.LoggableCommand;
+import frc.robot.constants.Constants;
 
 public class AddGarbageReading extends LoggableCommand {
     private final ApriltagSubsystem april;
@@ -29,7 +30,7 @@ public class AddGarbageReading extends LoggableCommand {
     @Override
     public void execute() {
 
-            april.addSimReading(new ApriltagReading(Math.random()*10, Math.random()*10, Math.random()*10, Math.random()*10, (int) (Math.random()*32+1), Math.random()*10, Math.random()*10));
+            april.addSimReading(new ApriltagReading(Math.random()*10, Math.random()*10, Math.random()*10, Math.random()*10, (int) (Math.random()*32+1), Math.random()*10, Math.random()*10, (int) (Math.random()*Constants.NUMBER_OF_CAMERAS+1)));
 
     }
     @Override

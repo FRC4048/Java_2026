@@ -35,6 +35,7 @@ public class TCPApriltagIo extends BaseIoImpl<ApriltagInputs> implements Aprilta
         inputs.timestamp = new double[queueSize];
         inputs.visionPoseArray = new Pose2d[queueSize];
         inputs.apriltagPoseArray = new Translation3d[queueSize];
+        inputs.camera = new int[queueSize];
 
         for (int i = 0; i < queueSize; i++) {
             ApriltagReading measurement = queue.poll();
@@ -45,6 +46,7 @@ public class TCPApriltagIo extends BaseIoImpl<ApriltagInputs> implements Aprilta
             inputs.apriltagNumber[i] = measurement.apriltagNumber();
             inputs.timestamp[i] = measurement.latency();
             inputs.serverTime[i] = measurement.measurementTime();
+            inputs.camera[i] = measurement.camera();
 
             Apriltag apriltag = Apriltag.of(measurement.apriltagNumber());
             inputs.apriltagPoseArray[i] =

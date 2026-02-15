@@ -15,6 +15,7 @@ public class ApriltagInputs implements LoggableInputs {
     public int[] apriltagNumber = new int[0];
     public Translation3d[] apriltagPoseArray = new Translation3d[0];
     public Pose2d[] visionPoseArray = new Pose2d[0];
+    public int[] camera = new int[0];
 
 
 
@@ -29,6 +30,7 @@ public class ApriltagInputs implements LoggableInputs {
         table.put("apriltagNumber", apriltagNumber);
         table.put("aprilTagPositions", apriltagPoseArray);
         table.put("visionPoseArray", visionPoseArray);
+        table.put("camera", camera);
     }
 
     @Override
@@ -42,5 +44,6 @@ public class ApriltagInputs implements LoggableInputs {
         apriltagNumber = table.get("apriltagNumber", apriltagNumber);
         apriltagPoseArray = table.get("aprilTagPositions", apriltagPoseArray);
         visionPoseArray = table.get("visionPoseArray", visionPoseArray);
+        camera = table.get("camera", camera);
     }
 }

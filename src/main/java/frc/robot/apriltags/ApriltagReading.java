@@ -7,4 +7,5 @@ public record ApriltagReading(
         double distanceToTag,
         int apriltagNumber,
         double latency,
-        double measurementTime) {}
+        double measurementTime,
+        int camera) {}

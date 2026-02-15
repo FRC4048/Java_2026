@@ -6,6 +6,8 @@ import frc.robot.apriltags.ApriltagReading;
 import frc.robot.subsystems.ApriltagSubsystem;
 import frc.robot.utils.logging.LoggedTunableNumber;
 import frc.robot.utils.logging.commands.LoggableCommand;
+import java.util.Random;
+import frc.robot.constants.Constants;
 
 public class AddTunableApriltagReading extends LoggableCommand {
     private final ApriltagSubsystem april;
@@ -29,10 +31,11 @@ public class AddTunableApriltagReading extends LoggableCommand {
 
     @Override
     public void execute() {
+        Random random = new Random();
         for (int i=0; i<numReadings.get(); i++) {
-            april.addSimReading(new ApriltagReading(posX.getAsDouble(), posY.getAsDouble(),
-            poseYaw.getAsDouble(), distanceToTag.getAsDouble(), (int) apriltagNumber.getAsDouble(),
-            latency.getAsDouble(), Logger.getTimestamp()));
+            april.addSimReading(new ApriltagReading(posX.getAsDouble() + random.nextGaussian()*0.1, posY.getAsDouble()+ random.nextGaussian()*0.1,
+            poseYaw.getAsDouble()+ random.nextGaussian()*0.1, distanceToTag.getAsDouble(), (int) apriltagNumber.getAsDouble(),
+            latency.getAsDouble(), Logger.getTimestamp(), (int) (Math.random()*Constants.NUMBER_OF_CAMERAS+1)));
         }
     }
 }

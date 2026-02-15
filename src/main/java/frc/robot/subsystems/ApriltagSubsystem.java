@@ -6,6 +6,9 @@ import frc.robot.apriltags.*;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import frc.robot.subsystems.swervedrive.vision.estimation.PoseEstimator;
 import frc.robot.utils.logging.io.BaseIoImpl;
+import frc.robot.constants.Constants;
+import edu.wpi.first.math.Vector;
+import edu.wpi.first.math.numbers.N3;
 
 public class ApriltagSubsystem extends SubsystemBase {
 
@@ -40,7 +43,9 @@ public class ApriltagSubsystem extends SubsystemBase {
     public ApriltagIO getIO(){
         return io;
     }
-
+    public Vector<N3> getVariance() {
+        return drivebase.getVariance();
+    }
     @Override
     public void periodic() {
         estimator.updateVision();

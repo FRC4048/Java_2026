@@ -8,6 +8,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.interpolation.TimeInterpolatableBuffer;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.numbers.N3;
+import frc.robot.constants.Constants;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import frc.robot.subsystems.swervedrive.vision.truster.PoseDeviation;
 import frc.robot.subsystems.swervedrive.vision.truster.VisionMeasurement;
@@ -16,6 +17,7 @@ import swervelib.SwerveDrive;
 import java.util.LinkedList;
 import java.util.Queue;
 import org.littletonrobotics.junction.Logger;
+import java.util.LinkedHashMap;
 
 /**
  * Processes swerve odometry. Feeds odometry measurements and vision measurements into a Kalman
@@ -24,7 +26,7 @@ import org.littletonrobotics.junction.Logger;
 public class PoseManager {
   private final TimeInterpolatableBuffer<Pose2d> estimatedPoseBuffer;
   //private final SwerveDrivePoseEstimator poseEstimator;
-  protected final Queue<VisionMeasurement> visionMeasurementQueue = new LinkedList<>();
+  protected final LinkedHashMap<Integer, Queue<VisionMeasurement>> visionMeasurmentQueueMap = new LinkedHashMap<>();
   private final SwerveSubsystem drivebase;
 
   public PoseManager(
@@ -59,22 +61,24 @@ public class PoseManager {
     estimatedPoseBuffer.addSample(timestamp, pose);
   }
 
-  public void registerVisionMeasurement(VisionMeasurement measurement) {
+  public void registerVisionMeasurement(VisionMeasurement measurement, int camera) {
     if (measurement == null) {
       return;
     }
-    while (visionMeasurementQueue.size() >= 3) {
-      visionMeasurementQueue.poll();
+    while (visionMeasurmentQueueMap.computeIfAbsent(camera, k -> new LinkedList<>()).size() >= 3) {
+      visionMeasurmentQueueMap.get(camera).poll();
     }
-    visionMeasurementQueue.add(measurement);
+    visionMeasurmentQueueMap.get(camera).add(measurement);
   }
 
   // override for filtering
   public void processQueue() {
-    VisionMeasurement m = visionMeasurementQueue.poll();
-    while (m != null) {
-      addVisionMeasurement(m);
-      m = visionMeasurementQueue.poll();
+    for (int i = 0; i < Constants.NUMBER_OF_CAMERAS; i++) {
+      VisionMeasurement m = visionMeasurmentQueueMap.get(i).poll();
+      while (m != null) {
+        addVisionMeasurement(m);
+        m = visionMeasurmentQueueMap.get(i).poll();
+      }
     }
   }
 

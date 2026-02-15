@@ -24,7 +24,7 @@ public class ClimberUp extends LoggableCommand{
 
     @Override
     public void execute() {
-            subsystem.setSpeed(1 * Constants.CLIMBER_SPEED);
+            subsystem.setSpeed(1 * Constants.CLIMBER_SPEED_UP);
     }
 
     @Override
@@ -34,13 +34,7 @@ public class ClimberUp extends LoggableCommand{
 
     @Override
     public boolean isFinished() {
-        if (timer.hasElapsed(Constants.CLIMBER_TIMEOUT) || subsystem.forwardSwitchPressed()){
-            return true;
-        }
-        else{
-            return false;
-        }
-
+        return timer.hasElapsed(Constants.CLIMBER_TIMEOUT) || subsystem.forwardSwitchPressed();
     }
 
     

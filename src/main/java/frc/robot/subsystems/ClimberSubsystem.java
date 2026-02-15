@@ -59,13 +59,6 @@ public class ClimberSubsystem extends SubsystemBase {
                 new MotorSimulator(motor, visualizer.getClimberLigament()));
     }
 
-    public static DigitalInputIo createMockDeploymentSwitch() {
-    return new MockDigitalInputIo(
-            LOGGING_NAME + "/DeploymentSwitch",
-            new DigitalInputLoggableInputs()
-    );
-}    
-
     private static SparkMax createMotor() {
         SparkMax motor = new SparkMax(Constants.CLIMBER_MOTOR_ID, SparkLowLevel.MotorType.kBrushless);
         SparkMaxConfig motorConfig = new SparkMaxConfig();

@@ -109,7 +109,7 @@ public class RobotContainer {
                 gyroSubsystem = new GyroSubsystem(gyroIo);
                 SwerveIMU swerveIMU = new ThreadedGyroSwerveIMU(threadedGyro);
                 
-                drivebase = !Constants.TESTBED ? new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "YAGSL"), swerveIMU) : null;
+                drivebase = !Constants.TESTBED ? new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "YAGSL/" + Constants.JSON_DIRECTORY), swerveIMU) : null;
             }
             case REPLAY -> {
                 //rollerSubsystem = new RollerSubsystem(RollerSubsystem.createMockIo());
@@ -123,7 +123,7 @@ public class RobotContainer {
                 shooterSubsystem = new ShooterSubsystem(ShooterSubsystem.createMockIo());
                 // No GyroSubsystem in REPLAY for now
                 // create the drive subsystem with null gyro (use default json)
-                drivebase = !Constants.TESTBED ? new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "YAGSL"), null) : null;
+                drivebase = !Constants.TESTBED ? new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "YAGSL/" + Constants.JSON_DIRECTORY), null) : null;
             }
             case SIM -> {
                 robotVisualizer = new RobotVisualizer();
@@ -138,7 +138,7 @@ public class RobotContainer {
                 shooterSubsystem = new ShooterSubsystem(ShooterSubsystem.createSimIo(robotVisualizer));
                 // No GyroSubsystem in REPLAY for now
                 // create the drive subsystem with null gyro (use default json)
-                drivebase = !Constants.TESTBED ? new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "YAGSL"), null) : null;
+                drivebase = !Constants.TESTBED ? new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "YAGSL/" + Constants.JSON_DIRECTORY), null) : null;
             }
 
             default -> {

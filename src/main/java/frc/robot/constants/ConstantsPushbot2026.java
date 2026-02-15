@@ -1,8 +1,8 @@
 package frc.robot.constants;
 
-public class Constants2026 extends GameConstants {
+public class ConstantsPushbot2026 extends GameConstants {
 
-    // Constants2026 is only for CANIDs and nothing else, everything else goes into GameConstants.
+    // ConstantsPushbot2026 is only for CANIDs and nothing else, everything else goes into GameConstants.
     
     public static final int ROLLER_MOTOR_ID = 1;
     public static final int TILT_MOTOR_ID = 2;
@@ -31,6 +31,6 @@ public class Constants2026 extends GameConstants {
     public static final int SERVER_SOCKET_ATTEMPT_DELAY = 100;
     public static final int TCP_SERVER_PORT = 5806;
     
-
+    public static final String JSON_DIRECTORY = "pushbot";
 
 }

@@ -23,12 +23,12 @@ import frc.robot.utils.logging.io.motor.SparkMaxIo;
 import frc.robot.utils.simulation.MotorSimulator;
 import frc.robot.utils.simulation.RobotVisualizer;
 
-public class IntakeDeployer extends SubsystemBase {
+public class IntakeDeployerSubsystem extends SubsystemBase {
   public static final String LOGGING_NAME = "IntakeDeployer";
   public DeploymentState deploymentState = DeploymentState.UP;
   private final SparkMaxIo io;
 
-  public IntakeDeployer(SparkMaxIo io) {
+  public IntakeDeployerSubsystem(SparkMaxIo io) {
     this.io = io;
     setDefaultCommand(new RunDeployer(this));
   }

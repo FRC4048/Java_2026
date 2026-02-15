@@ -2,29 +2,28 @@ package frc.robot.commands.turret;
 
 import edu.wpi.first.wpilibj.Timer;
 import frc.robot.constants.Constants;
+import frc.robot.constants.GameConstants;
 import frc.robot.subsystems.TurretSubsystem;
 import frc.robot.utils.logging.commands.LoggableCommand;
 
 /**
- * Runs the turret to the forward (right) limit switch
+ * Runs the turret to the home angle, facing forward
  */
-public class RunTurretToFwdLimit extends LoggableCommand {
+public class TurretGoHome extends LoggableCommand {
     private final TurretSubsystem turret;
-    private final Timer timer = new Timer();
 
-    public RunTurretToFwdLimit(TurretSubsystem turret) {
+    public TurretGoHome(TurretSubsystem turret) {
         this.turret = turret;
         addRequirements(turret);
     }
 
     @Override
     public void initialize() {
-        timer.restart();
     }
 
     @Override
     public void execute() {
-        turret.runForward();
+        new SetTurretAngle(turret, GameConstants.TURRET_HOME_ANGLE);
     }
 
     @Override
@@ -34,6 +33,6 @@ public class RunTurretToFwdLimit extends LoggableCommand {
 
     @Override
     public boolean isFinished() {
-        return turret.isAtForwardLimit() || timer.hasElapsed(Constants.TURRET_TIMEOUT);
+        return false;
     }
 }

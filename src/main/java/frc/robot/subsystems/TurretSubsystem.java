@@ -70,8 +70,8 @@ public class TurretSubsystem extends SubsystemBase {
             double angleHigh,
             double angleLow) {
 
-        double multipler = (encoderHigh - encoderLow) / (angleHigh - angleLow);
-        double targetRotations = targetAngle * multipler - (multipler * angleHigh - encoderHigh);
+        double multiplier = (encoderHigh - encoderLow) / (angleHigh - angleLow);
+        double targetRotations = targetAngle * multiplier - (multiplier * angleHigh - encoderHigh);
         return MathUtil.clamp(targetRotations, encoderLow, encoderHigh);
     }
 

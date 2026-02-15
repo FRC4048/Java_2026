@@ -25,7 +25,10 @@ import frc.robot.autochooser.AutoChooser;
 import frc.robot.commands.angler.AimAngler;
 import frc.robot.commands.angler.RunAnglerToReverseLimit;
 import frc.robot.commands.shooter.SetShootingState;
+import frc.robot.commands.turret.RunTurretToFwdLimit;
 import frc.robot.commands.turret.RunTurretToRevLimit;
+import frc.robot.commands.turret.SetTurretAngle;
+import frc.robot.commands.turret.TurretGoHome;
 import frc.robot.commands.shooter.SpinShooter;
 import frc.robot.constants.Constants;
 import frc.robot.subsystems.AnglerSubsystem;
@@ -262,44 +265,20 @@ public class RobotContainer {
                     new RunAnglerToReverseLimit(anglerSubsystem));
 
             SmartDashboard.putData(
-                    "turret/Set Turret Position",
-                    new InstantCommand(() -> turretSubsystem.setPosition(
-                            SmartDashboard.getNumber("turret/TargetRotations", 0.0))));
-
-            SmartDashboard.putData(
-                    "turret/Set Turret Angle",
-                    new InstantCommand(() -> turretSubsystem.setAngle(
-                            SmartDashboard.getNumber("turret/TargetAngle", 0.0))));
+                    "turret/Turret Go 45",
+                    new SetTurretAngle(turretSubsystem, 45));
 
             SmartDashboard.putData(
                     "turret/Turret Go Home",
-                    new InstantCommand(() -> turretSubsystem.setPosition(Constants.TURRET_HOME_ROTATIONS)));
+                    new TurretGoHome(turretSubsystem));
 
             SmartDashboard.putData(
-                    "turret/Turret Go Low",
-                    new InstantCommand(() -> turretSubsystem.setPosition(Constants.TURRET_ENCODER_MIN)));
-
-            SmartDashboard.putData(
-                    "turret/Turret Go High",
-                    new InstantCommand(() -> turretSubsystem.setPosition(Constants.TURRET_ENCODER_MAX)));
-
-            SmartDashboard.putData(
-                    "turret/Run Turret To Fwd Limit",
-                    new RunCommand(turretSubsystem::runForward, turretSubsystem)
-                            .until(turretSubsystem::isAtForwardLimit));
-
-            SmartDashboard.putData(
-                    "turret/Run Turret To Rev Limit",
-                    new RunCommand(turretSubsystem::runReverse, turretSubsystem)
-                            .until(turretSubsystem::isAtReverseLimit));
-
-            SmartDashboard.putData(
-                    "turret/Reset Turret Encoder",
-                    new InstantCommand(turretSubsystem::resetEncoderToZero));
-
-            SmartDashboard.putData(
-                    "turret/Home Rev (Reset) for Turret",
+                    "turret/Run Turret to Rev Limit",
                     new RunTurretToRevLimit(turretSubsystem));
+
+            SmartDashboard.putData(
+                    "turret/Run Turret to Fwd Limit",
+                    new RunTurretToFwdLimit(turretSubsystem));
 
             SmartDashboard.putData(
                     "Spin Intake",

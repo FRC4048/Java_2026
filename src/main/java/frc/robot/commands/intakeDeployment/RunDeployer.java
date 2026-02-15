@@ -13,9 +13,7 @@ import frc.robot.subsystems.IntakeDeployer;
 
 public class RunDeployer extends Command {
   private final IntakeDeployer subsystem;
-  private DeploymentState deploymentState;
-  public RunDeployer(IntakeDeployer subsystem, Supplier<DeploymentState> deploymentState) {
-    this.deploymentState = deploymentState.get();
+  public RunDeployer(IntakeDeployer subsystem) {
     this.subsystem = subsystem;
     addRequirements(subsystem);
   }
@@ -25,7 +23,7 @@ public class RunDeployer extends Command {
 
   @Override
   public void execute() {
-    switch(deploymentState){
+    switch(subsystem.getDeploymentState()){
       case UP -> subsystem.setSpeed(Constants.INTAKE_DEPLOYER_SPEED);
       case DOWN -> subsystem.setSpeed(Constants.INTAKE_RETRACTION_SPEED);
       case STOPPED -> subsystem.stopMotors();
@@ -38,6 +36,6 @@ public class RunDeployer extends Command {
 
   @Override
   public boolean isFinished() {
-    return true;
+    return false;
   }
 }

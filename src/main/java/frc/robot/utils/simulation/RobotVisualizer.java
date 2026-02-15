@@ -11,186 +11,170 @@ import org.littletonrobotics.junction.mechanism.LoggedMechanismLigament2d;
 import org.littletonrobotics.junction.mechanism.LoggedMechanismRoot2d;
 
 public class RobotVisualizer {
-    private final LoggedMechanism2d mech2d = new LoggedMechanism2d(2, Units.feetToMeters(7));
-    private final LoggedMechanismLigament2d tiltLigament;
-    private final LoggedMechanismLigament2d rollerLigament;
-    private final LoggedMechanismLigament2d intakeLigament;
-    private final LoggedMechanismLigament2d hopperLigament;
-    private final LoggedMechanismLigament2d feederLigament;
-    private final LoggedMechanismLigament2d anglerLigament;
-    private final LoggedMechanismLigament2d shooterTiltLigament;
-    private final LoggedMechanismLigament2d shooterLigament;
-    private final LoggedMechanismLigament2d intakeDeploymentLigament;
+        private final LoggedMechanism2d mech2d = new LoggedMechanism2d(2, Units.feetToMeters(7));
+        private final LoggedMechanismLigament2d tiltLigament;
+        private final LoggedMechanismLigament2d rollerLigament;
+        private final LoggedMechanismLigament2d intakeLigament;
+        private final LoggedMechanismLigament2d hopperLigament;
+        private final LoggedMechanismLigament2d feederLigament;
+        private final LoggedMechanismLigament2d anglerLigament;
+        private final LoggedMechanismLigament2d shooterTiltLigament;
+        private final LoggedMechanismLigament2d shooterLigament;
+        private final LoggedMechanismLigament2d intakeDeploymentLigament;
 
+        public RobotVisualizer() {
+                LoggedMechanismRoot2d root = mech2d.getRoot("Robot Root", Constants.DRIVE_BASE_WIDTH / 2,
+                                Constants.INITIAL_ROBOT_HEIGHT);
 
-    public RobotVisualizer() {
-        LoggedMechanismRoot2d root =
-                mech2d.getRoot("Robot Root", Constants.DRIVE_BASE_WIDTH / 2, Constants.INITIAL_ROBOT_HEIGHT);
+                LoggedMechanismLigament2d riserLigament = root.append(
+                                new LoggedMechanismLigament2d(
+                                                "Riser", 0.35, 90, 5, new Color8Bit(Color.kDarkGray)));
+                this.tiltLigament = riserLigament.append(
+                                new LoggedMechanismLigament2d(
+                                                "Tilt",
+                                                0.5,
+                                                90.0,
+                                                4,
+                                                new Color8Bit(Color.kCornflowerBlue)));
+                this.rollerLigament = this.tiltLigament.append(
+                                new LoggedMechanismLigament2d(
+                                                "Roller", 0.05, 180, 5, new Color8Bit(Color.kGreen)));
 
-        LoggedMechanismLigament2d riserLigament =
-                root.append(
-                        new LoggedMechanismLigament2d(
-                                "Riser", 0.35, 90, 5, new Color8Bit(Color.kDarkGray)));
-        this.tiltLigament =
-                riserLigament.append(
-                        new LoggedMechanismLigament2d(
-                                "Tilt",
-                                0.5,
-                                90.0,
-                                4,
-                                new Color8Bit(Color.kCornflowerBlue)));
-        this.rollerLigament =
-                this.tiltLigament.append(
-                        new LoggedMechanismLigament2d(
-                                "Roller", 0.05, 180, 5, new Color8Bit(Color.kGreen)));
+                LoggedMechanismRoot2d anglerRoot = mech2d.getRoot("Angler Root", Constants.DRIVE_BASE_WIDTH,
+                                Constants.INITIAL_ROBOT_HEIGHT);
 
-        LoggedMechanismRoot2d anglerRoot =
-                mech2d.getRoot("Angler Root", Constants.DRIVE_BASE_WIDTH, Constants.INITIAL_ROBOT_HEIGHT);
+                LoggedMechanismLigament2d anglerRiserLigament = anglerRoot.append(
+                                new LoggedMechanismLigament2d(
+                                                "Angler Riser", 0.55, 40, 6.7, new Color8Bit(Color.kDarkGray)));
 
-        LoggedMechanismLigament2d anglerRiserLigament =
-                anglerRoot.append(
-                        new LoggedMechanismLigament2d(
-                                "Angler Riser", 0.55, 40, 6.7, new Color8Bit(Color.kDarkGray)));
+                this.anglerLigament = anglerRiserLigament.append(
+                                new LoggedMechanismLigament2d(
+                                                "Angler", 0.1, 180, 5, new Color8Bit(Color.kWhite)));
 
-        this.anglerLigament =
-                anglerRiserLigament.append(
-                        new LoggedMechanismLigament2d(
-                                "Angler", 0.1, 180, 5, new Color8Bit(Color.kWhite)));
-        
-        LoggedMechanismRoot2d intakeRoot =
-                mech2d.getRoot("Intake Root", Constants.DRIVE_BASE_WIDTH, Constants.INITIAL_ROBOT_HEIGHT);
+                LoggedMechanismRoot2d intakeRoot = mech2d.getRoot("Intake Root", Constants.DRIVE_BASE_WIDTH,
+                                Constants.INITIAL_ROBOT_HEIGHT);
 
-        LoggedMechanismLigament2d intakeRiserLigament =
-                intakeRoot.append(
-                        new LoggedMechanismLigament2d(
-                                "Intake Riser", 0.35, 30, 5, new Color8Bit(Color.kDarkGray)));
-                            
-        this.intakeLigament =
-                intakeRiserLigament.append(
-                        new LoggedMechanismLigament2d(
-                                "Intake Wheel",
-                                0.1,
-                                90.0,
-                                4,
-                                new Color8Bit(Color.kRed)));
+                LoggedMechanismLigament2d intakeRiserLigament = intakeRoot.append(
+                                new LoggedMechanismLigament2d(
+                                                "Intake Riser", 0.35, 30, 5, new Color8Bit(Color.kDarkGray)));
 
-        LoggedMechanismRoot2d hopperRoot =
-                mech2d.getRoot("Hopper Root", Constants.DRIVE_BASE_LENGTH, Constants.INITIAL_ROBOT_HEIGHT);
+                this.intakeLigament = intakeRiserLigament.append(
+                                new LoggedMechanismLigament2d(
+                                                "Intake Wheel",
+                                                0.1,
+                                                90.0,
+                                                4,
+                                                new Color8Bit(Color.kRed)));
 
-        LoggedMechanismLigament2d hopperRiserLigament = 
-                hopperRoot.append(
-                        new LoggedMechanismLigament2d(
-                                "Hopper Riser", 1.5, 90, 5, new Color8Bit(Color.kDarkGray)));
-        
-        this.hopperLigament = 
-                hopperRiserLigament.append(
-                        new LoggedMechanismLigament2d(
-                                "Hopper",
-                                0.7, 
-                                90,
-                                5,
-                                new Color8Bit(Color.kDarkOrchid)));
-        
-        LoggedMechanismRoot2d feederRoot = 
-                mech2d.getRoot("Feeder Root", Constants.DRIVE_BASE_WIDTH * 2, Constants.INITIAL_ROBOT_HEIGHT);
-    
-        LoggedMechanismLigament2d feederRiserLigament = 
-                feederRoot.append(
-                        new LoggedMechanismLigament2d(
-                                "Feeder Riser", 0.35, 90, 5, new Color8Bit(Color.kDarkGray)));
-    
-        this.feederLigament =
-                feederRiserLigament.append(
-                        new LoggedMechanismLigament2d(
-                                "Feeder Wheel",
-                                0.15,
-                                90.0,
-                                4,
-                                new Color8Bit(Color.kYellow)));
+                LoggedMechanismRoot2d hopperRoot = mech2d.getRoot("Hopper Root", Constants.DRIVE_BASE_LENGTH,
+                                Constants.INITIAL_ROBOT_HEIGHT);
 
-        LoggedMechanismRoot2d shooterRoot = 
-                mech2d.getRoot("Shooter Root", Constants.DRIVE_BASE_WIDTH * 2.5, Constants.INITIAL_ROBOT_HEIGHT);
+                LoggedMechanismLigament2d hopperRiserLigament = hopperRoot.append(
+                                new LoggedMechanismLigament2d(
+                                                "Hopper Riser", 1.5, 90, 5, new Color8Bit(Color.kDarkGray)));
 
-        LoggedMechanismLigament2d shooterRiserLigament = 
-                shooterRoot.append(
-                        new LoggedMechanismLigament2d(
-                                "Shooter Riser", 0.25, 90, 5, new Color8Bit(Color.kDarkGray)));
+                this.hopperLigament = hopperRiserLigament.append(
+                                new LoggedMechanismLigament2d(
+                                                "Hopper",
+                                                0.7,
+                                                90,
+                                                5,
+                                                new Color8Bit(Color.kDarkOrchid)));
 
-        this.shooterTiltLigament =
-                shooterRiserLigament.append(
-                        new LoggedMechanismLigament2d(
-                                "Shooter Tilt",
-                                0.5,
-                                -45.0,
-                                4,
-                                new Color8Bit(Color.kPurple)));
-        
-        this.shooterLigament =
-                shooterTiltLigament.append(
-                        new LoggedMechanismLigament2d(
-                                "Shooter Wheel",
-                                0.15,
-                                -45.0,
-                                4,
-                                new Color8Bit(Color.kOrange)));
-        LoggedMechanismRoot2d intakeDeployerRoot = 
-                        mech2d.getRoot("Intake Deployment Root", Constants.DRIVE_BASE_WIDTH * 2.5, Constants.INITIAL_ROBOT_HEIGHT);
+                LoggedMechanismRoot2d feederRoot = mech2d.getRoot("Feeder Root", Constants.DRIVE_BASE_WIDTH * 2,
+                                Constants.INITIAL_ROBOT_HEIGHT);
 
-        LoggedMechanismLigament2d intakeDeploymentLigament = 
-                intakeDeployerRoot.append(
-                        new LoggedMechanismLigament2d(
-                                "Intake Deployment", 0.4, -45, 10, new Color8Bit(Color.kAquamarine)));
-        this.intakeDeploymentLigament =
-                intakeDeploymentLigament.append(
-                        new LoggedMechanismLigament2d(
-                                "Intake Deployment",
-                                10,
-                                0,
-                                10,
-                                new Color8Bit(Color.kBrown)));
-        
-    }
+                LoggedMechanismLigament2d feederRiserLigament = feederRoot.append(
+                                new LoggedMechanismLigament2d(
+                                                "Feeder Riser", 0.35, 90, 5, new Color8Bit(Color.kDarkGray)));
 
-    public LoggedMechanismLigament2d getRollerLigament() {
-        return rollerLigament;
-    }
+                this.feederLigament = feederRiserLigament.append(
+                                new LoggedMechanismLigament2d(
+                                                "Feeder Wheel",
+                                                0.15,
+                                                90.0,
+                                                4,
+                                                new Color8Bit(Color.kYellow)));
 
-    public LoggedMechanismLigament2d getTiltLigament() {
-        return tiltLigament;
-    }
+                LoggedMechanismRoot2d shooterRoot = mech2d.getRoot("Shooter Root", Constants.DRIVE_BASE_WIDTH * 2.5,
+                                Constants.INITIAL_ROBOT_HEIGHT);
 
-    public LoggedMechanismLigament2d getIntakeLigament() {
-        return intakeLigament;
-    }
+                LoggedMechanismLigament2d shooterRiserLigament = shooterRoot.append(
+                                new LoggedMechanismLigament2d(
+                                                "Shooter Riser", 0.25, 90, 5, new Color8Bit(Color.kDarkGray)));
 
-    public LoggedMechanismLigament2d getHopperLigament(){
-        return hopperLigament;
-    }
+                this.shooterTiltLigament = shooterRiserLigament.append(
+                                new LoggedMechanismLigament2d(
+                                                "Shooter Tilt",
+                                                0.5,
+                                                -45.0,
+                                                4,
+                                                new Color8Bit(Color.kPurple)));
 
-    public LoggedMechanismLigament2d getFeederLigament() {
-        return feederLigament;
-    }
+                this.shooterLigament = shooterTiltLigament.append(
+                                new LoggedMechanismLigament2d(
+                                                "Shooter Wheel",
+                                                0.15,
+                                                -45.0,
+                                                4,
+                                                new Color8Bit(Color.kOrange)));
+                LoggedMechanismRoot2d intakeDeployerRoot = mech2d.getRoot("Intake Deployment Root",
+                                Constants.DRIVE_BASE_WIDTH * 2.5, Constants.INITIAL_ROBOT_HEIGHT);
 
-    public LoggedMechanismLigament2d getAnglerLigament() {
-        return anglerLigament;
-    }
+                LoggedMechanismLigament2d intakeDeploymentLigament = intakeDeployerRoot.append(
+                                new LoggedMechanismLigament2d(
+                                                "Intake Deployment", 0.4, 45, 4, new Color8Bit(Color.kAquamarine)));
+                this.intakeDeploymentLigament = intakeDeploymentLigament.append(
+                                new LoggedMechanismLigament2d(
+                                                "Intake Deployment",
+                                                0.5,
+                                                0,
+                                                4,
+                                                new Color8Bit(Color.kBrown)));
 
-    public LoggedMechanismLigament2d getShooterTiltLigament() {
-        return shooterTiltLigament;
-    }
+        }
 
-    public LoggedMechanismLigament2d getShooterLigament() {
-        return shooterLigament;
-    }
-    public LoggedMechanismLigament2d getIntakeDeploymentLigament() {
-        return intakeDeploymentLigament;
-    }
+        public LoggedMechanismLigament2d getRollerLigament() {
+                return rollerLigament;
+        }
 
-    public void logMechanism() {
-        Logger.recordOutput("Mechanism2d/", mech2d);
-    }
+        public LoggedMechanismLigament2d getTiltLigament() {
+                return tiltLigament;
+        }
 
-    public void close() {
-        mech2d.close();
-    }
+        public LoggedMechanismLigament2d getIntakeLigament() {
+                return intakeLigament;
+        }
+
+        public LoggedMechanismLigament2d getHopperLigament() {
+                return hopperLigament;
+        }
+
+        public LoggedMechanismLigament2d getFeederLigament() {
+                return feederLigament;
+        }
+
+        public LoggedMechanismLigament2d getAnglerLigament() {
+                return anglerLigament;
+        }
+
+        public LoggedMechanismLigament2d getShooterTiltLigament() {
+                return shooterTiltLigament;
+        }
+
+        public LoggedMechanismLigament2d getShooterLigament() {
+                return shooterLigament;
+        }
+
+        public LoggedMechanismLigament2d getIntakeDeploymentLigament() {
+                return intakeDeploymentLigament;
+        }
+
+        public void logMechanism() {
+                Logger.recordOutput("Mechanism2d/", mech2d);
+        }
+
+        public void close() {
+                mech2d.close();
+        }
 }

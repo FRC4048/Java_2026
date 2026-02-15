@@ -21,7 +21,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Config;
 import frc.robot.constants.Constants;
-
+import frc.robot.utils.logging.LoggedTunableNumber;
 import frc.robot.utils.logging.io.gyro.ThreadedGyro;
 import swervelib.SwerveController;
 import swervelib.SwerveDrive;
@@ -39,10 +39,14 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
-
+import edu.wpi.first.math.kinematics.SwerveModuleState;
 import static edu.wpi.first.units.Units.Meter;
 
 public class SwerveSubsystem extends SubsystemBase {
+    private final LoggedTunableNumber numReal = new LoggedTunableNumber("RealPerTick",0);
+    private final LoggedTunableNumber numFake = new LoggedTunableNumber("FakePerTick",0);
+    private int realCount = 0;
+    private int fakeCount = 0;
     /**
      * Swerve drive object.
      */
@@ -298,8 +302,8 @@ public class SwerveSubsystem extends SubsystemBase {
         return swerveDrive.getPose();
     }
     //fix to only get odomtry
-    public Pose2d getOdom() {
-        return swerveDrive.getPose();
+    public SwerveModuleState[] getOdom() {
+        return swerveDrive.getStates();
     }
 
     /**
@@ -473,9 +477,28 @@ public class SwerveSubsystem extends SubsystemBase {
         this.variance = variance;
     }
     public void addVisionMeasurement(Pose2d pose, double visionTimestamp){
-        swerveDrive.addVisionMeasurement(pose, visionTimestamp, variance);
+        realCount++;
+       if (numReal.get()<1) {
+        if (realCount % (int) (1/numReal.get()) == 0) {
+            swerveDrive.addVisionMeasurement(pose, visionTimestamp, variance);
+        }
+       } else {
+        for (int i=0; i<numReal.get(); i++) {
+            swerveDrive.addVisionMeasurement(pose,visionTimestamp,variance);
+        }
+       }
+        
     }
     public void addVisionMeasurement(Pose2d pose){
-        swerveDrive.addVisionMeasurement(pose, Timer.getFPGATimestamp(), variance);
+        fakeCount++;
+       if (numFake.get()<1) {
+        if (fakeCount % (int) (1/numFake.get()) == 0) {
+            swerveDrive.addVisionMeasurement(pose, Timer.getFPGATimestamp(), variance);
+        }
+       } else {
+        for (int i=0; i<numFake.get(); i++) {
+            swerveDrive.addVisionMeasurement(pose,Timer.getFPGATimestamp(),variance);
+        }
+       }
     }
 }

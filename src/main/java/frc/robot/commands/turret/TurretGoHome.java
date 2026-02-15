@@ -19,11 +19,13 @@ public class TurretGoHome extends LoggableCommand {
 
     @Override
     public void initialize() {
+        new SetTurretAngle(turret, GameConstants.TURRET_HOME_ANGLE);
+
     }
 
     @Override
     public void execute() {
-        new SetTurretAngle(turret, GameConstants.TURRET_HOME_ANGLE);
+
     }
 
     @Override
@@ -33,6 +35,6 @@ public class TurretGoHome extends LoggableCommand {
 
     @Override
     public boolean isFinished() {
-        return false;
+        return true;
     }
 }

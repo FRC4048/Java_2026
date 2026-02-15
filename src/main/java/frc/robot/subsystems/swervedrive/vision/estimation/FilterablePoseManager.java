@@ -13,11 +13,7 @@ import frc.robot.subsystems.swervedrive.vision.truster.VisionFilter;
 import frc.robot.subsystems.swervedrive.vision.truster.VisionMeasurement;
 import frc.robot.subsystems.swervedrive.vision.truster.VisionTruster;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Queue;
+import java.util.*;
 
 import org.littletonrobotics.junction.Logger;
 
@@ -58,8 +54,8 @@ public class FilterablePoseManager extends PoseManager {
 
   @Override
   public void processQueue() {
-    for (int i=0; i < Constants.NUMBER_OF_CAMERAS; i++) {
-      Queue<VisionMeasurement> visionMeasurementQueue = visionMeasurmentQueueMap.get(i);
+    for (int i=1; i <= Constants.NUMBER_OF_CAMERAS; i++) {
+      Queue<VisionMeasurement> visionMeasurementQueue = visionMeasurmentQueueMap.computeIfAbsent(i, k -> new LinkedList<>());
       LinkedHashMap<VisionMeasurement, FilterResult> filteredData =
         filter.filter(visionMeasurementQueue);
     visionMeasurementQueue.clear();

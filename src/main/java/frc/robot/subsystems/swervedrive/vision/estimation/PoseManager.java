@@ -65,7 +65,7 @@ public class PoseManager {
     if (measurement == null) {
       return;
     }
-    while (visionMeasurmentQueueMap.computeIfAbsent(camera, k -> new LinkedList<>()).size() >= 3) {
+    while (visionMeasurmentQueueMap.get(camera).size() >= 3) {
       visionMeasurmentQueueMap.get(camera).poll();
     }
     visionMeasurmentQueueMap.get(camera).add(measurement);

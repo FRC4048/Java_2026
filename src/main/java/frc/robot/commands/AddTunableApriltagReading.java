@@ -32,10 +32,12 @@ public class AddTunableApriltagReading extends LoggableCommand {
     @Override
     public void execute() {
         Random random = new Random();
-        for (int i=0; i<numReadings.get(); i++) {
-            april.addSimReading(new ApriltagReading(posX.getAsDouble() + random.nextGaussian()*0.1, posY.getAsDouble()+ random.nextGaussian()*0.1,
-            poseYaw.getAsDouble()+ random.nextGaussian()*0.1, distanceToTag.getAsDouble(), (int) apriltagNumber.getAsDouble(),
-            latency.getAsDouble(), Logger.getTimestamp(), (int) (Math.random()*Constants.NUMBER_OF_CAMERAS+1)));
+        for (int j=1; j<=Constants.NUMBER_OF_CAMERAS; j++) {
+            for (int i = 0; i < numReadings.get(); i++) {
+                april.addSimReading(new ApriltagReading(posX.getAsDouble() + random.nextGaussian() * 0.1, posY.getAsDouble() + random.nextGaussian() * 0.1,
+                        poseYaw.getAsDouble() + random.nextGaussian() * 0.1, distanceToTag.getAsDouble(), (int) apriltagNumber.getAsDouble(),
+                        latency.getAsDouble(), Logger.getTimestamp(), j));
+            }
         }
     }
 }

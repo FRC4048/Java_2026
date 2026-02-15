@@ -122,5 +122,5 @@ public class GameConstants {
     public static final double VISION_CONSISTANCY_THRESHOLD = 0.25;
     public static final boolean ENABLE_VISION = true;
     public static final double POSE_BUFFER_STORAGE_TIME = 2;
-    public static final int NUMBER_OF_CAMERAS = 0;
+    public static final int NUMBER_OF_CAMERAS = 4;
 }

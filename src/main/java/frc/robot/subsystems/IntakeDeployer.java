@@ -39,14 +39,6 @@ public class IntakeDeployer extends SubsystemBase {
     io.stopMotor();
   }
 
-  public boolean revSwitchPressed() {
-    return io.isRevSwitchPressed();
-  }
-
-  public boolean fwdSwitchPressed() {
-    return io.isFwdSwitchPressed();
-  }
-
   @Override
   public void periodic() {
     io.periodic();

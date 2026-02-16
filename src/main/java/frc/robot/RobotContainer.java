@@ -23,6 +23,7 @@ import frc.robot.commands.drive.DriveDirectionTime;
 import frc.robot.commands.feeder.SpinFeeder;
 import frc.robot.commands.drive.FakeVision;
 import frc.robot.commands.intake.SpinIntake;
+import frc.robot.commands.intakeDeployment.RunDeployer;
 import frc.robot.commands.intakeDeployment.SetDeploymentState;
 import frc.robot.autochooser.AutoChooser;
 import frc.robot.commands.angler.AimAngler;
@@ -73,6 +74,8 @@ public class RobotContainer {
         private final AutoChooser autoChooser = new AutoChooser();
         // The robot's subsystems and commands are defined here...
         // private final TiltSubsystem tiltSubsystem;
+        private final CommandXboxController controller =
+            new CommandXboxController(Constants.XBOX_CONTROLLER_PORT);
         private final ClimberSubsystem climberSubsystem;
         private final AnglerSubsystem anglerSubsystem;
         private final IntakeSubsystem intakeSubsystem;
@@ -183,6 +186,17 @@ public class RobotContainer {
          * joysticks}.
          */
         private void configureBindings() {
+            controller.a().onTrue(new RunDeployer(intakeDeployer));
+            controller.b().onTrue(new SetDeploymentState(intakeDeployer, DeploymentState.DOWN));
+            controller.y().onTrue(new ClimberUp(climberSubsystem));
+            controller.x().onTrue(new ClimberDown(climberSubsystem));
+            controller.povUp().onTrue(new SetShootingState(shootState, ShootState.FIXED));
+            controller.povLeft().onTrue(new SetShootingState(shootState, ShootState.FIXED_2));
+            controller.povDown().onTrue(new SetShootingState(shootState, ShootState.SHOOTING_HUB));
+            controller.povRight().onTrue(new SetShootingState(shootState, ShootState.SHUTTLING));
+            controller.rightBumper().onTrue(new SpinShooter(shooterSubsystem, 1));
+            controller.leftBumper().onTrue(new SetShootingState(shootState, ShootState.STOPPED));
+
                 // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
                 // new Trigger(m_exampleSubsystem::exampleCondition)
                 // .onTrue(new ExampleCommand(m_exampleSubsystem));
@@ -199,10 +213,10 @@ public class RobotContainer {
                         new AimAngler(
                                         anglerSubsystem,
                                         () -> drivebase != null ? drivebase.getPose() : null,
-                                        shootState);
-                }
+                                        shootState);}
+            }
 
-                if (!Constants.TESTBED) {
+                {if (!Constants.TESTBED) {
                         SwerveInputStream driveAngularVelocity = SwerveInputStream.of(drivebase.getSwerveDrive(),
                                         () -> driveJoystick.getY() * -1,
                                         () -> driveJoystick.getX() * -1)

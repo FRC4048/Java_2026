@@ -75,7 +75,7 @@ public class ApriltagSubsystem extends SubsystemBase {
                 io.addReading(new ApriltagReading(robotPoseSupplier.get().getX()+ random.nextGaussian()*stdDevs.get(0),
                         robotPoseSupplier.get().getY()+ random.nextGaussian()*stdDevs.get(1),
                         robotPoseSupplier.get().getRotation().getDegrees()+ random.nextGaussian()*stdDevs.get(2),
-                        distance, tag.number(), Constants.AVERAGE_CAM_LATENCY+ random.nextGaussian()*Constants.AVERAGE_CAM_LATENCY_STD_DEV, Logger.getTimestamp()));
+                        distance, tag.number(), Constants.AVERAGE_CAM_LATENCY+ random.nextGaussian()*Constants.AVERAGE_CAM_LATENCY_STD_DEV, Logger.getTimestamp()/1000.0));
             }
         }
     }

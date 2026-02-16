@@ -4,16 +4,16 @@ public class Constants2026 extends GameConstants {
 
     // Constants2026 is only for CANIDs and nothing else, everything else goes into GameConstants.
     
-    public static final int ROLLER_MOTOR_ID = 1;
-    public static final int TILT_MOTOR_ID = 2;
-    public static final int INTAKE_MOTOR_ID = 3;
-    public static final int ANGLER_MOTOR_ID = 6;
-    public static final int HOPPER_MOTOR_ID = 4;
-    public static final int FEEDER_MOTOR_ID = 5;
-    public static final int CLIMBER_MOTOR_ID = 8;
+    public static final int ROLLER_MOTOR_ID = 10; // we dont have a roller this year i thought?
+    public static final int TILT_MOTOR_ID = 20; // we dont have a tilt this year i thought?
+    public static final int INTAKE_MOTOR_ID = 4;
+    public static final int ANGLER_MOTOR_ID = 52;
+    public static final int HOPPER_MOTOR_ID = 3;
+    public static final int FEEDER_MOTOR_ID = 2;
+    public static final int CLIMBER_MOTOR_ID = 6;
 
-    public static final int SHOOTER_MOTOR_ID = 8;
-    public static final int SHOOTER_FOLLOWER_MOTOR_ID = 7;
+    public static final int SHOOTER_MOTOR_ID = 54;
+    public static final int SHOOTER_FOLLOWER_MOTOR_ID = 53;
     
     public static final double DRIVE_BASE_WIDTH = 0.635;
     public static final double DRIVE_BASE_LENGTH = 0.635;

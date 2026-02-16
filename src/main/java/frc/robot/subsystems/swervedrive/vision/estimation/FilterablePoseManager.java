@@ -2,6 +2,8 @@ package frc.robot.subsystems.swervedrive.vision.estimation;
 
 import edu.wpi.first.math.Vector;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.interpolation.TimeInterpolatableBuffer;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.numbers.N3;
@@ -54,21 +56,31 @@ public class FilterablePoseManager extends PoseManager {
 
   @Override
   public void processQueue() {
-    for (int i=1; i <= Constants.NUMBER_OF_CAMERAS; i++) {
+    for (int i=1; i <= Constants.NUMBER_OF_CAMERAS.get(); i++) {
       Queue<VisionMeasurement> visionMeasurementQueue = visionMeasurmentQueueMap.computeIfAbsent(i, k -> new LinkedList<>());
       LinkedHashMap<VisionMeasurement, FilterResult> filteredData =
         filter.filter(visionMeasurementQueue);
     visionMeasurementQueue.clear();
     List<Pose2d> validMeasurements = new ArrayList<>();
     List<Pose2d> invalidMeasurements = new ArrayList<>();
+    Translation2d averageTranslation = new Translation2d();
+    Rotation2d averageRotation = new Rotation2d(); 
+    double averageDistanceFromTag = 0;
+    double averageTime = 0;
+    Pose2d averagePose;
+    VisionMeasurement averageMeasurement;
     for (Map.Entry<VisionMeasurement, FilterResult> entry : filteredData.entrySet()) {
       VisionMeasurement v = entry.getKey();
       FilterResult r = entry.getValue();
       switch (r) {
         case ACCEPTED -> {
-          setVisionSTD(visionTruster.calculateTrust(v));
+          //setVisionSTD(visionTruster.calculateTrust(v));
           validMeasurements.add(v.measurement());
-          addVisionMeasurement(v);
+          averageTranslation = averageTranslation.plus(v.measurement().getTranslation());
+          averageRotation = averageRotation.plus(v.measurement().getRotation());
+          averageDistanceFromTag = averageDistanceFromTag + v.distanceFromTag();
+          averageTime = averageTime + v.timeOfMeasurement();
+          //addVisionMeasurement(v);
         }
         case NOT_PROCESSED -> visionMeasurementQueue.add(v);
         case REJECTED -> {
@@ -76,6 +88,18 @@ public class FilterablePoseManager extends PoseManager {
         }
       }
     }
+    if (validMeasurements.size() != 0) {
+      averageTranslation = averageTranslation.times(1.0/validMeasurements.size());
+      averageRotation = averageRotation.times(1.0/validMeasurements.size());
+      averageDistanceFromTag = averageDistanceFromTag/validMeasurements.size();
+      averageTime = averageTime/validMeasurements.size();
+      averagePose = new Pose2d(averageTranslation, averageRotation);
+      averageMeasurement = new VisionMeasurement(averagePose, averageDistanceFromTag, averageTime);
+      Logger.recordOutput("Apriltag/averageMeasurementCamera" + i, averageMeasurement);
+      setVisionSTD(visionTruster.calculateTrust(averageMeasurement).div(2));
+      addVisionMeasurement(averageMeasurement);
+    }
+    
     Logger.recordOutput("Apriltag/acceptedMeasurementsCamera" + i, validMeasurements.toArray(Pose2d[]::new));
     Logger.recordOutput(
         "Apriltag/rejectedMeasurementsCamera" + i, invalidMeasurements.toArray(Pose2d[]::new));

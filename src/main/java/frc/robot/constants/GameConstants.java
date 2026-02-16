@@ -4,6 +4,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.units.measure.Time;
 import edu.wpi.first.wpilibj.RobotBase;
+import frc.robot.utils.logging.LoggedTunableNumber;
 import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
 
 public class GameConstants {
@@ -122,8 +123,8 @@ public class GameConstants {
     public static final int SHIFT_4_START = 55;
     public static final int ENDGAME_START = 30;
 
-    public static final double VISION_CONSISTANCY_THRESHOLD = 0.25;
+    public static final LoggedTunableNumber VISION_CONSISTANCY_THRESHOLD = new LoggedTunableNumber("VisionConsistanctyThreshhold",0.25);
     public static final boolean ENABLE_VISION = true;
     public static final double POSE_BUFFER_STORAGE_TIME = 2;
-    public static final int NUMBER_OF_CAMERAS = 4;
+    public static final LoggedTunableNumber NUMBER_OF_CAMERAS = new LoggedTunableNumber("NumberOfCameras", 1);
 }

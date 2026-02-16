@@ -21,7 +21,7 @@ public class ApriltagSubsystem extends SubsystemBase {
     public ApriltagSubsystem(ApriltagIO io, SwerveSubsystem drivebase) {
         this.drivebase = drivebase;
         this.io = io;
-        drivebase.setVariance(VecBuilder.fill(10,10,10));
+        drivebase.setVariance(VecBuilder.fill(0,0,0));
        estimator = new PoseEstimator(drivebase.getKinematics(), drivebase, 0, this);
     }
 

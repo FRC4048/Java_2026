@@ -1,5 +1,7 @@
 package frc.robot.commands;
 
+import edu.wpi.first.math.Vector;
+import edu.wpi.first.math.numbers.N3;
 import org.littletonrobotics.junction.Logger;
 
 import frc.robot.apriltags.ApriltagReading;
@@ -34,10 +36,14 @@ public class AddTunableApriltagReading extends LoggableCommand {
     }
     @Override
     public void execute() {
-        for (int j=1; j<=Constants.NUMBER_OF_CAMERAS; j++) {
+        for (int j=1; j<=Constants.NUMBER_OF_CAMERAS.get(); j++) {
                 for (int i=0; i<numReadings.get(); i++) {
-                        april.addSimReading(new ApriltagReading(posX.getAsDouble() + random.nextGaussian()*0.05, posY.getAsDouble()+ random.nextGaussian()*0.05,
-                                poseYaw.getAsDouble()+ random.nextGaussian()*0.05, distanceToTag.getAsDouble(), (int) apriltagNumber.getAsDouble(),
+                    Vector<N3> variance = april.getVariance();
+                    double varX = random.nextGaussian()*variance.get(0);
+                    double varY = random.nextGaussian()*variance.get(1);
+                    double varYaw = random.nextGaussian()*variance.get(2);
+                        april.addSimReading(new ApriltagReading(posX.getAsDouble() + varX, posY.getAsDouble()+ varY,
+                                poseYaw.getAsDouble()+ varYaw, distanceToTag.getAsDouble()+ random.nextGaussian()*0.05, (int) apriltagNumber.getAsDouble(),
                                 latency.getAsDouble(), Logger.getTimestamp()/1000.0, j));
                 }
         }

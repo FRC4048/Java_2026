@@ -72,7 +72,7 @@ public class PoseManager {
 
     // override for filtering
     public void processQueue() {
-        for (int i = 0; i < Constants.NUMBER_OF_CAMERAS; i++) {
+        for (int i = 0; i < Constants.NUMBER_OF_CAMERAS.get(); i++) {
       VisionMeasurement m = visionMeasurmentQueueMap.get(i).poll();
       while (m != null) {
         addVisionMeasurement(m);

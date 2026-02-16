@@ -30,7 +30,7 @@ public class AddGarbageReading extends LoggableCommand {
     @Override
     public void execute() {
 
-            april.addSimReading(new ApriltagReading(Math.random()*10, Math.random()*10, Math.random()*10, Math.random()*10, (int) (Math.random()*32+1), Math.random()*10, Math.random()*10, (int) (Math.random()*Constants.NUMBER_OF_CAMERAS+1)));
+            april.addSimReading(new ApriltagReading(Math.random()*10, Math.random()*10, Math.random()*10, Math.random()*10, (int) (Math.random()*32+1), Math.random()*10, Math.random()*10, (int) (Math.random()*Constants.NUMBER_OF_CAMERAS.get()+1)));
 
     }
     @Override

@@ -33,8 +33,6 @@ import frc.robot.utils.logging.commands.CommandLogger;
  */
 public class Robot extends LoggedRobot {
   private Command autonomousCommand;
-  
-
   private static final Diagnostics diagnostics = new Diagnostics();
   private final RobotContainer robotContainer;
   private static final AtomicReference<RobotMode> mode = new AtomicReference<>(RobotMode.DISABLED);
@@ -84,7 +82,6 @@ public class Robot extends LoggedRobot {
     robotContainer = new RobotContainer();
     
   }
-
   public static RobotMode getMode() {
     return mode.get();
   }
@@ -160,8 +157,6 @@ public class Robot extends LoggedRobot {
     // schedule the autonomous command (example)
     mode.set(RobotMode.AUTONOMOUS);
     autonomousCommand = robotContainer.getAutonomousCommand();
-    // new ExampleAuto(robotContainer.getDriveBase(), autoFactory, robotContainer.getIntakeSubsystem());
-
     // schedule the autonomous command (example)
     if (autonomousCommand != null) {
       CommandScheduler.getInstance().schedule(autonomousCommand);

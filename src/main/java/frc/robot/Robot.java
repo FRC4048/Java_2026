@@ -82,6 +82,7 @@ public class Robot extends LoggedRobot {
     robotContainer = new RobotContainer();
     
   }
+
   public static RobotMode getMode() {
     return mode.get();
   }
@@ -156,6 +157,7 @@ public class Robot extends LoggedRobot {
 
     // schedule the autonomous command (example)
     mode.set(RobotMode.AUTONOMOUS);
+    
     autonomousCommand = robotContainer.getAutonomousCommand();
     // schedule the autonomous command (example)
     if (autonomousCommand != null) {

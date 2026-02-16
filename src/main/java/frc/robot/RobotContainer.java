@@ -183,9 +183,8 @@ public class RobotContainer {
 
             feederSubsystem.setDefaultCommand(new RunCommand(
                     () -> {
-                        double targetFeederSpeed = controllerSubsystem.getFeederSpeed();
-                        if (targetFeederSpeed != 0.0) {
-                            feederSubsystem.setSpeed(targetFeederSpeed);
+                        if (controllerSubsystem.spinFeeder()) {
+                            feederSubsystem.setSpeed(Constants.FEEDER_SPEED);
                         } else {
                             feederSubsystem.stopMotors();
                         }
@@ -194,9 +193,8 @@ public class RobotContainer {
 
             hopperSubsystem.setDefaultCommand(new RunCommand(
                     () -> {
-                        double targetHopperSpeed = controllerSubsystem.getHopperSpeed();
-                        if (targetHopperSpeed != 0.0) {
-                            hopperSubsystem.setSpeed(targetHopperSpeed);
+                        if (controllerSubsystem.spinHopper()) {
+                            hopperSubsystem.setSpeed(Constants.HOPPER_SPEED);
                         } else {
                             hopperSubsystem.stopMotors();
                         }

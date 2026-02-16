@@ -60,49 +60,49 @@ public class FilterablePoseManager extends PoseManager {
       Queue<VisionMeasurement> visionMeasurementQueue = visionMeasurmentQueueMap.computeIfAbsent(i, k -> new LinkedList<>());
       LinkedHashMap<VisionMeasurement, FilterResult> filteredData =
         filter.filter(visionMeasurementQueue);
-    visionMeasurementQueue.clear();
-    List<Pose2d> validMeasurements = new ArrayList<>();
-    List<Pose2d> invalidMeasurements = new ArrayList<>();
-    Translation2d averageTranslation = new Translation2d();
-    Rotation2d averageRotation = new Rotation2d(); 
-    double averageDistanceFromTag = 0;
-    double averageTime = 0;
-    Pose2d averagePose;
-    VisionMeasurement averageMeasurement;
-    for (Map.Entry<VisionMeasurement, FilterResult> entry : filteredData.entrySet()) {
-      VisionMeasurement v = entry.getKey();
-      FilterResult r = entry.getValue();
-      switch (r) {
-        case ACCEPTED -> {
-          //setVisionSTD(visionTruster.calculateTrust(v));
-          validMeasurements.add(v.measurement());
-          averageTranslation = averageTranslation.plus(v.measurement().getTranslation());
-          averageRotation = averageRotation.plus(v.measurement().getRotation());
-          averageDistanceFromTag = averageDistanceFromTag + v.distanceFromTag();
-          averageTime = averageTime + v.timeOfMeasurement();
-          //addVisionMeasurement(v);
-        }
-        case NOT_PROCESSED -> visionMeasurementQueue.add(v);
-        case REJECTED -> {
-          invalidMeasurements.add(v.measurement());
+      visionMeasurementQueue.clear();
+      List<Pose2d> validMeasurements = new ArrayList<>();
+      List<Pose2d> invalidMeasurements = new ArrayList<>();
+      Translation2d averageTranslation = new Translation2d();
+      Rotation2d averageRotation = new Rotation2d();
+      double averageDistanceFromTag = 0;
+      double averageTime = 0;
+      Pose2d averagePose;
+      VisionMeasurement averageMeasurement;
+      for (Map.Entry<VisionMeasurement, FilterResult> entry : filteredData.entrySet()) {
+        VisionMeasurement v = entry.getKey();
+        FilterResult r = entry.getValue();
+        switch (r) {
+          case ACCEPTED -> {
+            //setVisionSTD(visionTruster.calculateTrust(v));
+            validMeasurements.add(v.measurement());
+            averageTranslation = averageTranslation.plus(v.measurement().getTranslation());
+            averageRotation = averageRotation.plus(v.measurement().getRotation());
+            averageDistanceFromTag = averageDistanceFromTag + v.distanceFromTag();
+            averageTime = averageTime + v.timeOfMeasurement();
+            //addVisionMeasurement(v);
+          }
+          case NOT_PROCESSED -> visionMeasurementQueue.add(v);
+          case REJECTED -> {
+            invalidMeasurements.add(v.measurement());
+          }
         }
       }
-    }
-    if (validMeasurements.size() != 0) {
-      averageTranslation = averageTranslation.times(1.0/validMeasurements.size());
-      averageRotation = averageRotation.times(1.0/validMeasurements.size());
-      averageDistanceFromTag = averageDistanceFromTag/validMeasurements.size();
-      averageTime = averageTime/validMeasurements.size();
-      averagePose = new Pose2d(averageTranslation, averageRotation);
-      averageMeasurement = new VisionMeasurement(averagePose, averageDistanceFromTag, averageTime);
-      Logger.recordOutput("Apriltag/averageMeasurementCamera" + i, averageMeasurement);
-      setVisionSTD(visionTruster.calculateTrust(averageMeasurement).div(2));
-      addVisionMeasurement(averageMeasurement);
-    }
-    
-    Logger.recordOutput("Apriltag/acceptedMeasurementsCamera" + i, validMeasurements.toArray(Pose2d[]::new));
-    Logger.recordOutput(
-        "Apriltag/rejectedMeasurementsCamera" + i, invalidMeasurements.toArray(Pose2d[]::new));
+      if (validMeasurements.size() != 0) {
+        averageTranslation = averageTranslation.times(1.0 / validMeasurements.size());
+        averageRotation = averageRotation.times(1.0 / validMeasurements.size());
+        averageDistanceFromTag = averageDistanceFromTag / validMeasurements.size();
+        averageTime = averageTime / validMeasurements.size();
+        averagePose = new Pose2d(averageTranslation, averageRotation);
+        averageMeasurement = new VisionMeasurement(averagePose, averageDistanceFromTag, averageTime);
+        Logger.recordOutput("Apriltag/averageMeasurementCamera" + i, averageMeasurement);
+        setVisionSTD(visionTruster.calculateTrust(averageMeasurement).div(2));
+        addVisionMeasurement(averageMeasurement);
+      }
+
+      Logger.recordOutput("Apriltag/acceptedMeasurementsCamera" + i, validMeasurements.toArray(Pose2d[]::new));
+      Logger.recordOutput(
+              "Apriltag/rejectedMeasurementsCamera" + i, invalidMeasurements.toArray(Pose2d[]::new));
     }
     
   }

@@ -44,14 +44,6 @@ public class FeederSubsystem extends SubsystemBase {
         io.stopMotor();
     }
 
-    public boolean getFeederRunning() {
-        return feederRunning;
-    }
-    
-    public void setFeederRunning(boolean state){
-        feederRunning = state;
-    }
-
     @Override
     public void periodic() {
         io.periodic();

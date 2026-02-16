@@ -24,6 +24,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.autochooser.FieldLocation;
 import frc.robot.constants.Constants;
+import frc.robot.subsystems.CameraThread;
 import frc.robot.utils.logging.commands.CommandLogger;
 
 /**
@@ -76,6 +77,7 @@ public class Robot extends LoggedRobot {
         // Start AdvantageKit logger
         Logger.start();
         CommandLogger.get().init();
+        new CameraThread();
 
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.

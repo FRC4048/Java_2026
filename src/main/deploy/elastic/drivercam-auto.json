@@ -1,0 +1,31 @@
+{
+  "version": 1.0,
+  "grid_size": 128,
+  "tabs": [
+    {
+      "name": "drivercam",
+      "grid_layout": {
+        "layouts": [],
+        "containers": [
+          {
+            "title": "DriverCam",
+            "x": 0.0,
+            "y": 0.0,
+            "width": 1280.0,
+            "height": 768.0,
+            "type": "Camera Stream",
+            "properties": {
+              "streamsTopic": "/CameraPublisher/USB Camera 0/streams",
+              "streams-topic": "/CameraPublisher/USB Camera 0/streams",
+              "streams_topic": "/CameraPublisher/USB Camera 0/streams",
+              "topic": "/CameraPublisher/USB Camera 0/streams",
+              "sourceUrl": "http://roborio-4048-frc.local:1181/?action=stream",
+              "sourceURL": "http://roborio-4048-frc.local:1181/?action=stream",
+              "source-url": "http://roborio-4048-frc.local:1181/?action=stream"
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

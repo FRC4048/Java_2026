@@ -460,9 +460,9 @@ public class RobotContainer {
                 return new ExampleAuto(drivebase, autoFactory);
         }
 
-public ClimberSubsystem getClimberSubsystem() {
-        return climberSubsystem;
-}
+        public ClimberSubsystem getClimberSubsystem() {
+                return climberSubsystem;
+        }
 
         public RobotVisualizer getRobotVisualizer() {
                 return robotVisualizer;

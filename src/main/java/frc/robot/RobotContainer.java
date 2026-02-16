@@ -86,8 +86,11 @@ public class RobotContainer {
     private final IntakeSubsystem intakeSubsystem;
     private final FeederSubsystem feederSubsystem;
     private final ApriltagSubsystem apriltagSubsystem;
+    private final ShooterSubsystem shooterSubsystem;
     private RobotVisualizer robotVisualizer = null;
     private final HopperSubsystem hopperSubsystem;
+    private final ClimberSubsystem climberSubsystem;
+    private final IntakeDeployerSubsystem intakeDeployer;
     private SwerveSubsystem drivebase = null;
     private GyroSubsystem gyroSubsystem = null;
     private final CommandJoystick driveJoystick = new CommandJoystick(Constants.DRIVE_JOYSTICK_PORT);

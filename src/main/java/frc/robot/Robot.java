@@ -80,7 +80,6 @@ public class Robot extends LoggedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     robotContainer = new RobotContainer();
-    
   }
 
   public static RobotMode getMode() {
@@ -157,7 +156,6 @@ public class Robot extends LoggedRobot {
 
     // schedule the autonomous command (example)
     mode.set(RobotMode.AUTONOMOUS);
-    
     autonomousCommand = robotContainer.getAutonomousCommand();
     // schedule the autonomous command (example)
     if (autonomousCommand != null) {

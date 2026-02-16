@@ -28,7 +28,6 @@ import frc.robot.commands.shooter.SetShootingState;
 import frc.robot.commands.turret.RunTurretToFwdLimit;
 import frc.robot.commands.turret.RunTurretToRevLimit;
 import frc.robot.commands.turret.SetTurretAngle;
-import frc.robot.commands.turret.TurretGoHome;
 import frc.robot.commands.shooter.SpinShooter;
 import frc.robot.constants.Constants;
 import frc.robot.subsystems.AnglerSubsystem;
@@ -269,8 +268,8 @@ public class RobotContainer {
                     new SetTurretAngle(turretSubsystem, 45));
 
             SmartDashboard.putData(
-                    "turret/Turret Go Home",
-                    new TurretGoHome(turretSubsystem));
+                    "turret/Turret Go 0",
+                    new SetTurretAngle(turretSubsystem, 0));
 
             SmartDashboard.putData(
                     "turret/Run Turret to Rev Limit",

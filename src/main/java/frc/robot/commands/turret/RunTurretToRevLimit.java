@@ -20,26 +20,22 @@ public class RunTurretToRevLimit extends LoggableCommand {
 
     @Override
     public void initialize() {
-        finished = false;
         timer.restart();
     }
 
     @Override
     public void execute() {
         turret.runReverse();
-        if (turret.isAtReverseLimit()) {
-            turret.resetEncoderToZero();
-            finished = true;
-        }
     }
 
     @Override
     public void end(boolean interrupted) {
+        turret.resetEncoderToZero();
         turret.stopMotors();
     }
 
     @Override
     public boolean isFinished() {
-        return finished || timer.hasElapsed(Constants.TURRET_TIMEOUT);
+        return turret.isAtReverseLimit() || timer.hasElapsed(Constants.TURRET_TIMEOUT);
     }
 }

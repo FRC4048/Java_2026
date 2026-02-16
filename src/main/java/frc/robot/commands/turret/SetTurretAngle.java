@@ -1,8 +1,5 @@
 package frc.robot.commands.turret;
 
-import edu.wpi.first.wpilibj.Timer;
-import frc.robot.constants.Constants;
-import frc.robot.constants.GameConstants;
 import frc.robot.subsystems.TurretSubsystem;
 import frc.robot.utils.logging.commands.LoggableCommand;
 
@@ -12,7 +9,6 @@ import frc.robot.utils.logging.commands.LoggableCommand;
 public class SetTurretAngle extends LoggableCommand {
     private final TurretSubsystem turret;
     private double targetAngle;
-    private final Timer timer = new Timer();
 
     public SetTurretAngle(TurretSubsystem turret, double targetAngle) {
         this.turret = turret;
@@ -22,7 +18,6 @@ public class SetTurretAngle extends LoggableCommand {
 
     @Override
     public void initialize() {
-        timer.restart();
     }
 
     @Override
@@ -37,6 +32,6 @@ public class SetTurretAngle extends LoggableCommand {
 
     @Override
     public boolean isFinished() {
-        return timer.hasElapsed(GameConstants.TURRET_TIMEOUT);
+        return true;
     }
 }

@@ -57,6 +57,14 @@ public class GameConstants {
     public static final double INTAKE_RETRACTION_SPEED = -10;
 
 
+    //Diags
+    public static final double HOPPER_DIAGS_ENCODER = 1;
+    public static final double INTAKE_ROLLER_DIAGS_ENCODER = 1;
+    public static final double FEEDER_DIAGS_ENCODER = 1;
+    public static final double CLIMBER_DIAGS_ENCODER = 1;
+    public static final double SHOOTER_DIAGS_ENCODER = 1;
+    public static final double GYRO_DIAGS_ANGLE = 30;
+
     //Timeouts
     public static final double SPIN_TIMEOUT = 5;
     public static final double TILT_TIMEOUT = 5;

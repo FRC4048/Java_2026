@@ -8,7 +8,10 @@ import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Robot;
 import frc.robot.constants.Constants;
+import frc.robot.constants.GameConstants;
+import frc.robot.utils.diag.DiagSparkMaxEncoder;
 import frc.robot.utils.logging.input.MotorLoggableInputs;
 import frc.robot.utils.logging.io.motor.MockSparkMaxIo;
 import frc.robot.utils.logging.io.motor.RealSparkMaxIo;
@@ -25,6 +28,11 @@ public class HopperSubsystem extends SubsystemBase{
 
     public HopperSubsystem(SparkMaxIo io) {
         this.io = io;
+
+        Robot.getDiagnostics()
+        .addDiagnosable(
+            new DiagSparkMaxEncoder(
+                "Hopper", "Encoder", GameConstants.HOPPER_DIAGS_ENCODER, io));
     }
 
     public void setSpeed(double speed){

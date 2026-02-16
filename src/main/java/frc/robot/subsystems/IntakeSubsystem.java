@@ -9,8 +9,11 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Robot;
 import frc.robot.commands.intake.SpinIntake;
 import frc.robot.constants.Constants;
+import frc.robot.constants.GameConstants;
+import frc.robot.utils.diag.DiagSparkMaxEncoder;
 import frc.robot.utils.logging.input.DigitalInputLoggableInputs;
 import frc.robot.utils.logging.input.MotorLoggableInputs;
 import frc.robot.utils.logging.io.motor.DigitalInputIo;
@@ -34,6 +37,11 @@ public class IntakeSubsystem extends SubsystemBase {
         this.io = io;
         this.intakeDeploymentSwitch = intakeDeploymentSwitch;
         setDefaultCommand(new SpinIntake(this));
+
+        Robot.getDiagnostics()
+        .addDiagnosable(
+            new DiagSparkMaxEncoder(
+                "Intake Roller", "Encoder", GameConstants.INTAKE_ROLLER_DIAGS_ENCODER, io));
     }
 
     public void setSpeed(double speed) {

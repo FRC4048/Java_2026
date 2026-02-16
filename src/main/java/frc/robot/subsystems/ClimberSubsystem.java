@@ -9,7 +9,10 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Robot;
 import frc.robot.constants.Constants;
+import frc.robot.constants.GameConstants;
+import frc.robot.utils.diag.DiagSparkMaxEncoder;
 import frc.robot.utils.logging.input.DigitalInputLoggableInputs;
 import frc.robot.utils.logging.input.MotorLoggableInputs;
 import frc.robot.utils.logging.io.motor.DigitalInputIo;
@@ -30,6 +33,11 @@ public class ClimberSubsystem extends SubsystemBase {
 
     public ClimberSubsystem(SparkMaxIo io) {
        this.io = io;
+
+       Robot.getDiagnostics()
+        .addDiagnosable(
+            new DiagSparkMaxEncoder(
+                "Climber", "Encoder", GameConstants.CLIMBER_DIAGS_ENCODER, io));
     }
 
     public void setSpeed(double speed) {

@@ -9,7 +9,9 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Robot;
 import frc.robot.constants.Constants;
+import frc.robot.utils.diag.DiagSparkMaxSwitch;
 import frc.robot.utils.logging.input.MotorLoggableInputs;
 import frc.robot.utils.logging.io.pidmotor.MockSparkMaxPidMotorIo;
 import frc.robot.utils.logging.io.pidmotor.RealSparkMaxPidMotorIo;
@@ -32,6 +34,15 @@ public class AnglerSubsystem extends SubsystemBase {
     public AnglerSubsystem(SparkMaxPidMotorIo io) {
         this.io = io;
         this.pidManager = new TunablePIDManager(LOGGING_NAME, io, createPidConfig());
+
+         Robot.getDiagnostics()
+        .addDiagnosable(
+            new DiagSparkMaxSwitch(
+                "Angler", "ForwardLimit", io, DiagSparkMaxSwitch.Direction.FORWARD));
+        Robot.getDiagnostics()
+        .addDiagnosable(
+            new DiagSparkMaxSwitch(
+                "Angler", "ReverseLimit", io, DiagSparkMaxSwitch.Direction.REVERSE));
     }
 
     @Override

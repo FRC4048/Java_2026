@@ -11,7 +11,10 @@ import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Robot;
 import frc.robot.constants.Constants;
+import frc.robot.constants.GameConstants;
+import frc.robot.utils.diag.DiagSparkMaxEncoder;
 import frc.robot.utils.logging.input.MotorLoggableInputs;
 import frc.robot.utils.logging.io.motor.SparkMaxIo;
 import frc.robot.utils.logging.io.pidmotor.MockSparkMaxPidMotorIo;
@@ -39,6 +42,10 @@ public class ShooterSubsystem extends SubsystemBase {
         followerConfig.follow(Constants.SHOOTER_MOTOR_ID, true);
         followerMotor.configure(followerConfig, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
 
+        Robot.getDiagnostics()
+        .addDiagnosable(
+            new DiagSparkMaxEncoder(
+                "Shooter", "Encoder", GameConstants.SHOOTER_DIAGS_ENCODER, io));
     }
 
     // setSpeed expects a power value from -1 to 1

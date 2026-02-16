@@ -8,18 +8,11 @@ public class LoggableSequentialCommandGroup extends SequentialCommandGroup imple
   private String basicName = getClass().getSimpleName();
   private Command parent = new BlankCommand();
 
-  public LoggableSequentialCommandGroup(Command... commands) {
+  public <T extends Command & Loggable> LoggableSequentialCommandGroup(T... commands) {
     ProxyCommand[] proxyCommands = new ProxyCommand[commands.length];
     for (int i = 0; i < commands.length; i++) {
-      Command command = commands[i];
-      if (command instanceof Loggable) {
-        ((Loggable) command).setParent(this);
-        proxyCommands[i] = command.asProxy();
-      } else {
-        LoggableCommandWrapper wrapper = LoggableCommandWrapper.wrap(command);
-        wrapper.setParent(this);
-        proxyCommands[i] = wrapper.asProxy();
-      }
+      commands[i].setParent(this);
+      proxyCommands[i] = commands[i].asProxy();
     }
     addCommands(proxyCommands);
   }

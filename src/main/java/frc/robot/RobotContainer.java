@@ -78,28 +78,28 @@ import choreo.auto.AutoTrajectory;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
-                // Instantiate the autochooser.
-                private final AutoChooser autoChooser = new AutoChooser();
-                // The robot's subsystems and commands are defined here...
-                //private final TiltSubsystem tiltSubsystem;
-                private final AnglerSubsystem anglerSubsystem;
-                private final IntakeSubsystem intakeSubsystem;
-                private final FeederSubsystem feederSubsystem;
-                private final ApriltagSubsystem apriltagSubsystem;
-                private final ShooterSubsystem shooterSubsystem;
-                private RobotVisualizer robotVisualizer = null;
-                private final HopperSubsystem hopperSubsystem;
-                private final ClimberSubsystem climberSubsystem;
-                private final IntakeDeployerSubsystem intakeDeployer;
-                private SwerveSubsystem drivebase = null;
-                private GyroSubsystem gyroSubsystem = null;
-                private final CommandJoystick driveJoystick = new CommandJoystick(Constants.DRIVE_JOYSTICK_PORT);
-                private final CommandJoystick steerJoystick = new CommandJoystick(Constants.STEER_JOYSTICK_PORT);
-                private ShootingState shootState = new ShootingState(ShootState.STOPPED);
-                private Drive drive;
-                private AutoFactory autoFactory;
-                private static AutoRoutine straightRoutine;
-                private static AutoTrajectory straightTrajectory;
+        // Instantiate the autochooser.
+       private final AutoChooser autoChooser = new AutoChooser();
+        // The robot's subsystems and commands are defined here...
+        //private final TiltSubsystem tiltSubsystem;
+        private final AnglerSubsystem anglerSubsystem;
+        private final IntakeSubsystem intakeSubsystem;
+        private final FeederSubsystem feederSubsystem;
+        private final ApriltagSubsystem apriltagSubsystem;
+        private final ShooterSubsystem shooterSubsystem;
+        private RobotVisualizer robotVisualizer = null;
+        private final HopperSubsystem hopperSubsystem;
+        private final ClimberSubsystem climberSubsystem;
+        private final IntakeDeployerSubsystem intakeDeployer;
+        private SwerveSubsystem drivebase = null;
+        private GyroSubsystem gyroSubsystem = null;
+        private final CommandJoystick driveJoystick = new CommandJoystick(Constants.DRIVE_JOYSTICK_PORT);
+        private final CommandJoystick steerJoystick = new CommandJoystick(Constants.STEER_JOYSTICK_PORT);
+        private ShootingState shootState = new ShootingState(ShootState.STOPPED);
+        private Drive drive;
+        private AutoFactory autoFactory;
+        private static AutoRoutine straightRoutine;
+        private static AutoTrajectory straightTrajectory;
 
         // Replace with CommandPS4Controller or CommandJoystick if needed
         // new CommandXboxController(OperatorConstants.kDriverControllerPort);private
@@ -451,6 +451,10 @@ public class RobotContainer {
       //return straightRoutine.cmd(straightTrajectory.done());
       return new ExampleAuto(drivebase, autoFactory);
     }
+
+         public ClimberSubsystem getClimberSubsystem() {
+                return climberSubsystem;
+        }
 
         public RobotVisualizer getRobotVisualizer() {
                 return robotVisualizer;

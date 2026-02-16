@@ -8,6 +8,7 @@ import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.commands.hopper.SpinHopper;
 import frc.robot.constants.Constants;
 import frc.robot.utils.logging.input.MotorLoggableInputs;
 import frc.robot.utils.logging.io.motor.MockSparkMaxIo;
@@ -22,9 +23,12 @@ import frc.robot.utils.simulation.RobotVisualizer;
 public class HopperSubsystem extends SubsystemBase{
     public static final String LOGGING_NAME = "HopperSubsystem";
     private final SparkMaxIo io;
+    
 
     public HopperSubsystem(SparkMaxIo io) {
         this.io = io;
+        setDefaultCommand(new SpinHopper(this));
+
     }
 
     public void setSpeed(double speed){

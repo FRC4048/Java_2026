@@ -9,6 +9,7 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.commands.feeder.SpinFeeder;
 import frc.robot.commands.intake.SpinIntake;
 import frc.robot.constants.Constants;
 import frc.robot.utils.logging.input.DigitalInputLoggableInputs;
@@ -28,9 +29,11 @@ public class FeederSubsystem extends SubsystemBase {
 
     public static final String LOGGING_NAME = "FeederSubsystem";
     private final SparkMaxIo io;
-
+    private boolean feederRunning = false;
+    
     public FeederSubsystem(SparkMaxIo io) {
         this.io = io;
+        setDefaultCommand(new SpinFeeder(this));
     }
 
     public void setSpeed(double speed) {
@@ -39,6 +42,14 @@ public class FeederSubsystem extends SubsystemBase {
 
     public void stopMotors() {
         io.stopMotor();
+    }
+
+    public boolean getFeederRunning() {
+        return feederRunning;
+    }
+    
+    public void setFeederRunning(boolean state){
+        feederRunning = state;
     }
 
     @Override

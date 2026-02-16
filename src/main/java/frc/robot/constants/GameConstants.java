@@ -48,6 +48,8 @@ public class GameConstants {
     public static final double TILT_SPEED = -0.5; // Arm motor is inverted - use negative speed
     public static final double INTAKE_SPEED = -0.5;
     public static final double HOPPER_SPEED = 0.1;
+    public static final double CLIMBER_SPEED_UP = 0.5;
+    public static final double CLIMBER_SPEED_DOWN = -0.25;
     public static final double FEEDER_SPEED = 0.5;
     public static final double MAX_SPEED = Units.feetToMeters(14.5);
     public static final double SHOOTER_SPEED = 100;
@@ -59,6 +61,7 @@ public class GameConstants {
     public static final double SPIN_TIMEOUT = 5;
     public static final double TILT_TIMEOUT = 5;
     public static final double HOPPER_TIMEOUT = 10;
+    public static final double CLIMBER_TIMEOUT = 10;
     public static final double FEEDER_TIMEOUT = 3;
     public static final double ANGLER_TIMEOUT = 5;
     public static final int SERVER_SOCKET_CONNECTION_TIMEOUT = 2000;

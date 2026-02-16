@@ -8,6 +8,7 @@ import frc.robot.utils.logging.input.GyroValues;
 import frc.robot.utils.logging.io.gyro.GyroIo;
 import frc.robot.utils.logging.io.gyro.MockGyroIo;
 import frc.robot.utils.logging.io.gyro.RealGyroIo;
+import frc.robot.utils.logging.io.gyro.ThreadedGyro;
 import frc.robot.utils.simulation.RobotVisualizer;
 
 public class GyroSubsystem extends SubsystemBase {
@@ -15,9 +16,6 @@ public class GyroSubsystem extends SubsystemBase {
 
     public GyroSubsystem(GyroIo io) {
         this.io = io;
-
-        Robot.getDiagnostics()
-        .addDiagnosable(new DiagGyro("Gyro", "Gyro Angle", GameConstants.GYRO_DIAGS_ANGLE, io));
     }
 
     public void setAngleOffset(double offset) {
@@ -43,7 +41,11 @@ public class GyroSubsystem extends SubsystemBase {
 
     public static GyroIo createRealIo() {
         RealGyroIo realGyroIo = new RealGyroIo();
+        ThreadedGyro gyro = realGyroIo.getThreadedGyro();
         realGyroIo.start();
+        Robot.getDiagnostics()
+        .addDiagnosable(new DiagGyro("Gyro", "Gyro Angle", GameConstants.GYRO_DIAGS_ANGLE, gyro));
+    
         return realGyroIo;
     }
 

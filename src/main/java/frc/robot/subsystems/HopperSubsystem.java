@@ -28,11 +28,6 @@ public class HopperSubsystem extends SubsystemBase{
 
     public HopperSubsystem(SparkMaxIo io) {
         this.io = io;
-
-        Robot.getDiagnostics()
-        .addDiagnosable(
-            new DiagSparkMaxEncoder(
-                "Hopper", "Encoder", GameConstants.HOPPER_DIAGS_ENCODER, io));
     }
 
     public void setSpeed(double speed){
@@ -58,7 +53,15 @@ public class HopperSubsystem extends SubsystemBase{
     }
 
     public static SparkMaxIo createRealIo() {
-        return new RealSparkMaxIo(LOGGING_NAME, createMotor(), MotorLoggableInputs.allMetrics());
+
+        SparkMax motor = createMotor();
+
+        Robot.getDiagnostics()
+        .addDiagnosable(
+            new DiagSparkMaxEncoder(
+                "Hopper", "Encoder", GameConstants.HOPPER_DIAGS_ENCODER, motor));
+
+        return new RealSparkMaxIo(LOGGING_NAME, motor, MotorLoggableInputs.allMetrics());
     }
 
     public static SparkMaxIo createSimIo(RobotVisualizer visualizer) {

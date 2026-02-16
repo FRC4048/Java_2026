@@ -41,11 +41,6 @@ public class ShooterSubsystem extends SubsystemBase {
         followerConfig = new SparkMaxConfig();
         followerConfig.follow(Constants.SHOOTER_MOTOR_ID, true);
         followerMotor.configure(followerConfig, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
-
-        Robot.getDiagnostics()
-        .addDiagnosable(
-            new DiagSparkMaxEncoder(
-                "Shooter", "Encoder", GameConstants.SHOOTER_DIAGS_ENCODER, io));
     }
 
     // setSpeed expects a power value from -1 to 1
@@ -72,7 +67,14 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public static SparkMaxPidMotorIo createRealIo() {
-        return new RealSparkMaxPidMotorIo(LOGGING_NAME, createMotor(), MotorLoggableInputs.allMetrics());
+        SparkMaxPidMotor motor = createMotor();
+
+        Robot.getDiagnostics()
+        .addDiagnosable(
+            new DiagSparkMaxEncoder(
+                "Shooter", "Encoder", GameConstants.SHOOTER_DIAGS_ENCODER, motor));
+
+        return new RealSparkMaxPidMotorIo(LOGGING_NAME, motor, MotorLoggableInputs.allMetrics());
     }
 
     public static SparkMaxPidMotorIo createSimIo(RobotVisualizer visualizer) {

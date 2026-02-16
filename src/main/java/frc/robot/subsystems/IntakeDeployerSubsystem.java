@@ -34,15 +34,6 @@ public class IntakeDeployerSubsystem extends SubsystemBase {
   public IntakeDeployerSubsystem(SparkMaxIo io) {
     this.io = io;
     setDefaultCommand(new RunDeployer(this));
-
-    Robot.getDiagnostics()
-        .addDiagnosable(
-            new DiagSparkMaxSwitch(
-                "Intake Deployer", "ForwardLimit", io, DiagSparkMaxSwitch.Direction.FORWARD));
-    Robot.getDiagnostics()
-        .addDiagnosable(
-            new DiagSparkMaxSwitch(
-                "Intake Deployer", "ReverseLimit", io, DiagSparkMaxSwitch.Direction.REVERSE));
   }
 
   public void setSpeed(double speed) {
@@ -63,7 +54,20 @@ public class IntakeDeployerSubsystem extends SubsystemBase {
   }
 
   public static SparkMaxIo createRealIo() {
-    return new RealSparkMaxIo(LOGGING_NAME, createMotor(), MotorLoggableInputs.allMetrics());
+
+    SparkMax motor = createMotor();
+
+    Robot.getDiagnostics()
+        .addDiagnosable(
+            new DiagSparkMaxSwitch(
+                "Intake Deployer", "ForwardLimit", motor, DiagSparkMaxSwitch.Direction.FORWARD));
+
+    Robot.getDiagnostics()
+        .addDiagnosable(
+            new DiagSparkMaxSwitch(
+                "Intake Deployer", "ReverseLimit", motor, DiagSparkMaxSwitch.Direction.REVERSE));
+
+    return new RealSparkMaxIo(LOGGING_NAME, motor, MotorLoggableInputs.allMetrics());
   }
 
   public static SparkMaxIo createSimIo(RobotVisualizer visualizer) {

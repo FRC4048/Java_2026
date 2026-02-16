@@ -37,11 +37,6 @@ public class IntakeSubsystem extends SubsystemBase {
         this.io = io;
         this.intakeDeploymentSwitch = intakeDeploymentSwitch;
         setDefaultCommand(new SpinIntake(this));
-
-        Robot.getDiagnostics()
-        .addDiagnosable(
-            new DiagSparkMaxEncoder(
-                "Intake Roller", "Encoder", GameConstants.INTAKE_ROLLER_DIAGS_ENCODER, io));
     }
 
     public void setSpeed(double speed) {
@@ -66,7 +61,15 @@ public class IntakeSubsystem extends SubsystemBase {
         return new MockSparkMaxIo(LOGGING_NAME, MotorLoggableInputs.allMetrics());
     }
     public static SparkMaxIo createRealIo() {
-        return new RealSparkMaxIo(LOGGING_NAME, createMotor(), MotorLoggableInputs.allMetrics());
+
+        SparkMax motor = createMotor();
+
+        Robot.getDiagnostics()
+        .addDiagnosable(
+            new DiagSparkMaxEncoder(
+                "Intake Roller", "Encoder", GameConstants.INTAKE_ROLLER_DIAGS_ENCODER, motor));
+
+        return new RealSparkMaxIo(LOGGING_NAME, motor, MotorLoggableInputs.allMetrics());
     }
     public static SparkMaxIo createSimIo(RobotVisualizer visualizer) {
         SparkMax motor = createMotor();

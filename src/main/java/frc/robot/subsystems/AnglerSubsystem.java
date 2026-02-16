@@ -35,14 +35,6 @@ public class AnglerSubsystem extends SubsystemBase {
         this.io = io;
         this.pidManager = new TunablePIDManager(LOGGING_NAME, io, createPidConfig());
 
-         Robot.getDiagnostics()
-        .addDiagnosable(
-            new DiagSparkMaxSwitch(
-                "Angler", "ForwardLimit", io, DiagSparkMaxSwitch.Direction.FORWARD));
-        Robot.getDiagnostics()
-        .addDiagnosable(
-            new DiagSparkMaxSwitch(
-                "Angler", "ReverseLimit", io, DiagSparkMaxSwitch.Direction.REVERSE));
     }
 
     @Override
@@ -124,7 +116,20 @@ public class AnglerSubsystem extends SubsystemBase {
     }
 
     public static SparkMaxPidMotorIo createRealIo() {
-        return new RealSparkMaxPidMotorIo(LOGGING_NAME, createMotor(), MotorLoggableInputs.allMetrics());
+
+        SparkMaxPidMotor motor = createMotor();
+
+        Robot.getDiagnostics()
+        .addDiagnosable(
+            new DiagSparkMaxSwitch(
+                "Angler", "ForwardLimit", motor, DiagSparkMaxSwitch.Direction.FORWARD));
+
+        Robot.getDiagnostics()
+        .addDiagnosable(
+            new DiagSparkMaxSwitch(
+                "Angler", "ReverseLimit", motor, DiagSparkMaxSwitch.Direction.REVERSE));
+
+        return new RealSparkMaxPidMotorIo(LOGGING_NAME, motor, MotorLoggableInputs.allMetrics());
     }
 
     public static SparkMaxPidMotorIo createSimIo(RobotVisualizer visualizer) {

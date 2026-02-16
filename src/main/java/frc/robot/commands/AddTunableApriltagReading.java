@@ -9,6 +9,8 @@ import frc.robot.utils.logging.commands.LoggableCommand;
 import java.util.Random;
 import frc.robot.constants.Constants;
 
+import java.util.Random;
+
 public class AddTunableApriltagReading extends LoggableCommand {
     private final ApriltagSubsystem april;
     private LoggedTunableNumber posX;
@@ -18,26 +20,26 @@ public class AddTunableApriltagReading extends LoggableCommand {
     private LoggedTunableNumber apriltagNumber;
     private LoggedTunableNumber latency;
     private LoggedTunableNumber numReadings;
+    Random random = new Random();
     public AddTunableApriltagReading(ApriltagSubsystem april) {
         this.april = april;
         posX = new LoggedTunableNumber("SimAprilTagX", 1);
         posY = new LoggedTunableNumber("SimAprilTagY", 1);
         poseYaw = new LoggedTunableNumber("SimAprilTagYaw", 0);
-        distanceToTag = new LoggedTunableNumber("SimAprilTagDistanceToTag", 0);
+        distanceToTag = new LoggedTunableNumber("SimAprilTagDistanceToTag", 0.1);
         apriltagNumber = new LoggedTunableNumber("SimAprilTagApriltagNum", 1);
         latency = new LoggedTunableNumber("SimAprilTagLatency", 0);
         numReadings = new LoggedTunableNumber("NumReadingsPerTick", 1);
-    }
 
+    }
     @Override
     public void execute() {
-        Random random = new Random();
         for (int j=1; j<=Constants.NUMBER_OF_CAMERAS; j++) {
-            for (int i = 0; i < numReadings.get(); i++) {
-                april.addSimReading(new ApriltagReading(posX.getAsDouble() + random.nextGaussian() * 0.1, posY.getAsDouble() + random.nextGaussian() * 0.1,
-                        poseYaw.getAsDouble() + random.nextGaussian() * 0.1, distanceToTag.getAsDouble(), (int) apriltagNumber.getAsDouble(),
-                        latency.getAsDouble(), Logger.getTimestamp(), j));
-            }
+                for (int i=0; i<numReadings.get(); i++) {
+                        april.addSimReading(new ApriltagReading(posX.getAsDouble() + random.nextGaussian()*0.05, posY.getAsDouble()+ random.nextGaussian()*0.05,
+                                poseYaw.getAsDouble()+ random.nextGaussian()*0.05, distanceToTag.getAsDouble(), (int) apriltagNumber.getAsDouble(),
+                                latency.getAsDouble(), Logger.getTimestamp()/1000.0, j));
+                }
         }
     }
 }

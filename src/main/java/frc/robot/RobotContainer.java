@@ -15,6 +15,8 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.AddTunableApriltagReading;
 import frc.robot.commands.AddApriltagReading;
 import frc.robot.commands.AddGarbageReading;
+import frc.robot.commands.climber.ClimberDown;
+import frc.robot.commands.climber.ClimberUp;
 import frc.robot.commands.hopper.SpinHopper;
 import frc.robot.commands.drive.DriveDirectionTime;
 import frc.robot.commands.feeder.SpinFeeder;
@@ -35,6 +37,7 @@ import frc.robot.constants.ShootingState.ShootState;
 import frc.robot.subsystems.GyroSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.ClimberSubsystem;
 //import frc.robot.subsystems.RollerSubsystem;
 //import frc.robot.subsystems.TiltSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
@@ -60,8 +63,12 @@ public class RobotContainer {
     // The robot's subsystems and commands are defined here...
     //private final TiltSubsystem tiltSubsystem;
     private final AnglerSubsystem anglerSubsystem;
-    private final IntakeSubsystem intakeSubsystem;
-    private final FeederSubsystem feederSubsystem;
+  private final ClimberSubsystem climberSubsystem;
+  private final IntakeSubsystem intakeSubsystem;
+      // The robot's subsystems and commands are defined here...
+    //private final RollerSubsystem rollerSubsystem;
+    //private final TiltSubsystem tiltSubsystem;
+  private final FeederSubsystem feederSubsystem;
     private final ApriltagSubsystem apriltagSubsystem;
     private final ShooterSubsystem shooterSubsystem;
     private RobotVisualizer robotVisualizer = null;
@@ -88,6 +95,7 @@ public class RobotContainer {
                 intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createRealIo(), IntakeSubsystem.createRealDeploymentSwitch());
                 hopperSubsystem = new HopperSubsystem(HopperSubsystem.createRealIo());
 
+                climberSubsystem = new ClimberSubsystem(ClimberSubsystem.createRealIo());
                 feederSubsystem = new FeederSubsystem(FeederSubsystem.createRealIo());
                 shooterSubsystem = new ShooterSubsystem(ShooterSubsystem.createRealIo());
                 RealGyroIo gyroIo = (RealGyroIo) GyroSubsystem.createRealIo();
@@ -103,6 +111,7 @@ public class RobotContainer {
                 anglerSubsystem = new AnglerSubsystem(AnglerSubsystem.createMockIo());
                 intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createMockIo(), IntakeSubsystem.createMockDeploymentSwitch());
                 hopperSubsystem = new HopperSubsystem(HopperSubsystem.createMockIo());
+                climberSubsystem = new ClimberSubsystem(ClimberSubsystem.createMockIo());
                 feederSubsystem = new FeederSubsystem(FeederSubsystem.createMockIo());
                 shooterSubsystem = new ShooterSubsystem(ShooterSubsystem.createMockIo());
                 // No GyroSubsystem in REPLAY for now
@@ -117,6 +126,7 @@ public class RobotContainer {
                 anglerSubsystem = new AnglerSubsystem(AnglerSubsystem.createSimIo(robotVisualizer));
                 intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createSimIo(robotVisualizer), IntakeSubsystem.createSimDeploymentSwitch());
                 hopperSubsystem = new HopperSubsystem(HopperSubsystem.createSimIo(robotVisualizer));
+                climberSubsystem = new ClimberSubsystem(ClimberSubsystem.createSimIo(robotVisualizer));
                 feederSubsystem = new FeederSubsystem(FeederSubsystem.createSimIo(robotVisualizer));
                 shooterSubsystem = new ShooterSubsystem(ShooterSubsystem.createSimIo(robotVisualizer));
                 // No GyroSubsystem in REPLAY for now
@@ -256,6 +266,14 @@ public class RobotContainer {
                     new SpinHopper(hopperSubsystem));
 
             SmartDashboard.putData(
+                    "Climber Up",
+                    new ClimberUp(climberSubsystem));
+
+            SmartDashboard.putData(
+                    "Climber Down",
+                    new ClimberDown(climberSubsystem));
+
+          SmartDashboard.putData(
                     "Spin Feeder",
                     new SpinFeeder(feederSubsystem));
 
@@ -304,6 +322,10 @@ public class RobotContainer {
     public Command getAutonomousCommand() {
         return autoChooser.getCommand();
     }
+
+  public ClimberSubsystem getClimberSubsystem() {
+    return climberSubsystem;
+  }
 
     public RobotVisualizer getRobotVisualizer() {
         return robotVisualizer;

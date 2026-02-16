@@ -13,6 +13,7 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Robot;
 import frc.robot.constants.Constants;
+import frc.robot.constants.Constants2026;
 import frc.robot.constants.GameConstants;
 import frc.robot.utils.diag.DiagSparkMaxEncoder;
 import frc.robot.utils.logging.input.MotorLoggableInputs;
@@ -67,14 +68,14 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public static SparkMaxPidMotorIo createRealIo() {
-        SparkMaxPidMotor motor = createMotor();
+        SparkMax motor = new SparkMax(Constants2026.SHOOTER_MOTOR_ID, SparkLowLevel.MotorType.kBrushless);
 
         Robot.getDiagnostics()
         .addDiagnosable(
             new DiagSparkMaxEncoder(
                 "Shooter", "Encoder", GameConstants.SHOOTER_DIAGS_ENCODER, motor));
 
-        return new RealSparkMaxPidMotorIo(LOGGING_NAME, motor, MotorLoggableInputs.allMetrics());
+        return new RealSparkMaxPidMotorIo(LOGGING_NAME, createMotor(), MotorLoggableInputs.allMetrics());
     }
 
     public static SparkMaxPidMotorIo createSimIo(RobotVisualizer visualizer) {

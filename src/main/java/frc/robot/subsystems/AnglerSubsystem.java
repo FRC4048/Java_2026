@@ -11,6 +11,8 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Robot;
 import frc.robot.constants.Constants;
+import frc.robot.constants.Constants2026;
+import frc.robot.constants.GameConstants;
 import frc.robot.utils.diag.DiagSparkMaxSwitch;
 import frc.robot.utils.logging.input.MotorLoggableInputs;
 import frc.robot.utils.logging.io.pidmotor.MockSparkMaxPidMotorIo;
@@ -117,7 +119,7 @@ public class AnglerSubsystem extends SubsystemBase {
 
     public static SparkMaxPidMotorIo createRealIo() {
 
-        SparkMaxPidMotor motor = createMotor();
+        SparkMax motor = new SparkMax(Constants2026.ANGLER_MOTOR_ID, SparkLowLevel.MotorType.kBrushless);
 
         Robot.getDiagnostics()
         .addDiagnosable(
@@ -129,7 +131,7 @@ public class AnglerSubsystem extends SubsystemBase {
             new DiagSparkMaxSwitch(
                 "Angler", "ReverseLimit", motor, DiagSparkMaxSwitch.Direction.REVERSE));
 
-        return new RealSparkMaxPidMotorIo(LOGGING_NAME, motor, MotorLoggableInputs.allMetrics());
+        return new RealSparkMaxPidMotorIo(LOGGING_NAME, createMotor(), MotorLoggableInputs.allMetrics());
     }
 
     public static SparkMaxPidMotorIo createSimIo(RobotVisualizer visualizer) {

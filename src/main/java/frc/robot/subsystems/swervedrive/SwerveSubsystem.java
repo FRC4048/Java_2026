@@ -37,10 +37,9 @@ import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
 
 import java.io.File;
 import java.util.Arrays;
+import java.util.Optional;
 import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
-
-import static edu.wpi.first.units.Units.Meter;
 
 public class SwerveSubsystem extends SubsystemBase {
     /**
@@ -296,6 +295,10 @@ public class SwerveSubsystem extends SubsystemBase {
      */
     public Pose2d getPose() {
         return swerveDrive.getPose();
+    }
+
+    public Pose2d getSimulationPose() {
+        return swerveDrive.getSimulationDriveTrainPose().orElse(new Pose2d());
     }
     //fix to only get odomtry
     public Pose2d getOdom() {

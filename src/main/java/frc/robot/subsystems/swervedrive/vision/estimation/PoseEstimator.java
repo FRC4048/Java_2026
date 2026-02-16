@@ -19,6 +19,7 @@ import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import frc.robot.subsystems.swervedrive.vision.truster.BasicVisionFilter;
 import frc.robot.subsystems.swervedrive.vision.truster.ConstantVisionTruster;
 import frc.robot.subsystems.swervedrive.vision.truster.VisionMeasurement;
+import frc.robot.subsystems.swervedrive.vision.truster.VisionTruster;
 import frc.robot.utils.Apriltag;
 import frc.robot.utils.math.ArrayUtils;
 
@@ -200,5 +201,9 @@ public class PoseEstimator {
   public void addMockVisionMeasurement() {
     poseManager.registerVisionMeasurement(
         new VisionMeasurement(getEstimatedPose(), 0, Logger.getTimestamp() / 1e6));
+  }
+
+  public VisionTruster getVisionTruster() {
+    return poseManager.getVisionTruster();
   }
 }

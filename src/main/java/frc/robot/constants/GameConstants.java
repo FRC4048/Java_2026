@@ -1,6 +1,8 @@
 package frc.robot.constants;
 
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.units.measure.Time;
 import edu.wpi.first.wpilibj.RobotBase;
@@ -128,4 +130,11 @@ public class GameConstants {
     public static final double VISION_CONSISTANCY_THRESHOLD = 0.25;
     public static final boolean ENABLE_VISION = true;
     public static final double POSE_BUFFER_STORAGE_TIME = 2;
+
+    public static final double HORIZONTAL_FOV = 59.6/Math.PI; // radians; TODO: Change Later
+    public static final double VERTICAL_FOV = 49.5/Math.PI; // radians; TODO: Change Later
+    public static final Transform3d ROBOT_TO_CAMERA = new Transform3d(1,2,3, new Rotation3d(1,2,3)); // TODO: change Later
+    public static final double AVERAGE_CAM_LATENCY = 0.1; // seconds; TODO: change Later
+    public static final double AVERAGE_CAM_LATENCY_STD_DEV = 0.02; // seconds; TODO: change Later
+
 }

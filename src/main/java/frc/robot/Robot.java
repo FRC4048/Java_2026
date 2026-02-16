@@ -40,10 +40,7 @@ import frc.robot.utils.logging.commands.CommandLogger;
  */
 public class Robot extends LoggedRobot {
   private Command autonomousCommand;
-  private final Drive drive;
-  private final AutoFactory autoFactory;
-  public static AutoRoutine straightRoutine;
-  public static AutoTrajectory straightTrajectory;
+  
 
   private static final Diagnostics diagnostics = new Diagnostics();
   private final RobotContainer robotContainer;
@@ -92,63 +89,7 @@ public class Robot extends LoggedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     robotContainer = new RobotContainer();
-    drive = new Drive(robotContainer.getDriveBase());
-
-
-    //Sets up Choreo with pose, odometry, drivebase, and a follow trajectory command
-    autoFactory = new AutoFactory(robotContainer.getDriveBase()::getPose, 
-                                  robotContainer.getDriveBase()::resetOdometry, 
-                                  drive::followTrajectory, 
-                                  true, 
-                                  robotContainer.getDriveBase());
-    autoFactory.bind("Print", new PrintCommand("Testing"));
-    //binding an event marker that's called Print -> to print "Testing" using a printCommand
-
-
-
-
-
-    // Uses autofactory to create a new routine
-    straightRoutine = autoFactory.newRoutine("StraightRoutine");
-
-    /*
-    Loads a trajectory created in Choreo given the name
-    Can load multiple trajectories from the same routine
-
-    i.e. 
-    AutoRoutine routine = autoFactory.newRoutine("grabAndScore");
-    AutoTrajectory grabTraj = routine.trajectory("grabPiece");
-    AutoTrajectory scoreTraj = routine.trajectory("scorePiece");
-    */
-    straightTrajectory = straightRoutine.trajectory("StraightPath");
-
-    /* 
-    .active() is a trigger that becomes true when the routine is running
-    .onTrue() starts a command when the trigger becomes true (i.e. when the routine starts)
-
-    Use commands.sequence() to sequence multiple commands (i.e. reset odometry, then follow trajectory)
-    */
-    straightRoutine.active().onTrue(
-        straightTrajectory.resetOdometry()
-            .andThen(straightTrajectory.cmd())
-    );
-
-    /*
-    ------------------------------------------------------------------------------------------------
-    Trajectory Triggers (read more on docs page https://choreo.autos/choreolib/auto-factory/):
-    ------------------------------------------------------------------------------------------------
-      
-    trajectory.atTime(String)
-    trajectory.atTime(double time)
-    trajectory.done()
-    trajectory.active()
-    trajectory.inactive()
-    trajectory.atPose(String, double, double)
-    trajectory.atPose(Pose2d, double, double)
-    trajectory.doneDelayed(int)
-    trajectory.doneFor(int)
-    trajectory.recentlyDone()
-    */
+    
   }
 
   public static RobotMode getMode() {

@@ -58,26 +58,26 @@ public class FilterablePoseManager extends PoseManager {
     LinkedHashMap<VisionMeasurement, FilterResult> filteredData =
         filter.filter(visionMeasurementQueue);
     visionMeasurementQueue.clear();
-    List<Pose2d> validMeasurements = new ArrayList<>();
-    List<Pose2d> invalidMeasurements = new ArrayList<>();
+    List<VisionMeasurement> validMeasurements = new ArrayList<>();
+    List<VisionMeasurement> invalidMeasurements = new ArrayList<>();
     for (Map.Entry<VisionMeasurement, FilterResult> entry : filteredData.entrySet()) {
       VisionMeasurement v = entry.getKey();
       FilterResult r = entry.getValue();
       switch (r) {
         case ACCEPTED -> {
           setVisionSTD(visionTruster.calculateTrust(v));
-          validMeasurements.add(v.measurement());
+          validMeasurements.add(v);
           addVisionMeasurement(v);
         }
         case NOT_PROCESSED -> visionMeasurementQueue.add(v);
         case REJECTED -> {
-          invalidMeasurements.add(v.measurement());
+          invalidMeasurements.add(v);
         }
       }
     }
-    Logger.recordOutput("Apriltag/acceptedMeasurements", validMeasurements.toArray(Pose2d[]::new));
+    Logger.recordOutput("Apriltag/acceptedMeasurements", validMeasurements.toArray(VisionMeasurement[]::new));
     Logger.recordOutput(
-        "Apriltag/rejectedMeasurements", invalidMeasurements.toArray(Pose2d[]::new));
+        "Apriltag/rejectedMeasurements", invalidMeasurements.toArray(VisionMeasurement[]::new));
   }
 
   public VisionTruster getVisionTruster() {

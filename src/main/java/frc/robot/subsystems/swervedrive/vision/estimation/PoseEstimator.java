@@ -16,10 +16,7 @@ import frc.robot.RobotMode;
 import frc.robot.constants.Constants;
 import frc.robot.subsystems.ApriltagSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
-import frc.robot.subsystems.swervedrive.vision.truster.BasicVisionFilter;
-import frc.robot.subsystems.swervedrive.vision.truster.ConstantVisionTruster;
-import frc.robot.subsystems.swervedrive.vision.truster.VisionMeasurement;
-import frc.robot.subsystems.swervedrive.vision.truster.VisionTruster;
+import frc.robot.subsystems.swervedrive.vision.truster.*;
 import frc.robot.utils.Apriltag;
 import frc.robot.utils.math.ArrayUtils;
 
@@ -48,10 +45,10 @@ public class PoseEstimator {
   //  private static final Vector<N3> visionMeasurementStdDevs1 = VecBuilder.fill(0.5, 0.5, 0.5);
 
   /* the rate at which variance of vision measurements increases as distance from the tag increases*/
-  private static final double visionStdRateOfChange = 1;
+  private static final double visionStdRateOfChange = 0.1;
 
   /* standard deviation of vision readings, the lower the numbers arm, the more we trust vision */
-  public static final Vector<N3> visionMeasurementStdDevs2 = VecBuilder.fill(0.3, 0.3, 100);
+  public static final Vector<N3> visionMeasurementStdDevs2 = VecBuilder.fill(0.03, 0.03, 100);
   private final FilterablePoseManager poseManager;
 
   public PoseEstimator(
@@ -90,7 +87,7 @@ public class PoseEstimator {
                 return measurement.measurement();
               }
             },
-            new ConstantVisionTruster(visionMeasurementStdDevs2));
+            new LinearVisionTruster(visionMeasurementStdDevs2, visionStdRateOfChange));
     SmartDashboard.putData(field);
   }
 

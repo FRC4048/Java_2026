@@ -16,7 +16,7 @@ public class SquareVisionTruster extends DistanceVisionTruster {
 
   @Override
   public Vector<N3> calculateTrust(VisionMeasurement measurement) {
-    double std = Math.pow(measurement.distanceFromTag() - 0.4572, 2) * constant;
+    double std = Math.pow(measurement.distanceFromTag() - 0.4572, 2) * constant; //TODO: No magic numbers
     return initialSTD.plus(VecBuilder.fill(std, std, std));
   }
 }

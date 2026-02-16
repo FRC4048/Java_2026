@@ -4,6 +4,7 @@ import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.Vector;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.apriltags.*;
@@ -11,6 +12,7 @@ import frc.robot.constants.Constants;
 import frc.robot.constants.GameConstants;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import frc.robot.subsystems.swervedrive.vision.estimation.PoseEstimator;
+import frc.robot.subsystems.swervedrive.vision.truster.BasicVisionFilter;
 import frc.robot.subsystems.swervedrive.vision.truster.VisionMeasurement;
 import frc.robot.utils.Apriltag;
 import frc.robot.utils.logging.io.BaseIoImpl;
@@ -31,7 +33,7 @@ public class ApriltagSubsystem extends SubsystemBase {
     public ApriltagSubsystem(ApriltagIO io, SwerveSubsystem drivebase) {
         this.drivebase = drivebase;
         this.io = io;
-        drivebase.setVariance(VecBuilder.fill(10,10,10));
+        drivebase.setVariance(VecBuilder.fill(0,0,0));
        estimator = new PoseEstimator(drivebase.getKinematics(), drivebase, 0, this);
        robotPoseSupplier = drivebase::getSimulationPose;
     }
@@ -58,8 +60,8 @@ public class ApriltagSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-        estimator.updateVision();
         estimator.updatePosition(drivebase.getOdom());
+        estimator.updateVision();
         io.periodic();
         if (Constants.currentMode == Constants.Mode.SIM) {
             simReadings();
@@ -72,10 +74,15 @@ public class ApriltagSubsystem extends SubsystemBase {
                 double distance = tag.getTranslation().getDistance(cameraPos.getTranslation());
                 VisionMeasurement measurement = new VisionMeasurement(new Pose2d(), distance,0);
                 Vector<N3> stdDevs = estimator.getVisionTruster().calculateTrust(measurement);
-                io.addReading(new ApriltagReading(robotPoseSupplier.get().getX()+ random.nextGaussian()*stdDevs.get(0),
-                        robotPoseSupplier.get().getY()+ random.nextGaussian()*stdDevs.get(1),
-                        robotPoseSupplier.get().getRotation().getDegrees()+ random.nextGaussian()*stdDevs.get(2),
-                        distance, tag.number(), Constants.AVERAGE_CAM_LATENCY+ random.nextGaussian()*Constants.AVERAGE_CAM_LATENCY_STD_DEV, Logger.getTimestamp()/1000.0));
+                double readingX = robotPoseSupplier.get().getX()+ random.nextGaussian()*stdDevs.get(0);
+                double readingY = robotPoseSupplier.get().getY()+ random.nextGaussian()*stdDevs.get(1);
+                double readingYaw = robotPoseSupplier.get().getRotation().getDegrees()+ random.nextGaussian()*stdDevs.get(2);
+                Pose2d readingPos = new Pose2d(readingX,readingY,Rotation2d.fromDegrees(readingYaw));
+                distance = readingPos.getTranslation().getDistance(tag.getPose().toPose2d().getTranslation());
+                if(BasicVisionFilter.inBounds(readingPos)) {
+                    io.addReading(new ApriltagReading(readingX, readingY, readingYaw,
+                            distance, tag.number(), Constants.AVERAGE_CAM_LATENCY + random.nextGaussian() * Constants.AVERAGE_CAM_LATENCY_STD_DEV, Logger.getTimestamp() / 1000.0));
+                }
             }
         }
     }

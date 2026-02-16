@@ -29,8 +29,7 @@ public class FeederSubsystem extends SubsystemBase {
 
     public static final String LOGGING_NAME = "FeederSubsystem";
     private final SparkMaxIo io;
-    private boolean feederRunning = false;
-    
+        
     public FeederSubsystem(SparkMaxIo io) {
         this.io = io;
         setDefaultCommand(new SpinFeeder(this));

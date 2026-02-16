@@ -272,6 +272,10 @@ public class RobotContainer {
                     new SetTurretAngle(turretSubsystem, 0));
 
             SmartDashboard.putData(
+                    "turret/Turret Go 75",
+                    new SetTurretAngle(turretSubsystem, 75));
+
+            SmartDashboard.putData(
                     "turret/Run Turret to Rev Limit",
                     new RunTurretToRevLimit(turretSubsystem));
 

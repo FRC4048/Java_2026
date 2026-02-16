@@ -85,7 +85,7 @@ public class GameConstants {
 
     // angler (turret) PID
     public static final double ANGLER_P = 0.1;
-    public static final double ANGLER_I = 0.000001;
+    public static final double ANGLER_I = 0.0000001;
     public static final double ANGLER_D = 0.0;
     public static final double ANGLER_FF = 0.0;
     public static final double ANGLER_HOME_ROTATIONS = 0.0;
@@ -98,8 +98,8 @@ public class GameConstants {
 
     
  // turret (pan angle) PID
-    public static final double TURRET_P = 0.05;
-    public static final double TURRET_I = 0.0;
+    public static final double TURRET_P = .5;
+    public static final double TURRET_I = 0.000001;
     public static final double TURRET_D = 0.0;
     public static final double TURRET_FF = 0.0;
     public static final double TURRET_ENCODER_MIN = 0; //Lowest encoder position of Turret

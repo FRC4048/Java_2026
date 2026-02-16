@@ -5,8 +5,8 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.constants.Constants;
-import frc.robot.constants.ShootingState;
-import frc.robot.constants.ShootingState.ShootState;
+import frc.robot.constants.enums.ShootingState;
+import frc.robot.constants.enums.ShootingState.ShootState;
 import frc.robot.subsystems.AnglerSubsystem;
 import frc.robot.utils.logging.commands.LoggableCommand;
 
@@ -40,15 +40,15 @@ public class AimAngler extends LoggableCommand {
             HUB_TARGET_POSE,
             0.00,
             6,
-            Constants.ANGLER_LOW_ROTATIONS,
-            Constants.ANGLER_HIGH_ROTATIONS);
+            Constants.ANGLER_ENCODER_LOW,
+            Constants.ANGLER_ENCODER_HIGH);
 
     private static final AimConfig SHUTTLE_CONFIG = new AimConfig(
             SHUTTLE_TARGET_POSE,
             0,
             6,
-            Constants.ANGLER_LOW_ROTATIONS,
-            Constants.ANGLER_HIGH_ROTATIONS);
+            Constants.ANGLER_ENCODER_LOW,
+            Constants.ANGLER_ENCODER_HIGH);
 
     public AimAngler(AnglerSubsystem angler, Supplier<Pose2d> poseSupplier, ShootingState shootingState) {
         this.angler = angler;

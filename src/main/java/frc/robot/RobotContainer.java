@@ -27,7 +27,6 @@ import frc.robot.commands.intakeDeployment.SetDeploymentState;
 import frc.robot.autochooser.AutoChooser;
 import frc.robot.commands.angler.AimAngler;
 import frc.robot.commands.angler.RunAnglerToReverseLimit;
-import frc.robot.commands.auto.ExampleAuto;
 import frc.robot.commands.shooter.SetShootingState;
 import frc.robot.commands.shooter.SpinShooter;
 import frc.robot.constants.Constants;
@@ -60,14 +59,6 @@ import frc.robot.apriltags.TCPApriltagIo;
 
 import java.io.File;
 
-import choreo.auto.AutoFactory;
-import choreo.auto.AutoRoutine;
-import choreo.auto.AutoTrajectory;
-
-import choreo.auto.AutoFactory;
-import choreo.auto.AutoRoutine;
-import choreo.auto.AutoTrajectory;
-
 /**
  * This class is where the bulk of the robot should be declared. Since
  * Command-based is a
@@ -78,28 +69,24 @@ import choreo.auto.AutoTrajectory;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
-    // Instantiate the autochooser.
-    private final AutoChooser autoChooser = new AutoChooser();
-    // The robot's subsystems and commands are defined here...
-    //private final TiltSubsystem tiltSubsystem;
-    private final AnglerSubsystem anglerSubsystem;
-    private final IntakeSubsystem intakeSubsystem;
-    private final FeederSubsystem feederSubsystem;
-    private final ApriltagSubsystem apriltagSubsystem;
-    private final ShooterSubsystem shooterSubsystem;
-    private RobotVisualizer robotVisualizer = null;
-    private final HopperSubsystem hopperSubsystem;
-    private final ClimberSubsystem climberSubsystem;
-    private final IntakeDeployerSubsystem intakeDeployer;
-    private SwerveSubsystem drivebase = null;
-    private GyroSubsystem gyroSubsystem = null;
-    private final CommandJoystick driveJoystick = new CommandJoystick(Constants.DRIVE_JOYSTICK_PORT);
-    private final CommandJoystick steerJoystick = new CommandJoystick(Constants.STEER_JOYSTICK_PORT);
-    private ShootingState shootState = new ShootingState(ShootState.STOPPED);
-    private Drive drive;
-    private AutoFactory autoFactory;
-    private static AutoRoutine straightRoutine;
-    private static AutoTrajectory straightTrajectory;
+        // Instantiate the autochooser.
+        private final AutoChooser autoChooser = new AutoChooser();
+        // The robot's subsystems and commands are defined here...
+        // private final TiltSubsystem tiltSubsystem;
+        private final ClimberSubsystem climberSubsystem;
+        private final AnglerSubsystem anglerSubsystem;
+        private final IntakeSubsystem intakeSubsystem;
+        private final FeederSubsystem feederSubsystem;
+        private final ApriltagSubsystem apriltagSubsystem;
+        private final ShooterSubsystem shooterSubsystem;
+        private RobotVisualizer robotVisualizer = null;
+        private final HopperSubsystem hopperSubsystem;
+        private final IntakeDeployerSubsystem intakeDeployer;
+        private SwerveSubsystem drivebase = null;
+        private GyroSubsystem gyroSubsystem = null;
+        private final CommandJoystick driveJoystick = new CommandJoystick(Constants.DRIVE_JOYSTICK_PORT);
+        private final CommandJoystick steerJoystick = new CommandJoystick(Constants.STEER_JOYSTICK_PORT);
+        private ShootingState shootState = new ShootingState(ShootState.STOPPED);
 
         // Replace with CommandPS4Controller or CommandJoystick if needed
         // new CommandXboxController(OperatorConstants.kDriverControllerPort);private
@@ -177,84 +164,28 @@ public class RobotContainer {
                         }
                 }
 
-        configureBindings();
-        putShuffleboardCommands();
-        setUpAutoFactory();
-    }
-
-    /**
-     * Use this method to define your trigger->command mappings. Triggers can be created via the
-     * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with an arbitrary
-     * predicate, or via the named factories in {@link
-     * edu.wpi.first.wpilibj2.command.button.CommandGenericHID}'s subclasses for {@link
-     * CommandXboxController Xbox}/{@link edu.wpi.first.wpilibj2.command.button.CommandPS4Controller
-     * PS4} controllers or {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
-     * joysticks}.
-     */
-    private void setUpAutoFactory() {
-    
-        drive = new Drive(drivebase);
-
-
-        //Sets up Choreo with pose, odometry, drivebase, and a follow trajectory command
-        autoFactory = new AutoFactory(drivebase::getPose, 
-                                      drivebase::resetOdometry, 
-                                      drive::followTrajectory, 
-                                      true, 
-                                      drivebase);
-
-
-
-        //example implementation of autoRoutine
-        if (false) {
-            // Uses autofactory to create a new routine
-            straightRoutine = autoFactory.newRoutine("StraightRoutine");
-
-            /*
-            Loads a trajectory created in Choreo given the name
-            Can load multiple trajectories from the same routine
-
-            i.e. 
-            AutoRoutine routine = autoFactory.newRoutine("grabAndScore");
-            AutoTrajectory grabTraj = routine.trajectory("grabPiece");
-            AutoTrajectory scoreTraj = routine.trajectory("scorePiece");
-            */
-            straightTrajectory = straightRoutine.trajectory("StraightPath");
-
-            /* 
-            .active() is a trigger that becomes true when the routine is running
-            .onTrue() starts a command when the trigger becomes true (i.e. when the routine starts)
-
-            Use commands.sequence() to sequence multiple commands (i.e. reset odometry, then follow trajectory)
-            */
-            straightRoutine.active().onTrue(
-            straightTrajectory.resetOdometry()
-                .andThen(straightTrajectory.cmd())
-            );
-    
-
-            /*
-            ------------------------------------------------------------------------------------------------
-            Trajectory Triggers (read more on docs page https://choreo.autos/choreolib/auto-factory/):
-            ------------------------------------------------------------------------------------------------
-      
-            trajectory.atTime(String)
-            trajectory.atTime(double time)
-            trajectory.done()
-            trajectory.active()
-            trajectory.inactive()
-            trajectory.atPose(String, double, double)
-            trajectory.atPose(Pose2d, double, double)
-            trajectory.doneDelayed(int)
-            trajectory.doneFor(int)
-            trajectory.recentlyDone()
-            */
+                configureBindings();
+                putShuffleboardCommands();
         }
-    }
-    private void configureBindings() {
-        // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-        //new Trigger(m_exampleSubsystem::exampleCondition)
-        //  .onTrue(new ExampleCommand(m_exampleSubsystem));
+
+        /**
+         * Use this method to define your trigger->command mappings. Triggers can be
+         * created via the
+         * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with
+         * an arbitrary
+         * predicate, or via the named factories in {@link
+         * edu.wpi.first.wpilibj2.command.button.CommandGenericHID}'s subclasses for
+         * {@link
+         * CommandXboxController
+         * Xbox}/{@link edu.wpi.first.wpilibj2.command.button.CommandPS4Controller
+         * PS4} controllers or
+         * {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
+         * joysticks}.
+         */
+        private void configureBindings() {
+                // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
+                // new Trigger(m_exampleSubsystem::exampleCondition)
+                // .onTrue(new ExampleCommand(m_exampleSubsystem));
 
                 // Schedule `exampleMethodCommand` when the Xbox controller's B button is
                 // pressed,
@@ -441,16 +372,18 @@ public class RobotContainer {
 
         }
 
-    /**
-     * Use this to pass the autonomous command to the main {@link Robot} class.
-     *
-     * @return the command to run in autonomous
-     */
-    public Command getAutonomousCommand() {
-      //return autoChooser.getCommand();
-      //return straightRoutine.cmd(straightTrajectory.done());
-      return new ExampleAuto(drivebase, autoFactory);
-    }
+        /**
+         * Use this to pass the autonomous command to the main {@link Robot} class.
+         *
+         * @return the command to run in autonomous
+         */
+        public Command getAutonomousCommand() {
+                return autoChooser.getCommand();
+        }
+
+  public ClimberSubsystem getClimberSubsystem() {
+    return climberSubsystem;
+  }
 
         public RobotVisualizer getRobotVisualizer() {
                 return robotVisualizer;

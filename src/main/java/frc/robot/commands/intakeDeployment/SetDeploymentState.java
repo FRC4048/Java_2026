@@ -8,8 +8,9 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.constants.enums.DeploymentState;
 import frc.robot.subsystems.IntakeDeployerSubsystem;
+import frc.robot.utils.logging.commands.LoggableCommand;
 
-public class SetDeploymentState extends Command {
+public class SetDeploymentState extends LoggableCommand {
   private final IntakeDeployerSubsystem subsystem;
   private final DeploymentState state;
   public SetDeploymentState(IntakeDeployerSubsystem subsystem, DeploymentState state) {

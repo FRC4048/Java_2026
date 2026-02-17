@@ -2,7 +2,6 @@ package frc.robot.constants;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.units.measure.Time;
 import edu.wpi.first.wpilibj.RobotBase;
 import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
 
@@ -53,8 +52,10 @@ public class GameConstants {
     public static final double FEEDER_SPEED = 0.5;
     public static final double MAX_SPEED = Units.feetToMeters(14.5);
     public static final double SHOOTER_SPEED = 100;
-    public static final double INTAKE_DEPLOYER_SPEED = 10;
-    public static final double INTAKE_RETRACTION_SPEED = -10;
+    public static final double INTAKE_DEPLOYER_SPEED = 0.5;
+    public static final double INTAKE_RETRACTION_SPEED = -0.5;
+    public static final double INITIAL_INTAKE_DEPLOYER_SPEED = 10;
+    public static final double INITIAL_INTAKE_RETRACTION_SPEED = -10;
 
 
     //Timeouts
@@ -66,6 +67,7 @@ public class GameConstants {
     public static final double ANGLER_TIMEOUT = 5;
     public static final int SERVER_SOCKET_CONNECTION_TIMEOUT = 2000;
     public static final double SHOOTER_TIMEOUT = 5;
+    public static final double INTAKE_DEPLOYER_BURNOUT_TIMER = 2;
 
     //Angles
     public static final Rotation2d TILT_MIN_ANGLE = Rotation2d.fromDegrees(45);

@@ -11,6 +11,7 @@ import frc.robot.utils.logging.commands.LoggableCommand;
 public class SetDeploymentState extends LoggableCommand {
   private final IntakeDeployerSubsystem subsystem;
   private final DeploymentState state;
+
   public SetDeploymentState(IntakeDeployerSubsystem subsystem, DeploymentState state) {
     this.subsystem = subsystem;
     this.state = state;
@@ -22,10 +23,12 @@ public class SetDeploymentState extends LoggableCommand {
   }
 
   @Override
-  public void execute() {}
+  public void execute() {
+  }
 
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+  }
 
   @Override
   public boolean isFinished() {

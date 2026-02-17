@@ -12,9 +12,10 @@ import frc.robot.utils.logging.commands.LoggableCommand;
 public class InitalRunDeployment extends LoggableCommand {
   private final IntakeDeployerSubsystem subsystem;
   private final Timer timer;
+
   public InitalRunDeployment(IntakeDeployerSubsystem subsystem) {
     timer = new Timer();
-    this.subsystem =  subsystem;
+    this.subsystem = subsystem;
     addRequirements(subsystem);
   }
 
@@ -25,16 +26,17 @@ public class InitalRunDeployment extends LoggableCommand {
 
   @Override
   public void execute() {
-    switch(subsystem.getDeploymentState()){
+    switch (subsystem.getDeploymentState()) {
       case UP -> subsystem.setSpeed(Constants.INITIAL_INTAKE_DEPLOYER_SPEED);
       case DOWN -> subsystem.setSpeed(Constants.INITIAL_INTAKE_RETRACTION_SPEED);
       case STOPPED -> subsystem.stopMotors();
       default -> subsystem.stopMotors();
+    }
   }
-}
 
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+  }
 
   @Override
   public boolean isFinished() {

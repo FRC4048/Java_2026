@@ -21,6 +21,7 @@ public class AddTunableApriltagReading extends LoggableCommand {
     Random random = new Random();
     public AddTunableApriltagReading(ApriltagSubsystem april) {
         this.april = april;
+        addRequirements(april);
         posX = new LoggedTunableNumber("SimAprilTagX", 1);
         posY = new LoggedTunableNumber("SimAprilTagY", 1);
         poseYaw = new LoggedTunableNumber("SimAprilTagYaw", 0);

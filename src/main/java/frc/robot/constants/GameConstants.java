@@ -2,7 +2,6 @@ package frc.robot.constants;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.units.measure.Time;
 import edu.wpi.first.wpilibj.RobotBase;
 import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
 
@@ -53,8 +52,10 @@ public class GameConstants {
     public static final double FEEDER_SPEED = 0.5;
     public static final double MAX_SPEED = Units.feetToMeters(14.5);
     public static final double SHOOTER_SPEED = 100;
-    public static final double INTAKE_DEPLOYER_SPEED = 10;
-    public static final double INTAKE_RETRACTION_SPEED = -10;
+    public static final double INTAKE_DEPLOYER_SPEED = 0.5;
+    public static final double INTAKE_RETRACTION_SPEED = -0.5;
+    public static final double INITIAL_INTAKE_DEPLOYER_SPEED = 10;
+    public static final double INITIAL_INTAKE_RETRACTION_SPEED = -10;
 
 
     //Diags
@@ -74,12 +75,16 @@ public class GameConstants {
     public static final double ANGLER_TIMEOUT = 5;
     public static final int SERVER_SOCKET_CONNECTION_TIMEOUT = 2000;
     public static final double SHOOTER_TIMEOUT = 5;
+    public static final double INTAKE_DEPLOYER_BURNOUT_TIMER = 2;
+    public static final double TURRET_TIMEOUT = 5;
 
     //Angles
     public static final Rotation2d TILT_MIN_ANGLE = Rotation2d.fromDegrees(45);
     public static final Rotation2d TILT_MAX_ANGLE = Rotation2d.fromDegrees(90);
     public static final Rotation2d ANGLER_MIN_ANGLE = Rotation2d.fromDegrees(45);
     public static final Rotation2d ANGLER_MAX_ANGLE = Rotation2d.fromDegrees(90);
+    public static final Rotation2d TURRET_MIN_ANGLE = Rotation2d.fromDegrees(-90);
+    public static final Rotation2d TURRET_MAX_ANGLE = Rotation2d.fromDegrees(90);
 
     public static final double TILT_LENGTH = 0.2;
     public static final double TILT_INERTIA = 0.5;
@@ -90,10 +95,13 @@ public class GameConstants {
     public static final double ANGLER_GEARING = 45.0;
     public static final boolean ANGLER_SIMULATE_GRAVITY = false;
     public static final int NEO_CURRENT_LIMIT = 20;
+    public static final double TURRET_LENGTH = 0.4;
+    public static final double TURRET_INERTIA = 0.5;
+    public static final double TURRET_GEARING = 45.0;
 
     // angler (turret) PID
     public static final double ANGLER_P = 0.1;
-    public static final double ANGLER_I = 0.000001;
+    public static final double ANGLER_I = 0.0000001;
     public static final double ANGLER_D = 0.0;
     public static final double ANGLER_FF = 0.0;
     public static final double ANGLER_HOME_ROTATIONS = 0.0;
@@ -105,6 +113,18 @@ public class GameConstants {
     public static final double ANGLER_LIMIT_SPEED = 0.2;
 
     
+ // turret (pan angle) PID
+    public static final double TURRET_P = .5;
+    public static final double TURRET_I = 0.000001;
+    public static final double TURRET_D = 0.0;
+    public static final double TURRET_FF = 0.0;
+    public static final double TURRET_ENCODER_MIN = 0; //Lowest encoder position of Turret
+    public static final double TURRET_ENCODER_MAX = 100; //Highest encoder position of Turret
+    public static final double TURRET_HOME_ANGLE = 0.0; //Turret facing forward
+    public static final double TURRET_LEFT_ANGLE = -90;
+    public static final double TURRET_RIGHT_ANGLE = 90;
+    public static final double TURRET_LIMIT_SPEED = 0.2;
+
     //swerve config
     public static final TelemetryVerbosity TELEMENTRY_VERBOSITY = TelemetryVerbosity.HIGH;
     public static final boolean SET_HEADING_CORRECTION = false;

@@ -199,8 +199,9 @@ public class RobotContainer {
                 controller.povLeft().onTrue(new SetShootingState(shootState, ShootState.FIXED_2));
                 controller.povDown().onTrue(new SetShootingState(shootState, ShootState.SHOOTING_HUB));
                 controller.povRight().onTrue(new SetShootingState(shootState, ShootState.SHUTTLING));
-                steerJoystick.trigger().onTrue(new RunHopperAndFeeder(hopperSubsystem, feederSubsystem));
-                controller.leftBumper().onTrue(new SetShootingState(shootState, ShootState.STOPPED));
+                steerJoystick.trigger().whileTrue((new RunHopperAndFeeder(hopperSubsystem, feederSubsystem)));
+                driveJoystick.trigger().whileTrue((new SetShootingState(shootState, ShootState.STOPPED)));
+                
 
                 // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
                 // new Trigger(m_exampleSubsystem::exampleCondition)

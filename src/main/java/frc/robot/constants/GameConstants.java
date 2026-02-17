@@ -55,6 +55,8 @@ public class GameConstants {
     public static final double SHOOTER_SPEED = 100;
     public static final double INTAKE_DEPLOYER_SPEED = 10;
     public static final double INTAKE_RETRACTION_SPEED = -10;
+    public static final double INITIAL_INTAKE_DEPLOYER_SPEED = 0.005;
+    public static final double INITIAL_INTAKE_RETRACTION_SPEED = 0.005;
 
 
     //Timeouts
@@ -66,6 +68,7 @@ public class GameConstants {
     public static final double ANGLER_TIMEOUT = 5;
     public static final int SERVER_SOCKET_CONNECTION_TIMEOUT = 2000;
     public static final double SHOOTER_TIMEOUT = 5;
+    public static final double INTAKE_DEPLOYER_BURNOUT_TIMER = 2;
 
     //Angles
     public static final Rotation2d TILT_MIN_ANGLE = Rotation2d.fromDegrees(45);

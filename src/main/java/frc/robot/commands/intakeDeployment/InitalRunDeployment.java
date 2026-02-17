@@ -19,13 +19,15 @@ public class InitalRunDeployment extends LoggableCommand {
   }
 
   @Override
-  public void initialize() {}
+  public void initialize() {
+    timer.restart();
+  }
 
   @Override
   public void execute() {
     switch(subsystem.getDeploymentState()){
-      case UP -> subsystem.setSpeed(Constants.INTAKE_DEPLOYER_SPEED);
-      case DOWN -> subsystem.setSpeed(Constants.INTAKE_RETRACTION_SPEED);
+      case UP -> subsystem.setSpeed(Constants.INITIAL_INTAKE_DEPLOYER_SPEED);
+      case DOWN -> subsystem.setSpeed(Constants.INITIAL_INTAKE_RETRACTION_SPEED);
       case STOPPED -> subsystem.stopMotors();
       default -> subsystem.stopMotors();
   }
@@ -36,6 +38,6 @@ public class InitalRunDeployment extends LoggableCommand {
 
   @Override
   public boolean isFinished() {
-    return  timer.hasElapsed(2);
+    return timer.hasElapsed(Constants.INTAKE_DEPLOYER_BURNOUT_TIMER);
   }
 }

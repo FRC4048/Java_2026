@@ -13,8 +13,8 @@ import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import frc.robot.utils.logging.commands.LoggableCommandWrapper;
 import frc.robot.utils.logging.commands.LoggableSequentialCommandGroup;
 
-public class LeftShootandClimb extends LoggableSequentialCommandGroup{
-    public LeftShootandClimb(SwerveSubsystem subsystem, AutoFactory auto, ShooterSubsystem shooter, ShootingState shootstate, ClimberSubsystem climber) {
+public class LeftShootClimb extends LoggableSequentialCommandGroup{
+    public LeftShootClimb(SwerveSubsystem subsystem, AutoFactory auto, ShooterSubsystem shooter, ShootingState shootstate, ClimberSubsystem climber) {
         super(
                 new SetShootingState(shootstate, ShootState.SHOOTING_HUB),
                 LoggableCommandWrapper.wrap(auto.resetOdometry("LeftToTower")),

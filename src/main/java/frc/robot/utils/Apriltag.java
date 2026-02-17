@@ -6,6 +6,8 @@ import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import java.lang.Math.*;
 
+import edu.wpi.first.math.util.Units;
+
 import static java.lang.Math.PI;
 import static java.lang.Math.abs;
 
@@ -81,16 +83,20 @@ public enum Apriltag { //Andymark field:
   THIRTY_TWO(0.32, 164.47, 21.75);//Tower, Blue z rotation:0
   */
 
-  private final double x;
-  private final double y;
-  private final double z;
+  private final double xMeters;
+  private final double yMeters;
+  private final double zMeters;
+  private final Pose3d pose;
+  private final Translation3d translation;
   private final double rotation;
 
-  Apriltag(double x, double y, double z, double rotation) {
-    this.x = x;
-    this.y = y;
-    this.z = z;
+  Apriltag(double xInches, double yInches, double zInches, double rotation) {
+    this.xMeters = Units.inchesToMeters(xInches);
+    this.yMeters = Units.inchesToMeters(yInches);
+    this.zMeters = Units.inchesToMeters(zInches);
+    this.translation = new Translation3d(xMeters,yMeters,zMeters);
     this.rotation = rotation;
+    this.pose = new Pose3d(translation,new Rotation3d(0,0,rotation));
   }
 
   public static Apriltag of(int number) {
@@ -101,15 +107,15 @@ public enum Apriltag { //Andymark field:
   }
 
   public double getX() {
-    return x;
+    return xMeters;
   }
 
   public double getY() {
-    return y;
+    return yMeters;
   }
 
   public double getZ() {
-    return z;
+    return zMeters;
   }
 
   public double getRotation() {
@@ -117,11 +123,11 @@ public enum Apriltag { //Andymark field:
   }
 
   public Translation3d getTranslation() {
-    return new Translation3d(x, y, z);
+    return translation;
   }
 
   public Pose3d getPose() {
-    return new Pose3d(x, y, z, new Rotation3d(0,0,rotation));
+    return pose;
   }
 
   public int number() {

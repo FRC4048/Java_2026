@@ -13,10 +13,13 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Config;
@@ -47,6 +50,8 @@ public class SwerveSubsystem extends SubsystemBase {
      */
     private final SwerveDrive swerveDrive;
     private Vector<N3> variance = VecBuilder.fill(0.1,0.1,0.1);
+    private final Field2d rawOdomField = new Field2d();
+    private SwerveDriveOdometry rawOdometry;
     /**
      * Initialize {@link SwerveDrive} with the directory provided.
      * The SwerveIMU (which can be null) is the instance of the SwerveIMU to use. If non-null,
@@ -85,7 +90,15 @@ public class SwerveSubsystem extends SubsystemBase {
         swerveDrive.setModuleEncoderAutoSynchronize(Constants.SET_MODULE_ENCODER_AUTO_SYNCHRONIZE,
                 Constants.SET_MODULE_ENCODER_AUTO_SYNCHRONIZE_DEADBAND); // Enable if you want to resynchronize your absolute encoders and motor encoders periodically when they are not moving.
         // swerveDrive.pushOffsetsToEncoders(); // Set the absolute encoder to be used over the internal encoder and push the offsets onto it. Throws warning if not possible
-    
+        rawOdometry = new SwerveDriveOdometry(
+                swerveDrive.kinematics,
+                swerveDrive.getOdometryHeading(),
+                swerveDrive.getModulePositions(),
+                startingPose
+        );
+
+        // 3. Put the new Field2d on SmartDashboard
+        SmartDashboard.putData("Raw Odometry Field", rawOdomField);
     }
 
     /**
@@ -107,6 +120,13 @@ public class SwerveSubsystem extends SubsystemBase {
     public void periodic() {
         //add vision pose here
         //addVisionMeasurement(new Pose2d(new Translation2d(16, 2), new Rotation2d()));
+        rawOdometry.update(
+                swerveDrive.getOdometryHeading(),
+                swerveDrive.getModulePositions()
+        );
+
+        // 5. Update the Field2d object
+        rawOdomField.setRobotPose(rawOdometry.getPoseMeters());
     }
 
     @Override
@@ -302,7 +322,7 @@ public class SwerveSubsystem extends SubsystemBase {
     }
     //fix to only get odomtry
     public Pose2d getOdom() {
-        return swerveDrive.getPose();
+        return rawOdometry.getPoseMeters();
     }
 
     /**

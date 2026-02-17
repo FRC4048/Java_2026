@@ -57,6 +57,9 @@ public class ApriltagSubsystem extends SubsystemBase {
     public ApriltagIO getIO(){
         return io;
     }
+    public Pose2d getSimPose() {
+        return drivebase.getSimulationPose();
+    }
 
     @Override
     public void periodic() {

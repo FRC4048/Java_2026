@@ -61,9 +61,6 @@ public class PoseManager {
         if (measurement == null) {
             return;
         }
-        while (visionMeasurementQueue.size() >= 3) {
-            visionMeasurementQueue.poll();
-        }
         visionMeasurementQueue.add(measurement);
     }
 

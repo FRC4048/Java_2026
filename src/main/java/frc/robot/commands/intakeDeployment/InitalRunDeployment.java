@@ -8,7 +8,9 @@ import edu.wpi.first.wpilibj.Timer;
 import frc.robot.constants.Constants;
 import frc.robot.subsystems.IntakeDeployerSubsystem;
 import frc.robot.utils.logging.commands.LoggableCommand;
-
+/**
+ * When creating sequences use this AFTER setting the deployment state
+ */
 public class InitalRunDeployment extends LoggableCommand {
   private final IntakeDeployerSubsystem subsystem;
   private final Timer timer;

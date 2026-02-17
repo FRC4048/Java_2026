@@ -4,8 +4,6 @@
 
 package frc.robot.commands.intakeDeployment;
 
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.constants.enums.DeploymentState;
 import frc.robot.subsystems.IntakeDeployerSubsystem;
 import frc.robot.utils.logging.commands.LoggableCommand;

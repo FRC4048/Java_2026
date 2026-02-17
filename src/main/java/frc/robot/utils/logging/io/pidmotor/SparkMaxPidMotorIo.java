@@ -1,6 +1,5 @@
 package frc.robot.utils.logging.io.pidmotor;
 
-import com.revrobotics.spark.SparkBase;
 import frc.robot.utils.logging.io.motor.SparkMaxIo;
 
 /**

@@ -5,8 +5,6 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.Filesystem;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -47,8 +45,6 @@ import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.TurretSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.ClimberSubsystem;
-//import frc.robot.subsystems.RollerSubsystem;
-//import frc.robot.subsystems.TiltSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import frc.robot.utils.logging.io.gyro.RealGyroIo;
 import frc.robot.utils.logging.io.gyro.ThreadedGyro;
@@ -56,12 +52,7 @@ import frc.robot.utils.logging.io.gyro.ThreadedGyroSwerveIMU;
 import frc.robot.utils.simulation.RobotVisualizer;
 import swervelib.SwerveInputStream;
 import swervelib.imu.SwerveIMU;
-import frc.robot.utils.logging.io.BaseIoImpl;
-import frc.robot.apriltags.ApriltagInputs;
 import frc.robot.apriltags.ApriltagReading;
-import frc.robot.apriltags.MockApriltagIo;
-import frc.robot.apriltags.TCPApriltagIo;
-
 import java.io.File;
 
 /**
@@ -77,7 +68,6 @@ public class RobotContainer {
         // Instantiate the autochooser.
         private final AutoChooser autoChooser = new AutoChooser();
         // The robot's subsystems and commands are defined here...
-        // private final TiltSubsystem tiltSubsystem;
         private final ClimberSubsystem climberSubsystem;
         private final AnglerSubsystem anglerSubsystem;
         private final IntakeSubsystem intakeSubsystem;
@@ -86,7 +76,7 @@ public class RobotContainer {
         private final ShooterSubsystem shooterSubsystem;
         private RobotVisualizer robotVisualizer = null;
         private final HopperSubsystem hopperSubsystem;
-    private final TurretSubsystem turretSubsystem;
+        private final TurretSubsystem turretSubsystem;
         private final IntakeDeployerSubsystem intakeDeployer;
         private SwerveSubsystem drivebase = null;
         private GyroSubsystem gyroSubsystem = null;
@@ -106,17 +96,12 @@ public class RobotContainer {
                 // Configure the trigger bindings
                 switch (Constants.currentMode) {
                         case REAL -> {
-                                // rollerSubsystem = new RollerSubsystem(RollerSubsystem.createRealIo());
-                                // tiltSubsystem = new TiltSubsystem(TiltSubsystem.createRealIo());
                                 anglerSubsystem = new AnglerSubsystem(AnglerSubsystem.createRealIo());
                                 intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createRealIo(),
                                                 IntakeSubsystem.createRealDeploymentSwitch());
                                 hopperSubsystem = new HopperSubsystem(HopperSubsystem.createRealIo());
                                 intakeDeployer = new IntakeDeployerSubsystem(IntakeDeployerSubsystem.createRealIo());
                                 turretSubsystem = new TurretSubsystem(TurretSubsystem.createRealIo());
-
-
-
                                 climberSubsystem = new ClimberSubsystem(ClimberSubsystem.createRealIo());
                                 feederSubsystem = new FeederSubsystem(FeederSubsystem.createRealIo());
                                 shooterSubsystem = new ShooterSubsystem(ShooterSubsystem.createRealIo());
@@ -125,13 +110,10 @@ public class RobotContainer {
                                 ThreadedGyro threadedGyro = gyroIo.getThreadedGyro();
                                 gyroSubsystem = new GyroSubsystem(gyroIo);
                                 SwerveIMU swerveIMU = new ThreadedGyroSwerveIMU(threadedGyro);
-
                                 drivebase = !Constants.TESTBED ? new SwerveSubsystem(
                                                 new File(Filesystem.getDeployDirectory(), "YAGSL"), swerveIMU) : null;
                         }
                         case REPLAY -> {
-                                // rollerSubsystem = new RollerSubsystem(RollerSubsystem.createMockIo());
-                                // tiltSubsystem = new TiltSubsystem(TiltSubsystem.createMockIo());
                                 anglerSubsystem = new AnglerSubsystem(AnglerSubsystem.createMockIo());
                                 intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createMockIo(),
                                                 IntakeSubsystem.createMockDeploymentSwitch());
@@ -139,7 +121,7 @@ public class RobotContainer {
                                 climberSubsystem = new ClimberSubsystem(ClimberSubsystem.createMockIo());
                                 feederSubsystem = new FeederSubsystem(FeederSubsystem.createMockIo());
                                 turretSubsystem = new TurretSubsystem(TurretSubsystem.createMockIo());
-                apriltagSubsystem = new ApriltagSubsystem(ApriltagSubsystem.createMockIo());
+                                apriltagSubsystem = new ApriltagSubsystem(ApriltagSubsystem.createMockIo());
                                 shooterSubsystem = new ShooterSubsystem(ShooterSubsystem.createMockIo());
                                 intakeDeployer = new IntakeDeployerSubsystem(IntakeDeployerSubsystem.createMockIo());
                                 // No GyroSubsystem in REPLAY for now
@@ -149,10 +131,6 @@ public class RobotContainer {
                         }
                         case SIM -> {
                                 robotVisualizer = new RobotVisualizer();
-                                // rollerSubsystem = new
-                                // RollerSubsystem(RollerSubsystem.createSimIo(robotVisualizer));
-                                // tiltSubsystem = new
-                                // TiltSubsystem(TiltSubsystem.createSimIo(robotVisualizer));
                                 anglerSubsystem = new AnglerSubsystem(AnglerSubsystem.createSimIo(robotVisualizer));
                                 intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createSimIo(robotVisualizer),
                                                 IntakeSubsystem.createSimDeploymentSwitch());
@@ -160,7 +138,7 @@ public class RobotContainer {
                                 climberSubsystem = new ClimberSubsystem(ClimberSubsystem.createSimIo(robotVisualizer));
                                 feederSubsystem = new FeederSubsystem(FeederSubsystem.createSimIo(robotVisualizer));
                                 turretSubsystem = new TurretSubsystem(TurretSubsystem.createSimIo(robotVisualizer));
-                apriltagSubsystem = new ApriltagSubsystem(ApriltagSubsystem.createSimIo());
+                                apriltagSubsystem = new ApriltagSubsystem(ApriltagSubsystem.createSimIo());
                                 shooterSubsystem = new ShooterSubsystem(ShooterSubsystem.createSimIo(robotVisualizer));
                                 intakeDeployer = new IntakeDeployerSubsystem(IntakeDeployerSubsystem.createSimIo(robotVisualizer));
 
@@ -229,20 +207,6 @@ public class RobotContainer {
         public void putShuffleboardCommands() {
                 if (Constants.DEBUG) {
 
-                        /*
-                         * SmartDashboard.putData(
-                         * "Spin Roller",
-                         * new SpinRoller(rollerSubsystem));
-                         * 
-                         * SmartDashboard.putData(
-                         * "Tilt Up",
-                         * new TiltUp(tiltSubsystem));
-                         * 
-                         * SmartDashboard.putData(
-                         * "Tilt Down",
-                         * new TiltDown(tiltSubsystem));
-                         */
-
                         // TODO: These commands do not REQUIRE the subsystem therefore cannot be used in
                         // production
                         SmartDashboard.putData(
@@ -304,48 +268,49 @@ public class RobotContainer {
                                         "angler/Home Rev (Reset)",
                                         new RunAnglerToReverseLimit(anglerSubsystem));
 
-            SmartDashboard.putData(
-                    "turret/Turret Go 45",
-                    new SetTurretAngle(turretSubsystem, 45));
+                        SmartDashboard.putData(
+                                        "turret/Turret Go 45",
+                                        new SetTurretAngle(turretSubsystem, 45));
 
-            SmartDashboard.putData(
-                    "turret/Turret Go 0",
-                    new SetTurretAngle(turretSubsystem, 0));
+                        SmartDashboard.putData(
+                                        "turret/Turret Go 0",
+                                        new SetTurretAngle(turretSubsystem, 0));
 
-            SmartDashboard.putData(
-                    "turret/Turret Go 75",
-                    new SetTurretAngle(turretSubsystem, 75));
+                        SmartDashboard.putData(
+                                        "turret/Turret Go 75",
+                                        new SetTurretAngle(turretSubsystem, 75));
 
-            SmartDashboard.putData(
-                    "turret/Run Turret to Rev Limit",
-                    new RunTurretToRevLimit(turretSubsystem));
+                        SmartDashboard.putData(
+                                        "turret/Run Turret to Rev Limit",
+                                        new RunTurretToRevLimit(turretSubsystem));
 
-            SmartDashboard.putData(
-                    "turret/Run Turret to Fwd Limit",
-                    new RunTurretToFwdLimit(turretSubsystem));
+                        SmartDashboard.putData(
+                                        "turret/Run Turret to Fwd Limit",
+                                        new RunTurretToFwdLimit(turretSubsystem));
 
                         SmartDashboard.putData(
                                         "intakedeployer/InitlizeDeployer",
                                         new InitalRunDeployment(intakeDeployer));
-            SmartDashboard.putData(
-                    "Spin Intake",
-                    new SpinIntake(intakeSubsystem));
-            
-            SmartDashboard.putData(
-                    "Start Hopper",
-                    new SpinHopper(hopperSubsystem));
-            
-            SmartDashboard.putData(
-                    "Climber Up",
-                    new ClimberUp(climberSubsystem));
 
-            SmartDashboard.putData(
-                    "Climber Down",
-                    new ClimberDown(climberSubsystem));
+                        SmartDashboard.putData(
+                                        "Spin Intake",
+                                        new SpinIntake(intakeSubsystem));
+            
+                        SmartDashboard.putData(
+                                        "Start Hopper",
+                                        new SpinHopper(hopperSubsystem));
+            
+                        SmartDashboard.putData(
+                                        "Climber Up",
+                                        new ClimberUp(climberSubsystem));
 
-          SmartDashboard.putData(
-                    "Spin Feeder",
-                    new SpinFeeder(feederSubsystem));
+                        SmartDashboard.putData(
+                                        "Climber Down",
+                                        new ClimberDown(climberSubsystem));
+
+                        SmartDashboard.putData(
+                                        "Spin Feeder",
+                                        new SpinFeeder(feederSubsystem));
 
                         SmartDashboard.putData(
                                         "Spin Shooter",
@@ -370,17 +335,22 @@ public class RobotContainer {
                         SmartDashboard.putData(
                                         "Shooting State: Shuttling",
                                         new SetShootingState(shootState, ShootState.SHUTTLING));
+
                         SmartDashboard.putData(
                                         "intakedeployer/Deployment State: UP",
                                         new SetDeploymentState(intakeDeployer, DeploymentState.UP));
+
                         SmartDashboard.putData(
                                         "intakedeployer/Deployment State: DOWN",
                                         new SetDeploymentState(intakeDeployer, DeploymentState.DOWN));
+
                         SmartDashboard.putData(
                                         "intakedeployer/Deployment State: STOPPED",
                                         new SetDeploymentState(intakeDeployer, DeploymentState.STOPPED));
+
                         SmartDashboard.putData("AddTunedApriltagReading",
                                         new AddTunableApriltagReading(apriltagSubsystem));
+
                         SmartDashboard.putData("AddApriltagReading", new AddApriltagReading(apriltagSubsystem,
                                         new ApriltagReading(0, 0, 0, 0, 0, 0, 0)));
 
@@ -404,9 +374,9 @@ public class RobotContainer {
                 return autoChooser.getCommand();
         }
 
-  public ClimberSubsystem getClimberSubsystem() {
-    return climberSubsystem;
-  }
+        public ClimberSubsystem getClimberSubsystem() {
+                return climberSubsystem;
+        }
 
         public RobotVisualizer getRobotVisualizer() {
                 return robotVisualizer;

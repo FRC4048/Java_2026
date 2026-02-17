@@ -1,9 +1,6 @@
 package frc.robot.utils.logging.io.gyro;
 
 import com.studica.frc.AHRS;
-import frc.robot.Robot;
-import frc.robot.constants.Constants;
-import frc.robot.utils.diag.DiagGyro;
 import frc.robot.utils.logging.input.GyroInputs;
 import frc.robot.utils.logging.input.GyroValues;
 import frc.robot.utils.logging.io.BaseIoImpl;

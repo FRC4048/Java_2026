@@ -4,9 +4,6 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import org.littletonrobotics.junction.LogTable;
 import org.littletonrobotics.junction.inputs.LoggableInputs;
 
-import java.util.EnumSet;
-import java.util.Objects;
-
 public class DigitalInputLoggableInputs implements LoggableInputs {
 
     private static final String PRESSED_KEY = "pressed";

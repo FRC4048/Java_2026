@@ -2,7 +2,6 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.apriltags.*;
-import frc.robot.utils.logging.io.BaseIoImpl;
 
 public class ApriltagSubsystem extends SubsystemBase {
 

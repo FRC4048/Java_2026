@@ -6,9 +6,7 @@ import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.units.measure.MutAngularVelocity;
 import frc.robot.utils.logging.input.GyroValues;
 import swervelib.imu.SwerveIMU;
-
 import java.util.Optional;
-
 import static edu.wpi.first.units.Units.DegreesPerSecond;
 
 /**

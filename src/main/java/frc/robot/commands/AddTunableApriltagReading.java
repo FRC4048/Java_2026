@@ -1,6 +1,5 @@
 package frc.robot.commands;
 
-import edu.wpi.first.epilogue.Logged;
 import frc.robot.apriltags.ApriltagReading;
 import frc.robot.subsystems.ApriltagSubsystem;
 import frc.robot.utils.logging.LoggedTunableNumber;

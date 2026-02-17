@@ -1,6 +1,5 @@
 package frc.robot.commands;
 
-import frc.robot.apriltags.ApriltagIO;
 import frc.robot.apriltags.ApriltagReading;
 import frc.robot.subsystems.ApriltagSubsystem;
 import frc.robot.utils.logging.commands.LoggableCommand;

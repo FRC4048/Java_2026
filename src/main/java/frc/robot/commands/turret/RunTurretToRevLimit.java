@@ -10,7 +10,6 @@ import frc.robot.utils.logging.commands.LoggableCommand;
  */
 public class RunTurretToRevLimit extends LoggableCommand {
     private final TurretSubsystem turret;
-    private boolean finished = false;
     private final Timer timer = new Timer();
 
     public RunTurretToRevLimit(TurretSubsystem turret) {

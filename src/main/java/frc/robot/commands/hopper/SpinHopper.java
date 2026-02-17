@@ -19,12 +19,12 @@ public class SpinHopper extends LoggableCommand{
 
     @Override
     public void initialize() {
-      timer.restart();
+        timer.restart();
     }
 
     @Override
     public void execute() {
-            subsystem.setSpeed(Constants.HOPPER_SPEED);
+        subsystem.setSpeed(Constants.HOPPER_SPEED);
     }
 
     @Override
@@ -43,5 +43,4 @@ public class SpinHopper extends LoggableCommand{
 
     }
 
-    
 }

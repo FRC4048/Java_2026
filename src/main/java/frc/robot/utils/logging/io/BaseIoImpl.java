@@ -1,6 +1,5 @@
 package frc.robot.utils.logging.io;
 
-import frc.robot.utils.logging.io.BaseIo;
 import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.inputs.LoggableInputs;
 

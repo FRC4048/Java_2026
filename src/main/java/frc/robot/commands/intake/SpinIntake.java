@@ -1,7 +1,5 @@
 package frc.robot.commands.intake;
 
-import javax.lang.model.util.ElementScanner14;
-
 import frc.robot.constants.Constants;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.utils.logging.commands.LoggableCommand;

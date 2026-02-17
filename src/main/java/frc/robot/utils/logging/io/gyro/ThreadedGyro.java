@@ -3,7 +3,6 @@ package frc.robot.utils.logging.io.gyro;
 import com.studica.frc.AHRS;
 import edu.wpi.first.wpilibj.DriverStation;
 import frc.robot.utils.logging.input.GyroValues;
-
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;

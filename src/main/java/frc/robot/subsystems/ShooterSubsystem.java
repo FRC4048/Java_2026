@@ -1,23 +1,16 @@
 package frc.robot.subsystems;
 
-
-
-import com.ctre.phoenix6.controls.Follower;
 import com.revrobotics.spark.SparkLowLevel;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
-import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
-
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.constants.Constants;
 import frc.robot.utils.logging.input.MotorLoggableInputs;
-import frc.robot.utils.logging.io.motor.SparkMaxIo;
 import frc.robot.utils.logging.io.pidmotor.MockSparkMaxPidMotorIo;
 import frc.robot.utils.logging.io.pidmotor.RealSparkMaxPidMotorIo;
 import frc.robot.utils.logging.io.pidmotor.SimSparkMaxPidMotorIo;
-import frc.robot.utils.logging.io.pidmotor.SparkMaxPidConfig;
 import frc.robot.utils.logging.io.pidmotor.SparkMaxPidMotor;
 import frc.robot.utils.logging.io.pidmotor.SparkMaxPidMotorIo;
 import frc.robot.utils.simulation.MotorSimulator;

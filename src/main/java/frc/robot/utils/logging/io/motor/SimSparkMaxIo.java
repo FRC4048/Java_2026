@@ -1,7 +1,6 @@
 package frc.robot.utils.logging.io.motor;
 
 import com.revrobotics.spark.SparkMax;
-
 import frc.robot.constants.Constants;
 import frc.robot.utils.logging.input.MotorLoggableInputs;
 import frc.robot.utils.simulation.Simulator;

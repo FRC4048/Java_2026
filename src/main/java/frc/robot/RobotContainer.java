@@ -63,6 +63,7 @@ import frc.robot.apriltags.MockApriltagIo;
 import frc.robot.apriltags.TCPApriltagIo;
 
 import java.io.File;
+import java.util.function.BooleanSupplier;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -194,6 +195,8 @@ public class RobotContainer {
          * joysticks}.
          */
         private void configureBindings() {
+                BooleanSupplier b = () -> drivebase.getPose().getX() >= Constants.TRENCH_BLUE_LEFT && drivebase.getPose().getX() <= Constants.TRENCH_BLUE_RIGHT ||  drivebase.getPose().getX() >= Constants.TRENCH_RED_LEFT && drivebase.getPose().getX() <= Constants.TRENCH_RED_RIGHT ? true:false;
+                new Trigger(b).whileTrue(new RunAnglerToReverseLimit(anglerSubsystem));
                 // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
                 // new Trigger(m_exampleSubsystem::exampleCondition)
                 // .onTrue(new ExampleCommand(m_exampleSubsystem));

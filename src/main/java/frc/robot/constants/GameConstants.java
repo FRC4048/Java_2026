@@ -145,4 +145,10 @@ public class GameConstants {
     public static final int SHIFT_4_START = 55;
     public static final int ENDGAME_START = 30;
 
+    //Angler Position constrants 
+    public static final double TRENCH_BLUE_LEFT = 0;
+    public static final double TRENCH_BLUE_RIGHT = 0;
+    public static final double TRENCH_RED_LEFT = 0;
+    public static final double TRENCH_RED_RIGHT = 0;
+
 }

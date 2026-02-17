@@ -11,13 +11,14 @@ import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import frc.robot.utils.logging.commands.LoggableCommandWrapper;
 import frc.robot.utils.logging.commands.LoggableSequentialCommandGroup;
 
-public class RightShoot extends LoggableSequentialCommandGroup {
-    public RightShoot(SwerveSubsystem subsystem, AutoFactory auto, ShooterSubsystem shooter, ShootingState shootState) {
+public class MidShoot extends LoggableSequentialCommandGroup{
+    public MidShoot(SwerveSubsystem subsystem, AutoFactory auto, ShooterSubsystem shooter, ShootingState shootstate) {
         super(
-                new SetShootingState(shootState, ShootState.SHOOTING_HUB),
-                LoggableCommandWrapper.wrap(auto.resetOdometry("RightToTower")),
-                LoggableCommandWrapper.wrap(auto.trajectoryCmd("RightToTower")),
+                 new SetShootingState(shootstate, ShootState.SHOOTING_HUB),
+                LoggableCommandWrapper.wrap(auto.resetOdometry("LeftToTower")),
+                LoggableCommandWrapper.wrap((auto.trajectoryCmd("LeftToTower"))),
                 new SpinShooter(shooter, Constants.SHOOTER_SPEED)
         );
     }
 }
+

@@ -1,7 +1,7 @@
 package frc.robot.commands.shooter;
 
-import frc.robot.constants.ShootingState;
-import frc.robot.constants.ShootingState.ShootState;
+import frc.robot.constants.enums.ShootingState;
+import frc.robot.constants.enums.ShootingState.ShootState;
 import frc.robot.utils.logging.commands.LoggableCommand;
 
 public class SetShootingState extends LoggableCommand {

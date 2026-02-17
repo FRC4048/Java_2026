@@ -133,7 +133,6 @@ public class RobotContainer {
 
                                 drivebase = !Constants.TESTBED ? new SwerveSubsystem(
                                                 new File(Filesystem.getDeployDirectory(), "YAGSL"), swerveIMU) : null;
-                                autoChooser = new AutoChooser(drivebase, shootState, autoFactory, shooterSubsystem, climberSubsystem);
 
                         }
                         case REPLAY -> {
@@ -152,7 +151,6 @@ public class RobotContainer {
                                 // create the drive subsystem with null gyro (use default json)
                                 drivebase = !Constants.TESTBED ? new SwerveSubsystem(
                                                 new File(Filesystem.getDeployDirectory(), "YAGSL"), null) : null;
-                                autoChooser = new AutoChooser(drivebase, shootState, autoFactory, shooterSubsystem, climberSubsystem);
 
                         }
                         case SIM -> {
@@ -176,7 +174,6 @@ public class RobotContainer {
                                 // create the drive subsystem with null gyro (use default json)
                                 drivebase = !Constants.TESTBED ? new SwerveSubsystem(
                                                 new File(Filesystem.getDeployDirectory(), "YAGSL"), null) : null;
-                                autoChooser = new AutoChooser(drivebase, shootState, autoFactory, shooterSubsystem, climberSubsystem);
 
                         }
 
@@ -185,9 +182,10 @@ public class RobotContainer {
                         }
                 }
 
+                setUpAutoFactory();
+                autoChooser = new AutoChooser(drivebase, shootState, autoFactory, shooterSubsystem, climberSubsystem);
                 configureBindings();
                 putShuffleboardCommands();
-                setUpAutoFactory();
         }
 
         /**
@@ -205,6 +203,11 @@ public class RobotContainer {
          * joysticks}.
          */
         private void setUpAutoFactory() {
+                if (drivebase == null) {
+                        autoFactory = null;
+                        drive = null;
+                        return;
+                }
 
                 drive = new Drive(drivebase);
 

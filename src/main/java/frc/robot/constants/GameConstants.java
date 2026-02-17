@@ -125,4 +125,5 @@ public class GameConstants {
     public static final int SHIFT_4_START = 55;
     public static final int ENDGAME_START = 30;
 
+    public static final String DRIVER_CAM_IP_ADDRESS = "10.40.48.2:1181/?action=stream";
 }

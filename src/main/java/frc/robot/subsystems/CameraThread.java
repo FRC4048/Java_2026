@@ -29,7 +29,7 @@ public class CameraThread {
   private static final int OUTPUT_WIDTH = INPUT_HEIGHT;
   private static final int OUTPUT_HEIGHT = INPUT_WIDTH;
 
-  private static final String LOGGING_PREFIX = "DriverCam";
+  public static final String LOGGING_PREFIX = "DriverCam";
   private static final String OUTPUT_SERVER_NAME = "serve_" + LOGGING_PREFIX;
   private static final int OUTPUT_PORT = 1182;
   private static final int CAMERA_INDEX = 0;

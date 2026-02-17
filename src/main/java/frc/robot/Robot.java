@@ -14,7 +14,11 @@ import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.networktables.NT4Publisher;
 import org.littletonrobotics.junction.wpilog.WPILOGReader;
 import org.littletonrobotics.junction.wpilog.WPILOGWriter;
+import edu.wpi.first.cscore.VideoSource;
 
+
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -24,7 +28,6 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.autochooser.FieldLocation;
 import frc.robot.constants.Constants;
-import frc.robot.subsystems.CameraThread;
 import frc.robot.utils.logging.commands.CommandLogger;
 
 /**
@@ -77,8 +80,11 @@ public class Robot extends LoggedRobot {
         // Start AdvantageKit logger
         Logger.start();
         CommandLogger.get().init();
-        new CameraThread();
-
+        
+        UsbCamera camera = CameraServer.startAutomaticCapture("DriverCam", 0);
+        camera.setConnectionStrategy(VideoSource.ConnectionStrategy.kKeepOpen);
+        CameraServer.addCamera(camera);
+        
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     robotContainer = new RobotContainer();

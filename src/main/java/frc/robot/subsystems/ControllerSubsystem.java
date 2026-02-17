@@ -8,8 +8,8 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.constants.Constants;
-import frc.robot.constants.ShootingState;
-import frc.robot.constants.ShootingState.ShootState;
+import frc.robot.constants.enums.ShootingState;
+import frc.robot.constants.enums.ShootingState.ShootState;
 
 public class ControllerSubsystem extends SubsystemBase {
 

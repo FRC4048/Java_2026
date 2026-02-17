@@ -2,8 +2,8 @@ package frc.robot.commands.feeder;
 
 import edu.wpi.first.wpilibj.Timer;
 import frc.robot.constants.Constants;
-import frc.robot.constants.ShootingState;
-import frc.robot.constants.ShootingState.ShootState;
+import frc.robot.constants.enums.ShootingState;
+import frc.robot.constants.enums.ShootingState.ShootState;
 import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.utils.logging.commands.LoggableCommand;
 

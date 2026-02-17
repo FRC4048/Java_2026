@@ -26,6 +26,7 @@ import frc.robot.commands.intake.SpinIntake;
 import frc.robot.commands.intakeDeployment.InitalRunDeployment;
 import frc.robot.commands.intakeDeployment.SetDeploymentState;
 import frc.robot.autochooser.AutoChooser;
+import frc.robot.commands.angler.AimAngler;
 import frc.robot.commands.angler.RunAnglerToReverseLimit;
 import frc.robot.commands.shooter.SetShootingState;
 import frc.robot.commands.shooter.SpinShooter;
@@ -326,7 +327,7 @@ public class RobotContainer {
 
                         SmartDashboard.putData(
                                         "Spin Feeder",
-                                        new SpinFeeder(feederSubsystem));
+                                        new SpinFeeder(feederSubsystem, shootState));
                         SmartDashboard.putData(
                                         "intakedeployer/InitlizeDeployer",
                                         new InitalRunDeployment(intakeDeployer));
@@ -336,7 +337,7 @@ public class RobotContainer {
             
             SmartDashboard.putData(
                     "Start Hopper",
-                    new SpinHopper(hopperSubsystem));
+                    new SpinHopper(hopperSubsystem, shootState));
             
             SmartDashboard.putData(
                     "Climber Up",

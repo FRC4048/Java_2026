@@ -5,7 +5,19 @@ import java.util.Map;
 
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
-import frc.robot.utils.logging.commands.LoggableCommand;
+import choreo.auto.AutoFactory;
+import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.commands.auto.LeftShoot;
+import frc.robot.commands.auto.LeftShootClimb;
+import frc.robot.commands.auto.MidShoot;
+import frc.robot.commands.auto.MidShootClimb;
+import frc.robot.commands.auto.RightShoot;
+import frc.robot.commands.auto.RightShootandClimb;
+import frc.robot.constants.enums.ShootingState;
+import frc.robot.subsystems.ClimberSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.swervedrive.SwerveSubsystem;
+import frc.robot.utils.logging.commands.DoNothingCommand;
 
 public class AutoChooser {
 
@@ -14,11 +26,20 @@ public class AutoChooser {
     /** Drop-down chooser for the action. */
     private LoggedDashboardChooser<AutoAction> actionChooser;
     /** Structure for mapping possible choices to commands. */
-    private final Map<AutoEvent, AutoCommand> commandMap = new HashMap<>();
+    private final Map<AutoEvent, Command> commandMap = new HashMap<>();
 
-    private final AutoCommand DEFAULT_COMMAND = AutoCommand.Invalid;
+    private final SwerveSubsystem subsystem; 
+    private final ShootingState state;
+    private final ShooterSubsystem shooter;
+    private final AutoFactory auto;
+    private final ClimberSubsystem climber;
 
-    public AutoChooser() {
+    public AutoChooser(SwerveSubsystem subsystem, ShootingState state, AutoFactory auto, ShooterSubsystem shooter, ClimberSubsystem climber) {
+        this.subsystem = subsystem;
+        this.auto = auto;
+        this.state = state;
+        this.shooter = shooter;
+        this.climber = climber;
         this.locationChooser = new LoggedDashboardChooser<>(
             "Location Chooser"
         );
@@ -56,34 +77,47 @@ public class AutoChooser {
     private void populateMap() {
         // Currently, we have some example mappings.
         commandMap.put(new AutoEvent(AutoAction.DO_NOTHING, FieldLocation.LEFT),
-            AutoCommand.DoNothing);
+            new DoNothingCommand());
         commandMap.put(new AutoEvent(AutoAction.DO_NOTHING, FieldLocation.RIGHT), 
-            AutoCommand.DoSomething);
+            new DoNothingCommand());
         commandMap.put(new AutoEvent(AutoAction.DO_NOTHING, FieldLocation.MIDDLE),
-            AutoCommand.DoNothing);
-        commandMap.put(new AutoEvent(AutoAction.SHOOT, FieldLocation.RIGHT), 
-            AutoCommand.DoSomething);
-        commandMap.put(new AutoEvent(AutoAction.SHOOT, FieldLocation.LEFT),
-            AutoCommand.DoNothing);
+            new DoNothingCommand());
+        commandMap.put(new AutoEvent(AutoAction.SHOOT, FieldLocation.LEFT), 
+            new LeftShoot(subsystem, auto, shooter, state));
+        commandMap.put(new AutoEvent(AutoAction.SHOOT, FieldLocation.RIGHT),
+            new RightShoot(subsystem, auto, shooter, state));
         commandMap.put(new AutoEvent(AutoAction.SHOOT, FieldLocation.MIDDLE), 
-            AutoCommand.DoSomething);
+            new MidShoot(subsystem, auto, shooter, state));
+        commandMap.put(new AutoEvent(AutoAction.SHOOT_AND_CLIMB, FieldLocation.LEFT),
+            new LeftShootClimb(subsystem, auto, shooter, state, climber));
+        commandMap.put(new AutoEvent(AutoAction.SHOOT_AND_CLIMB, FieldLocation.RIGHT), 
+            new RightShootandClimb(subsystem, auto, shooter, state, climber));
+        commandMap.put(new AutoEvent(AutoAction.SHOOT_AND_CLIMB, FieldLocation.MIDDLE),
+            new MidShootClimb(subsystem, auto, shooter, state, climber));
     }
 
-    private AutoCommand get() {
+    public AutoEvent getSelectedEvent() {
         AutoAction chosenAction = actionChooser.get();
         FieldLocation chosenLocation = locationChooser.get();
-        AutoEvent event = new AutoEvent(chosenAction, chosenLocation);
-
-        return commandMap.getOrDefault(event, DEFAULT_COMMAND);
+        return new AutoEvent(chosenAction, chosenLocation);
     }
 
-    public LoggableCommand getCommand() {
-        return get().getCommand();
+    public Command getSelectedCommand() {
+        AutoEvent event = getSelectedEvent();
+        return commandMap.getOrDefault(event, new DoNothingCommand());
     }
 
-    /** @return A human-readable description of the selected command. */
+    public Command getCommand() {
+        return getSelectedCommand();
+    }
+
     public String getCommandDescription() {
-        return get().getDescription();
+        AutoEvent event = getSelectedEvent();
+        Command command = commandMap.get(event);
+        if (command == null) {
+            return "No auto mapped for " + event.getAction() + " at " + event.getLocation();
+        }
+        return event.getAction() + " at " + event.getLocation() + " -> " + command.getName();
     }
 
     public FieldLocation getLocation() {

@@ -1,8 +1,11 @@
 package frc.robot.constants;
 
+import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.Vector;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.RobotBase;
 import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
@@ -156,5 +159,7 @@ public class GameConstants {
     public static final Transform3d ROBOT_TO_CAMERA = new Transform3d(1,2,3, new Rotation3d(1,2,3)); // TODO: change Later
     public static final double AVERAGE_CAM_LATENCY = 0.1; // seconds; TODO: change Later
     public static final double AVERAGE_CAM_LATENCY_STD_DEV = 0.02; // seconds; TODO: change Later
+    public static final Vector<N3> STATE_STD_DEVS = VecBuilder.fill(0.1,0.1,0.1); // TODO: Change Later
+    public static final Vector<N3> INITIAL_VISION_STD_DEVS = VecBuilder.fill(0.1,0.1,0.1); // TODO: Change later
 
 }

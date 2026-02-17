@@ -34,7 +34,7 @@ import swervelib.math.SwerveMath;
 import swervelib.parser.SwerveControllerConfiguration;
 import swervelib.parser.SwerveDriveConfiguration;
 import swervelib.parser.SwerveParser;
-import swervelib.parser.SwerveParserWithImu;
+import frc.robot.subsystems.swervedrive.parser.SwerveParserWithImuCustom;
 import swervelib.telemetry.SwerveDriveTelemetry;
 import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
 
@@ -48,7 +48,7 @@ public class SwerveSubsystem extends SubsystemBase {
     /**
      * Swerve drive object.
      */
-    private final SwerveDrive swerveDrive;
+    private final SwerveDriveCustom swerveDrive;
     private Vector<N3> variance = VecBuilder.fill(0.1,0.1,0.1);
     private final Field2d rawOdomField = new Field2d();
     private SwerveDriveOdometry rawOdometry;
@@ -75,8 +75,8 @@ public class SwerveSubsystem extends SubsystemBase {
         // Configure the Telemetry before creating the SwerveDrive to avoid unnecessary objects being created.
         SwerveDriveTelemetry.verbosity = TelemetryVerbosity.HIGH;
         try {
-            SwerveParser parser = new SwerveParserWithImu(directory, swerveIMU);
-            swerveDrive = parser.createSwerveDrive(Constants.MAX_SPEED, startingPose);
+            SwerveParserWithImuCustom parser = new SwerveParserWithImuCustom(directory, swerveIMU);
+            swerveDrive = parser.createSwerveDrive(Constants.MAX_SPEED, startingPose, Constants.STATE_STD_DEVS, Constants.INITIAL_VISION_STD_DEVS);
             // Alternative method if you don't want to supply the conversion factor via JSON files.
             // swerveDrive = new SwerveParser(directory).createSwerveDrive(maximumSpeed, angleConversionFactor, driveConversionFactor);
         } catch (Exception e) {
@@ -108,11 +108,13 @@ public class SwerveSubsystem extends SubsystemBase {
      * @param controllerCfg Swerve Controller.
      */
     public SwerveSubsystem(SwerveDriveConfiguration driveCfg, SwerveControllerConfiguration controllerCfg) {
-        swerveDrive = new SwerveDrive(driveCfg,
+        swerveDrive = new SwerveDriveCustom(driveCfg,
                 controllerCfg,
                 Constants.MAX_SPEED,
                 new Pose2d(new Translation2d(Meter.of(2), Meter.of(0)),
-                        Rotation2d.fromDegrees(0)));
+                        Rotation2d.fromDegrees(0)),
+                Constants.STATE_STD_DEVS,
+                Constants.INITIAL_VISION_STD_DEVS);
 
     }
 
@@ -489,7 +491,7 @@ public class SwerveSubsystem extends SubsystemBase {
      *
      * @return {@link SwerveDrive}
      */
-    public SwerveDrive getSwerveDrive() {
+    public SwerveDriveCustom getSwerveDrive() {
         return swerveDrive;
     }
     public void setVariance(Vector<N3> variance){

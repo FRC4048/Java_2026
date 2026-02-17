@@ -68,14 +68,14 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public static SparkMaxPidMotorIo createRealIo() {
-        SparkMax motor = new SparkMax(Constants2026.SHOOTER_MOTOR_ID, SparkLowLevel.MotorType.kBrushless);
+        SparkMaxPidMotor motor = createMotor();
 
         Robot.getDiagnostics()
         .addDiagnosable(
             new DiagSparkMaxEncoder(
-                "Shooter", "Encoder", GameConstants.SHOOTER_DIAGS_ENCODER, motor));
+                "Shooter", "Encoder", GameConstants.SHOOTER_DIAGS_ENCODER, motor.getNeoMotor()));
 
-        return new RealSparkMaxPidMotorIo(LOGGING_NAME, createMotor(), MotorLoggableInputs.allMetrics());
+        return new RealSparkMaxPidMotorIo(LOGGING_NAME, motor, MotorLoggableInputs.allMetrics());
     }
 
     public static SparkMaxPidMotorIo createSimIo(RobotVisualizer visualizer) {

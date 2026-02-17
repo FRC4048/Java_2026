@@ -119,19 +119,19 @@ public class AnglerSubsystem extends SubsystemBase {
 
     public static SparkMaxPidMotorIo createRealIo() {
 
-        SparkMax motor = new SparkMax(Constants2026.ANGLER_MOTOR_ID, SparkLowLevel.MotorType.kBrushless);
+        SparkMaxPidMotor motor = createMotor();
 
         Robot.getDiagnostics()
         .addDiagnosable(
             new DiagSparkMaxSwitch(
-                "Angler", "ForwardLimit", motor, DiagSparkMaxSwitch.Direction.FORWARD));
+                "Angler", "ForwardLimit", motor.getNeoMotor(), DiagSparkMaxSwitch.Direction.FORWARD));
 
         Robot.getDiagnostics()
         .addDiagnosable(
             new DiagSparkMaxSwitch(
-                "Angler", "ReverseLimit", motor, DiagSparkMaxSwitch.Direction.REVERSE));
+                "Angler", "ReverseLimit", motor.getNeoMotor(), DiagSparkMaxSwitch.Direction.REVERSE));
 
-        return new RealSparkMaxPidMotorIo(LOGGING_NAME, createMotor(), MotorLoggableInputs.allMetrics());
+        return new RealSparkMaxPidMotorIo(LOGGING_NAME, motor, MotorLoggableInputs.allMetrics());
     }
 
     public static SparkMaxPidMotorIo createSimIo(RobotVisualizer visualizer) {

@@ -55,15 +55,17 @@ public class FilterablePoseManager extends PoseManager {
   public void processQueue() {
     List<VisionMeasurement> validMeasurements = new ArrayList<>();
     List<VisionMeasurement> invalidMeasurements = new ArrayList<>();
-    for (Queue<VisionMeasurement> queue : visionMeasurementQueueMap.values()) {
+    for (Map.Entry<Integer, Queue<VisionMeasurement>> queueEntry : visionMeasurementQueueMap.entrySet()) {
+      int tagId = queueEntry.getKey();
+      Queue<VisionMeasurement> queue = queueEntry.getValue();
       List<VisionMeasurement> validMeasurementsAtTag = new ArrayList<>();
       List<VisionMeasurement> invalidMeasurementsAtTag = new ArrayList<>();
       LinkedHashMap<VisionMeasurement, FilterResult> filteredData =
               filter.filter(queue);
       queue.clear();
-      for (Map.Entry<VisionMeasurement, FilterResult> entry : filteredData.entrySet()) {
-        VisionMeasurement v = entry.getKey();
-        FilterResult r = entry.getValue();
+      for (Map.Entry<VisionMeasurement, FilterResult> filterEntry : filteredData.entrySet()) {
+        VisionMeasurement v = filterEntry.getKey();
+        FilterResult r = filterEntry.getValue();
         switch (r) {
           case ACCEPTED -> {
             setVisionSTD(visionTruster.calculateTrust(v));
@@ -78,8 +80,8 @@ public class FilterablePoseManager extends PoseManager {
           }
         }
       }
-      Logger.recordOutput("Apriltag/validMeasurementsAtTag"+, validMeasurementsAtTag.toArray(VisionMeasurement[]::new));
-      Logger.recordOutput("Apriltag/invalidMeasurementsAtTag", invalidMeasurementsAtTag.toArray(VisionMeasurement[]::new));
+      Logger.recordOutput("Apriltag/validMeasurementsAtTag"+tagId, validMeasurementsAtTag.toArray(VisionMeasurement[]::new));
+      Logger.recordOutput("Apriltag/invalidMeasurementsAtTag"+tagId, invalidMeasurementsAtTag.toArray(VisionMeasurement[]::new));
     }
     Logger.recordOutput("Apriltag/acceptedMeasurements", validMeasurements.toArray(VisionMeasurement[]::new));
     Logger.recordOutput(

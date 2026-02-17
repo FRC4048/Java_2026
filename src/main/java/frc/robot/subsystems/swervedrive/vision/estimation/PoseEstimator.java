@@ -44,7 +44,7 @@ public class PoseEstimator {
   //  private static final Vector<N3> visionMeasurementStdDevs1 = VecBuilder.fill(0.5, 0.5, 0.5);
 
   /* the rate at which variance of vision measurements increases as distance from the tag increases*/
-  private static final double visionStdRateOfChange = 1/(double)148;
+  private static final double visionStdRateOfChange = 1.0/148.0;
 
   /* standard deviation of vision readings, the lower the numbers arm, the more we trust vision */
   public static final Vector<N3> visionMeasurementStdDevs2 = VecBuilder.fill(0, 0, 0);

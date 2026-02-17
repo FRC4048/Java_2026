@@ -43,8 +43,8 @@ public class TCPApriltagIo extends BaseIoImpl<ApriltagInputs> implements Aprilta
             inputs.poseYaw[i] = measurement.poseYaw();
             inputs.distanceToTag[i] = measurement.distanceToTag();
             inputs.apriltagNumber[i] = measurement.apriltagNumber();
-            inputs.timestamp[i] = measurement.latency();
-            inputs.serverTime[i] = measurement.measurementTime();
+            inputs.timestamp[i] = measurement.measurementTime();
+            inputs.serverTime[i] = measurement.measurementTime()+measurement.latency();
 
             Apriltag apriltag = Apriltag.of(measurement.apriltagNumber());
             inputs.apriltagPoseArray[i] =
@@ -61,8 +61,5 @@ public class TCPApriltagIo extends BaseIoImpl<ApriltagInputs> implements Aprilta
     public void addReading(ApriltagReading reading) {
         server.addReading(reading);
     }
-    @Override
-    public ApriltagInputs getInputs() {
-        return inputs;
-    }
+
 }

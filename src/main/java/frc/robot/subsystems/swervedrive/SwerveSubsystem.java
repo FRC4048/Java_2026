@@ -320,7 +320,7 @@ public class SwerveSubsystem extends SubsystemBase {
     public Pose2d getSimulationPose() {
         return swerveDrive.getSimulationDriveTrainPose().orElse(new Pose2d());
     }
-    //fix to only get odomtry
+    // Todo: fix to only get odomtry
     public Pose2d getOdom() {
         return rawOdometry.getPoseMeters();
     }

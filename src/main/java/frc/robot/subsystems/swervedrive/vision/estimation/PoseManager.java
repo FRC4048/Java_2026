@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.Timer;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import frc.robot.subsystems.swervedrive.vision.truster.PoseDeviation;
 import frc.robot.subsystems.swervedrive.vision.truster.VisionMeasurement;
+import frc.robot.subsystems.swervedrive.vision.truster.VisionTruster;
 import org.littletonrobotics.junction.Logger;
 
 import java.util.LinkedHashMap;
@@ -25,13 +26,15 @@ public class PoseManager {
     //private final SwerveDrivePoseEstimator poseEstimator;
     protected final LinkedHashMap<Integer, Queue<VisionMeasurement>> visionMeasurementQueueMap = new LinkedHashMap<>();
     private final SwerveSubsystem drivebase;
+    protected final VisionTruster visionTruster;
 
     public PoseManager(
             PoseDeviation PoseDeviation,
             SwerveDriveKinematics kinematics,
             SwerveSubsystem drivebase,
             //OdometryMeasurement initialOdom,
-            TimeInterpolatableBuffer<Pose2d> estimatedPoseBuffer) {
+            TimeInterpolatableBuffer<Pose2d> estimatedPoseBuffer,
+            VisionTruster visionTruster) {
   /*  this.poseEstimator =
         new SwerveDrivePoseEstimator(
             kinematics,
@@ -42,14 +45,16 @@ public class PoseManager {
             PoseDeviation.getVisionStd());*/
         this.estimatedPoseBuffer = estimatedPoseBuffer;
         this.drivebase = drivebase;
+        this.visionTruster = visionTruster;
     }
 
     public PoseManager(
             Vector<N3> visionStd,
             SwerveDriveKinematics kinematics,
             SwerveSubsystem drivebase,
-            TimeInterpolatableBuffer<Pose2d> estimatedPoseBuffer) {
-        this(new PoseDeviation(visionStd), kinematics, drivebase, estimatedPoseBuffer);
+            TimeInterpolatableBuffer<Pose2d> estimatedPoseBuffer,
+            VisionTruster visionTruster) {
+        this(new PoseDeviation(visionStd), kinematics, drivebase, estimatedPoseBuffer, visionTruster);
     }
 
     public void addOdomMeasurement(Pose2d pose, long timestamp) {
@@ -70,7 +75,7 @@ public class PoseManager {
         for (Queue<VisionMeasurement> queue : visionMeasurementQueueMap.values()) {
             VisionMeasurement m = queue.poll();
             while (m != null) {
-                addVisionMeasurement(m);
+                setVisionSTD(visionTruster.calculateTrust(m));addVisionMeasurement(m);
                 m = queue.poll();
             }
         }
@@ -80,12 +85,12 @@ public class PoseManager {
         drivebase.addVisionMeasurement(measurement.measurement(), measurement.timeOfMeasurement());
     }
 
-    protected void setVisionSTD(Vector<N3> visionMeasurementStdDevs123) {
+    protected void setVisionSTD(Vector<N3> visionMeasurementStdDevs) {
         Logger.recordOutput(
                 "Apriltag/VisionAppliedCovariance",
-                new double[]{visionMeasurementStdDevs123.get(0), visionMeasurementStdDevs123.get(1)});
+                new double[]{visionMeasurementStdDevs.get(0), visionMeasurementStdDevs.get(1)});
 
-        drivebase.setVariance(visionMeasurementStdDevs123);
+        drivebase.setVariance(visionMeasurementStdDevs);
     }
 /* 
   public void resetPose(OdometryMeasurement m, Translation2d initialPose) {

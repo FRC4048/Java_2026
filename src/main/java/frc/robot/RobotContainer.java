@@ -196,9 +196,9 @@ public class RobotContainer {
                 controller.y().onTrue(new ClimberUp(climberSubsystem));
                 controller.x().onTrue(new ClimberDown(climberSubsystem));
                 controller.povUp().onTrue(new SetShootingState(shootState, ShootState.FIXED));
-                controller.povLeft().onTrue(new SetShootingState(shootState, ShootState.FIXED_2));
+                controller.povRight().onTrue(new SetShootingState(shootState, ShootState.FIXED_2));
                 controller.povDown().onTrue(new SetShootingState(shootState, ShootState.SHOOTING_HUB));
-                controller.povRight().onTrue(new SetShootingState(shootState, ShootState.SHUTTLING));
+                controller.povLeft().onTrue(new SetShootingState(shootState, ShootState.SHUTTLING));
                 steerJoystick.trigger().whileTrue((new RunHopperAndFeeder(hopperSubsystem, feederSubsystem)));
                 driveJoystick.trigger().whileTrue((new SetShootingState(shootState, ShootState.STOPPED)));
                 

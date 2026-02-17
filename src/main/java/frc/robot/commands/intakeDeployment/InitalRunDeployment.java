@@ -38,6 +38,7 @@ public class InitalRunDeployment extends LoggableCommand {
 
   @Override
   public void end(boolean interrupted) {
+    subsystem.stopMotors();
   }
 
   @Override

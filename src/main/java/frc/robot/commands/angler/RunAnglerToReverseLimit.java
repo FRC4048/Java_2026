@@ -12,7 +12,6 @@ import frc.robot.utils.logging.commands.LoggableCommand;
 public class RunAnglerToReverseLimit extends LoggableCommand {
     private final TimeoutLogger timeoutCounter;
     private final AnglerSubsystem angler;
-    private boolean finished = false;
     private final Timer timer = new Timer();
 
     public RunAnglerToReverseLimit(AnglerSubsystem angler) {
@@ -23,16 +22,14 @@ public class RunAnglerToReverseLimit extends LoggableCommand {
 
     @Override
     public void initialize() {
-        finished = false;
         timer.restart();
     }
 
     @Override
     public void execute() {
         angler.runReverse();
-        if (angler.isAtReverseLimit()) {
+        if (angler.isAtReverseLimit() || timer.hasElapsed(Constants.ANGLER_TIMEOUT)) {
             angler.resetEncoderToZero();
-            finished = true;
         }
     }
 
@@ -46,6 +43,6 @@ public class RunAnglerToReverseLimit extends LoggableCommand {
 
     @Override
     public boolean isFinished() {
-        return finished || timer.hasElapsed(Constants.ANGLER_TIMEOUT);
+        return angler.isAtReverseLimit() || timer.hasElapsed(Constants.ANGLER_TIMEOUT);
     }
 }

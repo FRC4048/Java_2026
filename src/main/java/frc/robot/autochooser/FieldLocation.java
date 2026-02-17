@@ -14,13 +14,13 @@ import java.util.stream.Collectors;
 public enum FieldLocation {
   ZERO(0, 0, 0, "Zero"),
   INVALID(-1, -1, -1, "INVALID"),
-  LEFT(7.150, 7.000, 180, "NON Processor Side"),
-  MIDDLE(7.150, 4.500, 180, "Middle"),
-  RIGHT(7.150, 2.000, 180, "Processor Side");
+  LEFT(3.622, 7.662, 0, "Depot Side"),
+  MIDDLE(3.622, 4.024, 0, "Middle"),
+  RIGHT(3.622, 0.407, 0, "NON Depot Side");
 
-  private static final double RED_X_POS = 2.3876; // meters
-  public static final double HEIGHT_OF_FIELD = 8.05;
-  public static final double LENGTH_OF_FIELD = 17.548225;
+  private static final double RED_X_POS = 9.338; // meters
+  public static final double HEIGHT_OF_FIELD = 8.043;
+  public static final double LENGTH_OF_FIELD = 16.411;
   private final double yPose;
   private final double xPose;
   private final double angle;

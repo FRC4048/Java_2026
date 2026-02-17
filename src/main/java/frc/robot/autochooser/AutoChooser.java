@@ -59,6 +59,14 @@ public class AutoChooser {
             AutoCommand.DoNothing);
         commandMap.put(new AutoEvent(AutoAction.DO_NOTHING, FieldLocation.RIGHT), 
             AutoCommand.DoSomething);
+        commandMap.put(new AutoEvent(AutoAction.DO_NOTHING, FieldLocation.MIDDLE),
+            AutoCommand.DoNothing);
+        commandMap.put(new AutoEvent(AutoAction.SHOOT, FieldLocation.RIGHT), 
+            AutoCommand.DoSomething);
+        commandMap.put(new AutoEvent(AutoAction.SHOOT, FieldLocation.LEFT),
+            AutoCommand.DoNothing);
+        commandMap.put(new AutoEvent(AutoAction.SHOOT, FieldLocation.MIDDLE), 
+            AutoCommand.DoSomething);
     }
 
     private AutoCommand get() {

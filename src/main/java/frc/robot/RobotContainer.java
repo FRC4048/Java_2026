@@ -342,7 +342,8 @@ public class RobotContainer {
                                         new SetDeploymentState(intakeDeployer, DeploymentState.DOWN));
                         SmartDashboard.putData(
                                         "Deployment State: STOPPED",
-                                        new SetDeploymentState(intakeDeployer, DeploymentState.STOPPED));SmartDashboard.putData("AddTunedApriltagReading", new AddTunableApriltagReading(apriltagSubsystem));
+                        new SetDeploymentState(intakeDeployer, DeploymentState.STOPPED));
+                        SmartDashboard.putData("AddTunedApriltagReading", new AddTunableApriltagReading(apriltagSubsystem));
             SmartDashboard.putData("AddApriltagReading", new AddApriltagReading(apriltagSubsystem, new ApriltagReading(0, 0, 0, 0, 0, 0, 0)));
             SmartDashboard.putData("AddGarbageReading", new AddGarbageReading(apriltagSubsystem));
                 }

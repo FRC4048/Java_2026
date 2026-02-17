@@ -180,28 +180,6 @@ public class RobotContainer {
                         }
                     },
                     shooterSubsystem));
-
-            feederSubsystem.setDefaultCommand(new RunCommand(
-                    () -> {
-                        double targetFeederSpeed = controllerSubsystem.getFeederSpeed();
-                        if (targetFeederSpeed != 0.0) {
-                            feederSubsystem.setSpeed(targetFeederSpeed);
-                        } else {
-                            feederSubsystem.stopMotors();
-                        }
-                    },
-                    feederSubsystem));
-
-            hopperSubsystem.setDefaultCommand(new RunCommand(
-                    () -> {
-                        double targetHopperSpeed = controllerSubsystem.getHopperSpeed();
-                        if (targetHopperSpeed != 0.0) {
-                            hopperSubsystem.setSpeed(targetHopperSpeed);
-                        } else {
-                            hopperSubsystem.stopMotors();
-                        }
-                    },
-                    hopperSubsystem));
         }
 
         if(!Constants.TESTBED){
@@ -295,11 +273,11 @@ public class RobotContainer {
             
             SmartDashboard.putData(
                     "Start Hopper",
-                    new SpinHopper(hopperSubsystem));
+                    new SpinHopper(hopperSubsystem, shootState));
             
             SmartDashboard.putData(
                     "Spin Feeder",
-                    new SpinFeeder(feederSubsystem));
+                    new SpinFeeder(feederSubsystem, shootState));
 
             SmartDashboard.putData(
                     "Spin Shooter",

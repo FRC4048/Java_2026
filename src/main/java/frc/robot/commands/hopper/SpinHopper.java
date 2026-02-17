@@ -2,6 +2,8 @@ package frc.robot.commands.hopper;
 
 import edu.wpi.first.wpilibj.Timer;
 import frc.robot.constants.Constants;
+import frc.robot.constants.ShootingState;
+import frc.robot.constants.ShootingState.ShootState;
 import frc.robot.subsystems.HopperSubsystem;
 import frc.robot.utils.logging.commands.LoggableCommand;
 
@@ -9,11 +11,12 @@ public class SpinHopper extends LoggableCommand{
     
     public final HopperSubsystem subsystem;
     public final Timer timer;
-    
+    public final ShootingState state;
 
-    public SpinHopper(HopperSubsystem subsystem){
+    public SpinHopper(HopperSubsystem subsystem, ShootingState state){
         timer = new Timer();
         this.subsystem = subsystem;
+        this.state = state;
         addRequirements(subsystem);
     }
 
@@ -24,7 +27,11 @@ public class SpinHopper extends LoggableCommand{
 
     @Override
     public void execute() {
+        if (state.getShootState() != ShootState.STOPPED) {
             subsystem.setSpeed(Constants.HOPPER_SPEED);
+        } else {
+            subsystem.stopMotors();
+        }
     }
 
     @Override

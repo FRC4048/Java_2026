@@ -10,6 +10,8 @@ public class SetTurretAngle extends LoggableCommand {
     private final TurretSubsystem turret;
     private double targetAngle;
 
+
+    
     public SetTurretAngle(TurretSubsystem turret, double targetAngle) {
         this.turret = turret;
         this.targetAngle = targetAngle;
@@ -27,11 +29,10 @@ public class SetTurretAngle extends LoggableCommand {
 
     @Override
     public void end(boolean interrupted) {
-        turret.stopMotors();
     }
 
     @Override
     public boolean isFinished() {
-        return false;
+        return true;
     }
 }

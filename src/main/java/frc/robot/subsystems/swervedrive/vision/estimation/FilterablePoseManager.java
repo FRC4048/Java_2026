@@ -12,10 +12,8 @@ import frc.robot.subsystems.swervedrive.vision.truster.VisionFilter;
 import frc.robot.subsystems.swervedrive.vision.truster.VisionMeasurement;
 import frc.robot.subsystems.swervedrive.vision.truster.VisionTruster;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
 import org.littletonrobotics.junction.Logger;
 
 /**
@@ -55,25 +53,33 @@ public class FilterablePoseManager extends PoseManager {
 
   @Override
   public void processQueue() {
-    LinkedHashMap<VisionMeasurement, FilterResult> filteredData =
-        filter.filter(visionMeasurementQueue);
-    visionMeasurementQueue.clear();
     List<VisionMeasurement> validMeasurements = new ArrayList<>();
     List<VisionMeasurement> invalidMeasurements = new ArrayList<>();
-    for (Map.Entry<VisionMeasurement, FilterResult> entry : filteredData.entrySet()) {
-      VisionMeasurement v = entry.getKey();
-      FilterResult r = entry.getValue();
-      switch (r) {
-        case ACCEPTED -> {
-          setVisionSTD(visionTruster.calculateTrust(v));
-          validMeasurements.add(v);
-          addVisionMeasurement(v);
-        }
-        case NOT_PROCESSED -> visionMeasurementQueue.add(v);
-        case REJECTED -> {
-          invalidMeasurements.add(v);
+    for (Queue<VisionMeasurement> queue : visionMeasurementQueueMap.values()) {
+      List<VisionMeasurement> validMeasurementsAtTag = new ArrayList<>();
+      List<VisionMeasurement> invalidMeasurementsAtTag = new ArrayList<>();
+      LinkedHashMap<VisionMeasurement, FilterResult> filteredData =
+              filter.filter(queue);
+      queue.clear();
+      for (Map.Entry<VisionMeasurement, FilterResult> entry : filteredData.entrySet()) {
+        VisionMeasurement v = entry.getKey();
+        FilterResult r = entry.getValue();
+        switch (r) {
+          case ACCEPTED -> {
+            setVisionSTD(visionTruster.calculateTrust(v));
+            validMeasurements.add(v);
+            validMeasurementsAtTag.add(v);
+            addVisionMeasurement(v);
+          }
+          case NOT_PROCESSED -> queue.add(v);
+          case REJECTED -> {
+            invalidMeasurements.add(v);
+            invalidMeasurementsAtTag.add(v);
+          }
         }
       }
+      Logger.recordOutput("Apriltag/validMeasurementsAtTag"+, validMeasurementsAtTag.toArray(VisionMeasurement[]::new));
+      Logger.recordOutput("Apriltag/invalidMeasurementsAtTag", invalidMeasurementsAtTag.toArray(VisionMeasurement[]::new));
     }
     Logger.recordOutput("Apriltag/acceptedMeasurements", validMeasurements.toArray(VisionMeasurement[]::new));
     Logger.recordOutput(

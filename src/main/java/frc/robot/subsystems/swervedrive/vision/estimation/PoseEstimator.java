@@ -119,7 +119,7 @@ public class PoseEstimator {
             && !ArrayUtils.contains(
                 invalidApriltagNumbers, apriltagSystem.getIO().getInputs().apriltagNumber[i])) {
           VisionMeasurement measurement = getVisionMeasurement(pos, i);
-          poseManager.registerVisionMeasurement(measurement);
+          poseManager.registerVisionMeasurement(measurement, apriltagSystem.getIO().getInputs().apriltagNumber[i]);
         } else {
           invalidCounter++;
           Logger.recordOutput("Apriltag/ValidationFailureCount", invalidCounter);
@@ -187,7 +187,7 @@ public class PoseEstimator {
 
   public void addMockVisionMeasurement() {
     poseManager.registerVisionMeasurement(
-        new VisionMeasurement(getEstimatedPose(), 0, Logger.getTimestamp() / 1e6));
+        new VisionMeasurement(getEstimatedPose(), 0, Logger.getTimestamp() / 1e6),1);
   }
 
   public VisionTruster getVisionTruster() {

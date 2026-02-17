@@ -24,7 +24,6 @@ import org.littletonrobotics.junction.Logger;
  */
 public class FilterablePoseManager extends PoseManager {
   private final VisionFilter filter;
-  private final VisionTruster visionTruster;
 
   public FilterablePoseManager(
       PoseDeviation PoseDeviation,
@@ -33,9 +32,8 @@ public class FilterablePoseManager extends PoseManager {
       TimeInterpolatableBuffer<Pose2d> estimatedPoseBuffer,
       VisionFilter filter,
       VisionTruster visionTruster) {
-    super(PoseDeviation, kinematics, drivebase, estimatedPoseBuffer);
+    super(PoseDeviation, kinematics, drivebase, estimatedPoseBuffer, visionTruster);
     this.filter = filter;
-    this.visionTruster = visionTruster;
   }
 
   public FilterablePoseManager(

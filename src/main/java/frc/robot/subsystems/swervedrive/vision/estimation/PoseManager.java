@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.Timer;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import frc.robot.subsystems.swervedrive.vision.truster.PoseDeviation;
 import frc.robot.subsystems.swervedrive.vision.truster.VisionMeasurement;
+import frc.robot.subsystems.swervedrive.vision.truster.VisionTruster;
 import org.littletonrobotics.junction.Logger;
 
 import java.util.LinkedList;
@@ -24,13 +25,15 @@ public class PoseManager {
     //private final SwerveDrivePoseEstimator poseEstimator;
     protected final Queue<VisionMeasurement> visionMeasurementQueue = new LinkedList<>();
     private final SwerveSubsystem drivebase;
+    protected final VisionTruster visionTruster;
 
     public PoseManager(
             PoseDeviation PoseDeviation,
             SwerveDriveKinematics kinematics,
             SwerveSubsystem drivebase,
             //OdometryMeasurement initialOdom,
-            TimeInterpolatableBuffer<Pose2d> estimatedPoseBuffer) {
+            TimeInterpolatableBuffer<Pose2d> estimatedPoseBuffer,
+            VisionTruster visionTruster) {
   /*  this.poseEstimator =
         new SwerveDrivePoseEstimator(
             kinematics,
@@ -41,14 +44,16 @@ public class PoseManager {
             PoseDeviation.getVisionStd());*/
         this.estimatedPoseBuffer = estimatedPoseBuffer;
         this.drivebase = drivebase;
+        this.visionTruster = visionTruster;
     }
 
     public PoseManager(
             Vector<N3> visionStd,
             SwerveDriveKinematics kinematics,
             SwerveSubsystem drivebase,
-            TimeInterpolatableBuffer<Pose2d> estimatedPoseBuffer) {
-        this(new PoseDeviation(visionStd), kinematics, drivebase, estimatedPoseBuffer);
+            TimeInterpolatableBuffer<Pose2d> estimatedPoseBuffer,
+            VisionTruster visionTruster) {
+        this(new PoseDeviation(visionStd), kinematics, drivebase, estimatedPoseBuffer, visionTruster);
     }
 
     public void addOdomMeasurement(Pose2d pose, long timestamp) {
@@ -71,6 +76,7 @@ public class PoseManager {
     public void processQueue() {
         VisionMeasurement m = visionMeasurementQueue.poll();
         while (m != null) {
+            setVisionSTD(visionTruster.calculateTrust(m));
             addVisionMeasurement(m);
             m = visionMeasurementQueue.poll();
         }

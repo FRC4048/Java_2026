@@ -23,6 +23,7 @@ import frc.robot.commands.drive.DriveDirectionTime;
 import frc.robot.commands.feeder.SpinFeeder;
 import frc.robot.commands.drive.FakeVision;
 import frc.robot.commands.intake.SpinIntake;
+import frc.robot.commands.intakeDeployment.InitalRunDeployment;
 import frc.robot.commands.intakeDeployment.SetDeploymentState;
 import frc.robot.autochooser.AutoChooser;
 import frc.robot.commands.angler.AimAngler;
@@ -382,24 +383,27 @@ public class RobotContainer {
                                         "Spin Feeder",
                                         new SpinFeeder(feederSubsystem));
                         SmartDashboard.putData(
-                                        "Spin Intake",
-                                        new SpinIntake(intakeSubsystem));
+                                        "intakedeployer/InitlizeDeployer",
+                                        new InitalRunDeployment(intakeDeployer));
+            SmartDashboard.putData(
+                    "Spin Intake",
+                    new SpinIntake(intakeSubsystem));
+            
+            SmartDashboard.putData(
+                    "Start Hopper",
+                    new SpinHopper(hopperSubsystem));
+            
+            SmartDashboard.putData(
+                    "Climber Up",
+                    new ClimberUp(climberSubsystem));
 
-                        SmartDashboard.putData(
-                                        "Start Hopper",
-                                        new SpinHopper(hopperSubsystem));
+            SmartDashboard.putData(
+                    "Climber Down",
+                    new ClimberDown(climberSubsystem));
 
-                        SmartDashboard.putData(
-                                        "Climber Up",
-                                        new ClimberUp(climberSubsystem));
-
-                        SmartDashboard.putData(
-                                        "Climber Down",
-                                        new ClimberDown(climberSubsystem));
-
-                        SmartDashboard.putData(
-                                        "Spin Feeder",
-                                        new SpinFeeder(feederSubsystem));
+          SmartDashboard.putData(
+                    "Spin Feeder",
+                    new SpinFeeder(feederSubsystem));
 
                         SmartDashboard.putData(
                                         "Spin Shooter",
@@ -425,13 +429,13 @@ public class RobotContainer {
                                         "Shooting State: Shuttling",
                                         new SetShootingState(shootState, ShootState.SHUTTLING));
                         SmartDashboard.putData(
-                                        "Deployment State: UP",
+                                        "intakedeployer/Deployment State: UP",
                                         new SetDeploymentState(intakeDeployer, DeploymentState.UP));
                         SmartDashboard.putData(
-                                        "Deployment State: DOWN",
+                                        "intakedeployer/Deployment State: DOWN",
                                         new SetDeploymentState(intakeDeployer, DeploymentState.DOWN));
                         SmartDashboard.putData(
-                                        "Deployment State: STOPPED",
+                                        "intakedeployer/Deployment State: STOPPED",
                                         new SetDeploymentState(intakeDeployer, DeploymentState.STOPPED));
                         SmartDashboard.putData("AddTunedApriltagReading",
                                         new AddTunableApriltagReading(apriltagSubsystem));

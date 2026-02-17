@@ -34,6 +34,7 @@ import frc.robot.constants.Constants;
 import frc.robot.constants.enums.DeploymentState;
 import frc.robot.constants.enums.ShootingState;
 import frc.robot.constants.enums.ShootingState.ShootState;
+import frc.robot.parallels.RunHopperAndFeeder;
 import frc.robot.subsystems.AnglerSubsystem;
 import frc.robot.subsystems.ApriltagSubsystem;
 import frc.robot.subsystems.HopperSubsystem;
@@ -194,7 +195,7 @@ public class RobotContainer {
             controller.povLeft().onTrue(new SetShootingState(shootState, ShootState.FIXED_2));
             controller.povDown().onTrue(new SetShootingState(shootState, ShootState.SHOOTING_HUB));
             controller.povRight().onTrue(new SetShootingState(shootState, ShootState.SHUTTLING));
-            controller.rightBumper().onTrue(new SpinShooter(shooterSubsystem, 1));
+            steerJoystick.trigger().onTrue(new RunHopperAndFeeder(hopperSubsystem, feederSubsystem));
             controller.leftBumper().onTrue(new SetShootingState(shootState, ShootState.STOPPED));
 
                 // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
@@ -263,6 +264,9 @@ public class RobotContainer {
                         SmartDashboard.putNumber("angler/TargetRotations", Constants.ANGLER_HOME_ROTATIONS);
 
                         SmartDashboard.putNumber("angler/TargetAngle", 0);
+
+                        SmartDashboard.putData("RunIntakeAndFeeder", 
+                                               new RunHopperAndFeeder(hopperSubsystem, feederSubsystem));
 
                         SmartDashboard.putData(
                                         "angler/Set Position",

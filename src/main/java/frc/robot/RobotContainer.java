@@ -103,10 +103,11 @@ public class RobotContainer {
                                 // rollerSubsystem = new RollerSubsystem(RollerSubsystem.createRealIo());
                                 // tiltSubsystem = new TiltSubsystem(TiltSubsystem.createRealIo());
                                 anglerSubsystem = new AnglerSubsystem(AnglerSubsystem.createRealIo());
-                                intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createRealIo(),
-                                                IntakeSubsystem.createRealDeploymentSwitch());
-                                hopperSubsystem = new HopperSubsystem(HopperSubsystem.createRealIo());
                                 intakeDeployer = new IntakeDeployerSubsystem(IntakeDeployerSubsystem.createRealIo());
+                                intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createRealIo(),
+                                                intakeDeployer);
+                                hopperSubsystem = new HopperSubsystem(HopperSubsystem.createRealIo());
+                                
 
                                 climberSubsystem = new ClimberSubsystem(ClimberSubsystem.createRealIo());
                                 feederSubsystem = new FeederSubsystem(FeederSubsystem.createRealIo());
@@ -124,14 +125,15 @@ public class RobotContainer {
                                 // rollerSubsystem = new RollerSubsystem(RollerSubsystem.createMockIo());
                                 // tiltSubsystem = new TiltSubsystem(TiltSubsystem.createMockIo());
                                 anglerSubsystem = new AnglerSubsystem(AnglerSubsystem.createMockIo());
+                                intakeDeployer = new IntakeDeployerSubsystem(IntakeDeployerSubsystem.createMockIo());
                                 intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createMockIo(),
-                                                IntakeSubsystem.createMockDeploymentSwitch());
+                                                intakeDeployer);
                                 hopperSubsystem = new HopperSubsystem(HopperSubsystem.createMockIo());
                                 climberSubsystem = new ClimberSubsystem(ClimberSubsystem.createMockIo());
                                 feederSubsystem = new FeederSubsystem(FeederSubsystem.createMockIo());
                                 apriltagSubsystem = new ApriltagSubsystem(ApriltagSubsystem.createMockIo());
                                 shooterSubsystem = new ShooterSubsystem(ShooterSubsystem.createMockIo());
-                                intakeDeployer = new IntakeDeployerSubsystem(IntakeDeployerSubsystem.createMockIo());
+                                
                                 // No GyroSubsystem in REPLAY for now
                                 // create the drive subsystem with null gyro (use default json)
                                 drivebase = !Constants.TESTBED ? new SwerveSubsystem(
@@ -144,14 +146,15 @@ public class RobotContainer {
                                 // tiltSubsystem = new
                                 // TiltSubsystem(TiltSubsystem.createSimIo(robotVisualizer));
                                 anglerSubsystem = new AnglerSubsystem(AnglerSubsystem.createSimIo(robotVisualizer));
+                                intakeDeployer = new IntakeDeployerSubsystem(IntakeDeployerSubsystem.createSimIo(robotVisualizer));
                                 intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createSimIo(robotVisualizer),
-                                                IntakeSubsystem.createSimDeploymentSwitch());
+                                                intakeDeployer);
                                 hopperSubsystem = new HopperSubsystem(HopperSubsystem.createSimIo(robotVisualizer));
                                 climberSubsystem = new ClimberSubsystem(ClimberSubsystem.createSimIo(robotVisualizer));
                                 feederSubsystem = new FeederSubsystem(FeederSubsystem.createSimIo(robotVisualizer));
                                 apriltagSubsystem = new ApriltagSubsystem(ApriltagSubsystem.createSimIo());
                                 shooterSubsystem = new ShooterSubsystem(ShooterSubsystem.createSimIo(robotVisualizer));
-                                intakeDeployer = new IntakeDeployerSubsystem(IntakeDeployerSubsystem.createSimIo(robotVisualizer));
+                                
 
                                 // No GyroSubsystem in REPLAY for now
                                 // create the drive subsystem with null gyro (use default json)
@@ -295,7 +298,7 @@ public class RobotContainer {
 
                         SmartDashboard.putData(
                                         "Spin Intake",
-                                        new SpinIntake(intakeSubsystem));
+                                        new SpinIntake(intakeSubsystem, intakeDeployer));
 
                         SmartDashboard.putData(
                                         "Start Hopper",
@@ -304,9 +307,6 @@ public class RobotContainer {
                         SmartDashboard.putData(
                                         "Spin Feeder",
                                         new SpinFeeder(feederSubsystem));
-            SmartDashboard.putData(
-                    "Spin Intake",
-                    new SpinIntake(intakeSubsystem));
             
             SmartDashboard.putData(
                     "Start Hopper",

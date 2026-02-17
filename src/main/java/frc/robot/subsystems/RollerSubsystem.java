@@ -21,8 +21,6 @@ import frc.robot.utils.logging.io.motor.SparkMaxIo;
 import frc.robot.utils.simulation.MotorSimulator;
 import frc.robot.utils.simulation.RobotVisualizer;
 
-// The Roller subsystem spins the wheel that releases the algae.
-
 public class RollerSubsystem extends SubsystemBase {
     public static final String LOGGING_NAME = "RollerSubsystem";
     private final SparkMaxIo io;

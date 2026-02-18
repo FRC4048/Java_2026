@@ -159,7 +159,7 @@ public class GameConstants {
     public static final Transform3d ROBOT_TO_CAMERA = new Transform3d(0,0,0, new Rotation3d(0,0,0)); // TODO: change Later
     public static final double AVERAGE_CAM_LATENCY = 0.1; // seconds; TODO: change Later
     public static final double AVERAGE_CAM_LATENCY_STD_DEV = 0.02; // seconds; TODO: change Later
-    public static final Vector<N3> STATE_STD_DEVS = VecBuilder.fill(0,0,0); // TODO: Change Later
+    public static final Vector<N3> STATE_STD_DEVS = VecBuilder.fill(0.1,0.1,0.1); // TODO: Change Later
     public static final Vector<N3> INITIAL_VISION_STD_DEVS = VecBuilder.fill(0,0,0); // TODO: Change later
     public static final double VISION_STD_DEV_CONST = 1.0/148.0; // TODO: Change later
 

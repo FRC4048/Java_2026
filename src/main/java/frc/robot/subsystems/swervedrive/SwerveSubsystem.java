@@ -14,6 +14,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
+import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -49,7 +50,7 @@ public class SwerveSubsystem extends SubsystemBase {
      * Swerve drive object.
      */
     private final SwerveDriveCustom swerveDrive;
-    private Vector<N3> variance = VecBuilder.fill(0.1,0.1,0.1);
+    private Vector<N3> variance = VecBuilder.fill(0,0,0);
     private final Field2d rawOdomField = new Field2d();
     private SwerveDriveOdometry rawOdometry;
     /**
@@ -308,6 +309,12 @@ public class SwerveSubsystem extends SubsystemBase {
      */
     public void resetOdometry(Pose2d initialHolonomicPose) {
         swerveDrive.resetOdometry(initialHolonomicPose);
+        SwerveModulePosition[] modules = new SwerveModulePosition[4];
+        for (int i=0; i<4; i++) {
+            modules[i] = new SwerveModulePosition();
+        }
+        rawOdometry.resetPosition(initialHolonomicPose.getRotation(), modules, initialHolonomicPose);
+        rawOdometry.resetPose(initialHolonomicPose);
     }
 
     /**

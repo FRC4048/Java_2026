@@ -21,6 +21,7 @@ import frc.robot.commands.hopper.SpinHopper;
 import frc.robot.commands.drive.DriveDirectionTime;
 import frc.robot.commands.feeder.SpinFeeder;
 import frc.robot.commands.drive.FakeVision;
+import frc.robot.commands.drive.ResetRobotPose;
 import frc.robot.commands.intake.SpinIntake;
 import frc.robot.commands.intakeDeployment.InitalRunDeployment;
 import frc.robot.commands.intakeDeployment.SetDeploymentState;
@@ -236,6 +237,7 @@ public class RobotContainer {
 
 
             // TODO: These commands do not REQUIRE the subsystem therefore cannot be used in// production
+                        SmartDashboard.putData("resetPos", new ResetRobotPose(drivebase));
                         SmartDashboard.putData(
                                         "Intake/Spin Forward",
                                         new InstantCommand(() -> intakeSubsystem.setSpeed(1.0)));

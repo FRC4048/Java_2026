@@ -8,7 +8,7 @@ import frc.robot.utils.logging.commands.LoggableCommand;
 
 public class ResetRobotPose extends LoggableCommand {
     private final SwerveSubsystem drivebase;
-    private final LoggedTunableNumber posX = new LoggedTunableNumber("Robot X Position", 3);
+    private final LoggedTunableNumber posX = new LoggedTunableNumber("Robot X Position", 7);
     private final LoggedTunableNumber posY = new LoggedTunableNumber("Robot Y Position", 3);
     private final LoggedTunableNumber poseYaw = new LoggedTunableNumber("Robot Yaw", 0);
     public ResetRobotPose(SwerveSubsystem drivebase) {

@@ -38,16 +38,13 @@ public class PoseEstimator {
   private final ApriltagSubsystem apriltagSystem;
 
   /* standard deviation of robot states, the lower the numbers arm, the more we trust odometry */
-  public static final Vector<N3> stateStdDevs1 = VecBuilder.fill(0.075, 0.075, 0.001);
 
   /* standard deviation of vision readings, the lower the numbers arm, the more we trust vision */
   //  private static final Vector<N3> visionMeasurementStdDevs1 = VecBuilder.fill(0.5, 0.5, 0.5);
 
   /* the rate at which variance of vision measurements increases as distance from the tag increases*/
-  private static final double visionStdRateOfChange = 1.0/148.0;
 
   /* standard deviation of vision readings, the lower the numbers arm, the more we trust vision */
-  public static final Vector<N3> visionMeasurementStdDevs2 = VecBuilder.fill(0, 0, 0);
   private final FilterablePoseManager poseManager;
 
   public PoseEstimator(
@@ -77,7 +74,7 @@ public class PoseEstimator {
         TimeInterpolatableBuffer.createBuffer(Constants.POSE_BUFFER_STORAGE_TIME);
     this.poseManager =
         new FilterablePoseManager(
-            visionMeasurementStdDevs2,
+            Constants.INITIAL_VISION_STD_DEVS,
             kinematics,
             drivebase,
             m1Buffer,
@@ -87,7 +84,7 @@ public class PoseEstimator {
                 return measurement.measurement();
               }
             },
-            new SquareVisionTruster(visionMeasurementStdDevs2, visionStdRateOfChange));
+            new SquareVisionTruster(Constants.INITIAL_VISION_STD_DEVS, Constants.VISION_STD_DEV_CONST));
   }
 
 
@@ -146,7 +143,7 @@ public class PoseEstimator {
    * are sent to the {@link PoseManager} for further processing
    */
   public void updateVision() {
-    updateVision(15, 4, 14, 5, 16, 3);
+    updateVision(0);
   }
 
   public void updateVision(Apriltag focusedTag) {

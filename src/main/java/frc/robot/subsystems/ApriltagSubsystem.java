@@ -74,16 +74,18 @@ public class ApriltagSubsystem extends SubsystemBase {
             Pose3d cameraPos = new Pose3d(robotPoseSupplier.get()).transformBy(Constants.ROBOT_TO_CAMERA);
             if (tag.canSee(cameraPos,Constants.HORIZONTAL_FOV, Constants.VERTICAL_FOV)) {
                 double distance = tag.getTranslation().getDistance(cameraPos.getTranslation());
-                VisionMeasurement measurement = new VisionMeasurement(new Pose2d(), distance,0);
-                Vector<N3> stdDevs = estimator.getVisionTruster().calculateTrust(measurement);
-                double readingX = robotPoseSupplier.get().getX()+ random.nextGaussian()*stdDevs.get(0);
-                double readingY = robotPoseSupplier.get().getY()+ random.nextGaussian()*stdDevs.get(1);
-                double readingYaw = robotPoseSupplier.get().getRotation().getDegrees()+ random.nextGaussian()*stdDevs.get(2);
-                Pose2d readingPos = new Pose2d(readingX,readingY,Rotation2d.fromDegrees(readingYaw));
-                distance = readingPos.getTranslation().getDistance(tag.getPose().toPose2d().getTranslation());
-                if(BasicVisionFilter.inBounds(readingPos)) {
-                    io.addReading(new ApriltagReading(readingX, readingY, readingYaw,
-                            distance, tag.number(), Constants.AVERAGE_CAM_LATENCY + random.nextGaussian() * Constants.AVERAGE_CAM_LATENCY_STD_DEV, Logger.getTimestamp() / 1000.0));
+                if (distance < 6) {
+                    VisionMeasurement measurement = new VisionMeasurement(new Pose2d(), distance,0);
+                    Vector<N3> stdDevs = estimator.getVisionTruster().calculateTrust(measurement);
+                    double readingX = robotPoseSupplier.get().getX()+ random.nextGaussian()*stdDevs.get(0);
+                    double readingY = robotPoseSupplier.get().getY()+ random.nextGaussian()*stdDevs.get(1);
+                    double readingYaw = robotPoseSupplier.get().getRotation().getDegrees()+ random.nextGaussian()*stdDevs.get(2);
+                    Pose2d readingPos = new Pose2d(readingX,readingY,Rotation2d.fromDegrees(readingYaw));
+                    distance = readingPos.getTranslation().getDistance(tag.getPose().toPose2d().getTranslation());
+                    if(BasicVisionFilter.inBounds(readingPos)) {
+                        io.addReading(new ApriltagReading(readingX, readingY, readingYaw,
+                                distance, tag.number(), Constants.AVERAGE_CAM_LATENCY + random.nextGaussian() * Constants.AVERAGE_CAM_LATENCY_STD_DEV, Logger.getTimestamp() / 1000.0));
+                    }
                 }
             }
         }

@@ -131,11 +131,11 @@ public enum Apriltag { //Andymark field:
   }
 
   public int number() {
-    return ordinal();
+    return ordinal()+1;
   }
 
   public boolean canSee(Pose3d cameraPose, double HorizontalFOV, double VerticalFOV) {
-    double diffAngle = abs(cameraPose.getZ()-rotation);
+    double diffAngle = abs(cameraPose.getRotation().getZ()-rotation);
     if (diffAngle > PI) {
       diffAngle = 2*PI - diffAngle;
     }

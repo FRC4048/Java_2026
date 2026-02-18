@@ -17,11 +17,13 @@ import frc.robot.commands.AddApriltagReading;
 import frc.robot.commands.AddGarbageReading;
 import frc.robot.commands.climber.ClimberDown;
 import frc.robot.commands.climber.ClimberUp;
+import frc.robot.commands.drive.DriveCircle;
+import frc.robot.commands.drive.SpinInPlace;
 import frc.robot.commands.hopper.SpinHopper;
 import frc.robot.commands.drive.DriveDirectionTime;
 import frc.robot.commands.feeder.SpinFeeder;
 import frc.robot.commands.drive.FakeVision;
-import frc.robot.commands.drive.ResetRobotPose;
+import frc.robot.commands.ResetRobotPose;
 import frc.robot.commands.intake.SpinIntake;
 import frc.robot.commands.intakeDeployment.InitalRunDeployment;
 import frc.robot.commands.intakeDeployment.SetDeploymentState;
@@ -235,7 +237,8 @@ public class RobotContainer {
                          */
 
 
-
+                        SmartDashboard.putData("SpinInPlace", new SpinInPlace(drivebase,5,true,15));
+                        SmartDashboard.putData("DriveInCircle", new DriveCircle(drivebase, 1,5,15));
             // TODO: These commands do not REQUIRE the subsystem therefore cannot be used in// production
                         SmartDashboard.putData("resetPos", new ResetRobotPose(drivebase));
                         SmartDashboard.putData(

@@ -122,6 +122,8 @@ public class Robot extends LoggedRobot {
       SmartDashboard.putNumber("driverXbox::getRightX", driverXbox.getRightX());
       if(!Constants.TESTBED){
           Logger.recordOutput("MyPose", robotContainer.getDriveBase().getPose());
+          Logger.recordOutput("OdomPose", robotContainer.getDriveBase().getOdom());
+          Logger.recordOutput("SimPose", robotContainer.getDriveBase().getSimulationPose());
         // Puts data on the elastic dashboard
       SmartDashboard.putString("Alliance Color", Robot.allianceColorString());
       SmartDashboard.putBoolean("Hub Active?", hubActive());

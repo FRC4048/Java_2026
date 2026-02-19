@@ -238,7 +238,7 @@ public class RobotContainer {
 
 
                         SmartDashboard.putData("SpinInPlace", new SpinInPlace(drivebase,5,true,15));
-                        SmartDashboard.putData("DriveInCircle", new DriveCircle(drivebase, 1,5,15));
+                        SmartDashboard.putData("DriveInCircle", new DriveCircle(drivebase, 1,0.5,150));
             // TODO: These commands do not REQUIRE the subsystem therefore cannot be used in// production
                         SmartDashboard.putData("resetPos", new ResetRobotPose(drivebase));
                         SmartDashboard.putData(

@@ -1,13 +1,12 @@
 package frc.robot.utils;
 
-import edu.wpi.first.math.geometry.Pose3d;
-import edu.wpi.first.math.geometry.Quaternion;
-import edu.wpi.first.math.geometry.Rotation3d;
-import edu.wpi.first.math.geometry.Translation3d;
+import edu.wpi.first.math.geometry.*;
+
 import java.lang.Math.*;
 
 import edu.wpi.first.math.util.Units;
 
+import static edu.wpi.first.units.Units.Radians;
 import static java.lang.Math.PI;
 import static java.lang.Math.abs;
 
@@ -135,16 +134,17 @@ public enum Apriltag { //Andymark field:
   }
 
   public boolean canSee(Pose3d cameraPose, double HorizontalFOV, double VerticalFOV) {
-    double diffAngle = abs(cameraPose.getRotation().getZ()-rotation);
-    if (diffAngle > PI) {
-      diffAngle = 2*PI - diffAngle;
+    Pose3d adjPose = getPose().relativeTo(cameraPose);
+    double horizontalAngle = Math.atan2(adjPose.getY(), adjPose.getX());
+    double verticalAngle = Math.asin(adjPose.getZ()/adjPose.getTranslation().getNorm());
+    double tagAngle = adjPose.getRotation().getZ()+PI;
+    double diffAngle = abs(horizontalAngle-tagAngle);
+    if (diffAngle>=2*PI) {
+      diffAngle-=2*PI;
     }
-    if (diffAngle < PI/2) {
+    if (diffAngle >= PI/2 && diffAngle <=3*PI/2) {
       return false;
     }
-    Translation3d translation = getPose().relativeTo(cameraPose).getTranslation();
-    double horizontalAngle = abs(Math.atan2(translation.getY(), translation.getX()));
-    double verticalAngle = abs(Math.asin(translation.getZ()/translation.getNorm()));
-    return horizontalAngle < HorizontalFOV && verticalAngle < VerticalFOV;// TODO: Maybe change Later By Implementing Math Calculations (Linear Algebra)
+    return abs(horizontalAngle) < HorizontalFOV/2 && abs(verticalAngle) < VerticalFOV/2;// TODO: Maybe change Later By Implementing Math Calculations (Linear Algebra)
   }
 }

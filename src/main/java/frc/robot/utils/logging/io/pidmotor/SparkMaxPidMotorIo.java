@@ -1,6 +1,8 @@
 package frc.robot.utils.logging.io.pidmotor;
 
 import com.revrobotics.spark.SparkBase;
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
+
 import frc.robot.utils.logging.io.motor.SparkMaxIo;
 
 /**
@@ -56,4 +58,6 @@ public interface SparkMaxPidMotorIo extends SparkMaxIo {
      * @param pidFF the FF value to set
      */
     void setPid(double pidP, double pidI, double pidD, double iZone, double pidFF);
+
+    void idleMode(IdleMode mode);
 }

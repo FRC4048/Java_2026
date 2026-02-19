@@ -54,7 +54,7 @@ public class AimTurret extends LoggableCommand {
         }
     }
 
-    /** Moves turret to position automatically calculated based on distance from the hub.
+    /** Moves turret to position automatically calculated based on angle from the hub.
      * 
      * @param turret
      * @param robotPose
@@ -65,7 +65,7 @@ public class AimTurret extends LoggableCommand {
         new SetTurretAngle(turret, targetAngle);
     }
 
-    /** Moves turret to shuttling position based on distance from shuttling position
+    /** Moves turret to shuttling position based on angle from shuttling position
      * 
      * @param turret
      * @param robotPose

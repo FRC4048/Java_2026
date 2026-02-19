@@ -28,9 +28,6 @@ public class RunAnglerToReverseLimit extends LoggableCommand {
     @Override
     public void execute() {
         angler.runReverse();
-        if (angler.isAtReverseLimit() || timer.hasElapsed(Constants.ANGLER_TIMEOUT)) {
-            angler.resetEncoderToZero();
-        }
     }
 
     @Override
@@ -38,6 +35,7 @@ public class RunAnglerToReverseLimit extends LoggableCommand {
         if (timer.hasElapsed(Constants.ANGLER_TIMEOUT)) {
             timeoutCounter.increaseTimeoutCount();
         }
+        angler.resetEncoderToZero();
         angler.stopMotors();
     }
 

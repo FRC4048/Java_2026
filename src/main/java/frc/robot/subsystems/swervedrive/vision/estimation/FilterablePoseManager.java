@@ -15,6 +15,8 @@ import frc.robot.subsystems.swervedrive.vision.truster.VisionMeasurement;
 import frc.robot.subsystems.swervedrive.vision.truster.VisionTruster;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedDeque;
 
 import frc.robot.utils.Apriltag;
 import org.littletonrobotics.junction.Logger;
@@ -25,7 +27,8 @@ import org.littletonrobotics.junction.Logger;
  */
 public class FilterablePoseManager extends PoseManager {
   private final VisionFilter filter;
-
+  private final ConcurrentHashMap<Integer, Double> lastSeenMap = new ConcurrentHashMap<>();
+  private final ConcurrentLinkedDeque<Double> allSightings = new ConcurrentLinkedDeque<>();
   public FilterablePoseManager(
       PoseDeviation PoseDeviation,
       SwerveDriveKinematics kinematics,
@@ -79,6 +82,8 @@ public class FilterablePoseManager extends PoseManager {
             validMeasurementsAtTag.add(v);
             validTags.add(tagId);
             addVisionMeasurement(v);
+            lastSeenMap.put(tagId, v.timeOfMeasurement());
+            allSightings.add(v.timeOfMeasurement());
           }
           case NOT_PROCESSED -> queue.add(v);
           case REJECTED -> {

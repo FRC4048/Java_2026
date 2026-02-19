@@ -90,7 +90,7 @@ public class RobotContainer {
         private final HopperSubsystem hopperSubsystem;
     private final TurretSubsystem turretSubsystem;
         private final IntakeDeployerSubsystem intakeDeployer;
-        private final Supplier<Pose2d> poseSupplier;
+        private final Supplier<Pose2d> poseSupplier = null;
         private SwerveSubsystem drivebase = null;
         private GyroSubsystem gyroSubsystem = null;
         private final CommandJoystick driveJoystick = new CommandJoystick(Constants.DRIVE_JOYSTICK_PORT);

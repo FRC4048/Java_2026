@@ -12,9 +12,7 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.commands.AddTunableApriltagReading;
-import frc.robot.commands.AddApriltagReading;
-import frc.robot.commands.AddGarbageReading;
+import frc.robot.commands.*;
 import frc.robot.commands.climber.ClimberDown;
 import frc.robot.commands.climber.ClimberUp;
 import frc.robot.commands.drive.DriveCircle;
@@ -23,7 +21,6 @@ import frc.robot.commands.hopper.SpinHopper;
 import frc.robot.commands.drive.DriveDirectionTime;
 import frc.robot.commands.feeder.SpinFeeder;
 import frc.robot.commands.drive.FakeVision;
-import frc.robot.commands.ResetRobotPose;
 import frc.robot.commands.intake.SpinIntake;
 import frc.robot.commands.intakeDeployment.InitalRunDeployment;
 import frc.robot.commands.intakeDeployment.SetDeploymentState;
@@ -236,9 +233,9 @@ public class RobotContainer {
                          * new TiltDown(tiltSubsystem));
                          */
 
-
+                        //SmartDashboard.putData("TuneLoggedTunableNumber", new LoggedTunableNumberTuner(Constants.VISION_CONSISTENCY_THRESHOLD,drivebase::getError,0,10,10,10));
                         SmartDashboard.putData("SpinInPlace", new SpinInPlace(drivebase,5,true,15));
-                        SmartDashboard.putData("DriveInCircle", new DriveCircle(drivebase, 1,0.5,150));
+                        SmartDashboard.putData("DriveInCircle", new DriveCircle(drivebase, 1,10,15000));
             // TODO: These commands do not REQUIRE the subsystem therefore cannot be used in// production
                         SmartDashboard.putData("resetPos", new ResetRobotPose(drivebase));
                         SmartDashboard.putData(

@@ -75,14 +75,14 @@ public class FilterablePoseManager extends PoseManager {
       List<VisionMeasurement> validMeasurementsAtTag = new ArrayList<>();
       List<VisionMeasurement> invalidMeasurementsAtTag = new ArrayList<>();
       LinkedHashMap<VisionMeasurement, FilterResult> filteredData =
-              filter.filter(queue);
+              filter.filter(queue, drivebase.getCameraPose());
       queue.clear();
       for (Map.Entry<VisionMeasurement, FilterResult> filterEntry : filteredData.entrySet()) {
         VisionMeasurement v = filterEntry.getKey();
         FilterResult r = filterEntry.getValue();
         switch (r) {
           case ACCEPTED -> {
-            setVisionSTD(visionTruster.calculateTrust(v));
+            setVisionSTD(visionTruster.calculateTrust(v, drivebase.getCameraPose()));
             validMeasurements.add(v);
             validMeasurementsPose.add(v.measurement());
             validMeasurementsAtTag.add(v);

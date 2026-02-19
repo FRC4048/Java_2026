@@ -72,19 +72,20 @@ public class PoseEstimator {
             initGyroValueDeg);*/
     TimeInterpolatableBuffer<Pose2d> m1Buffer =
         TimeInterpolatableBuffer.createBuffer(Constants.POSE_BUFFER_STORAGE_TIME);
+    VisionTruster truster = new SquareVisionTruster(Constants.INITIAL_VISION_STD_DEVS, Constants.VISION_STD_DEV_CONST);
     this.poseManager =
         new FilterablePoseManager(
             Constants.INITIAL_VISION_STD_DEVS,
             kinematics,
             drivebase,
             m1Buffer,
-            new BasicVisionFilter(m1Buffer) {
+            new BasicVisionFilter(m1Buffer, truster) {
               @Override
               public Pose2d getVisionPose(VisionMeasurement measurement) {
                 return measurement.measurement();
               }
-            },
-            new SquareVisionTruster(Constants.INITIAL_VISION_STD_DEVS, Constants.VISION_STD_DEV_CONST));
+            }, truster);
+
   }
 
 
@@ -135,7 +136,7 @@ public class PoseEstimator {
     double timestamp = apriltagSystem.getIO().getInputs().timestamp[index];
     Pose2d visionPose = new Pose2d(pos[0], pos[1], Rotation2d.fromDegrees(pos[2]));
     double distanceFromTag = apriltagSystem.getIO().getInputs().distanceToTag[index];
-    return new VisionMeasurement(visionPose, distanceFromTag, timestamp/1000);
+    return new VisionMeasurement(visionPose, apriltagSystem.getIO().getInputs().apriltagNumber[index],distanceFromTag, timestamp/1000);
   }
 
   /**
@@ -185,7 +186,7 @@ public class PoseEstimator {
 
   public void addMockVisionMeasurement() {
     poseManager.registerVisionMeasurement(
-        new VisionMeasurement(getEstimatedPose(), 0, Logger.getTimestamp() / 1e6),1);
+        new VisionMeasurement(getEstimatedPose(), 1,0, Logger.getTimestamp() / 1e6),1);
   }
 
   public VisionTruster getVisionTruster() {

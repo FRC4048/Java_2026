@@ -1,7 +1,10 @@
 package frc.robot.subsystems.swervedrive.vision.truster;
 
+import edu.wpi.first.math.Vector;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.interpolation.TimeInterpolatableBuffer;
+import edu.wpi.first.math.numbers.N3;
 import frc.robot.constants.Constants;
 import java.util.LinkedHashMap;
 import java.util.Optional;
@@ -17,14 +20,16 @@ import java.util.Queue;
 public abstract class BasicVisionFilter implements VisionFilter, VisionTransformer {
 
   private final TimeInterpolatableBuffer<Pose2d> poseBuffer;
+  private final VisionTruster truster;
 
-  public BasicVisionFilter(TimeInterpolatableBuffer<Pose2d> poseBuffer) {
+  public BasicVisionFilter(TimeInterpolatableBuffer<Pose2d> poseBuffer, VisionTruster truster) {
     this.poseBuffer = poseBuffer;
+    this.truster = truster;
   }
 
   @Override
   public LinkedHashMap<VisionMeasurement, FilterResult> filter(
-      Queue<VisionMeasurement> measurements) {
+      Queue<VisionMeasurement> measurements, Pose3d cameraPose) {
     LinkedHashMap<VisionMeasurement, FilterResult> resultMap = new LinkedHashMap<>();
     VisionMeasurement m1 = measurements.poll();
     VisionMeasurement m2 = measurements.peek();
@@ -54,7 +59,7 @@ public abstract class BasicVisionFilter implements VisionFilter, VisionTransform
       Pose2d vision1Pose = getVisionPose(m1);
       Pose2d vision2Pose = getVisionPose(m2);
       boolean valid1 =
-          filterVision(vision1Pose, vision2Pose, m1.timeOfMeasurement(), m2.timeOfMeasurement());
+          filterVision(m1, m2, cameraPose);
       resultMap.put(m1, valid1 ? FilterResult.ACCEPTED : FilterResult.REJECTED);
       m1 = measurements.poll();
       m2 = measurements.peek();
@@ -63,20 +68,24 @@ public abstract class BasicVisionFilter implements VisionFilter, VisionTransform
     return resultMap;
   }
 
-  private boolean filterVision(Pose2d m1Pose, Pose2d m2Pose, double m1Time, double m2Time) {
-    Optional<Pose2d> odomPoseAtVis1 = poseBuffer.getSample(m1Time);
-    Optional<Pose2d> odomPoseAtVis2 = poseBuffer.getSample(m2Time);
+  private boolean filterVision(VisionMeasurement m1, VisionMeasurement m2, Pose3d cameraPose) {
+    Optional<Pose2d> odomPoseAtVis1 = poseBuffer.getSample(m1.timeOfMeasurement());
+    Optional<Pose2d> odomPoseAtVis2 = poseBuffer.getSample(m2.timeOfMeasurement());
     if (odomPoseAtVis1.isEmpty() || odomPoseAtVis2.isEmpty()) {
       return false;
     }
-    if (!inBounds(m1Pose) || !inBounds(m2Pose)) {
+    if (!inBounds(m1.measurement()) || !inBounds(m2.measurement())) {
       return false;
     }
     double odomDiff1To2 =
         odomPoseAtVis1.get().getTranslation().getDistance(odomPoseAtVis2.get().getTranslation());
-    double visionDiff1To2 = m1Pose.getTranslation().getDistance(m2Pose.getTranslation());
+    double visionDiff1To2 = m1.measurement().getTranslation().getDistance(m2.measurement().getTranslation());
     double diff = Math.abs(odomDiff1To2 - visionDiff1To2);
-    return Math.abs(diff) <= Constants.VISION_CONSISTENCY_THRESHOLD;
+    Vector<N3> std = truster.calculateTrust(m1, cameraPose);
+    if (std.get(0) > Constants.VISION_STD_THRESHOLD.get()) {
+      return false;
+    }
+    return Math.abs(diff) <= Constants.VISION_CONSISTENCY_THRESHOLD.get();
   }
   
   public static boolean inBounds(Pose2d pose2d) {

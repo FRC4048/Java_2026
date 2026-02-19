@@ -25,7 +25,7 @@ public class PoseManager {
     private final TimeInterpolatableBuffer<Pose2d> estimatedPoseBuffer;
     //private final SwerveDrivePoseEstimator poseEstimator;
     protected final LinkedHashMap<Integer, Queue<VisionMeasurement>> visionMeasurementQueueMap = new LinkedHashMap<>();
-    private final SwerveSubsystem drivebase;
+    protected final SwerveSubsystem drivebase;
     protected final VisionTruster visionTruster;
 
     public PoseManager(
@@ -75,7 +75,8 @@ public class PoseManager {
         for (Queue<VisionMeasurement> queue : visionMeasurementQueueMap.values()) {
             VisionMeasurement m = queue.poll();
             while (m != null) {
-                setVisionSTD(visionTruster.calculateTrust(m));addVisionMeasurement(m);
+                setVisionSTD(visionTruster.calculateTrust(m, drivebase.getCameraPose()));
+                addVisionMeasurement(m);
                 m = queue.poll();
             }
         }

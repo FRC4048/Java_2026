@@ -8,6 +8,8 @@ import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.RobotBase;
+import frc.robot.utils.logging.LoggedTunableNumber;
+import org.littletonrobotics.junction.networktables.LoggedNetworkNumber;
 import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
 
 import static edu.wpi.first.units.Units.Radians;
@@ -152,7 +154,10 @@ public class GameConstants {
     public static final int SHIFT_4_START = 55;
     public static final int ENDGAME_START = 30;
 
-    public static final double VISION_CONSISTENCY_THRESHOLD = 0.25; //How close 2 vision measurements have to be (needs to be tuned potentially but seemingly from my testing it also might not be needed)
+    public static final LoggedTunableNumber VISION_SMOOTHER = new LoggedTunableNumber("VISION_SMOOTHER", 1.0);
+    public static final LoggedTunableNumber VISION_CONSISTENCY_THRESHOLD = new LoggedTunableNumber("VISION_CONSISTENCY_THRESHOLD", 100); //How close 2 vision measurements have to be (needs to be tuned potentially but seemingly from my testing it also might not be needed)
+    public static final LoggedTunableNumber VISION_STD_THRESHOLD = new LoggedTunableNumber("VISION_STD_THRESHOLD", 0.25);
+    public static final LoggedTunableNumber MAX_VISION_DISTANCE = new LoggedTunableNumber("MAX_VISION_DISTANCE", 6);
     public static final boolean ENABLE_VISION = true;
     public static final double POSE_BUFFER_STORAGE_TIME = 2; //how many past measurements are stored in the buffer (might increase if we need further back)
 

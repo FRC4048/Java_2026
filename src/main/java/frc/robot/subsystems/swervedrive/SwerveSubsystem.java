@@ -9,6 +9,7 @@ import edu.wpi.first.math.Vector;
 import static edu.wpi.first.units.Units.Meter;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -26,7 +27,9 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Config;
 import frc.robot.constants.Constants;
 
+import frc.robot.subsystems.swervedrive.vision.estimation.FilterablePoseManager;
 import frc.robot.utils.logging.io.gyro.ThreadedGyro;
+import org.littletonrobotics.junction.Logger;
 import swervelib.SwerveController;
 import swervelib.SwerveDrive;
 import swervelib.SwerveDriveTest;
@@ -42,6 +45,7 @@ import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
 import java.io.File;
 import java.util.Arrays;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 
@@ -53,6 +57,9 @@ public class SwerveSubsystem extends SubsystemBase {
     private Vector<N3> variance = VecBuilder.fill(0,0,0);
     private final Field2d rawOdomField = new Field2d();
     private SwerveDriveOdometry rawOdometry;
+    private final ConcurrentLinkedDeque<PoseErrorRecord> poseError = new ConcurrentLinkedDeque<>();
+    private record PoseErrorRecord(double timestamp, double error) {
+    }
     /**
      * Initialize {@link SwerveDrive} with the directory provided.
      * The SwerveIMU (which can be null) is the instance of the SwerveIMU to use. If non-null,
@@ -130,6 +137,11 @@ public class SwerveSubsystem extends SubsystemBase {
 
         // 5. Update the Field2d object
         rawOdomField.setRobotPose(rawOdometry.getPoseMeters());
+        double currentTime = Logger.getTimestamp()/1000000.0;
+        double oneSecondAgo = currentTime - 1.0;
+        poseError.removeIf(record -> record.timestamp < oneSecondAgo);
+        poseError.add(new PoseErrorRecord(currentTime, getError()));
+        Logger.recordOutput("AveragePoseError", getAverageError());
     }
 
     @Override
@@ -325,6 +337,15 @@ public class SwerveSubsystem extends SubsystemBase {
     public Pose2d getPose() {
         return swerveDrive.getPose();
     }
+    public double getError() {
+        return getPose().getTranslation().getDistance((getSimulationPose().getTranslation()));
+    }
+    public double getAverageError(){
+        return poseError.stream().mapToDouble(record -> record.error).average().orElse(0);
+    }
+    public Pose3d getCameraPose() {
+        return new Pose3d(getSimulationPose()).transformBy(Constants.ROBOT_TO_CAMERA);
+    }
 
     public Pose2d getSimulationPose() {
         return swerveDrive.getSimulationDriveTrainPose().orElse(new Pose2d());
@@ -502,7 +523,7 @@ public class SwerveSubsystem extends SubsystemBase {
         return swerveDrive;
     }
     public void setVariance(Vector<N3> variance){
-        this.variance = variance;
+        this.variance = variance.times(Constants.VISION_SMOOTHER.get());
     }
     public void addVisionMeasurement(Pose2d pose, double visionTimestamp){
         swerveDrive.addVisionMeasurement(pose, visionTimestamp, variance);

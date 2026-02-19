@@ -72,6 +72,10 @@ public class SwerveDriveCustom extends SwerveDrive {
         }
     }
 
+    public void resetSimPose(Pose2d pose) {
+        getMapleSimDrive().ifPresent(sim -> sim.setSimulationWorldPose(pose));
+    }
+
     @Override
     public void updateOdometry() {
         SwerveDriveTelemetry.startOdomCycle();

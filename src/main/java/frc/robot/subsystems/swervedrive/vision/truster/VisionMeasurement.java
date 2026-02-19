@@ -9,4 +9,4 @@ import edu.wpi.first.math.geometry.Pose2d;
  * @param timeOfMeasurement time when the pose was measured (seconds)
  */
 public record VisionMeasurement(
-    Pose2d measurement, double distanceFromTag, double timeOfMeasurement) {}
+    Pose2d measurement, int tagNumber, double distanceFromTag, double timeOfMeasurement) {}

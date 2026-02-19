@@ -132,7 +132,6 @@ public class Robot extends LoggedRobot {
     SmartDashboard.putBoolean("Hub Active?", hubActive());
     SmartDashboard.putString("Selected Action", 
       robotContainer.getAutoChooser().getCommandDescription());
-    SmartDashboard.putString("Starting Location", location().toString());
 
     // Gets the alliance color.
     if (DriverStation.isDSAttached() && allianceColor.isEmpty()) {

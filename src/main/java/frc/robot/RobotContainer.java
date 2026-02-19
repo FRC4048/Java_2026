@@ -80,7 +80,7 @@ import choreo.auto.AutoTrajectory;
  */
 public class RobotContainer {
         // Instantiate the autochooser.
-        private final AutoChooser autoChooser = new AutoChooser();
+        private final AutoChooser autoChooser;
         // The robot's subsystems and commands are defined here...
         // private final TiltSubsystem tiltSubsystem;
         private final AnglerSubsystem anglerSubsystem;
@@ -133,6 +133,7 @@ public class RobotContainer {
 
                                 drivebase = !Constants.TESTBED ? new SwerveSubsystem(
                                                 new File(Filesystem.getDeployDirectory(), "YAGSL"), swerveIMU) : null;
+
                         }
                         case REPLAY -> {
                                 // rollerSubsystem = new RollerSubsystem(RollerSubsystem.createMockIo());
@@ -150,6 +151,7 @@ public class RobotContainer {
                                 // create the drive subsystem with null gyro (use default json)
                                 drivebase = !Constants.TESTBED ? new SwerveSubsystem(
                                                 new File(Filesystem.getDeployDirectory(), "YAGSL"), null) : null;
+
                         }
                         case SIM -> {
                                 robotVisualizer = new RobotVisualizer();
@@ -172,6 +174,7 @@ public class RobotContainer {
                                 // create the drive subsystem with null gyro (use default json)
                                 drivebase = !Constants.TESTBED ? new SwerveSubsystem(
                                                 new File(Filesystem.getDeployDirectory(), "YAGSL"), null) : null;
+
                         }
 
                         default -> {
@@ -179,9 +182,10 @@ public class RobotContainer {
                         }
                 }
 
+                setUpAutoFactory();
+                autoChooser = new AutoChooser(drivebase, shootState, autoFactory, shooterSubsystem, climberSubsystem);
                 configureBindings();
                 putShuffleboardCommands();
-                setUpAutoFactory();
         }
 
         /**
@@ -199,6 +203,11 @@ public class RobotContainer {
          * joysticks}.
          */
         private void setUpAutoFactory() {
+                if (drivebase == null) {
+                        autoFactory = null;
+                        drive = null;
+                        return;
+                }
 
                 drive = new Drive(drivebase);
 
@@ -459,9 +468,9 @@ public class RobotContainer {
          * @return the command to run in autonomous
          */
         public Command getAutonomousCommand() {
-                // return autoChooser.getCommand();
+                return autoChooser.getCommand();
                 // return straightRoutine.cmd(straightTrajectory.done());
-                return new ExampleAuto(drivebase, autoFactory);
+                // return new ExampleAuto(drivebase, autoFactory);
         }
 
         public ClimberSubsystem getClimberSubsystem() {

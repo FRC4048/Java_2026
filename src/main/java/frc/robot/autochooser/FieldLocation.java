@@ -12,11 +12,11 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public enum FieldLocation {
-  ZERO(0, 0, 0, "Zero"),
-  INVALID(-1, -1, -1, "INVALID"),
-  LEFT(7.150, 7.000, 180, "NON Processor Side"),
-  MIDDLE(7.150, 4.500, 180, "Middle"),
-  RIGHT(7.150, 2.000, 180, "Processor Side");
+  ZERO(0, 0, 0, "zero"),
+  INVALID(-1, -1, -1, "invalid"),
+  LEFT(7.150, 7.000, 180, "left (from driver station pov)"),
+  MIDDLE(7.150, 4.500, 180, "middle"),
+  RIGHT(7.150, 2.000, 180, "right (from driver station pov)");
 
   private static final double RED_X_POS = 2.3876; // meters
   public static final double HEIGHT_OF_FIELD = 8.05;

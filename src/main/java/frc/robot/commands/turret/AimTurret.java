@@ -33,7 +33,7 @@ public class AimTurret extends LoggableCommand {
     public void execute() {
         Pose2d robotPose = poseSupplier.get();
         ShootState state = shootingState.getShootState();
-        handleState(state, robotPose, isBlueAlliance);
+        handleState(state, robotPose);
     }
 
     @Override
@@ -41,45 +41,55 @@ public class AimTurret extends LoggableCommand {
         return false;
     }
 
-    private void handleState(ShootState state, Pose2d robotPose, boolean isBlueAlliance) {
+    private void handleState(ShootState state, Pose2d robotPose) {
         switch (state) {
-            case STOPPED: turret.stopMotors();
-            // set to fixed turret angle at the various fixed states
-            case FIXED: new SetTurretAngle(turret, GameConstants.FIXED_TURRET_ANGLE_1);
-            case FIXED_2: new SetTurretAngle(turret, GameConstants.FIXED_TURRET_ANGLE_2);
-            // auto aim to hub
-            case SHOOTING_HUB: AutoShoot(turret, robotPose, isBlueAlliance);
-            // auto aim to shuttle site
-            case SHUTTLING: ShuttleShoot(turret, robotPose, isBlueAlliance);
+            case STOPPED:
+                turret.stopMotors();
+                // set to fixed turret angle at the various fixed states
+            case FIXED:
+                new SetTurretAngle(turret, GameConstants.FIXED_TURRET_ANGLE_1);
+            case FIXED_2:
+                new SetTurretAngle(turret, GameConstants.FIXED_TURRET_ANGLE_2);
+                // auto aim to hub
+            case SHOOTING_HUB:
+                AutoShoot(turret, robotPose);
+                // auto aim to shuttle site
+            case SHUTTLING:
+                ShuttleShoot(turret, robotPose);
         }
     }
 
-    /** Moves turret to position automatically calculated based on angle from the hub.
+    /**
+     * Moves turret to position automatically calculated based on angle from the
+     * hub.
      * 
      * @param turret
      * @param robotPose
-     * @param isBlueAlliance
      */
-    private void AutoShoot(TurretSubsystem turret, Pose2d robotPose, boolean isBlueAlliance) {
-        double targetAngle = TurretCalculations.calculateTurretAngle(robotPose.getX(), robotPose.getY(), robotPose.getRotation().getRadians(), isBlueAlliance);
+    private void AutoShoot(TurretSubsystem turret, Pose2d robotPose) {
+        double targetAngle = TurretCalculations.calculateTurretAngle(robotPose.getX(), robotPose.getY(),
+                robotPose.getRotation().getRadians(), isBlueAlliance);
         new SetTurretAngle(turret, targetAngle);
     }
 
-    /** Moves turret to shuttling position based on angle from shuttling position
+    /**
+     * Moves turret to shuttling position based on angle from shuttling position
      * 
      * @param turret
      * @param robotPose
-     * @param isBlueAlliance
-      */
-    private void ShuttleShoot(TurretSubsystem turret, Pose2d robotPose, boolean isBlueAlliance) {
-        double targetAngle = TurretCalculations.calculateTurretShuttleAngle(robotPose.getX(), robotPose.getY(), robotPose.getRotation().getRadians(), isBlueAlliance);
+     */
+    private void ShuttleShoot(TurretSubsystem turret, Pose2d robotPose) {
+        double targetAngle = TurretCalculations.calculateTurretShuttleAngle(robotPose.getX(), robotPose.getY(),
+                robotPose.getRotation().getRadians(), isBlueAlliance);
         new SetTurretAngle(turret, targetAngle);
     }
 
-     /**
-     * Checks if the alliance is blue, defaults to false if alliance isn't available.
+    /**
+     * Checks if the alliance is blue, defaults to false if alliance isn't
+     * available.
      *
-     * @return true if the blue alliance, false if red. Defaults to false if none is available.
+     * @return true if the blue alliance, false if red. Defaults to false if none is
+     *         available.
      */
     private boolean isBlue() {
         var alliance = DriverStation.getAlliance();

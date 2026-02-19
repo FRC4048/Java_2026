@@ -90,7 +90,6 @@ public class RobotContainer {
         private final HopperSubsystem hopperSubsystem;
     private final TurretSubsystem turretSubsystem;
         private final IntakeDeployerSubsystem intakeDeployer;
-        private final Supplier<Pose2d> poseSupplier = null;
         private SwerveSubsystem drivebase = null;
         private GyroSubsystem gyroSubsystem = null;
         private final CommandJoystick driveJoystick = new CommandJoystick(Constants.DRIVE_JOYSTICK_PORT);
@@ -227,6 +226,8 @@ public class RobotContainer {
                         Command driveFieldOrientedAnglularVelocity = drivebase.driveFieldOriented(driveAngularVelocity);
                         drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity);
                 }
+
+                turretSubsystem.setDefaultCommand(new AimTurret(turretSubsystem, drivebase::getPose, getShootingState()));
         }
 
         public void putShuffleboardCommands() {
@@ -386,9 +387,6 @@ public class RobotContainer {
                                         new AddTunableApriltagReading(apriltagSubsystem));
                         SmartDashboard.putData("AddApriltagReading", new AddApriltagReading(apriltagSubsystem,
                                         new ApriltagReading(0, 0, 0, 0, 0, 0, 0)));
-
-                        SmartDashboard.putData("Aim Turret",
-                                        new AimTurret(turretSubsystem, poseSupplier, getShootingState()));
 
                 }
 

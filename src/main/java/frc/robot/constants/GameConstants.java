@@ -146,9 +146,9 @@ public class GameConstants {
     public static final int ENDGAME_START = 30;
 
     //Angler Position constrants 
-    public static final double TRENCH_BLUE_LEFT = 0;
-    public static final double TRENCH_BLUE_RIGHT = 0;
-    public static final double TRENCH_RED_LEFT = 0;
-    public static final double TRENCH_RED_RIGHT = 0;
+    public static final double TRENCH_BLUE_LEFT = 3.7;
+    public static final double TRENCH_BLUE_RIGHT = 5.3;
+    public static final double TRENCH_RED_LEFT = 10.900;
+    public static final double TRENCH_RED_RIGHT = 12.900;
 
 }

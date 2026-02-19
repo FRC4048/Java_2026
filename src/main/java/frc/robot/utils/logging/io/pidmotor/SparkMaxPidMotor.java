@@ -51,7 +51,7 @@ public class SparkMaxPidMotor {
         config
                 .smartCurrentLimit(pidConfig.getCurrentLimit())
                 .closedLoopRampRate(RAMP_RATE)
-                .idleMode(IdleMode.kBrake);
+                .idleMode(IdleMode.kCoast);
         config
                 .closedLoop
                 .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
@@ -92,7 +92,7 @@ public class SparkMaxPidMotor {
                 .closedLoop
                 .pid(params.getP(), params.getI(), params.getD())
                 .iZone(params.getIZone())
-                .feedForward.kV(pidConfig.getFF());
+                .feedForward.kV(params.getFF());
         if (params.getUsesMaxMotion()) {
             config
                     .closedLoop

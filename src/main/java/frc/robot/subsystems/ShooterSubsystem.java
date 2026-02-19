@@ -9,6 +9,7 @@ import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.constants.Constants;
@@ -36,7 +37,7 @@ public class ShooterSubsystem extends SubsystemBase {
         io.setPid(0.0000002, 0.000015, 0.000015); // Pid needs tuning
         followerMotor = new SparkMax(Constants.SHOOTER_FOLLOWER_MOTOR_ID, SparkLowLevel.MotorType.kBrushless);
         followerConfig = new SparkMaxConfig();
-        followerConfig.follow(Constants.SHOOTER_MOTOR_ID, true);
+        followerConfig.follow(Constants.SHOOTER_MOTOR_ID, true).idleMode(IdleMode.kCoast);
         followerMotor.configure(followerConfig, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
 
     }
@@ -74,7 +75,7 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public static SparkMaxPidMotor createMotor() {
-        return new SparkMaxPidMotor(Constants.SHOOTER_MOTOR_ID, true);
+        return new SparkMaxPidMotor(Constants.SHOOTER_MOTOR_ID, false);
     }
 
 }

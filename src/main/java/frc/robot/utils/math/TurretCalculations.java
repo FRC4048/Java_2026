@@ -68,4 +68,45 @@ public class TurretCalculations {
 
     }
 
+    // shuttlePosX and shuttlePosY are given values from the constants file -- gives the x and y positions of the shuttle site (in meters)
+    public static double calculateTurretShuttleAngle(double robotPosX, double robotPosY, double robotRotation, boolean isBlueAlliance) {
+        
+        // calculates the position of the turret with respect to the origin using the robot center 
+        // and the constant distance between the robot center and the turret.
+        double turretPosX = robotPosX + GameConstants.X_DISTANCE_BETWEEN_ROBOT_AND_TURRET;
+        double turretPosY = robotPosY + GameConstants.Y_DISTANCE_BETWEEN_ROBOT_AND_TURRET;
+
+        double shuttlePosX;
+        double shuttlePosY;
+
+        if (isBlueAlliance) {
+            // shuttle position determined by which alliance robot is on
+            shuttlePosX = GameConstants.BLUE_SHUTTLE_X_POSITION;
+            shuttlePosY = GameConstants.BLUE_SHUTTLE_Y_POSITION;
+        } else {
+            shuttlePosX = GameConstants.RED_SHUTTLE_X_POSITION;
+            shuttlePosY = GameConstants.RED_SHUTTLE_Y_POSITION;
+        }
+
+        /*
+         * This finds the unadjusted pan angle (assuming there is no robot rotation) using
+         * trigonometry. We take the arctangent of the y-distance beween the robot and the shuttle position
+         * and the x-distance between the robot and the shuttle position, giving us the unadjusted pan
+         * angle. The function atan2 ensures the sign of the angle is correct based on the signs
+         * of the input numbers.
+         * 
+         */
+        double panAngleUnadjusted = Math.atan2(shuttlePosY - turretPosY, shuttlePosX - turretPosX);
+
+        /*
+         * Adjusts the pan angle to account for the robot's current rotation. We subtract the
+         * angle of the robot's rotation from the unadjusted angle of the turret to find the 
+         * pan angle, which is the proper angle of the turret adjusted for the robot's rotation.
+         */
+        double panAngle = panAngleUnadjusted - robotRotation;
+
+        return panAngle;
+
+    }
+
 }

@@ -57,6 +57,9 @@ public class GameConstants {
     public static final double INITIAL_INTAKE_DEPLOYER_SPEED = 10;
     public static final double INITIAL_INTAKE_RETRACTION_SPEED = -10;
 
+    // Fixed Angles
+    public static final double FIXED_TURRET_ANGLE_1 = 0;
+    public static final double FIXED_TURRET_ANGLE_2 = 0;
 
     //Timeouts
     public static final double SPIN_TIMEOUT = 5;
@@ -135,6 +138,10 @@ public class GameConstants {
     public static final double BLUE_HUB_Y_POSITION = 4.0345;
     public static final double RED_HUB_X_POSITION = 11.9154;
     public static final double RED_HUB_Y_POSITION = 4.0345;
+    public static final double BLUE_SHUTTLE_X_POSITION = 3;
+    public static final double BLUE_SHUTTLE_Y_POSITION = 4.0345;
+    public static final double RED_SHUTTLE_X_POSITION = 3;
+    public static final double RED_SHUTTLE_Y_POSITION = 4.0345;
     public static final double X_DISTANCE_BETWEEN_ROBOT_AND_TURRET = .4; // needs value from hardware
     public static final double Y_DISTANCE_BETWEEN_ROBOT_AND_TURRET = .4; // needs value from hardware
 

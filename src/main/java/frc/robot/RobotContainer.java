@@ -29,6 +29,7 @@ import frc.robot.autochooser.AutoChooser;
 import frc.robot.commands.angler.AimAngler;
 import frc.robot.commands.angler.RunAnglerToReverseLimit;
 import frc.robot.commands.shooter.SetShootingState;
+import frc.robot.commands.turret.AimTurret;
 import frc.robot.commands.turret.RunTurretToFwdLimit;
 import frc.robot.commands.turret.RunTurretToRevLimit;
 import frc.robot.commands.turret.SetTurretAngle;
@@ -63,6 +64,7 @@ import frc.robot.apriltags.MockApriltagIo;
 import frc.robot.apriltags.TCPApriltagIo;
 
 import java.io.File;
+import java.util.function.Supplier;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -88,6 +90,7 @@ public class RobotContainer {
         private final HopperSubsystem hopperSubsystem;
     private final TurretSubsystem turretSubsystem;
         private final IntakeDeployerSubsystem intakeDeployer;
+        private final Supplier<Pose2d> poseSupplier;
         private SwerveSubsystem drivebase = null;
         private GyroSubsystem gyroSubsystem = null;
         private final CommandJoystick driveJoystick = new CommandJoystick(Constants.DRIVE_JOYSTICK_PORT);
@@ -383,6 +386,9 @@ public class RobotContainer {
                                         new AddTunableApriltagReading(apriltagSubsystem));
                         SmartDashboard.putData("AddApriltagReading", new AddApriltagReading(apriltagSubsystem,
                                         new ApriltagReading(0, 0, 0, 0, 0, 0, 0)));
+
+                        SmartDashboard.putData("Aim Turret",
+                                        new AimTurret(turretSubsystem, poseSupplier, getShootingState()));
 
                 }
 

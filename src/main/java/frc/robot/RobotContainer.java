@@ -27,7 +27,9 @@ import frc.robot.commands.intakeDeployment.InitalRunDeployment;
 import frc.robot.commands.intakeDeployment.SetDeploymentState;
 import frc.robot.autochooser.AutoChooser;
 import frc.robot.commands.angler.AimAngler;
+import frc.robot.commands.angler.DefaultAnglerControl;
 import frc.robot.commands.angler.RunAnglerToReverseLimit;
+import frc.robot.commands.shooter.DefaultShooterControl;
 import frc.robot.commands.shooter.SetShootingState;
 import frc.robot.commands.shooter.SpinShooter;
 import frc.robot.constants.Constants;
@@ -82,7 +84,7 @@ public class RobotContainer {
         private final ApriltagSubsystem apriltagSubsystem;
         private final ShooterSubsystem shooterSubsystem;
         private final ControllerSubsystem controllerSubsystem;
-    private RobotVisualizer robotVisualizer = null;
+        private RobotVisualizer robotVisualizer = null;
         private final HopperSubsystem hopperSubsystem;
         private final IntakeDeployerSubsystem intakeDeployer;
         private SwerveSubsystem drivebase = null;
@@ -210,20 +212,10 @@ public class RobotContainer {
                 }
 
         if (controllerSubsystem != null) {
-            anglerSubsystem.setDefaultCommand(new RunCommand(
-                    () -> anglerSubsystem.setAngle(controllerSubsystem.getTargetAnglerAngleDegrees()),
-                    anglerSubsystem));
-
-            shooterSubsystem.setDefaultCommand(new RunCommand(
-                    () -> {
-                        double targetShooterVelocity = controllerSubsystem.getTargetShooterVelocityRpm();
-                        if (targetShooterVelocity > 0.0) {
-                            shooterSubsystem.setPidVelocity(targetShooterVelocity);
-                        } else {
-                            shooterSubsystem.stopMotors();
-                        }
-                    },
-                    shooterSubsystem));
+            anglerSubsystem.setDefaultCommand(new DefaultAnglerControl(anglerSubsystem, controllerSubsystem));
+            shooterSubsystem.setDefaultCommand(new DefaultShooterControl(shooterSubsystem, controllerSubsystem));
+            hopperSubsystem.setDefaultCommand(new SpinHopper(hopperSubsystem, controllerSubsystem));
+            feederSubsystem.setDefaultCommand(new SpinFeeder(feederSubsystem, controllerSubsystem));
         }
 
                 if (!Constants.TESTBED) {
@@ -323,11 +315,11 @@ public class RobotContainer {
 
                         SmartDashboard.putData(
                                         "Start Hopper",
-                                        new SpinHopper(hopperSubsystem, shootState));
+                                        new SpinHopper(hopperSubsystem, controllerSubsystem));
 
                         SmartDashboard.putData(
                                         "Spin Feeder",
-                                        new SpinFeeder(feederSubsystem, shootState));
+                                        new SpinFeeder(feederSubsystem, controllerSubsystem));
                         SmartDashboard.putData(
                                         "intakedeployer/InitlizeDeployer",
                                         new InitalRunDeployment(intakeDeployer));
@@ -337,7 +329,7 @@ public class RobotContainer {
             
             SmartDashboard.putData(
                     "Start Hopper",
-                    new SpinHopper(hopperSubsystem, shootState));
+                    new SpinHopper(hopperSubsystem, controllerSubsystem));
             
             SmartDashboard.putData(
                     "Climber Up",
@@ -349,7 +341,7 @@ public class RobotContainer {
 
           SmartDashboard.putData(
                     "Spin Feeder",
-                    new SpinFeeder(feederSubsystem, shootState));
+                    new SpinFeeder(feederSubsystem, controllerSubsystem));
 
                         SmartDashboard.putData(
                                         "Spin Shooter",

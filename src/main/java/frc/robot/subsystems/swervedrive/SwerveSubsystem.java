@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems.swervedrive;
 
+import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.Vector;
 import static edu.wpi.first.units.Units.Meter;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -11,8 +13,10 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Config;
@@ -43,7 +47,7 @@ public class SwerveSubsystem extends SubsystemBase {
      * Swerve drive object.
      */
     private final SwerveDrive swerveDrive;
-
+    private Vector<N3> variance = VecBuilder.fill(0.1,0.1,0.1);
     /**
      * Initialize {@link SwerveDrive} with the directory provided.
      * The SwerveIMU (which can be null) is the instance of the SwerveIMU to use. If non-null,
@@ -82,6 +86,7 @@ public class SwerveSubsystem extends SubsystemBase {
         swerveDrive.setModuleEncoderAutoSynchronize(Constants.SET_MODULE_ENCODER_AUTO_SYNCHRONIZE,
                 Constants.SET_MODULE_ENCODER_AUTO_SYNCHRONIZE_DEADBAND); // Enable if you want to resynchronize your absolute encoders and motor encoders periodically when they are not moving.
         // swerveDrive.pushOffsetsToEncoders(); // Set the absolute encoder to be used over the internal encoder and push the offsets onto it. Throws warning if not possible
+    
     }
 
     /**
@@ -96,10 +101,13 @@ public class SwerveSubsystem extends SubsystemBase {
                 Constants.MAX_SPEED,
                 new Pose2d(new Translation2d(Meter.of(2), Meter.of(0)),
                         Rotation2d.fromDegrees(0)));
+
     }
 
     @Override
     public void periodic() {
+        //add vision pose here
+        //addVisionMeasurement(new Pose2d(new Translation2d(16, 2), new Rotation2d()));
     }
 
     @Override
@@ -289,6 +297,10 @@ public class SwerveSubsystem extends SubsystemBase {
     public Pose2d getPose() {
         return swerveDrive.getPose();
     }
+    // Todo: fix to only get odomtry
+    public Pose2d getOdom() {
+        return swerveDrive.getPose();
+    }
 
     /**
      * Set chassis speeds with closed-loop velocity control.
@@ -456,5 +468,14 @@ public class SwerveSubsystem extends SubsystemBase {
      */
     public SwerveDrive getSwerveDrive() {
         return swerveDrive;
+    }
+    public void setVariance(Vector<N3> variance){
+        this.variance = variance;
+    }
+    public void addVisionMeasurement(Pose2d pose, double visionTimestamp){
+        swerveDrive.addVisionMeasurement(pose, visionTimestamp, variance);
+    }
+    public void addVisionMeasurement(Pose2d pose){
+        swerveDrive.addVisionMeasurement(pose, Timer.getFPGATimestamp(), variance);
     }
 }

@@ -4,7 +4,11 @@ import edu.wpi.first.wpilibj.Timer;
 import frc.robot.constants.Constants;
 import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
+<<<<<<< HEAD
 import frc.robot.utils.logging.LoggedTunableNumber;
+=======
+import frc.robot.utils.logging.TimeoutLogger;
+>>>>>>> main
 import frc.robot.utils.logging.commands.LoggableCommand;
 
 public class SpinFeeder  extends LoggableCommand {

@@ -1,0 +1,65 @@
+package frc.robot.apriltags;
+
+import edu.wpi.first.math.geometry.*;
+import frc.robot.constants.Constants;
+import frc.robot.utils.Apriltag;
+import frc.robot.utils.logging.io.BaseIoImpl;
+import java.util.Queue;
+import org.littletonrobotics.junction.Logger;
+
+public class TCPApriltagIo extends BaseIoImpl<ApriltagInputs> implements ApriltagIO{
+    private final TCPApriltagServer server;
+
+    public TCPApriltagIo(String name, ApriltagInputs inputs) {
+        super(name, inputs);
+        server = new TCPApriltagServer(Constants.TCP_SERVER_PORT);
+        server.start();
+    }
+
+    protected TCPApriltagIo(String name, ApriltagInputs inputs, TCPApriltagServer server) {
+        super(name, inputs);
+        this.server = server;
+        this.server.start();
+    }
+    @Override
+    public void updateInputs(ApriltagInputs inputs) {
+        Queue<ApriltagReading> queue = server.flush();
+        int queueSize = queue.size();
+        Logger.recordOutput("VisionMeasurementsThisTick", queueSize);
+        inputs.posX = new double[queueSize];
+        inputs.posY = new double[queueSize];
+        inputs.poseYaw = new double[queueSize];
+        inputs.distanceToTag = new double[queueSize];
+        inputs.apriltagNumber = new int[queueSize];
+        inputs.serverTime = new double[queueSize];
+        inputs.timestamp = new double[queueSize];
+        inputs.visionPoseArray = new Pose2d[queueSize];
+        inputs.apriltagPoseArray = new Translation3d[queueSize];
+
+        for (int i = 0; i < queueSize; i++) {
+            ApriltagReading measurement = queue.poll();
+            inputs.posX[i] = measurement.posX();
+            inputs.posY[i] = measurement.posY();
+            inputs.poseYaw[i] = measurement.poseYaw();
+            inputs.distanceToTag[i] = measurement.distanceToTag();
+            inputs.apriltagNumber[i] = measurement.apriltagNumber();
+            inputs.timestamp[i] = measurement.measurementTime();
+            inputs.serverTime[i] = measurement.measurementTime()+measurement.latency();
+
+            Apriltag apriltag = Apriltag.of(measurement.apriltagNumber());
+            inputs.apriltagPoseArray[i] =
+                    apriltag == null ? new Translation3d(0, 0, 0) : apriltag.getTranslation();
+            inputs.visionPoseArray[i] =
+                    new Pose2d(
+                            measurement.posX(),
+                            measurement.posY(),
+                            Rotation2d.fromDegrees(measurement.poseYaw()));
+        }
+    }
+    // This is used to inject april tag readings manually and will pretty much only be used for simulation.
+    @Override
+    public void addReading(ApriltagReading reading) {
+        server.addReading(reading);
+    }
+
+}

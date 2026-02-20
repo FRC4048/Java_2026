@@ -5,7 +5,6 @@ import frc.robot.constants.Constants;
 import frc.robot.utils.Apriltag;
 import frc.robot.utils.logging.io.BaseIoImpl;
 import java.util.Queue;
-
 import org.littletonrobotics.junction.Logger;
 
 public class SimApriltagIO extends TCPApriltagIo {

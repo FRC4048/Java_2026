@@ -131,7 +131,7 @@ public class Robot extends LoggedRobot {
     SmartDashboard.putString("Alliance Color", Robot.allianceColorString());
     SmartDashboard.putBoolean("Hub Active?", hubActive());
     SmartDashboard.putString("Selected Action", 
-      robotContainer.getAutoChooser().getCommandDescription());
+      robotContainer.getAutoChooser().getCommandDescription() + " ALLIANCE SWITCH = RESTART RIO");
 
     // Gets the alliance color.
     if (DriverStation.isDSAttached() && allianceColor.isEmpty()) {

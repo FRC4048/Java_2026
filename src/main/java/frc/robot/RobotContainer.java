@@ -26,6 +26,9 @@ import frc.robot.commands.intake.SpinIntake;
 import frc.robot.commands.intakeDeployment.InitalRunDeployment;
 import frc.robot.commands.intakeDeployment.RunDeployer;
 import frc.robot.commands.intakeDeployment.SetDeploymentState;
+import frc.robot.commands.parallels.RunHopperAndFeeder;
+import frc.robot.commands.sequences.IntakeDownSequence;
+import frc.robot.commands.sequences.IntakeUpSequence;
 import frc.robot.autochooser.AutoChooser;
 import frc.robot.commands.angler.AimAngler;
 import frc.robot.commands.angler.RunAnglerToReverseLimit;
@@ -38,9 +41,6 @@ import frc.robot.constants.Constants;
 import frc.robot.constants.enums.DeploymentState;
 import frc.robot.constants.enums.ShootingState;
 import frc.robot.constants.enums.ShootingState.ShootState;
-import frc.robot.parallels.RunHopperAndFeeder;
-import frc.robot.sequences.IntakeDownSequence;
-import frc.robot.sequences.IntakeUpSequence;
 import frc.robot.subsystems.AnglerSubsystem;
 import frc.robot.subsystems.ApriltagSubsystem;
 import frc.robot.subsystems.HopperSubsystem;
@@ -201,7 +201,7 @@ public class RobotContainer {
          * joysticks}.
          */
         private void configureBindings() {
-                controller.a().onTrue(new IntakeUpSequence(intakeDeployer));
+                controller.a().onTrue(new IntakeUpSequence(intakeDeployer, intakeSubsystem));
                 controller.b().onTrue(new IntakeDownSequence(intakeDeployer, intakeSubsystem));
                 controller.y().onTrue(new ClimberUp(climberSubsystem));
                 controller.x().onTrue(new ClimberDown(climberSubsystem));
@@ -284,7 +284,7 @@ public class RobotContainer {
 
                         SmartDashboard.putNumber("angler/TargetAngle", 0);
 
-                        SmartDashboard.putData("RunIntakeAndFeeder",
+                        SmartDashboard.putData("RunHoppperAndFeeder",
                                         new RunHopperAndFeeder(hopperSubsystem, feederSubsystem));
 
                         SmartDashboard.putData(

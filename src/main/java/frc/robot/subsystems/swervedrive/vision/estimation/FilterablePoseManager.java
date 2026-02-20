@@ -2,10 +2,10 @@ package frc.robot.subsystems.swervedrive.vision.estimation;
 
 import edu.wpi.first.math.Vector;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.interpolation.TimeInterpolatableBuffer;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.numbers.N3;
-import frc.robot.constants.Constants;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import frc.robot.subsystems.swervedrive.vision.VisionLog;
 import frc.robot.subsystems.swervedrive.vision.truster.FilterResult;
@@ -16,7 +16,6 @@ import frc.robot.subsystems.swervedrive.vision.truster.VisionTruster;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentLinkedDeque;
-import java.util.stream.Collectors;
 
 import frc.robot.utils.Apriltag;
 import org.littletonrobotics.junction.Logger;
@@ -26,10 +25,10 @@ import org.littletonrobotics.junction.Logger;
  * filter.
  */
 public class FilterablePoseManager extends PoseManager {
-  private record AcceptedMeasurementRecord(Apriltag tag, double timestamp) { }
+  private record MeasurementRecord(Apriltag tag, double timestamp, FilterResult result) { }
 
   private final VisionFilter filter;
-  private final ConcurrentLinkedDeque<AcceptedMeasurementRecord> lastSecondAcceptedMeasurements = new ConcurrentLinkedDeque<>();
+  private final ConcurrentLinkedDeque<MeasurementRecord> lastSecondMeasurements = new ConcurrentLinkedDeque<>();
 
   public FilterablePoseManager(
       PoseDeviation PoseDeviation,
@@ -61,7 +60,7 @@ public class FilterablePoseManager extends PoseManager {
   public void processQueue() {
     double currentTime = Logger.getTimestamp()/1000000.0;
     double oneSecondAgo = currentTime - 1.0;
-    lastSecondAcceptedMeasurements.removeIf(record -> record.timestamp < oneSecondAgo);
+    lastSecondMeasurements.removeIf(record -> record.timestamp < oneSecondAgo);
     List<VisionLog> log = new ArrayList<>();
     List<VisionMeasurement> validMeasurements = new ArrayList<>();
     List<VisionMeasurement> invalidMeasurements = new ArrayList<>();
@@ -69,7 +68,7 @@ public class FilterablePoseManager extends PoseManager {
     List<Pose2d> invalidMeasurementsPose = new ArrayList<>();
     List<Apriltag> validTags = new ArrayList<>();
     List<Apriltag> invalidTags = new ArrayList<>();
-    List<Pose2d> acceptedTagsPose = new ArrayList<>();
+    List<Pose3d> acceptedTagsPose = new ArrayList<>();
     for (Map.Entry<Integer, Queue<VisionMeasurement>> queueEntry : visionMeasurementQueueMap.entrySet()) {
       int tagId = queueEntry.getKey();
       Queue<VisionMeasurement> queue = queueEntry.getValue();
@@ -80,6 +79,7 @@ public class FilterablePoseManager extends PoseManager {
         VisionMeasurement v = filterEntry.getKey();
         FilterResult r = filterEntry.getValue();
         log.add(new VisionLog(v, r));
+        lastSecondMeasurements.add(new MeasurementRecord(Apriltag.of(tagId), v.timeOfMeasurement(),r));
         switch (r) {
           case ACCEPTED -> {
             setVisionSTD(visionTruster.calculateTrust(v, drivebase.getCameraPose()));
@@ -87,8 +87,8 @@ public class FilterablePoseManager extends PoseManager {
             validMeasurementsPose.add(v.measurement());
             validTags.add(Apriltag.of(tagId));
             addVisionMeasurement(v);
-            acceptedTagsPose.add(Apriltag.of(tagId).getPose().toPose2d());
-            lastSecondAcceptedMeasurements.add(new AcceptedMeasurementRecord(Apriltag.of(tagId), v.timeOfMeasurement()));
+            acceptedTagsPose.add(Apriltag.of(tagId).getPose());
+
           }
           case NOT_PROCESSED -> queue.add(v);
           case REJECTED -> {
@@ -105,8 +105,10 @@ public class FilterablePoseManager extends PoseManager {
     Logger.recordOutput("Apriltag/rejectedMeasurementsPose", invalidMeasurementsPose.toArray(Pose2d[]::new));
     Logger.recordOutput("Apriltag/acceptedTag",validTags.toArray(Apriltag[]::new));
     Logger.recordOutput("Apriltag/rejectedTag",invalidTags.toArray(Apriltag[]::new));
-    Logger.recordOutput("Apriltag/numberAcceptedLastSecond", lastSecondAcceptedMeasurements.size());
-    Logger.recordOutput("Apriltag/acceptedTagPose", acceptedTagsPose.toArray(Pose2d[]::new));
+    Logger.recordOutput("Apriltag/numberAcceptedLastSecond", lastSecondMeasurements.stream().filter(record -> record.result == FilterResult.ACCEPTED).count());
+    Logger.recordOutput("Apriltag/numberNotProcessedLastSecond", lastSecondMeasurements.stream().filter(record -> record.result == FilterResult.NOT_PROCESSED).count());
+    Logger.recordOutput("Apriltag/numberRejectedLastSecond", lastSecondMeasurements.stream().filter(record -> record.result == FilterResult.REJECTED).count());
+    Logger.recordOutput("Apriltag/acceptedTagPose", acceptedTagsPose.toArray(Pose3d[]::new));
     Logger.recordOutput("Apriltag/Log", log.toArray(VisionLog[]::new));
   }
 

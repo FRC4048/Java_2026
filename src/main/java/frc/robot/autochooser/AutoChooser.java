@@ -8,12 +8,15 @@ import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 import choreo.auto.AutoFactory;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.commands.auto.BlueLeftShootClimb;
+import frc.robot.commands.auto.BlueMidShootClimb;
+import frc.robot.commands.auto.BlueRightShootClimb;
 import frc.robot.commands.auto.LeftShoot;
-import frc.robot.commands.auto.LeftShootClimb;
+import frc.robot.commands.auto.RedLeftShootClimb;
 import frc.robot.commands.auto.MidShoot;
-import frc.robot.commands.auto.MidShootClimb;
+import frc.robot.commands.auto.RedMidShootClimb;
 import frc.robot.commands.auto.RightShoot;
-import frc.robot.commands.auto.RightShootClimb;
+import frc.robot.commands.auto.RedRightShootClimb;
 import frc.robot.constants.enums.ShootingState;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.FeederSubsystem;
@@ -47,7 +50,7 @@ public class AutoChooser {
         this.shooter = shooter;
         this.climber = climber;
         this.hopper = hopper;
-        this. feeder = feeder;
+        this.feeder = feeder;
 
         this.locationChooser = new LoggedDashboardChooser<>(
             "Location Chooser"
@@ -100,17 +103,22 @@ public class AutoChooser {
 
         if (DriverStation.getAlliance().get() == DriverStation.Alliance.Blue) {
             //Blue ShootClimbAutos
-
+            commandMap.put(new AutoEvent(AutoAction.SHOOT_AND_CLIMB, FieldLocation.LEFT),
+                new BlueLeftShootClimb(subsystem, auto, shooter, shootstate, climber, hopper, feeder));
+            commandMap.put(new AutoEvent(AutoAction.SHOOT_AND_CLIMB, FieldLocation.RIGHT), 
+                new BlueRightShootClimb(subsystem, auto, shooter, shootstate, climber, hopper, feeder));
+            commandMap.put(new AutoEvent(AutoAction.SHOOT_AND_CLIMB, FieldLocation.MIDDLE),
+                new BlueMidShootClimb(subsystem, auto, shooter, shootstate, climber, hopper, feeder));
         }  
         
         if (DriverStation.getAlliance().get() == DriverStation.Alliance.Red) {
             //Red ShootClimb Autos
             commandMap.put(new AutoEvent(AutoAction.SHOOT_AND_CLIMB, FieldLocation.LEFT),
-                new LeftShootClimb(subsystem, auto, shooter, shootstate, climber, hopper, feeder));
+                new RedLeftShootClimb(subsystem, auto, shooter, shootstate, climber, hopper, feeder));
             commandMap.put(new AutoEvent(AutoAction.SHOOT_AND_CLIMB, FieldLocation.RIGHT), 
-                new RightShootClimb(subsystem, auto, shooter, shootstate, climber, hopper, feeder));
+                new RedRightShootClimb(subsystem, auto, shooter, shootstate, climber, hopper, feeder));
             commandMap.put(new AutoEvent(AutoAction.SHOOT_AND_CLIMB, FieldLocation.MIDDLE),
-                new MidShootClimb(subsystem, auto, shooter, shootstate, climber, hopper, feeder));
+                new RedMidShootClimb(subsystem, auto, shooter, shootstate, climber, hopper, feeder));
         }
     }
 

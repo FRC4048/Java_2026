@@ -8,7 +8,6 @@ import frc.robot.commands.hopper.SpinHopper;
 import frc.robot.constants.Constants;
 import frc.robot.constants.enums.ShootingState;
 import frc.robot.constants.enums.ShootingState.ShootState;
-import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.subsystems.HopperSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
@@ -19,7 +18,7 @@ import frc.robot.utils.logging.commands.LoggableSequentialCommandGroup;
 
 public class LeftShoot extends LoggableSequentialCommandGroup{
     public LeftShoot(SwerveSubsystem subsystem, AutoFactory auto, ShooterSubsystem shooter, 
-    ShootingState shootstate, ClimberSubsystem climber, HopperSubsystem hopper, FeederSubsystem feeder) {
+    ShootingState shootstate, HopperSubsystem hopper, FeederSubsystem feeder) {
         super(
                 new SetShootingState(shootstate, ShootState.SHOOTING_HUB),
                 LoggableCommandWrapper.wrap(auto.resetOdometry("LeftToTower")),

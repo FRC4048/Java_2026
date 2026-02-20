@@ -12,9 +12,11 @@ import frc.robot.commands.auto.LeftShootClimb;
 import frc.robot.commands.auto.MidShoot;
 import frc.robot.commands.auto.MidShootClimb;
 import frc.robot.commands.auto.RightShoot;
-import frc.robot.commands.auto.RightShootandClimb;
+import frc.robot.commands.auto.RightShootClimb;
 import frc.robot.constants.enums.ShootingState;
 import frc.robot.subsystems.ClimberSubsystem;
+import frc.robot.subsystems.FeederSubsystem;
+import frc.robot.subsystems.HopperSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import frc.robot.utils.logging.commands.DoNothingCommand;
@@ -29,17 +31,23 @@ public class AutoChooser {
     private final Map<AutoEvent, Command> commandMap = new HashMap<>();
 
     private final SwerveSubsystem subsystem; 
-    private final ShootingState state;
+    private final ShootingState shootstate;
     private final ShooterSubsystem shooter;
     private final AutoFactory auto;
     private final ClimberSubsystem climber;
+    private final FeederSubsystem feeder;
+    private final HopperSubsystem hopper;
 
-    public AutoChooser(SwerveSubsystem subsystem, ShootingState state, AutoFactory auto, ShooterSubsystem shooter, ClimberSubsystem climber) {
+    public AutoChooser(SwerveSubsystem subsystem, ShootingState shootstate, AutoFactory auto, 
+    ShooterSubsystem shooter, ClimberSubsystem climber, FeederSubsystem feeder, HopperSubsystem hopper) {
         this.subsystem = subsystem;
         this.auto = auto;
-        this.state = state;
+        this.shootstate = shootstate;
         this.shooter = shooter;
         this.climber = climber;
+        this.hopper = hopper;
+        this. feeder = feeder;
+
         this.locationChooser = new LoggedDashboardChooser<>(
             "Location Chooser"
         );
@@ -83,17 +91,17 @@ public class AutoChooser {
         commandMap.put(new AutoEvent(AutoAction.DO_NOTHING, FieldLocation.MIDDLE),
             new DoNothingCommand());
         commandMap.put(new AutoEvent(AutoAction.SHOOT, FieldLocation.LEFT), 
-            new LeftShoot(subsystem, auto, shooter, state));
+            new LeftShoot(subsystem, auto, shooter, shootstate, hopper, feeder));
         commandMap.put(new AutoEvent(AutoAction.SHOOT, FieldLocation.RIGHT),
-            new RightShoot(subsystem, auto, shooter, state));
+            new RightShoot(subsystem, auto, shooter, shootstate, hopper, feeder));
         commandMap.put(new AutoEvent(AutoAction.SHOOT, FieldLocation.MIDDLE), 
-            new MidShoot(subsystem, auto, shooter, state));
+            new MidShoot(subsystem, auto, shooter, shootstate, hopper, feeder));
         commandMap.put(new AutoEvent(AutoAction.SHOOT_AND_CLIMB, FieldLocation.LEFT),
-            new LeftShootClimb(subsystem, auto, shooter, state, climber));
+            new LeftShootClimb(subsystem, auto, shooter, shootstate, climber, hopper, feeder));
         commandMap.put(new AutoEvent(AutoAction.SHOOT_AND_CLIMB, FieldLocation.RIGHT), 
-            new RightShootandClimb(subsystem, auto, shooter, state, climber));
+            new RightShootClimb(subsystem, auto, shooter, shootstate, climber, hopper, feeder));
         commandMap.put(new AutoEvent(AutoAction.SHOOT_AND_CLIMB, FieldLocation.MIDDLE),
-            new MidShootClimb(subsystem, auto, shooter, state, climber));
+            new MidShootClimb(subsystem, auto, shooter, shootstate, climber, hopper, feeder));
     }
 
     public AutoEvent getSelectedEvent() {

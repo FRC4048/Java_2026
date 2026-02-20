@@ -7,7 +7,7 @@ public class MockApriltagIo extends BaseIoImpl<ApriltagInputs> implements Aprilt
         super(name, inputs);
     }
     @Override
-    protected void updateInputs(ApriltagInputs inputs) {}
+    public void updateInputs(ApriltagInputs inputs) {}
     @Override
     public void addReading(ApriltagReading reading) {}
 }

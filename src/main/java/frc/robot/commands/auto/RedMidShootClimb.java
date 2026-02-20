@@ -31,9 +31,9 @@ public class RedMidShootClimb extends LoggableSequentialCommandGroup{
                     new SpinHopper(hopper),
                     new SpinFeeder(feeder)
                 ),
-                LoggableCommandWrapper.wrap(auto.resetOdometry("MidClimb")),
+                LoggableCommandWrapper.wrap(auto.resetOdometry("RedMidClimb")),
                 new ClimberUp(climber),
-                LoggableCommandWrapper.wrap(auto.trajectoryCmd("MidClimb")/*.withTimeout(n)*/), 
+                LoggableCommandWrapper.wrap(auto.trajectoryCmd("RedMidClimb")/*.withTimeout(n)*/), 
                 new ClimberDown(climber)
         );
     }

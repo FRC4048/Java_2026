@@ -31,9 +31,9 @@ public class BlueRightShootClimb extends LoggableSequentialCommandGroup{
                     new SpinHopper(hopper),
                     new SpinFeeder(feeder)
                 ),
-                LoggableCommandWrapper.wrap(auto.resetOdometry("RightClimb")),
+                LoggableCommandWrapper.wrap(auto.resetOdometry("BlueRightClimb")),
                 new ClimberUp(climber),
-                LoggableCommandWrapper.wrap(auto.trajectoryCmd("RightClimb")/*.withTimeout(n)*/), 
+                LoggableCommandWrapper.wrap(auto.trajectoryCmd("BlueRightClimb")/*.withTimeout(n)*/), 
                 new ClimberDown(climber)
         );
     }

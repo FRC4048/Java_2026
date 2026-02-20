@@ -1,6 +1,6 @@
 package frc.robot.constants;
 
-public class Constants2026 extends GameConstants {
+public class ConstantsPushbot2026 extends GameConstants {
 
     // Constants2026 is only for CANIDs and nothing else, everything else goes into GameConstants.
     

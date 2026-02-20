@@ -12,7 +12,9 @@ package frc.robot.constants;
  *
  * <p>It is advised to statically import this class (or one of its inner classes) wherever the
  * constants are needed, to reduce verbosity.
+ * 
+ * <p>
  */
 
-public class Constants extends Constants2026 {}
+public class Constants extends ConstantsPushbot2026 {}
 

@@ -1,6 +1,6 @@
 package frc.robot.constants;
 
-public class ConstantsTestbed2026 extends Constants2026 {
+public class ConstantsTestbed2026 extends ConstantsPushbot2026 {
     
     // public static final int ROLLER_MOTOR_ID = 40;
     // public static final int TILT_MOTOR_ID = 42;

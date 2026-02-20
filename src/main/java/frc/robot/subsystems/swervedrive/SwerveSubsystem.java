@@ -327,7 +327,7 @@ public class SwerveSubsystem extends SubsystemBase {
      *
      * @return true if the red alliance, false if blue. Defaults to false if none is available.
      */
-    public boolean isRedAlliance() {
+    private boolean isRedAlliance() {
         var alliance = DriverStation.getAlliance();
         return alliance.isPresent() ? alliance.get() == DriverStation.Alliance.Red : false;
     }

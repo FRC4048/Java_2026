@@ -6,6 +6,7 @@ import java.util.Map;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
 import choreo.auto.AutoFactory;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.auto.LeftShoot;
 import frc.robot.commands.auto.LeftShootClimb;
@@ -96,12 +97,21 @@ public class AutoChooser {
             new RightShoot(subsystem, auto, shooter, shootstate, hopper, feeder));
         commandMap.put(new AutoEvent(AutoAction.SHOOT, FieldLocation.MIDDLE), 
             new MidShoot(subsystem, auto, shooter, shootstate, hopper, feeder));
-        commandMap.put(new AutoEvent(AutoAction.SHOOT_AND_CLIMB, FieldLocation.LEFT),
-            new LeftShootClimb(subsystem, auto, shooter, shootstate, climber, hopper, feeder));
-        commandMap.put(new AutoEvent(AutoAction.SHOOT_AND_CLIMB, FieldLocation.RIGHT), 
-            new RightShootClimb(subsystem, auto, shooter, shootstate, climber, hopper, feeder));
-        commandMap.put(new AutoEvent(AutoAction.SHOOT_AND_CLIMB, FieldLocation.MIDDLE),
-            new MidShootClimb(subsystem, auto, shooter, shootstate, climber, hopper, feeder));
+
+        if (DriverStation.getAlliance().get() == DriverStation.Alliance.Blue) {
+            //Blue ShootClimbAutos
+
+        }  
+        
+        if (DriverStation.getAlliance().get() == DriverStation.Alliance.Red) {
+            //Red ShootClimb Autos
+            commandMap.put(new AutoEvent(AutoAction.SHOOT_AND_CLIMB, FieldLocation.LEFT),
+                new LeftShootClimb(subsystem, auto, shooter, shootstate, climber, hopper, feeder));
+            commandMap.put(new AutoEvent(AutoAction.SHOOT_AND_CLIMB, FieldLocation.RIGHT), 
+                new RightShootClimb(subsystem, auto, shooter, shootstate, climber, hopper, feeder));
+            commandMap.put(new AutoEvent(AutoAction.SHOOT_AND_CLIMB, FieldLocation.MIDDLE),
+                new MidShootClimb(subsystem, auto, shooter, shootstate, climber, hopper, feeder));
+        }
     }
 
     public AutoEvent getSelectedEvent() {

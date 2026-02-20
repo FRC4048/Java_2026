@@ -145,4 +145,7 @@ public class GameConstants {
     public static final int SHIFT_4_START = 55;
     public static final int ENDGAME_START = 30;
 
+    public static final double VISION_CONSISTENCY_THRESHOLD = 0.25; //How close 2 vision measurements have to be (needs to be tuned potentially but seemingly from my testing it also might not be needed)
+    public static final boolean ENABLE_VISION = true;
+    public static final double POSE_BUFFER_STORAGE_TIME = 2; //how many past measurements are stored in the buffer (might increase if we need further back)
 }

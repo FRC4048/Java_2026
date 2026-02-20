@@ -1,7 +1,6 @@
 package frc.robot.commands.auto;
 
 import choreo.auto.AutoFactory;
-import edu.wpi.first.wpilibj.DriverStation;
 import frc.robot.commands.climber.ClimberDown;
 import frc.robot.commands.climber.ClimberUp;
 import frc.robot.commands.feeder.SpinFeeder;
@@ -20,22 +19,21 @@ import frc.robot.utils.logging.commands.LoggableCommandWrapper;
 import frc.robot.utils.logging.commands.LoggableParallelCommandGroup;
 import frc.robot.utils.logging.commands.LoggableSequentialCommandGroup;
 
-public class MidShootClimb extends LoggableSequentialCommandGroup{
-    public MidShootClimb(SwerveSubsystem subsystem, AutoFactory auto, ShooterSubsystem shooter, 
+public class RedRightShootClimb extends LoggableSequentialCommandGroup{
+    public RedRightShootClimb(SwerveSubsystem subsystem, AutoFactory auto, ShooterSubsystem shooter, 
     ShootingState shootstate, ClimberSubsystem climber, HopperSubsystem hopper, FeederSubsystem feeder) {
         super(
                 new SetShootingState(shootstate, ShootState.SHOOTING_HUB),
-                LoggableCommandWrapper.wrap(auto.resetOdometry("MidToTower")),
-                LoggableCommandWrapper.wrap(auto.trajectoryCmd("MidToTower")/*.withTimeout(n)*/), 
+                LoggableCommandWrapper.wrap(auto.resetOdometry("RightToTower")),
+                LoggableCommandWrapper.wrap(auto.trajectoryCmd("RightToTower")/*.withTimeout(n)*/), 
                 new LoggableParallelCommandGroup(
                     new SpinShooter(shooter, Constants.SHOOTER_SPEED),
                     new SpinHopper(hopper),
                     new SpinFeeder(feeder)
                 ),
-                subsystem.isRedAlliance()
-                LoggableCommandWrapper.wrap(auto.resetOdometry("MidClimb")),
+                LoggableCommandWrapper.wrap(auto.resetOdometry("RightClimb")),
                 new ClimberUp(climber),
-                LoggableCommandWrapper.wrap(auto.trajectoryCmd("MidClimb")/*.withTimeout(n)*/), 
+                LoggableCommandWrapper.wrap(auto.trajectoryCmd("RightClimb")/*.withTimeout(n)*/), 
                 new ClimberDown(climber)
         );
     }

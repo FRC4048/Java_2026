@@ -19,21 +19,21 @@ import frc.robot.utils.logging.commands.LoggableCommandWrapper;
 import frc.robot.utils.logging.commands.LoggableParallelCommandGroup;
 import frc.robot.utils.logging.commands.LoggableSequentialCommandGroup;
 
-public class RightShootClimb extends LoggableSequentialCommandGroup{
-    public RightShootClimb(SwerveSubsystem subsystem, AutoFactory auto, ShooterSubsystem shooter, 
+public class BlueMidShootClimb extends LoggableSequentialCommandGroup{
+    public BlueMidShootClimb(SwerveSubsystem subsystem, AutoFactory auto, ShooterSubsystem shooter, 
     ShootingState shootstate, ClimberSubsystem climber, HopperSubsystem hopper, FeederSubsystem feeder) {
         super(
                 new SetShootingState(shootstate, ShootState.SHOOTING_HUB),
-                LoggableCommandWrapper.wrap(auto.resetOdometry("RightToTower")),
-                LoggableCommandWrapper.wrap(auto.trajectoryCmd("RightToTower")/*.withTimeout(n)*/), 
+                LoggableCommandWrapper.wrap(auto.resetOdometry("MidToTower")),
+                LoggableCommandWrapper.wrap(auto.trajectoryCmd("MidToTower")/*.withTimeout(n)*/), 
                 new LoggableParallelCommandGroup(
                     new SpinShooter(shooter, Constants.SHOOTER_SPEED),
                     new SpinHopper(hopper),
                     new SpinFeeder(feeder)
                 ),
-                LoggableCommandWrapper.wrap(auto.resetOdometry("RightClimb")),
+                LoggableCommandWrapper.wrap(auto.resetOdometry("MidClimb")),
                 new ClimberUp(climber),
-                LoggableCommandWrapper.wrap(auto.trajectoryCmd("RightClimb")/*.withTimeout(n)*/), 
+                LoggableCommandWrapper.wrap(auto.trajectoryCmd("MidClimb")/*.withTimeout(n)*/), 
                 new ClimberDown(climber)
         );
     }

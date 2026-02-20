@@ -8,11 +8,11 @@ import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 import choreo.auto.AutoFactory;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.auto.LeftShoot;
-import frc.robot.commands.auto.LeftShootClimb;
+import frc.robot.commands.auto.RedLeftShootClimb;
 import frc.robot.commands.auto.MidShoot;
-import frc.robot.commands.auto.MidShootClimb;
+import frc.robot.commands.auto.RedMidShootClimb;
 import frc.robot.commands.auto.RightShoot;
-import frc.robot.commands.auto.RightShootClimb;
+import frc.robot.commands.auto.RedRightShootClimb;
 import frc.robot.constants.enums.ShootingState;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.FeederSubsystem;
@@ -97,11 +97,11 @@ public class AutoChooser {
         commandMap.put(new AutoEvent(AutoAction.SHOOT, FieldLocation.MIDDLE), 
             new MidShoot(subsystem, auto, shooter, shootstate, hopper, feeder));
         commandMap.put(new AutoEvent(AutoAction.SHOOT_AND_CLIMB, FieldLocation.LEFT),
-            new LeftShootClimb(subsystem, auto, shooter, shootstate, climber, hopper, feeder));
+            new RedLeftShootClimb(subsystem, auto, shooter, shootstate, climber, hopper, feeder));
         commandMap.put(new AutoEvent(AutoAction.SHOOT_AND_CLIMB, FieldLocation.RIGHT), 
-            new RightShootClimb(subsystem, auto, shooter, shootstate, climber, hopper, feeder));
+            new RedRightShootClimb(subsystem, auto, shooter, shootstate, climber, hopper, feeder));
         commandMap.put(new AutoEvent(AutoAction.SHOOT_AND_CLIMB, FieldLocation.MIDDLE),
-            new MidShootClimb(subsystem, auto, shooter, shootstate, climber, hopper, feeder));
+            new RedMidShootClimb(subsystem, auto, shooter, shootstate, climber, hopper, feeder));
     }
 
     public AutoEvent getSelectedEvent() {

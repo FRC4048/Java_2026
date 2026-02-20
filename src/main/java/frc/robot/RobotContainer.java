@@ -96,7 +96,6 @@ public class RobotContainer {
         private final ShooterSubsystem shooterSubsystem;
         private RobotVisualizer robotVisualizer = null;
         private final HopperSubsystem hopperSubsystem;
-        private final ClimberSubsystem climberSubsystem;
     private final TurretSubsystem turretSubsystem;
         private final IntakeDeployerSubsystem intakeDeployer;
         private SwerveSubsystem drivebase = null;

@@ -4,17 +4,20 @@ import edu.wpi.first.wpilibj.Timer;
 import frc.robot.constants.Constants;
 import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.utils.logging.LoggedTunableNumber;
 import frc.robot.utils.logging.commands.LoggableCommand;
 
 public class SpinFeeder  extends LoggableCommand {
     
     private final FeederSubsystem subsystem;
     private final Timer timer;
-  
+    private LoggedTunableNumber tunableSpeed;
+      
     public SpinFeeder(FeederSubsystem subsystem) {
         this.subsystem = subsystem;
         timer = new Timer();
         addRequirements(subsystem);
+        tunableSpeed = new LoggedTunableNumber(FeederSubsystem.LOGGING_NAME, Constants.FEEDER_SPEED);
     }
 
     @Override
@@ -24,7 +27,7 @@ public class SpinFeeder  extends LoggableCommand {
 
     @Override
     public void execute() {
-       subsystem.setSpeed(Constants.FEEDER_SPEED);
+       subsystem.setSpeed(tunableSpeed.getAsDouble());
     }
 
     @Override

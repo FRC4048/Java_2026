@@ -38,6 +38,7 @@ public class ShooterSubsystem extends SubsystemBase {
         followerConfig = new SparkMaxConfig();
         followerConfig.follow(Constants.SHOOTER_MOTOR_ID, true);
         followerMotor.configure(followerConfig, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
+        stopMotors();
 
     }
 

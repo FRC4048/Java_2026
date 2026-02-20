@@ -3,12 +3,16 @@ package frc.robot.commands.auto;
 import choreo.auto.AutoFactory;
 import frc.robot.commands.climber.ClimberDown;
 import frc.robot.commands.climber.ClimberUp;
+import frc.robot.commands.feeder.SpinFeeder;
 import frc.robot.commands.shooter.SetShootingState;
 import frc.robot.commands.shooter.SpinShooter;
+import frc.robot.commands.hopper.SpinHopper;
 import frc.robot.constants.Constants;
 import frc.robot.constants.enums.ShootingState;
 import frc.robot.constants.enums.ShootingState.ShootState;
 import frc.robot.subsystems.ClimberSubsystem;
+import frc.robot.subsystems.FeederSubsystem;
+import frc.robot.subsystems.HopperSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import frc.robot.utils.logging.commands.LoggableCommandWrapper;
@@ -16,16 +20,20 @@ import frc.robot.utils.logging.commands.LoggableParallelCommandGroup;
 import frc.robot.utils.logging.commands.LoggableSequentialCommandGroup;
 
 public class MidShootClimb extends LoggableSequentialCommandGroup{
-    public MidShootClimb(SwerveSubsystem subsystem, AutoFactory auto, ShooterSubsystem shooter, ShootingState shootstate, ClimberSubsystem climber) {
+    public MidShootClimb(SwerveSubsystem subsystem, AutoFactory auto, ShooterSubsystem shooter, 
+    ShootingState shootstate, ClimberSubsystem climber, HopperSubsystem hopper, FeederSubsystem feeder) {
         super(
                 new SetShootingState(shootstate, ShootState.SHOOTING_HUB),
-                LoggableCommandWrapper.wrap(auto.resetOdometry("LeftToTower")),
-                new SpinShooter(shooter, Constants.SHOOTER_SPEED), //Should be a shoot command
-                LoggableCommandWrapper.wrap(auto.resetOdometry("TowerToClimb")),
+                LoggableCommandWrapper.wrap(auto.resetOdometry("MidToTower")),
+                LoggableCommandWrapper.wrap(auto.trajectoryCmd("MidToTower")/*.withTimeout(n)*/), 
                 new LoggableParallelCommandGroup(
-                    LoggableCommandWrapper.wrap(auto.trajectoryCmd("TowerToClimb")),
-                    new ClimberUp(climber)
+                    new SpinShooter(shooter, Constants.SHOOTER_SPEED),
+                    new SpinHopper(hopper),
+                    new SpinFeeder(feeder)
                 ),
+                LoggableCommandWrapper.wrap(auto.resetOdometry("MidClimb")),
+                new ClimberUp(climber),
+                LoggableCommandWrapper.wrap(auto.trajectoryCmd("MidClimb")/*.withTimeout(n)*/), 
                 new ClimberDown(climber)
         );
     }

@@ -1,23 +1,34 @@
 package frc.robot.commands.auto;
 
 import choreo.auto.AutoFactory;
+import frc.robot.commands.feeder.SpinFeeder;
 import frc.robot.commands.shooter.SetShootingState;
 import frc.robot.commands.shooter.SpinShooter;
+import frc.robot.commands.hopper.SpinHopper;
 import frc.robot.constants.Constants;
 import frc.robot.constants.enums.ShootingState;
 import frc.robot.constants.enums.ShootingState.ShootState;
+import frc.robot.subsystems.ClimberSubsystem;
+import frc.robot.subsystems.FeederSubsystem;
+import frc.robot.subsystems.HopperSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import frc.robot.utils.logging.commands.LoggableCommandWrapper;
+import frc.robot.utils.logging.commands.LoggableParallelCommandGroup;
 import frc.robot.utils.logging.commands.LoggableSequentialCommandGroup;
 
-public class RightShoot extends LoggableSequentialCommandGroup {
-    public RightShoot(SwerveSubsystem subsystem, AutoFactory auto, ShooterSubsystem shooter, ShootingState shootState) {
+public class RightShoot extends LoggableSequentialCommandGroup{
+    public RightShoot(SwerveSubsystem subsystem, AutoFactory auto, ShooterSubsystem shooter, 
+    ShootingState shootstate, ClimberSubsystem climber, HopperSubsystem hopper, FeederSubsystem feeder) {
         super(
-                new SetShootingState(shootState, ShootState.SHOOTING_HUB),
+                new SetShootingState(shootstate, ShootState.SHOOTING_HUB),
                 LoggableCommandWrapper.wrap(auto.resetOdometry("RightToTower")),
-                LoggableCommandWrapper.wrap(auto.trajectoryCmd("RightToTower")),
-                new SpinShooter(shooter, Constants.SHOOTER_SPEED)
+                LoggableCommandWrapper.wrap(auto.trajectoryCmd("RightToTower")/*.withTimeout(n)*/), 
+                new LoggableParallelCommandGroup(
+                    new SpinShooter(shooter, Constants.SHOOTER_SPEED),
+                    new SpinHopper(hopper),
+                    new SpinFeeder(feeder)
+                )
         );
     }
 }

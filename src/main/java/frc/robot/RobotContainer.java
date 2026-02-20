@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.*;
+import frc.robot.commands.AddGarbageReading;
 import frc.robot.commands.climber.ClimberDown;
 import frc.robot.commands.climber.ClimberUp;
 import frc.robot.commands.drive.DriveCircle;
@@ -310,7 +311,9 @@ public class RobotContainer {
                          * new TiltDown(tiltSubsystem));
                          */
 
-                        //SmartDashboard.putData("TuneLoggedTunableNumber", new LoggedTunableNumberTuner(Constants.VISION_CONSISTENCY_THRESHOLD,drivebase::getError,0,10,10,10));
+
+
+            //SmartDashboard.putData("TuneLoggedTunableNumber", new LoggedTunableNumberTuner(Constants.VISION_CONSISTENCY_THRESHOLD,drivebase::getError,0,10,10,10));
                         SmartDashboard.putData("SpinInPlace", new SpinInPlace(drivebase,5,true,15));
                         SmartDashboard.putData("DriveInCircle", new DriveCircle(drivebase, 1,10,15000));
             // TODO: These commands do not REQUIRE the subsystem therefore cannot be used in// production

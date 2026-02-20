@@ -29,6 +29,7 @@ import org.littletonrobotics.junction.Logger;
  * {@link PoseManager} which outputs a robot position
  */
 public class PoseEstimator {
+  private final Field2d field = new Field2d();
  /*  private final SwerveModule frontLeft;
   private final SwerveModule frontRight;
   private final SwerveModule backLeft;
@@ -38,13 +39,16 @@ public class PoseEstimator {
   private final ApriltagSubsystem apriltagSystem;
 
   /* standard deviation of robot states, the lower the numbers arm, the more we trust odometry */
+  public static final Vector<N3> stateStdDevs1 = VecBuilder.fill(0.075, 0.075, 0.001);
 
   /* standard deviation of vision readings, the lower the numbers arm, the more we trust vision */
   //  private static final Vector<N3> visionMeasurementStdDevs1 = VecBuilder.fill(0.5, 0.5, 0.5);
 
   /* the rate at which variance of vision measurements increases as distance from the tag increases*/
+  private static final double visionStdRateOfChange = 1;
 
   /* standard deviation of vision readings, the lower the numbers arm, the more we trust vision */
+  public static final Vector<N3> visionMeasurementStdDevs2 = VecBuilder.fill(0.3, 0.3, 100);
   private final FilterablePoseManager poseManager;
 
   public PoseEstimator(
@@ -97,6 +101,10 @@ public class PoseEstimator {
   public void updatePosition(Pose2d pose) {
     if (!Robot.getMode().equals(RobotMode.DISABLED)) {
       poseManager.addOdomMeasurement(pose, Logger.getTimestamp());
+    }
+    Pose2d estimatedPosition = poseManager.getEstimatedPosition();
+    if (estimatedPosition != null) {
+        field.setRobotPose(estimatedPosition);
     }
   }
 
@@ -178,6 +186,10 @@ public class PoseEstimator {
   @AutoLogOutput
   public Pose2d getEstimatedPose() {
     return poseManager.getEstimatedPosition();
+  }
+
+  public Field2d getField() {
+    return field;
   }
 
   public FilterablePoseManager getPoseManager() {

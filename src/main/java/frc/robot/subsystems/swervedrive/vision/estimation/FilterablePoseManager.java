@@ -7,6 +7,7 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.numbers.N3;
 import frc.robot.constants.Constants;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
+import frc.robot.subsystems.swervedrive.vision.VisionLog;
 import frc.robot.subsystems.swervedrive.vision.truster.FilterResult;
 import frc.robot.subsystems.swervedrive.vision.truster.PoseDeviation;
 import frc.robot.subsystems.swervedrive.vision.truster.VisionFilter;
@@ -25,8 +26,7 @@ import org.littletonrobotics.junction.Logger;
  * filter.
  */
 public class FilterablePoseManager extends PoseManager {
-  private record AcceptedMeasurementRecord(int tagId, double timestamp) {
-  }
+  private record AcceptedMeasurementRecord(Apriltag tag, double timestamp) { }
 
   private final VisionFilter filter;
   private final ConcurrentLinkedDeque<AcceptedMeasurementRecord> lastSecondAcceptedMeasurements = new ConcurrentLinkedDeque<>();
@@ -62,68 +62,52 @@ public class FilterablePoseManager extends PoseManager {
     double currentTime = Logger.getTimestamp()/1000000.0;
     double oneSecondAgo = currentTime - 1.0;
     lastSecondAcceptedMeasurements.removeIf(record -> record.timestamp < oneSecondAgo);
-
+    List<VisionLog> log = new ArrayList<>();
     List<VisionMeasurement> validMeasurements = new ArrayList<>();
     List<VisionMeasurement> invalidMeasurements = new ArrayList<>();
     List<Pose2d> validMeasurementsPose = new ArrayList<>();
     List<Pose2d> invalidMeasurementsPose = new ArrayList<>();
-    List<Integer> validTags = new ArrayList<>();
-    List<Integer> invalidTags = new ArrayList<>();
+    List<Apriltag> validTags = new ArrayList<>();
+    List<Apriltag> invalidTags = new ArrayList<>();
+    List<Pose2d> acceptedTagsPose = new ArrayList<>();
     for (Map.Entry<Integer, Queue<VisionMeasurement>> queueEntry : visionMeasurementQueueMap.entrySet()) {
       int tagId = queueEntry.getKey();
       Queue<VisionMeasurement> queue = queueEntry.getValue();
-      List<VisionMeasurement> validMeasurementsAtTag = new ArrayList<>();
-      List<VisionMeasurement> invalidMeasurementsAtTag = new ArrayList<>();
       LinkedHashMap<VisionMeasurement, FilterResult> filteredData =
               filter.filter(queue, drivebase.getCameraPose());
       queue.clear();
       for (Map.Entry<VisionMeasurement, FilterResult> filterEntry : filteredData.entrySet()) {
         VisionMeasurement v = filterEntry.getKey();
         FilterResult r = filterEntry.getValue();
+        log.add(new VisionLog(v, r));
         switch (r) {
           case ACCEPTED -> {
             setVisionSTD(visionTruster.calculateTrust(v, drivebase.getCameraPose()));
             validMeasurements.add(v);
             validMeasurementsPose.add(v.measurement());
-            validMeasurementsAtTag.add(v);
-            validTags.add(tagId);
+            validTags.add(Apriltag.of(tagId));
             addVisionMeasurement(v);
-            lastSecondAcceptedMeasurements.add(new AcceptedMeasurementRecord(tagId, v.timeOfMeasurement()));
+            acceptedTagsPose.add(Apriltag.of(tagId).getPose().toPose2d());
+            lastSecondAcceptedMeasurements.add(new AcceptedMeasurementRecord(Apriltag.of(tagId), v.timeOfMeasurement()));
           }
           case NOT_PROCESSED -> queue.add(v);
           case REJECTED -> {
             invalidMeasurements.add(v);
             invalidMeasurementsPose.add(v.measurement());
-            invalidTags.add(tagId);
-            invalidMeasurementsAtTag.add(v);
+            invalidTags.add(Apriltag.of(tagId));
           }
         }
       }
-      Logger.recordOutput("Apriltag/validMeasurementsAtTag"+tagId, validMeasurementsAtTag.toArray(VisionMeasurement[]::new));
-      Logger.recordOutput("Apriltag/invalidMeasurementsAtTag"+tagId, invalidMeasurementsAtTag.toArray(VisionMeasurement[]::new));
     }
     Logger.recordOutput("Apriltag/acceptedMeasurements", validMeasurements.toArray(VisionMeasurement[]::new));
     Logger.recordOutput("Apriltag/rejectedMeasurements", invalidMeasurements.toArray(VisionMeasurement[]::new));
     Logger.recordOutput("Apriltag/acceptedMeasurementsPose", validMeasurementsPose.toArray(Pose2d[]::new));
     Logger.recordOutput("Apriltag/rejectedMeasurementsPose", invalidMeasurementsPose.toArray(Pose2d[]::new));
-    Logger.recordOutput("Apriltag/acceptedTagIds",validTags.stream().mapToInt(i -> i).toArray());
-    Logger.recordOutput("Apriltag/rejectedTagIds",invalidTags.stream().mapToInt(i -> i).toArray());
+    Logger.recordOutput("Apriltag/acceptedTag",validTags.toArray(Apriltag[]::new));
+    Logger.recordOutput("Apriltag/rejectedTag",invalidTags.toArray(Apriltag[]::new));
     Logger.recordOutput("Apriltag/numberAcceptedLastSecond", lastSecondAcceptedMeasurements.size());
-    Logger.recordOutput("Apriltag/TagIdsAcceptedLastSecond", lastSecondAcceptedMeasurements.stream()
-            .map(record -> record.tagId)
-            .distinct()
-            .mapToInt(i -> i)
-            .toArray());
-    if (Constants.currentMode == Constants.Mode.SIM) {
-      Logger.recordOutput("Apriltag/acceptedTagPoseNow",
-              validTags.stream()
-              .map(tagId -> Apriltag.of(tagId).getPose().toPose2d())
-              .toArray(Pose2d[]::new));
-      Logger.recordOutput("Apriltag/acceptedTagPoseLastSecond",
-              lastSecondAcceptedMeasurements.stream().distinct()
-                      .map(record -> Apriltag.of(record.tagId).getPose().toPose2d())
-                      .toArray(Pose2d[]::new));
-    }
+    Logger.recordOutput("Apriltag/acceptedTagPose", acceptedTagsPose.toArray(Pose2d[]::new));
+    Logger.recordOutput("Apriltag/Log", log.toArray(VisionLog[]::new));
   }
 
   public VisionTruster getVisionTruster() {

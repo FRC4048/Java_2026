@@ -136,7 +136,7 @@ public class PoseEstimator {
     double timestamp = apriltagSystem.getIO().getInputs().timestamp[index];
     Pose2d visionPose = new Pose2d(pos[0], pos[1], Rotation2d.fromDegrees(pos[2]));
     double distanceFromTag = apriltagSystem.getIO().getInputs().distanceToTag[index];
-    return new VisionMeasurement(visionPose, apriltagSystem.getIO().getInputs().apriltagNumber[index],distanceFromTag, timestamp/1000);
+    return new VisionMeasurement(visionPose, Apriltag.of(apriltagSystem.getIO().getInputs().apriltagNumber[index]).getTagInfo(),distanceFromTag, timestamp/1000);
   }
 
   /**
@@ -186,7 +186,7 @@ public class PoseEstimator {
 
   public void addMockVisionMeasurement() {
     poseManager.registerVisionMeasurement(
-        new VisionMeasurement(getEstimatedPose(), 1,0, Logger.getTimestamp() / 1e6),1);
+        new VisionMeasurement(getEstimatedPose(), Apriltag.of(1).getTagInfo(),0, Logger.getTimestamp() / 1e6),1);
   }
 
   public VisionTruster getVisionTruster() {

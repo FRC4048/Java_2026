@@ -10,7 +10,8 @@ import static edu.wpi.first.units.Units.Radians;
 import static java.lang.Math.PI;
 import static java.lang.Math.abs;
 
-public enum Apriltag { //Andymark field:
+public enum Apriltag {
+  //Andymark field:
   ONE(467.08,291.79, 35.00, PI), //Trench, Red z rotation:180
   TWO(468.56,182.08, 44.25, PI/2), //Hub, Red z rotation:90
   THREE( 444.80,172.32, 44.25, PI), //Hub, Red z rotation:180
@@ -81,7 +82,7 @@ public enum Apriltag { //Andymark field:
   THIRTY_ONE(0.32, 147.47, 21.75),//Tower, Blue z rotation:0
   THIRTY_TWO(0.32, 164.47, 21.75);//Tower, Blue z rotation:0
   */
-
+  public record TagPose(Apriltag tag, Pose3d pose) {}
   private final double xMeters;
   private final double yMeters;
   private final double zMeters;
@@ -132,7 +133,9 @@ public enum Apriltag { //Andymark field:
   public int number() {
     return ordinal()+1;
   }
-
+  public TagPose getTagInfo() {
+    return new TagPose(this, pose);
+  }
   public boolean canSee(Pose3d cameraPose, double HorizontalFOV, double VerticalFOV) {
     Pose3d adjPose = getPose().relativeTo(cameraPose);
     double horizontalAngle = Math.atan2(adjPose.getY(), adjPose.getX());
@@ -148,3 +151,4 @@ public enum Apriltag { //Andymark field:
     return abs(horizontalAngle) < HorizontalFOV/2 && abs(verticalAngle) < VerticalFOV/2;// TODO: Maybe change Later By Implementing Math Calculations (Linear Algebra)
   }
 }
+

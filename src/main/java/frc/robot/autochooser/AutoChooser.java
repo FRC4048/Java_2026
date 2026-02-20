@@ -2,6 +2,7 @@ package frc.robot.autochooser;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
@@ -101,7 +102,8 @@ public class AutoChooser {
         commandMap.put(new AutoEvent(AutoAction.SHOOT, FieldLocation.MIDDLE), 
             new MidShoot(subsystem, auto, shooter, shootstate, hopper, feeder));
 
-        if (DriverStation.getAlliance().get() == DriverStation.Alliance.Blue) {
+        Optional<DriverStation.Alliance> alliance = DriverStation.getAlliance();
+        if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Blue) {
             //Blue ShootClimbAutos
             commandMap.put(new AutoEvent(AutoAction.SHOOT_AND_CLIMB, FieldLocation.LEFT),
                 new BlueLeftShootClimb(subsystem, auto, shooter, shootstate, climber, hopper, feeder));
@@ -111,7 +113,7 @@ public class AutoChooser {
                 new BlueMidShootClimb(subsystem, auto, shooter, shootstate, climber, hopper, feeder));
         }  
         
-        if (DriverStation.getAlliance().get() == DriverStation.Alliance.Red) {
+        if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red) {
             //Red ShootClimb Autos
             commandMap.put(new AutoEvent(AutoAction.SHOOT_AND_CLIMB, FieldLocation.LEFT),
                 new RedLeftShootClimb(subsystem, auto, shooter, shootstate, climber, hopper, feeder));

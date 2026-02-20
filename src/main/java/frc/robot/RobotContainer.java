@@ -31,6 +31,7 @@ import frc.robot.commands.angler.RunAnglerToReverseLimit;
 import frc.robot.commands.shooter.DefaultShooterControl;
 import frc.robot.commands.auto.ExampleAuto;
 import frc.robot.commands.shooter.SetShootingState;
+import frc.robot.commands.turret.DefaultTurretControl;
 import frc.robot.commands.turret.RunTurretToFwdLimit;
 import frc.robot.commands.turret.RunTurretToRevLimit;
 import frc.robot.commands.turret.SetTurretAngle;
@@ -292,6 +293,7 @@ public class RobotContainer {
         if (controllerSubsystem != null) {
             anglerSubsystem.setDefaultCommand(new DefaultAnglerControl(anglerSubsystem, controllerSubsystem));
             shooterSubsystem.setDefaultCommand(new DefaultShooterControl(shooterSubsystem, controllerSubsystem));
+            turretSubsystem.setDefaultCommand(new DefaultTurretControl(turretSubsystem, controllerSubsystem));
             hopperSubsystem.setDefaultCommand(new SpinHopper(hopperSubsystem, controllerSubsystem));
             feederSubsystem.setDefaultCommand(new SpinFeeder(feederSubsystem, controllerSubsystem));
         }
@@ -402,11 +404,11 @@ public class RobotContainer {
 
             SmartDashboard.putData(
                     "turret/Run Turret to Rev Limit",
-                    new RunTurretToRevLimit(turretSubsystem, controllerSubsystem));
+                    new RunTurretToRevLimit(turretSubsystem));
 
             SmartDashboard.putData(
                     "turret/Run Turret to Fwd Limit",
-                    new RunTurretToFwdLimit(turretSubsystem, controllerSubsystem));
+                    new RunTurretToFwdLimit(turretSubsystem));
 
                         SmartDashboard.putData(
                                         "intakedeployer/InitlizeDeployer",

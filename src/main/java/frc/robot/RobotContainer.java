@@ -64,10 +64,6 @@ import choreo.auto.AutoFactory;
 import choreo.auto.AutoRoutine;
 import choreo.auto.AutoTrajectory;
 
-import choreo.auto.AutoFactory;
-import choreo.auto.AutoRoutine;
-import choreo.auto.AutoTrajectory;
-
 /**
  * This class is where the bulk of the robot should be declared. Since
  * Command-based is a
@@ -150,19 +146,14 @@ public class RobotContainer {
                                 turretSubsystem = new TurretSubsystem(TurretSubsystem.createMockIo());
                                 shooterSubsystem = new ShooterSubsystem(ShooterSubsystem.createMockIo());
                                 intakeDeployer = new IntakeDeployerSubsystem(IntakeDeployerSubsystem.createMockIo());
-                // No GyroSubsystem in REPLAY for now
-                // create the drive subsystem with null gyro (use default json)
-                drivebase = !Constants.TESTBED ? new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "YAGSL"), null) : null;
-                apriltagSubsystem = !Constants.TESTBED ? new ApriltagSubsystem(ApriltagSubsystem.createMockIo(), drivebase) : null;
-            }
-            case SIM -> {
-                robotVisualizer = new RobotVisualizer();
-                //rollerSubsystem = new// RollerSubsystem(RollerSubsystem.createSimIo(robotVisualizer));
-                                // No GyroSubsystem in REPLAY for now
-                                // create the drive subsystem with null gyro (use default json)
-                                drivebase = !Constants.TESTBED ? new SwerveSubsystem(
-                                                new File(Filesystem.getDeployDirectory(), "YAGSL"), null) : null;
-
+                                // No GyroSubsystem in REPLAY for now.
+                                drivebase = !Constants.TESTBED
+                                                ? new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "YAGSL"),
+                                                                null)
+                                                : null;
+                                apriltagSubsystem = !Constants.TESTBED
+                                                ? new ApriltagSubsystem(ApriltagSubsystem.createMockIo(), drivebase)
+                                                : null;
                         }
                         case SIM -> {
                                 robotVisualizer = new RobotVisualizer();
@@ -179,20 +170,16 @@ public class RobotContainer {
                                 turretSubsystem = new TurretSubsystem(TurretSubsystem.createSimIo(robotVisualizer));
                                 shooterSubsystem = new ShooterSubsystem(ShooterSubsystem.createSimIo(robotVisualizer));
                                 intakeDeployer = new IntakeDeployerSubsystem(
-                                                IntakeDeployerSubsystem.createSimIo(robotVisualizer));// No GyroSubsystem in REPLAY for now
-                // create the drive subsystem with null gyro (use default json)
-                drivebase = !Constants.TESTBED ? new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "YAGSL"), null) : null;
-                apriltagSubsystem = !Constants.TESTBED ? new ApriltagSubsystem(ApriltagSubsystem.createSimIo(), drivebase) : null;
-            }
                                                 IntakeDeployerSubsystem.createSimIo(robotVisualizer));
-
-                                // No GyroSubsystem in REPLAY for now
-                                // create the drive subsystem with null gyro (use default json)
-                                drivebase = !Constants.TESTBED ? new SwerveSubsystem(
-                                                new File(Filesystem.getDeployDirectory(), "YAGSL"), null) : null;
-
+                                // No GyroSubsystem in SIM for now.
+                                drivebase = !Constants.TESTBED
+                                                ? new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "YAGSL"),
+                                                                null)
+                                                : null;
+                                apriltagSubsystem = !Constants.TESTBED
+                                                ? new ApriltagSubsystem(ApriltagSubsystem.createSimIo(), drivebase)
+                                                : null;
                         }
-
                         default -> {
                                 throw new RuntimeException("Did not specify Robot Mode");
                         }

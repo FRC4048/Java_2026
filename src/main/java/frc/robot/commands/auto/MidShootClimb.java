@@ -1,6 +1,7 @@
 package frc.robot.commands.auto;
 
 import choreo.auto.AutoFactory;
+import edu.wpi.first.wpilibj.DriverStation;
 import frc.robot.commands.climber.ClimberDown;
 import frc.robot.commands.climber.ClimberUp;
 import frc.robot.commands.feeder.SpinFeeder;
@@ -31,6 +32,7 @@ public class MidShootClimb extends LoggableSequentialCommandGroup{
                     new SpinHopper(hopper),
                     new SpinFeeder(feeder)
                 ),
+                subsystem.isRedAlliance()
                 LoggableCommandWrapper.wrap(auto.resetOdometry("MidClimb")),
                 new ClimberUp(climber),
                 LoggableCommandWrapper.wrap(auto.trajectoryCmd("MidClimb")/*.withTimeout(n)*/), 

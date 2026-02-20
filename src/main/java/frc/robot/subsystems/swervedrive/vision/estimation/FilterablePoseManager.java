@@ -62,12 +62,8 @@ public class FilterablePoseManager extends PoseManager {
     double oneSecondAgo = currentTime - 1.0;
     lastSecondMeasurements.removeIf(record -> record.timestamp < oneSecondAgo);
     List<VisionLog> log = new ArrayList<>();
-    List<VisionMeasurement> validMeasurements = new ArrayList<>();
-    List<VisionMeasurement> invalidMeasurements = new ArrayList<>();
     List<Pose2d> validMeasurementsPose = new ArrayList<>();
-    List<Pose2d> invalidMeasurementsPose = new ArrayList<>();
-    List<Apriltag> validTags = new ArrayList<>();
-    List<Apriltag> invalidTags = new ArrayList<>();
+    List<Pose2d> invalidMeasurementsPose = new ArrayList<>();;
     List<Pose3d> acceptedTagsPose = new ArrayList<>();
     for (Map.Entry<Integer, Queue<VisionMeasurement>> queueEntry : visionMeasurementQueueMap.entrySet()) {
       int tagId = queueEntry.getKey();
@@ -83,28 +79,20 @@ public class FilterablePoseManager extends PoseManager {
         switch (r) {
           case ACCEPTED -> {
             setVisionSTD(visionTruster.calculateTrust(v, drivebase.getCameraPose()));
-            validMeasurements.add(v);
             validMeasurementsPose.add(v.measurement());
-            validTags.add(Apriltag.of(tagId));
             addVisionMeasurement(v);
             acceptedTagsPose.add(Apriltag.of(tagId).getPose());
 
           }
           case NOT_PROCESSED -> queue.add(v);
           case REJECTED -> {
-            invalidMeasurements.add(v);
             invalidMeasurementsPose.add(v.measurement());
-            invalidTags.add(Apriltag.of(tagId));
           }
         }
       }
     }
-    Logger.recordOutput("Apriltag/acceptedMeasurements", validMeasurements.toArray(VisionMeasurement[]::new));
-    Logger.recordOutput("Apriltag/rejectedMeasurements", invalidMeasurements.toArray(VisionMeasurement[]::new));
     Logger.recordOutput("Apriltag/acceptedMeasurementsPose", validMeasurementsPose.toArray(Pose2d[]::new));
     Logger.recordOutput("Apriltag/rejectedMeasurementsPose", invalidMeasurementsPose.toArray(Pose2d[]::new));
-    Logger.recordOutput("Apriltag/acceptedTag",validTags.toArray(Apriltag[]::new));
-    Logger.recordOutput("Apriltag/rejectedTag",invalidTags.toArray(Apriltag[]::new));
     Logger.recordOutput("Apriltag/numberAcceptedLastSecond", lastSecondMeasurements.stream().filter(record -> record.result == FilterResult.ACCEPTED).count());
     Logger.recordOutput("Apriltag/numberNotProcessedLastSecond", lastSecondMeasurements.stream().filter(record -> record.result == FilterResult.NOT_PROCESSED).count());
     Logger.recordOutput("Apriltag/numberRejectedLastSecond", lastSecondMeasurements.stream().filter(record -> record.result == FilterResult.REJECTED).count());

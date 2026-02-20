@@ -1,7 +1,8 @@
 package frc.robot.subsystems;
 
-import java.util.function.Supplier;
+import org.littletonrobotics.junction.Logger;
 
+import frc.robot.RobotContainer;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.Timer;
@@ -10,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.constants.Constants;
 import frc.robot.constants.enums.ShootingState;
 import frc.robot.constants.enums.ShootingState.ShootState;
+import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 
 public class ControllerSubsystem extends SubsystemBase {
 
@@ -32,11 +34,11 @@ public class ControllerSubsystem extends SubsystemBase {
 
     // Placeholder fixed-state settings.
     private static final ShotTargets STOPPED_TARGETS =
-            new ShotTargets(Constants.ANGLER_HOME_ANGLE, 0.0, 0.0, 0.0);
+            new ShotTargets(Constants.ANGLER_HOME_ANGLE, 0.0, 0.0, 0.0, false, false);
     private static final ShotTargets FIXED_TARGETS =
-            new ShotTargets(10.0, 120.0, 5.0, 0.0);
+            new ShotTargets(10.0, 120.0, 5.0, 0.0, true, true);
     private static final ShotTargets FIXED_2_TARGETS =
-            new ShotTargets(22.0, 180.0, -5.0, 0.0);
+            new ShotTargets(22.0, 180.0, -5.0, 0.0, true, true);
 
     // Placeholder pose-driven profiles.
     private static final PoseControlProfile HUB_PROFILE =
@@ -44,27 +46,19 @@ public class ControllerSubsystem extends SubsystemBase {
     private static final PoseControlProfile SHUTTLE_PROFILE =
             new PoseControlProfile(SHUTTLE_TARGET_POSE, 16.0, 90.0, -14.0);
 
-    private final Supplier<Pose2d> poseSupplier;
-    private final ShootingState shootingState;
+    private final SwerveSubsystem drivebase;
+    private final RobotContainer robotContainer;
     private final Timer stopDelayTimer = new Timer();
 
     private ShootState previousState;
-    private double targetAnglerAngleDegrees;
-    private double targetShooterVelocityRpm;
-    private double targetTurretAngleDegrees;
-    private double distanceMeters;
-    private boolean feederSpin;
-    private boolean hopperSpin;
+    private ShotTargets activeTargets;
 
 
-    public ControllerSubsystem(Supplier<Pose2d> poseSupplier, ShootingState shootingState) {
-        this.poseSupplier = poseSupplier;
-        this.shootingState = shootingState;
-        this.previousState = shootingState.getShootState();
-        this.targetAnglerAngleDegrees = Constants.ANGLER_HOME_ANGLE;
-        this.targetShooterVelocityRpm = 0.0;
-        this.targetTurretAngleDegrees = 0.0;
-        this.distanceMeters = 0.0;
+    public ControllerSubsystem(SwerveSubsystem drivebase, RobotContainer robotContainer) {
+        this.drivebase = drivebase;
+        this.robotContainer = robotContainer;
+        this.previousState = getCurrentShootState();
+        this.activeTargets = STOPPED_TARGETS;
 
         SmartDashboard.putNumber(MANUAL_POSE_X_KEY, 0.0);
         SmartDashboard.putNumber(MANUAL_POSE_Y_KEY, 0.0);
@@ -73,28 +67,41 @@ public class ControllerSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
         Pose2d robotPose = getRobotPose();
-        ShootState currentState = shootingState.getShootState();
+        ShootState currentState = getCurrentShootState();
 
         updateStopDelayState(currentState);
         updateTargets(currentState, robotPose);
 
         SmartDashboard.putString(CURRENT_SHOOT_STATE_KEY, currentState.toString());
-        SmartDashboard.putNumber(DISTANCE_METERS_KEY, distanceMeters);
-        SmartDashboard.putNumber(TARGET_ANGLER_ANGLE_KEY, targetAnglerAngleDegrees);
-        SmartDashboard.putNumber(TARGET_SHOOTER_VELOCITY_KEY, targetShooterVelocityRpm);
-        SmartDashboard.putNumber(TARGET_TURRET_ANGLE_KEY, targetTurretAngleDegrees);
-        SmartDashboard.putBoolean(TARGET_FEEDER_SPEED_KEY, feederSpin);
-        SmartDashboard.putBoolean(TARGET_HOPPER_SPEED_KEY, hopperSpin);
+        SmartDashboard.putNumber(DISTANCE_METERS_KEY, activeTargets.distanceMeters);
+        SmartDashboard.putNumber(TARGET_ANGLER_ANGLE_KEY, activeTargets.anglerAngleDegrees);
+        SmartDashboard.putNumber(TARGET_SHOOTER_VELOCITY_KEY, activeTargets.shooterVelocityRpm);
+        SmartDashboard.putNumber(TARGET_TURRET_ANGLE_KEY, activeTargets.turretAngleDegrees);
+        SmartDashboard.putBoolean(TARGET_FEEDER_SPEED_KEY, activeTargets.feederSpin);
+        SmartDashboard.putBoolean(TARGET_HOPPER_SPEED_KEY, activeTargets.hopperSpin);
+
+        Logger.recordOutput(CURRENT_SHOOT_STATE_KEY, currentState.toString());
+        Logger.recordOutput(DISTANCE_METERS_KEY, activeTargets.distanceMeters);
+        Logger.recordOutput(TARGET_ANGLER_ANGLE_KEY, activeTargets.anglerAngleDegrees);
+        Logger.recordOutput(TARGET_SHOOTER_VELOCITY_KEY, activeTargets.shooterVelocityRpm);
+        Logger.recordOutput(TARGET_TURRET_ANGLE_KEY, activeTargets.turretAngleDegrees);
+        Logger.recordOutput(TARGET_FEEDER_SPEED_KEY, activeTargets.feederSpin);
+        Logger.recordOutput(TARGET_HOPPER_SPEED_KEY, activeTargets.hopperSpin);
 
         previousState = currentState;
     }
 
+    private ShootState getCurrentShootState() {
+        return robotContainer.getShootingState().getShootState();
+    }
+
     private Pose2d getRobotPose() {
         SmartDashboard.putBoolean(USING_MANUAL_POSE_KEY, shouldUseManualPose());
+        Logger.recordOutput(USING_MANUAL_POSE_KEY, shouldUseManualPose());
         if (shouldUseManualPose()) {
             return getManualPose();
         }
-        return poseSupplier.get();
+        return drivebase.getPose();
     }
 
     private boolean shouldUseManualPose() {
@@ -124,24 +131,22 @@ public class ControllerSubsystem extends SubsystemBase {
     }
 
     private void updateStoppedTargets() {
-        targetAnglerAngleDegrees = STOPPED_TARGETS.anglerAngleDegrees;
-        targetTurretAngleDegrees = STOPPED_TARGETS.turretAngleDegrees;
-        distanceMeters = STOPPED_TARGETS.distanceMeters;
-        feederSpin = false;
-        hopperSpin = false;
-
-        if (stopDelayTimer.hasElapsed(STOP_DELAY_SECONDS)) {
-            targetShooterVelocityRpm = 0.0;
-        }
+        //This makes the shooter wait half a second before stopping
+        double shooterVelocity = stopDelayTimer.hasElapsed(STOP_DELAY_SECONDS)
+                ? 0.0
+                : activeTargets.shooterVelocityRpm;
+                
+        activeTargets = new ShotTargets(
+                STOPPED_TARGETS.anglerAngleDegrees,
+                shooterVelocity,
+                STOPPED_TARGETS.turretAngleDegrees,
+                STOPPED_TARGETS.distanceMeters,
+                STOPPED_TARGETS.feederSpin,
+                STOPPED_TARGETS.hopperSpin);
     }
 
     private void useShotTargets(ShotTargets shotTargets) {
-        targetAnglerAngleDegrees = shotTargets.anglerAngleDegrees;
-        targetShooterVelocityRpm = shotTargets.shooterVelocityRpm;
-        targetTurretAngleDegrees = shotTargets.turretAngleDegrees;
-        distanceMeters = shotTargets.distanceMeters;
-        feederSpin = true;
-        hopperSpin = true;
+        activeTargets = shotTargets;
     }
 
     private ShotTargets calculateTargetsFromPose(PoseControlProfile profile, Pose2d robotPose) {
@@ -149,7 +154,7 @@ public class ControllerSubsystem extends SubsystemBase {
         double anglerAngleDegrees = calculateAnglerAngleDegrees(computedDistanceMeters, profile);
         double shooterVelocity = calculateShooterVelocity(computedDistanceMeters, profile);
         double turretAngleDegrees = calculateTurretAngleDegrees(robotPose, profile);
-        return new ShotTargets(anglerAngleDegrees, shooterVelocity, turretAngleDegrees, computedDistanceMeters);
+        return new ShotTargets(anglerAngleDegrees, shooterVelocity, turretAngleDegrees, computedDistanceMeters, true, true);
     }
 
     private double calculateDistanceMeters(Pose2d robotPose, Pose2d targetPose) {
@@ -173,27 +178,27 @@ public class ControllerSubsystem extends SubsystemBase {
 
     //Getters for all the subsystems to set posistion.
     public double getTargetAnglerAngleDegrees() {
-        return targetAnglerAngleDegrees;
+        return activeTargets.anglerAngleDegrees;
     }
 
     public double getTargetShooterVelocityRpm() {
-        return targetShooterVelocityRpm;
+        return activeTargets.shooterVelocityRpm;
     }
 
     public double getTargetTurretAngleDegrees() {
-        return targetTurretAngleDegrees;
+        return activeTargets.turretAngleDegrees;
     }
 
     public double getDistanceMeters() {
-        return distanceMeters;
+        return activeTargets.distanceMeters;
     }
 
     public boolean shouldFeederSpin() {
-        return feederSpin;
+        return activeTargets.feederSpin;
     }
 
     public boolean shouldHopperSpin() {
-        return hopperSpin;
+        return activeTargets.hopperSpin;
     }
 
 
@@ -203,12 +208,22 @@ public class ControllerSubsystem extends SubsystemBase {
         private final double shooterVelocityRpm;
         private final double turretAngleDegrees;
         private final double distanceMeters;
+        private final boolean feederSpin;
+        private final boolean hopperSpin;
 
-        private ShotTargets(double anglerAngleDegrees, double shooterVelocityRpm, double turretAngleDegrees, double distanceMeters) {
+        private ShotTargets(
+                double anglerAngleDegrees,
+                double shooterVelocityRpm,
+                double turretAngleDegrees,
+                double distanceMeters,
+                boolean feederSpin,
+                boolean hopperSpin) {
             this.anglerAngleDegrees = anglerAngleDegrees;
             this.shooterVelocityRpm = shooterVelocityRpm;
             this.turretAngleDegrees = turretAngleDegrees;
             this.distanceMeters = distanceMeters;
+            this.feederSpin = feederSpin;
+            this.hopperSpin = hopperSpin;
         }
     }
 

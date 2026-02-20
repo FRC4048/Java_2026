@@ -124,7 +124,7 @@ public class RobotContainer {
 
                                 drivebase = !Constants.TESTBED ? new SwerveSubsystem(
                                                 new File(Filesystem.getDeployDirectory(), "YAGSL"), swerveIMU) : null;
-                            controllerSubsystem = !Constants.TESTBED ? new ControllerSubsystem(() -> drivebase.getPose(), shootState) : null;
+                            controllerSubsystem = !Constants.TESTBED ? new ControllerSubsystem(drivebase, this) : null;
 
             }
                         case REPLAY -> {
@@ -143,7 +143,7 @@ public class RobotContainer {
                                 // create the drive subsystem with null gyro (use default json)
                                 drivebase = !Constants.TESTBED ? new SwerveSubsystem(
                                                 new File(Filesystem.getDeployDirectory(), "YAGSL"), null) : null;
-                            controllerSubsystem = !Constants.TESTBED ? new ControllerSubsystem(() -> drivebase.getPose(), shootState) : null;
+                            controllerSubsystem = !Constants.TESTBED ? new ControllerSubsystem(drivebase, this) : null;
             }
                         case SIM -> {
                                 robotVisualizer = new RobotVisualizer();
@@ -165,7 +165,7 @@ public class RobotContainer {
                                 // create the drive subsystem with null gyro (use default json)
                                 drivebase = !Constants.TESTBED ? new SwerveSubsystem(
                                                 new File(Filesystem.getDeployDirectory(), "YAGSL"), null) : null;
-                            controllerSubsystem = !Constants.TESTBED ? new ControllerSubsystem(() -> drivebase.getPose(), shootState) : null;
+                            controllerSubsystem = !Constants.TESTBED ? new ControllerSubsystem(drivebase, this) : null;
             }
 
                         default -> {

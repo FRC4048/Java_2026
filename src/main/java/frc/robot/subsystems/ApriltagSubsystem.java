@@ -1,19 +1,28 @@
 package frc.robot.subsystems;
 
+import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.apriltags.*;
+import frc.robot.subsystems.swervedrive.SwerveSubsystem;
+import frc.robot.subsystems.swervedrive.vision.estimation.PoseEstimator;
 import frc.robot.utils.logging.io.BaseIoImpl;
 
 public class ApriltagSubsystem extends SubsystemBase {
 
     public static final String LOGGING_NAME = "ApriltagSubsystem";
     private final ApriltagIO io;
+    private final PoseEstimator estimator;
+    private final SwerveSubsystem drivebase;
 
-    public ApriltagSubsystem(ApriltagIO io) {
+    public ApriltagSubsystem(ApriltagIO io, SwerveSubsystem drivebase) {
+        this.drivebase = drivebase;
         this.io = io;
+       estimator = new PoseEstimator(drivebase.getKinematics(), drivebase, 0, this);
     }
 
     public static ApriltagIO createRealIo() {
+        
         return new TCPApriltagIo(LOGGING_NAME, new ApriltagInputs());
     }
 
@@ -28,8 +37,14 @@ public class ApriltagSubsystem extends SubsystemBase {
     public void addSimReading(ApriltagReading reading) {
         io.addReading(reading);
     }
+    public ApriltagIO getIO(){
+        return io;
+    }
+
     @Override
     public void periodic() {
+        estimator.updateVision();
+        estimator.updatePosition(drivebase.getOdom());
         io.periodic();
     }
 }

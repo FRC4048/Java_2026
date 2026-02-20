@@ -10,6 +10,7 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.constants.Constants;
+import frc.robot.constants.GameConstants;
 import frc.robot.utils.logging.input.MotorLoggableInputs;
 import frc.robot.utils.logging.io.pidmotor.MockSparkMaxPidMotorIo;
 import frc.robot.utils.logging.io.pidmotor.RealSparkMaxPidMotorIo;
@@ -22,14 +23,14 @@ import frc.robot.utils.simulation.ArmSimulator;
 import frc.robot.utils.simulation.RobotVisualizer;
 import frc.robot.utils.motor.TunablePIDManager;
 
-public class AnglerSubsystem extends SubsystemBase {
+public class TurretSubsystem extends SubsystemBase {
 
-    public static final String LOGGING_NAME = "AnglerSubsystem";
+    public static final String LOGGING_NAME = "TurretSubsystem";
 
     private final SparkMaxPidMotorIo io;
     private final TunablePIDManager pidManager;
 
-    public AnglerSubsystem(SparkMaxPidMotorIo io) {
+    public TurretSubsystem(SparkMaxPidMotorIo io) {
         this.io = io;
         this.pidManager = new TunablePIDManager(LOGGING_NAME, io, createPidConfig());
         stopMotors();
@@ -46,20 +47,19 @@ public class AnglerSubsystem extends SubsystemBase {
    */
     public void setPosition(double targetEncoderPosition) {
         io.setPidPosition(targetEncoderPosition);
-    }
+    }   
 
-/**
-   * Gets the desired Angle Position and uses a PID controller to get the motor there
-   * @param targetAngle Desired angle position of Angler in degrees
-   */
+    /**
+   * Gets the desired Turret Position and uses a PID controller to get the motor there
+   * @param targetAngle Desired angle position of turret in degrees */
   
     public void setAngle(double targetAngle) {
         double targetRotations = calculateRotationsForAngle(
                 targetAngle,
-                Constants.ANGLER_ENCODER_HIGH,
-                Constants.ANGLER_ENCODER_LOW,
-                Constants.ANGLER_ANGLE_HIGH,
-                Constants.ANGLER_ANGLE_LOW);
+                Constants.TURRET_ENCODER_MAX,
+                Constants.TURRET_ENCODER_MIN,
+                Constants.TURRET_RIGHT_ANGLE,
+                Constants.TURRET_LEFT_ANGLE);
         setPosition(targetRotations);
     }
 
@@ -71,27 +71,23 @@ public class AnglerSubsystem extends SubsystemBase {
             double angleHigh,
             double angleLow) {
 
-        double multipler = (encoderHigh - encoderLow) / (angleHigh - angleLow);
-        double targetRotations = targetAngle * multipler - (multipler * angleHigh - encoderHigh);
+        double multiplier = (encoderHigh - encoderLow) / (angleHigh - angleLow);
+        double targetRotations = targetAngle * multiplier - (multiplier * angleHigh - encoderHigh);
         return MathUtil.clamp(targetRotations, encoderLow, encoderHigh);
-    }
-
-    public void stopMotors() {
-        io.stopMotor();
     }
 
     /**
      * Drive forward at the homing speed. Command should stop when limit is hit.
      */
     public void runForward() {
-        io.set(Math.abs(Constants.ANGLER_LIMIT_SPEED));
+        io.set(Math.abs(Constants.TURRET_LIMIT_SPEED));
     }
 
     /**
      * Drive reverse at the homing speed. Command should stop when limit is hit.
      */
     public void runReverse() {
-        io.set(-Math.abs(Constants.ANGLER_LIMIT_SPEED));
+        io.set(-Math.abs(Constants.TURRET_LIMIT_SPEED));
     }
 
     /**
@@ -109,6 +105,10 @@ public class AnglerSubsystem extends SubsystemBase {
         return io.isRevSwitchPressed();
     }
 
+    public void stopMotors() {
+        io.stopMotor();
+    }
+
     public static SparkMaxPidMotorIo createMockIo() {
         return new MockSparkMaxPidMotorIo(LOGGING_NAME, MotorLoggableInputs.allMetrics());
     }
@@ -119,7 +119,7 @@ public class AnglerSubsystem extends SubsystemBase {
 
     public static SparkMaxPidMotorIo createSimIo(RobotVisualizer visualizer) {
         SparkMaxPidMotor motor = createMotor();
-        ArmSimulator simulator = new ArmSimulator(motor.getNeoMotor(), createParams(), visualizer.getAnglerLigament());
+        ArmSimulator simulator = new ArmSimulator(motor.getNeoMotor(), createParams(), visualizer.getTurretLigament());
         return new SimSparkMaxPidMotorIo(
                 LOGGING_NAME,
                 motor,
@@ -132,25 +132,24 @@ public class AnglerSubsystem extends SubsystemBase {
                 .setCurrentLimit(Constants.NEO_CURRENT_LIMIT)
                 .setAllowedError(.1)
                 .setPidf(
-                        Constants.ANGLER_P,
-                        Constants.ANGLER_I,
-                        Constants.ANGLER_D,
-                        Constants.ANGLER_FF);
+                        Constants.TURRET_P,
+                        Constants.TURRET_I,
+                        Constants.TURRET_D,
+                        Constants.TURRET_FF);
     }
 
     private static SparkMaxPidMotor createMotor() {
-        return new SparkMaxPidMotor(Constants.ANGLER_MOTOR_ID, createPidConfig());
+        return new SparkMaxPidMotor(Constants.TURRET_MOTOR_ID, createPidConfig());
     }
 
     private static ArmParameters createParams() {
         ArmParameters params = new ArmParameters();
-        params.name = "ANGLER";
-        params.armGearing = Constants.ANGLER_GEARING;
-        params.armInertia = Constants.ANGLER_INERTIA;
-        params.armLength = Constants.ANGLER_LENGTH;
-        params.armMinAngle = Constants.ANGLER_MIN_ANGLE;
-        params.armMaxAngle = Constants.ANGLER_MAX_ANGLE;
-        params.armSimulateGravity = Constants.ANGLER_SIMULATE_GRAVITY;
+        params.name = "TURRET";
+        params.armGearing = Constants.TURRET_GEARING;
+        params.armInertia = Constants.TURRET_INERTIA;
+        params.armLength = Constants.TURRET_LENGTH;
+        params.armMinAngle = Constants.TURRET_MIN_ANGLE;
+        params.armMaxAngle = Constants.TURRET_MAX_ANGLE;
         return params;
     }
 }

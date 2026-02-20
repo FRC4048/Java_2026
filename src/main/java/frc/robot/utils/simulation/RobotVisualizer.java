@@ -19,6 +19,7 @@ public class RobotVisualizer {
         private final LoggedMechanismLigament2d climberLigament;
     private final LoggedMechanismLigament2d feederLigament;
         private final LoggedMechanismLigament2d anglerLigament;
+    private final LoggedMechanismLigament2d turretLigament;
         private final LoggedMechanismLigament2d shooterTiltLigament;
         private final LoggedMechanismLigament2d shooterLigament;
         private final LoggedMechanismLigament2d intakeDeploymentLigament;
@@ -115,7 +116,24 @@ public class RobotVisualizer {
                                                 4,
                                                 new Color8Bit(Color.kYellow)));
 
-                LoggedMechanismRoot2d shooterRoot = mech2d.getRoot("Shooter Root", Constants.DRIVE_BASE_WIDTH * 2.5,
+                        LoggedMechanismRoot2d turretRoot =
+                mech2d.getRoot("Turret Root", Constants.DRIVE_BASE_WIDTH * 2, Constants.INITIAL_ROBOT_HEIGHT);
+
+        LoggedMechanismLigament2d turretRiserLigament =
+                intakeRoot.append(
+                        new LoggedMechanismLigament2d(
+                                "Turret Riser", 0.5, 45, 8, new Color8Bit(Color.kMediumPurple)));
+                            
+        this.turretLigament =
+                turretRiserLigament.append(
+                        new LoggedMechanismLigament2d(
+                                "Intake Wheel",
+                                0.1,
+                                90.0,
+                                4,
+                                new Color8Bit(Color.kRed)));
+
+        LoggedMechanismRoot2d shooterRoot = mech2d.getRoot("Shooter Root", Constants.DRIVE_BASE_WIDTH * 2.5,
                                 Constants.INITIAL_ROBOT_HEIGHT);
 
                 LoggedMechanismLigament2d shooterRiserLigament = shooterRoot.append(
@@ -188,6 +206,10 @@ public class RobotVisualizer {
         public LoggedMechanismLigament2d getShooterLigament() {
                 return shooterLigament;
         }
+
+    public LoggedMechanismLigament2d getTurretLigament() {
+        return turretLigament;
+    }
 
         public LoggedMechanismLigament2d getIntakeDeploymentLigament() {
                 return intakeDeploymentLigament;

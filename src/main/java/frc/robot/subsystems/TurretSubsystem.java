@@ -35,6 +35,7 @@ public class TurretSubsystem extends SubsystemBase {
     public TurretSubsystem(SparkMaxPidMotorIo io) {
         this.io = io;
         this.pidManager = new TunablePIDManager(LOGGING_NAME, io, createPidConfig());
+        stopMotors();
     }
 
     @Override

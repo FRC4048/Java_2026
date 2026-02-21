@@ -11,6 +11,7 @@ public class AddApriltagReading extends LoggableCommand {
     public AddApriltagReading(ApriltagSubsystem april, ApriltagReading reading) {
         this.april = april;
         this.reading = reading;
+        addRequirements(april);
     }
 
     @Override

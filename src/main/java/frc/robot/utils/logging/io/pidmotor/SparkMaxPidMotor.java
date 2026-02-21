@@ -9,6 +9,8 @@ import com.revrobotics.spark.config.MAXMotionConfig.MAXMotionPositionMode;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
+import frc.robot.constants.Constants;
+
 /**
  * A Wrapper utility to encapsulate the NEO motor with PID capability. This is simply a wrapper with
  * some convenient defaults and initializations that make programming the PID of the NEO easier.
@@ -51,7 +53,7 @@ public class SparkMaxPidMotor {
         config
                 .smartCurrentLimit(pidConfig.getCurrentLimit())
                 .closedLoopRampRate(RAMP_RATE)
-                .idleMode(IdleMode.kBrake);
+                .idleMode(pidConfig.getIdleMode());
         config
                 .closedLoop
                 .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
@@ -78,7 +80,6 @@ public class SparkMaxPidMotor {
 
         neoMotor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     }
-
     /**
      * Reconfigure the PID fully using some of the values from motor params.
      * This method uses the PID, iZone, FF, maxVelocity, maxAcceleration and allowedError to reconfigure
@@ -92,7 +93,7 @@ public class SparkMaxPidMotor {
                 .closedLoop
                 .pid(params.getP(), params.getI(), params.getD())
                 .iZone(params.getIZone())
-                .feedForward.kV(pidConfig.getFF());
+                .feedForward.kV(params.getFF());
         if (params.getUsesMaxMotion()) {
             config
                     .closedLoop

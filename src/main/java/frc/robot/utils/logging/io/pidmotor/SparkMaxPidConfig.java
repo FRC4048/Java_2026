@@ -14,7 +14,7 @@ public class SparkMaxPidConfig {
     public static final double MAX_VELOCITY = 5000;
     public static final double MAX_ACCELERATION = 10000;
     public static final double ALLOWED_ERROR = 1.0;
-    public static final IdleMode DEFAULT_MODE = IdleMode.kBrake;
+    public static final IdleMode DEFAULT_IDLE_MODE = IdleMode.kBrake;
 
     private double p = DEFAULT_P;
     private double i = DEFAULT_I;

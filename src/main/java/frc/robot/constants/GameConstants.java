@@ -158,5 +158,5 @@ public class GameConstants {
     public static final double VERTICAL_FOV = Units.degreesToRadians(90); // radians; TODO: Change Later
     public static final double AVERAGE_CAM_LATENCY = 0; // seconds; TODO: change Later
     public static final double AVERAGE_CAM_LATENCY_STD_DEV = 0; // seconds; TODO: change Later
-    public static final double MAX_VISION_DISTANCE_SIMULATION = 60;
+    public static final double MAX_VISION_DISTANCE_SIMULATION = 6;
 }

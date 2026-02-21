@@ -62,6 +62,7 @@ public class ApriltagSubsystem extends SubsystemBase {
         estimator.updateVision();
         estimator.updatePosition(drivebase.getOdom());
         io.periodic();
+        simReadings();
     }
     public void simReadings() {
         for (Apriltag tag : Apriltag.values()) {

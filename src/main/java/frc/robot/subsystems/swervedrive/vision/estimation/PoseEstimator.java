@@ -145,7 +145,7 @@ public class PoseEstimator {
     double serverTime = apriltagSystem.getIO().getInputs().serverTime[index];
     //double timestamp = 0; // latency is not right we are assuming zero
     double timestamp = apriltagSystem.getIO().getInputs().timestamp[index];
-    Pose2d visionPose = new Pose2d(pos[0], pos[1], getEstimatedPose().getRotation());
+    Pose2d visionPose = new Pose2d(pos[0], pos[1], Rotation2d.fromDegrees(pos[2]));
     double distanceFromTag = apriltagSystem.getIO().getInputs().distanceToTag[index];
     return new VisionMeasurement(visionPose, distanceFromTag, timestamp/1000);
   }

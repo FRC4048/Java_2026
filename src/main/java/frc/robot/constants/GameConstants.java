@@ -1,6 +1,8 @@
 package frc.robot.constants;
 
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.RobotBase;
 import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
@@ -105,7 +107,7 @@ public class GameConstants {
     public static final double ANGLER_FIXED_ANGLE = 10; //Fixed encoder position of Angler in Fixed ShootState
     public static final double ANGLER_LIMIT_SPEED = 0.2;
 
-    
+
  // turret (pan angle) PID
     public static final double TURRET_P = .5;
     public static final double TURRET_I = 0.000001;
@@ -149,4 +151,12 @@ public class GameConstants {
     public static final double VISION_CONSISTENCY_THRESHOLD = 0.25; //How close 2 vision measurements have to be (needs to be tuned potentially but seemingly from my testing it also might not be needed)
     public static final boolean ENABLE_VISION = true;
     public static final double POSE_BUFFER_STORAGE_TIME = 2; //how many past measurements are stored in the buffer (might increase if we need further back)
+
+    // Vision
+    public static final Transform3d ROBOT_TO_CAMERA = new Transform3d(0,0,0, new Rotation3d(0,0,0)); // TODO: change
+    public static final double HORIZONTAL_FOV = Units.degreesToRadians(110); // radians; TODO: Change Later
+    public static final double VERTICAL_FOV = Units.degreesToRadians(90); // radians; TODO: Change Later
+    public static final double AVERAGE_CAM_LATENCY = 0; // seconds; TODO: change Later
+    public static final double AVERAGE_CAM_LATENCY_STD_DEV = 0; // seconds; TODO: change Later
+    public static final double MAX_VISION_DISTANCE_SIMULATION = 60;
 }

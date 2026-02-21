@@ -79,7 +79,7 @@ public abstract class BasicVisionFilter implements VisionFilter, VisionTransform
     return Math.abs(diff) <= Constants.VISION_CONSISTENCY_THRESHOLD;
   }
   
-  private boolean inBounds(Pose2d pose2d) {
-    return pose2d.getX() > 0 && pose2d.getX() < 20 && pose2d.getY() > 0 && pose2d.getY() < 20;
+  public static boolean inBounds(Pose2d pose2d) {
+    return pose2d.getX() > 0 && pose2d.getX() < 16.5 && pose2d.getY() > 0 && pose2d.getY() < 8.1;
   }
 }

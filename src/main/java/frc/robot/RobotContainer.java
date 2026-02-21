@@ -538,7 +538,7 @@ public class RobotContainer {
         return drivebase;
     }
 
-        public ShootingState getShootingState() {
+    public ShootingState getShootingState() {
                 return shootState;
         }
 }

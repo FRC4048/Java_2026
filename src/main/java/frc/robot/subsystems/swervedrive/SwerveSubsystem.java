@@ -297,6 +297,9 @@ public class SwerveSubsystem extends SubsystemBase {
     public Pose2d getPose() {
         return swerveDrive.getPose();
     }
+    public Pose2d getSimulationPose() {
+        return swerveDrive.getSimulationDriveTrainPose().orElse(new Pose2d());
+    }
     // Todo: fix to only get odomtry
     public Pose2d getOdom() {
         return swerveDrive.getPose();

@@ -17,7 +17,6 @@ import frc.robot.commands.AddGarbageReading;
 import frc.robot.commands.climber.ClimberDown;
 import frc.robot.commands.climber.ClimberUp;
 import frc.robot.commands.drive.DriveCircle;
-import frc.robot.commands.drive.SpinInPlace;
 import frc.robot.commands.hopper.SpinHopper;
 import frc.robot.commands.drive.DriveDirectionTime;
 import frc.robot.commands.feeder.SpinFeeder;
@@ -62,10 +61,7 @@ import frc.robot.apriltags.ApriltagReading;
 import java.io.File;
 
 import choreo.auto.AutoFactory;
-import choreo.auto.AutoRoutine;
-import choreo.auto.AutoTrajectory;
 
-import choreo.auto.AutoFactory;
 import choreo.auto.AutoRoutine;
 import choreo.auto.AutoTrajectory;
 
@@ -313,14 +309,12 @@ public class RobotContainer {
 
 
 
-            //SmartDashboard.putData("TuneLoggedTunableNumber", new LoggedTunableNumberTuner(Constants.VISION_CONSISTENCY_THRESHOLD,drivebase::getError,0,10,10,10));
-                        SmartDashboard.putData("SpinInPlace", new SpinInPlace(drivebase,5,true,15));
-                        SmartDashboard.putData("DriveToTheLeft", new DriveDirectionTime(drivebase, 1, 10, true, 10));
                         SmartDashboard.putData("DriveInCircle", new DriveCircle(drivebase, 1,10,15000));
             // TODO: These commands do not REQUIRE the subsystem therefore cannot be used in// production
                         SmartDashboard.putData(
                                         "Intake/Spin Forward",
                                         new InstantCommand(() -> intakeSubsystem.setSpeed(1.0)));
+
 
                         SmartDashboard.putData(
                                         "Intake/Spin Backward",

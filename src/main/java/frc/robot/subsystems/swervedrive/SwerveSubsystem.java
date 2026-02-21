@@ -102,9 +102,6 @@ public class SwerveSubsystem extends SubsystemBase {
                 swerveDrive.getModulePositions(),
                 startingPose
         );
-
-        // 3. Put the new Field2d on SmartDashboard
-        SmartDashboard.putData("Raw Odometry Field", rawOdomField);
     }
 
     /**
@@ -130,9 +127,7 @@ public class SwerveSubsystem extends SubsystemBase {
                 swerveDrive.getOdometryHeading(),
                 swerveDrive.getModulePositions()
         );
-        swerveDrive.stopOdometryThread();
 
-        // 5. Update the Field2d object
         rawOdomField.setRobotPose(rawOdometry.getPoseMeters());
         double currentTime = Logger.getTimestamp()/1000000.0;
         double oneSecondAgo = currentTime - 1.0;

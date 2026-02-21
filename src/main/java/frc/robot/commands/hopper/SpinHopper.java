@@ -5,11 +5,11 @@ import frc.robot.constants.Constants;
 import frc.robot.subsystems.HopperSubsystem;
 import frc.robot.utils.logging.commands.LoggableCommand;
 
-public class SpinHopper extends LoggableCommand{
+public class SpinHopper extends LoggableCommand {
     
     public final HopperSubsystem subsystem;
     public final Timer timer;
-    
+
 
     public SpinHopper(HopperSubsystem subsystem){
         timer = new Timer();
@@ -43,5 +43,5 @@ public class SpinHopper extends LoggableCommand{
 
     }
 
-    
+
 }

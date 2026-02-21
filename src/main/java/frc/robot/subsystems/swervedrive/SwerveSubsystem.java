@@ -52,7 +52,7 @@ public class SwerveSubsystem extends SubsystemBase {
      * Swerve drive object.
      */
     private final SwerveDrive swerveDrive;
-    private Vector<N3> variance = VecBuilder.fill(0,0,0);
+    private Vector<N3> variance = Constants.INITIAL_VISION_STD_DEVS;
     private final Field2d rawOdomField = new Field2d();
     private SwerveDriveOdometry rawOdometry;
     private final ConcurrentLinkedDeque<PoseErrorRecord> poseError = new ConcurrentLinkedDeque<>();
@@ -81,7 +81,7 @@ public class SwerveSubsystem extends SubsystemBase {
         // Configure the Telemetry before creating the SwerveDrive to avoid unnecessary objects being created.
         SwerveDriveTelemetry.verbosity = TelemetryVerbosity.HIGH;
         try {
-            SwerveParserWithImu parser = new SwerveParserWithImu(directory, swerveIMU);
+            SwerveParser parser = new SwerveParserWithImu(directory, swerveIMU);
             swerveDrive = parser.createSwerveDrive(Constants.MAX_SPEED, startingPose);
             // Alternative method if you don't want to supply the conversion factor via JSON files.
             // swerveDrive = new SwerveParser(directory).createSwerveDrive(maximumSpeed, angleConversionFactor, driveConversionFactor);
@@ -316,6 +316,7 @@ public class SwerveSubsystem extends SubsystemBase {
      *
      * @param initialHolonomicPose The pose to set the odometry to
      */
+    // Might be broken
     public void resetOdometry(Pose2d initialHolonomicPose) {
         swerveDrive.resetOdometry(initialHolonomicPose);
         SwerveModulePosition[] modules = new SwerveModulePosition[4];
@@ -323,7 +324,6 @@ public class SwerveSubsystem extends SubsystemBase {
             modules[i] = new SwerveModulePosition();
         }
         rawOdometry.resetPosition(initialHolonomicPose.getRotation(), modules, initialHolonomicPose);
-        rawOdometry.resetPose(initialHolonomicPose);
     }
 
     /**

@@ -315,9 +315,9 @@ public class RobotContainer {
 
             //SmartDashboard.putData("TuneLoggedTunableNumber", new LoggedTunableNumberTuner(Constants.VISION_CONSISTENCY_THRESHOLD,drivebase::getError,0,10,10,10));
                         SmartDashboard.putData("SpinInPlace", new SpinInPlace(drivebase,5,true,15));
+                        SmartDashboard.putData("DriveToTheLeft", new DriveDirectionTime(drivebase, 1, 10, true, 10));
                         SmartDashboard.putData("DriveInCircle", new DriveCircle(drivebase, 1,10,15000));
             // TODO: These commands do not REQUIRE the subsystem therefore cannot be used in// production
-                        SmartDashboard.putData("resetPos", new ResetRobotPose(drivebase));
                         SmartDashboard.putData(
                                         "Intake/Spin Forward",
                                         new InstantCommand(() -> intakeSubsystem.setSpeed(1.0)));

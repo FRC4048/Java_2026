@@ -24,7 +24,7 @@ public class PoseManager {
     private final TimeInterpolatableBuffer<Pose2d> estimatedPoseBuffer;
     //private final SwerveDrivePoseEstimator poseEstimator;
     protected final Queue<VisionMeasurement> visionMeasurementQueue = new LinkedList<>();
-    private final SwerveSubsystem drivebase;
+    protected final SwerveSubsystem drivebase;
     protected final VisionTruster visionTruster;
 
     public PoseManager(

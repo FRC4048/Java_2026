@@ -12,23 +12,34 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.commands.*;
+import frc.robot.commands.AddTunableApriltagReading;
+import frc.robot.commands.ShootButton;
+import frc.robot.commands.AddApriltagReading;
 import frc.robot.commands.AddGarbageReading;
 import frc.robot.commands.climber.ClimberDown;
 import frc.robot.commands.climber.ClimberUp;
 import frc.robot.commands.drive.DriveCircle;
+import frc.robot.commands.feeder.DefaultSpinFeeder;
+import frc.robot.commands.hopper.DefaultSpinHopper;
 import frc.robot.commands.hopper.SpinHopper;
 import frc.robot.commands.drive.DriveDirectionTime;
 import frc.robot.commands.feeder.SpinFeeder;
 import frc.robot.commands.drive.FakeVision;
 import frc.robot.commands.intake.SpinIntake;
-import frc.robot.commands.intakeDeployment.InitalRunDeployment;
+import frc.robot.commands.intakeDeployment.InitialRunDeployment;
+import frc.robot.commands.intakeDeployment.RunDeployer;
 import frc.robot.commands.intakeDeployment.SetDeploymentState;
+import frc.robot.commands.parallels.RunHopperAndFeeder;
+import frc.robot.commands.sequences.IntakeDownSequence;
+import frc.robot.commands.sequences.IntakeUpSequence;
 import frc.robot.autochooser.AutoChooser;
 import frc.robot.commands.angler.AimAngler;
+import frc.robot.commands.angler.DefaultAnglerControl;
 import frc.robot.commands.angler.RunAnglerToReverseLimit;
+import frc.robot.commands.shooter.DefaultShooterControl;
 import frc.robot.commands.auto.ExampleAuto;
 import frc.robot.commands.shooter.SetShootingState;
+import frc.robot.commands.turret.DefaultTurretControl;
 import frc.robot.commands.turret.RunTurretToFwdLimit;
 import frc.robot.commands.turret.RunTurretToRevLimit;
 import frc.robot.commands.turret.SetTurretAngle;
@@ -39,6 +50,7 @@ import frc.robot.constants.enums.ShootingState;
 import frc.robot.constants.enums.ShootingState.ShootState;
 import frc.robot.subsystems.AnglerSubsystem;
 import frc.robot.subsystems.ApriltagSubsystem;
+import frc.robot.subsystems.ControllerSubsystem;
 import frc.robot.subsystems.HopperSubsystem;
 import frc.robot.subsystems.IntakeDeployerSubsystem;
 import frc.robot.subsystems.FeederSubsystem;
@@ -79,15 +91,19 @@ public class RobotContainer {
         private final AutoChooser autoChooser = new AutoChooser();
         // The robot's subsystems and commands are defined here...
         // private final TiltSubsystem tiltSubsystem;
+        private final CommandXboxController controller =
+            new CommandXboxController(Constants.XBOX_CONTROLLER_PORT);
+        private final ClimberSubsystem climberSubsystem;
         private final AnglerSubsystem anglerSubsystem;
         private final IntakeSubsystem intakeSubsystem;
         private final FeederSubsystem feederSubsystem;
         private final ApriltagSubsystem apriltagSubsystem;
         private final ShooterSubsystem shooterSubsystem;
+        private final ControllerSubsystem controllerSubsystem;
         private RobotVisualizer robotVisualizer = null;
         private final HopperSubsystem hopperSubsystem;
-        private final ClimberSubsystem climberSubsystem;
-    private final TurretSubsystem turretSubsystem;
+
+        private final TurretSubsystem turretSubsystem;
         private final IntakeDeployerSubsystem intakeDeployer;
         private SwerveSubsystem drivebase = null;
         private GyroSubsystem gyroSubsystem = null;
@@ -133,7 +149,9 @@ public class RobotContainer {
                                 drivebase = !Constants.TESTBED ? new SwerveSubsystem(
                                                 new File(Filesystem.getDeployDirectory(), "YAGSL"), swerveIMU) : null;
                             apriltagSubsystem = !Constants.TESTBED ? new ApriltagSubsystem(ApriltagSubsystem.createRealIo(), drivebase) : null;
-                        }
+                            controllerSubsystem = !Constants.TESTBED ? new ControllerSubsystem(drivebase, this) : null;
+
+            }
                         case REPLAY -> {
                                 // rollerSubsystem = new RollerSubsystem(RollerSubsystem.createMockIo());
                                 // tiltSubsystem = new TiltSubsystem(TiltSubsystem.createMockIo());
@@ -150,6 +168,8 @@ public class RobotContainer {
                 // create the drive subsystem with null gyro (use default json)
                 drivebase = !Constants.TESTBED ? new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "YAGSL"), null) : null;
                 apriltagSubsystem = !Constants.TESTBED ? new ApriltagSubsystem(ApriltagSubsystem.createMockIo(), drivebase) : null;
+                controllerSubsystem = !Constants.TESTBED ? new ControllerSubsystem(drivebase, this) : null;
+
             }
             case SIM -> {
                 robotVisualizer = new RobotVisualizer();
@@ -168,6 +188,7 @@ public class RobotContainer {
                                                 IntakeDeployerSubsystem.createSimIo(robotVisualizer));// No GyroSubsystem in REPLAY for now
                 // create the drive subsystem with null gyro (use default json)
                 drivebase = !Constants.TESTBED ? new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "YAGSL"), null) : null;
+                controllerSubsystem = !Constants.TESTBED ? new ControllerSubsystem(drivebase, this) : null;
                 apriltagSubsystem = !Constants.TESTBED ? new ApriltagSubsystem(ApriltagSubsystem.createSimIo(), drivebase) : null;
             }
 
@@ -258,6 +279,19 @@ public class RobotContainer {
         }
 
         private void configureBindings() {
+                controller.a().onTrue(new IntakeUpSequence(intakeDeployer, intakeSubsystem));
+                controller.b().onTrue(new IntakeDownSequence(intakeDeployer, intakeSubsystem));
+                controller.y().onTrue(new ClimberUp(climberSubsystem));
+                controller.x().onTrue(new ClimberDown(climberSubsystem));
+                controller.povUp().onTrue(new SetShootingState(shootState, ShootState.FIXED));
+                controller.povRight().onTrue(new SetShootingState(shootState, ShootState.FIXED_2));
+                controller.povDown().onTrue(new SetShootingState(shootState, ShootState.SHOOTING_HUB));
+                controller.povLeft().onTrue(new SetShootingState(shootState, ShootState.SHUTTLING));
+                driveJoystick.trigger().whileTrue((new SetShootingState(shootState, ShootState.STOPPED)));
+                if (controllerSubsystem != null) {
+                        steerJoystick.trigger().whileTrue(new ShootButton(controllerSubsystem));
+                }
+
                 // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
                 // new Trigger(m_exampleSubsystem::exampleCondition)
                 // .onTrue(new ExampleCommand(m_exampleSubsystem));
@@ -269,15 +303,23 @@ public class RobotContainer {
                 // TODO: Clean this up a little - create command in method and only create the
                 // one actually needed
 
-        //example default command for angler- disabled for now
-        if (false) {
-            new AimAngler(
-                    anglerSubsystem,
-                    () -> drivebase != null ? drivebase.getPose() : null,
-                    shootState);
-        }
+                // example default command for angler- disabled for now
+                if (false) {
+                        new AimAngler(
+                                        anglerSubsystem,
+                                        () -> drivebase != null ? drivebase.getPose() : null,
+                                        shootState);
+                }
 
-                if (!Constants.TESTBED) {
+            if (controllerSubsystem != null) {
+                anglerSubsystem.setDefaultCommand(new DefaultAnglerControl(anglerSubsystem, controllerSubsystem));
+                shooterSubsystem.setDefaultCommand(new DefaultShooterControl(shooterSubsystem, controllerSubsystem));
+                turretSubsystem.setDefaultCommand(new DefaultTurretControl(turretSubsystem, controllerSubsystem));
+                hopperSubsystem.setDefaultCommand(new DefaultSpinHopper(hopperSubsystem, controllerSubsystem));
+                feederSubsystem.setDefaultCommand(new DefaultSpinFeeder(feederSubsystem, controllerSubsystem));
+            }
+
+            if (!Constants.TESTBED) {
                         SwerveInputStream driveAngularVelocity = SwerveInputStream.of(drivebase.getSwerveDrive(),
                                         () -> driveJoystick.getY() * -1,
                                         () -> driveJoystick.getX() * -1)
@@ -327,6 +369,9 @@ public class RobotContainer {
                         SmartDashboard.putNumber("angler/TargetRotations", Constants.ANGLER_HOME_ROTATIONS);
 
                         SmartDashboard.putNumber("angler/TargetAngle", 0);
+
+                        SmartDashboard.putData("RunHoppperAndFeeder",
+                                        new RunHopperAndFeeder(hopperSubsystem, feederSubsystem));
 
                         SmartDashboard.putData(
                                         "angler/Set Position",
@@ -393,29 +438,29 @@ public class RobotContainer {
 
                         SmartDashboard.putData(
                                         "intakedeployer/InitlizeDeployer",
-                                        new InitalRunDeployment(intakeDeployer));
-            SmartDashboard.putData(
-                    "Spin Intake",
-                    new SpinIntake(intakeSubsystem));
-
-            SmartDashboard.putData(
-                    "Start Hopper",
-                    new SpinHopper(hopperSubsystem));
-
-            SmartDashboard.putData(
-                    "Climber Up",
-                    new ClimberUp(climberSubsystem));
-
-            SmartDashboard.putData(
-                    "Climber Down",
-                    new ClimberDown(climberSubsystem));
-
-          SmartDashboard.putData(
-                    "Spin Feeder",
-                    new SpinFeeder(feederSubsystem));
+                                        new InitialRunDeployment(intakeDeployer));
+                        SmartDashboard.putData(
+                                        "Spin Intake",
+                                        new SpinIntake(intakeSubsystem));
 
                         SmartDashboard.putData(
-                                        "Spin Shooter",
+                                        "Start Hopper",
+                                        new SpinHopper(hopperSubsystem));
+
+                        SmartDashboard.putData(
+                                        "Climber Up",
+                                        new ClimberUp(climberSubsystem));
+
+                        SmartDashboard.putData(
+                                        "Climber Down",
+                                        new ClimberDown(climberSubsystem));
+
+                        SmartDashboard.putData(
+                                        "Spin Feeder",
+                                        new SpinFeeder(feederSubsystem));
+
+                        SmartDashboard.putData(
+                                        "Spins Shooter",
                                         new SpinShooter(shooterSubsystem, Constants.SHOOTER_SPEED));
 
                         SmartDashboard.putData(

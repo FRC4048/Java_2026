@@ -9,6 +9,7 @@ import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.constants.Constants;
@@ -20,6 +21,7 @@ import frc.robot.utils.logging.io.pidmotor.SimSparkMaxPidMotorIo;
 import frc.robot.utils.logging.io.pidmotor.SparkMaxPidConfig;
 import frc.robot.utils.logging.io.pidmotor.SparkMaxPidMotor;
 import frc.robot.utils.logging.io.pidmotor.SparkMaxPidMotorIo;
+import frc.robot.utils.motor.TunablePIDManager;
 import frc.robot.utils.simulation.MotorSimulator;
 import frc.robot.utils.simulation.RobotVisualizer;
 
@@ -28,18 +30,21 @@ public class ShooterSubsystem extends SubsystemBase {
     public static final String LOGGING_NAME = "ShooterSubsystem";
     
     private final SparkMaxPidMotorIo io;
-    private final SparkMax followerMotor;
-    private final SparkMaxConfig followerConfig;
-
-    public ShooterSubsystem(SparkMaxPidMotorIo io) {
+    private static SparkMax followerIo; 
+    private final TunablePIDManager pidManager;
+    public ShooterSubsystem(SparkMaxPidMotorIo io, SparkMax followerIo) {
+        this.pidManager = new TunablePIDManager(LOGGING_NAME, io, createPidConfig());
         this.io = io;
-        io.setPid(0.0000002, 0.000015, 0.000015); // Pid needs tuning
-        followerMotor = new SparkMax(Constants.SHOOTER_FOLLOWER_MOTOR_ID, SparkLowLevel.MotorType.kBrushless);
-        followerConfig = new SparkMaxConfig();
-        followerConfig.follow(Constants.SHOOTER_MOTOR_ID, true);
-        followerMotor.configure(followerConfig, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
+        this.followerIo = followerIo;
+      //  io.setPid(0.0000002, 0.000015, 0.000015); // Pid needs tuning
         stopMotors();
 
+    }
+    private static SparkMaxPidConfig createPidConfig() {
+        return new SparkMaxPidConfig(false)
+                .setCurrentLimit(Constants.NEO_CURRENT_LIMIT)
+                .setAllowedError(.1)
+                .setIdleMode(IdleMode.kCoast);
     }
 
     // setSpeed expects a power value from -1 to 1
@@ -58,6 +63,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
+        pidManager.periodic();
         io.periodic();
     }
 
@@ -75,7 +81,10 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public static SparkMaxPidMotor createMotor() {
-        return new SparkMaxPidMotor(Constants.SHOOTER_MOTOR_ID, true);
+        followerIo = new SparkMax(Constants.SHOOTER_FOLLOWER_MOTOR_ID, SparkLowLevel.MotorType.kBrushless);
+        SparkMaxConfig followerConfig = new SparkMaxConfig();
+        followerConfig.follow(Constants.SHOOTER_MOTOR_ID, true).idleMode(IdleMode.kCoast);
+        followerIo.configure(followerConfig, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
+        return new SparkMaxPidMotor(Constants.SHOOTER_MOTOR_ID, createPidConfig());
     }
-
 }

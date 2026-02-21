@@ -4,7 +4,6 @@
 
 package frc.robot.utils.logging.io.pidmotor;
 
-import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
 import frc.robot.utils.logging.input.MotorLoggableInputs;
 import frc.robot.utils.logging.io.motor.MockSparkMaxIo;

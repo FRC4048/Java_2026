@@ -1,6 +1,5 @@
 package frc.robot.utils.logging.io.pidmotor;
 
-import com.revrobotics.PersistMode;
 import com.revrobotics.ResetMode;
 import com.revrobotics.spark.SparkBase;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;

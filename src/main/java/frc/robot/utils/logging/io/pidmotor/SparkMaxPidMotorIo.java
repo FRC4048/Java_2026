@@ -1,7 +1,6 @@
 package frc.robot.utils.logging.io.pidmotor;
 
 import com.revrobotics.spark.SparkBase;
-import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
 import frc.robot.utils.logging.io.motor.SparkMaxIo;
 

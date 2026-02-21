@@ -6,7 +6,7 @@ import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
  * Value container helper class for configuring a PidMotor.
  */
 public class SparkMaxPidConfig {
-    public static final double DEFAULT_P = 0.0;
+    public static final double DEFAULT_P = 0.01;
     public static final double DEFAULT_I = 0;
     public static final double DEFAULT_D = 0.0;
     public static final double DEFAULT_IZONE = 0.0;

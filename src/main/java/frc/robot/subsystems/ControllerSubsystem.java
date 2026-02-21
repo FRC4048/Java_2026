@@ -5,6 +5,7 @@ import org.littletonrobotics.junction.Logger;
 import frc.robot.RobotContainer;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -12,6 +13,7 @@ import frc.robot.constants.Constants;
 import frc.robot.constants.enums.ShootingState;
 import frc.robot.constants.enums.ShootingState.ShootState;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
+import frc.robot.utils.math.TurretCalculations;
 
 public class ControllerSubsystem extends SubsystemBase {
 
@@ -36,9 +38,9 @@ public class ControllerSubsystem extends SubsystemBase {
     private static final ShotTargets STOPPED_TARGETS =
             new ShotTargets(Constants.ANGLER_ANGLE_LOW, 0.0, 0.0, 0.0, false, false);
     private static final ShotTargets FIXED_TARGETS =
-            new ShotTargets(10.0, 120.0, 5.0, 0.0, true, true);
+            new ShotTargets(10.0, 120.0, 15.0, 0.0, true, true);
     private static final ShotTargets FIXED_2_TARGETS =
-            new ShotTargets(22.0, 180.0, -5.0, 0.0, true, true);
+            new ShotTargets(22.0, 180.0, -15.0, 0.0, true, true);
 
     // Placeholder pose-driven profiles.
     private static final PoseControlProfile HUB_PROFILE =
@@ -179,11 +181,24 @@ public class ControllerSubsystem extends SubsystemBase {
         return profile.defaultShooterVelocityRpm;
     }
 
+    // calculates turret angle from calculations
     private double calculateTurretAngleDegrees(Pose2d robotPose, PoseControlProfile profile) {
-        // TODO: Replace with distance turret angle calculation.
-        return profile.defaultTurretAngleDegrees;
-    }
+        
+        double targetAngle = 0;
+        
+        if (getCurrentShootState() == ShootState.SHOOTING_HUB) {
 
+            targetAngle = TurretCalculations.calculateTurretAngle(robotPose.getX(), robotPose.getY(),
+                robotPose.getRotation().getRadians(), isBlue());
+
+        } else if (getCurrentShootState() == ShootState.SHUTTLING) {
+
+            targetAngle = TurretCalculations.calculateTurretShuttleAngle(robotPose.getX(), robotPose.getY(),
+                robotPose.getRotation().getRadians(), isBlue());
+        }
+        return targetAngle;
+    }
+    
     //Getters for all the subsystems to set posistion.
     public double getTargetAnglerAngleDegrees() {
         return activeTargets.anglerAngleDegrees;
@@ -260,5 +275,17 @@ public class ControllerSubsystem extends SubsystemBase {
             this.defaultShooterVelocityRpm = defaultShooterVelocityRpm;
             this.defaultTurretAngleDegrees = defaultTurretAngleDegrees;
         }
+    }
+
+    /**
+     * Checks if the alliance is blue, defaults to false if alliance isn't
+     * available.
+     *
+     * @return true if the blue alliance, false if red. Defaults to false if none is
+     *         available.
+     */
+    private boolean isBlue() {
+        var alliance = DriverStation.getAlliance();
+        return alliance.isPresent() ? alliance.get() == DriverStation.Alliance.Blue : false;
     }
 }

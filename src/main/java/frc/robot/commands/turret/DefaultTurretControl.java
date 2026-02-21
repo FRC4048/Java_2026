@@ -17,7 +17,7 @@ public class DefaultTurretControl extends LoggableCommand {
 
     @Override
     public void execute() {
-        turretSubsystem.setAngle(controllerSubsystem.getTargetTurretAngleDegrees());
+        new SetTurretAngle(turretSubsystem, controllerSubsystem.getTargetTurretAngleDegrees());
     }
 
     @Override

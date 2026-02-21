@@ -22,7 +22,7 @@ public class SparkMaxPidConfig {
     private double iZone = DEFAULT_IZONE;
     private double ff = DEFAULT_FF;
     private int currentLimit = 20;
-    private IdleMode mode = DEFAULT_MODE;
+    private IdleMode mode = DEFAULT_IDLE_MODE;
     /**
      * This is the cruise velocity for the MAX_MOTION config.
      */

@@ -11,11 +11,11 @@ import frc.robot.utils.logging.commands.LoggableCommand;
 /**
  * When creating sequences use this AFTER setting the deployment state
  */
-public class InitalRunDeployment extends LoggableCommand {
+public class InitialRunDeployment extends LoggableCommand {
   private final IntakeDeployerSubsystem subsystem;
   private final Timer timer;
 
-  public InitalRunDeployment(IntakeDeployerSubsystem subsystem) {
+  public InitialRunDeployment(IntakeDeployerSubsystem subsystem) {
     timer = new Timer();
     this.subsystem = subsystem;
     addRequirements(subsystem);

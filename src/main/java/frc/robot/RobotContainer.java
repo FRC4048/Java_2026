@@ -30,7 +30,7 @@ import frc.robot.commands.sequences.IntakeDownSequence;
 import frc.robot.commands.sequences.IntakeUpSequence;
 import frc.robot.autochooser.AutoChooser;
 import frc.robot.commands.angler.AimAngler;
-import frc.robot.commands.angler.RunAnglerToReverseLimit;
+import frc.robot.commands.angler.StowAngler;
 import frc.robot.commands.auto.ExampleAuto;
 import frc.robot.commands.shooter.SetShootingState;
 import frc.robot.commands.turret.RunTurretToFwdLimit;
@@ -395,7 +395,7 @@ public class RobotContainer {
 
                         SmartDashboard.putData(
                                         "angler/Home Rev (Reset)",
-                                        new RunAnglerToReverseLimit(anglerSubsystem));
+                                        new StowAngler(anglerSubsystem));
 
             SmartDashboard.putData(
                     "turret/Turret Go 45",

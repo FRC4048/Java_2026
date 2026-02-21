@@ -78,5 +78,10 @@ public class ClimberSubsystem extends SubsystemBase {
     public boolean forwardSwitchPressed() {
         return io.isFwdSwitchPressed();
     }
+
+    public void resetEncoderToZero() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'resetEncoderToZero'");
+    }
  
 }

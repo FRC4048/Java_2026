@@ -9,12 +9,12 @@ import frc.robot.utils.logging.commands.LoggableCommand;
 /**
  * Runs the angler to the reverse limit switch and resets the encoder to zero.
  */
-public class RunAnglerToReverseLimit extends LoggableCommand {
+public class StowAngler extends LoggableCommand {
     private final TimeoutLogger timeoutCounter;
     private final AnglerSubsystem angler;
     private final Timer timer = new Timer();
 
-    public RunAnglerToReverseLimit(AnglerSubsystem angler) {
+    public StowAngler(AnglerSubsystem angler) {
         timeoutCounter = new TimeoutLogger(getName());
         this.angler = angler;
         addRequirements(angler);

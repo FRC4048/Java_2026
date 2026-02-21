@@ -8,7 +8,7 @@ import frc.robot.utils.logging.commands.LoggableParallelCommandGroup;
 import frc.robot.utils.logging.commands.LoggableSequentialCommandGroup;
 
 public class ExampleAuto extends LoggableSequentialCommandGroup{
-    public ExampleAuto(SwerveSubsystem subsystem, AutoFactory auto) {
+    public ExampleAuto(SwerveSubsystem drivetrain, AutoFactory auto) {
         super(
                 LoggableCommandWrapper.wrap(auto.resetOdometry("ExamplePathOne")),
                 new LoggableParallelCommandGroup(

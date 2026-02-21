@@ -35,7 +35,7 @@ public class AutoChooser {
     /** Structure for mapping possible choices to commands. */
     private final Map<AutoEvent, Command> commandMap = new HashMap<>();
 
-    private final SwerveSubsystem subsystem; 
+    private final SwerveSubsystem drivetrain; 
     private final ShootingState shootstate;
     private final ShooterSubsystem shooter;
     private final AutoFactory auto;
@@ -43,9 +43,9 @@ public class AutoChooser {
     private final FeederSubsystem feeder;
     private final HopperSubsystem hopper;
 
-    public AutoChooser(SwerveSubsystem subsystem, ShootingState shootstate, AutoFactory auto, 
+    public AutoChooser(SwerveSubsystem drivetrain, ShootingState shootstate, AutoFactory auto, 
     ShooterSubsystem shooter, ClimberSubsystem climber, FeederSubsystem feeder, HopperSubsystem hopper) {
-        this.subsystem = subsystem;
+        this.drivetrain = drivetrain;
         this.auto = auto;
         this.shootstate = shootstate;
         this.shooter = shooter;
@@ -96,31 +96,31 @@ public class AutoChooser {
         commandMap.put(new AutoEvent(AutoAction.DO_NOTHING, FieldLocation.MIDDLE),
             new DoNothingCommand());
         commandMap.put(new AutoEvent(AutoAction.SHOOT, FieldLocation.LEFT), 
-            new LeftShoot(subsystem, auto, shooter, shootstate, hopper, feeder));
+            new LeftShoot(drivetrain, auto, shooter, shootstate, hopper, feeder));
         commandMap.put(new AutoEvent(AutoAction.SHOOT, FieldLocation.RIGHT),
-            new RightShoot(subsystem, auto, shooter, shootstate, hopper, feeder));
+            new RightShoot(drivetrain, auto, shooter, shootstate, hopper, feeder));
         commandMap.put(new AutoEvent(AutoAction.SHOOT, FieldLocation.MIDDLE), 
-            new MidShoot(subsystem, auto, shooter, shootstate, hopper, feeder));
+            new MidShoot(drivetrain, auto, shooter, shootstate, hopper, feeder));
 
         Optional<DriverStation.Alliance> alliance = DriverStation.getAlliance();
         if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Blue) {
             //Blue ShootClimbAutos
             commandMap.put(new AutoEvent(AutoAction.SHOOT_AND_CLIMB, FieldLocation.LEFT),
-                new BlueLeftShootClimb(subsystem, auto, shooter, shootstate, climber, hopper, feeder));
+                new BlueLeftShootClimb(drivetrain, auto, shooter, shootstate, climber, hopper, feeder));
             commandMap.put(new AutoEvent(AutoAction.SHOOT_AND_CLIMB, FieldLocation.RIGHT), 
-                new BlueRightShootClimb(subsystem, auto, shooter, shootstate, climber, hopper, feeder));
+                new BlueRightShootClimb(drivetrain, auto, shooter, shootstate, climber, hopper, feeder));
             commandMap.put(new AutoEvent(AutoAction.SHOOT_AND_CLIMB, FieldLocation.MIDDLE),
-                new BlueMidShootClimb(subsystem, auto, shooter, shootstate, climber, hopper, feeder));
+                new BlueMidShootClimb(drivetrain, auto, shooter, shootstate, climber, hopper, feeder));
         }  
         
         if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red) {
             //Red ShootClimb Autos
             commandMap.put(new AutoEvent(AutoAction.SHOOT_AND_CLIMB, FieldLocation.LEFT),
-                new RedLeftShootClimb(subsystem, auto, shooter, shootstate, climber, hopper, feeder));
+                new RedLeftShootClimb(drivetrain, auto, shooter, shootstate, climber, hopper, feeder));
             commandMap.put(new AutoEvent(AutoAction.SHOOT_AND_CLIMB, FieldLocation.RIGHT), 
-                new RedRightShootClimb(subsystem, auto, shooter, shootstate, climber, hopper, feeder));
+                new RedRightShootClimb(drivetrain, auto, shooter, shootstate, climber, hopper, feeder));
             commandMap.put(new AutoEvent(AutoAction.SHOOT_AND_CLIMB, FieldLocation.MIDDLE),
-                new RedMidShootClimb(subsystem, auto, shooter, shootstate, climber, hopper, feeder));
+                new RedMidShootClimb(drivetrain, auto, shooter, shootstate, climber, hopper, feeder));
         }
     }
 

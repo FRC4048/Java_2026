@@ -17,7 +17,7 @@ import frc.robot.utils.logging.commands.LoggableParallelCommandGroup;
 import frc.robot.utils.logging.commands.LoggableSequentialCommandGroup;
 
 public class MidShoot extends LoggableSequentialCommandGroup{
-    public MidShoot(SwerveSubsystem subsystem, AutoFactory auto, ShooterSubsystem shooter, 
+    public MidShoot(SwerveSubsystem drivetrain, AutoFactory auto, ShooterSubsystem shooter, 
     ShootingState shootstate, HopperSubsystem hopper, FeederSubsystem feeder) {
         super(
                 new SetShootingState(shootstate, ShootState.SHOOTING_HUB),

@@ -17,7 +17,7 @@ import frc.robot.utils.logging.commands.LoggableParallelCommandGroup;
 import frc.robot.utils.logging.commands.LoggableSequentialCommandGroup;
 
 public class RightShoot extends LoggableSequentialCommandGroup{
-    public RightShoot(SwerveSubsystem subsystem, AutoFactory auto, ShooterSubsystem shooter, 
+    public RightShoot(SwerveSubsystem drivetrain, AutoFactory auto, ShooterSubsystem shooter, 
     ShootingState shootstate, HopperSubsystem hopper, FeederSubsystem feeder) {
         super(
                 new SetShootingState(shootstate, ShootState.SHOOTING_HUB),

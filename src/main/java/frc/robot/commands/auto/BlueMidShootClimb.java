@@ -20,7 +20,7 @@ import frc.robot.utils.logging.commands.LoggableParallelCommandGroup;
 import frc.robot.utils.logging.commands.LoggableSequentialCommandGroup;
 
 public class BlueMidShootClimb extends LoggableSequentialCommandGroup{
-    public BlueMidShootClimb(SwerveSubsystem subsystem, AutoFactory auto, ShooterSubsystem shooter, 
+    public BlueMidShootClimb(SwerveSubsystem drivetrain, AutoFactory auto, ShooterSubsystem shooter, 
     ShootingState shootstate, ClimberSubsystem climber, HopperSubsystem hopper, FeederSubsystem feeder) {
         super(
                 new SetShootingState(shootstate, ShootState.SHOOTING_HUB),

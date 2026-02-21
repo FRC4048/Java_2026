@@ -39,11 +39,7 @@ public class SpinFeeder extends LoggableCommand {
 
     @Override
     public boolean isFinished() {
-        if (timer.hasElapsed(Constants.FEEDER_TIMEOUT)) {
-            return true;
-        } else {
-            return false;
-        }
+        return false;
     }
 
     @Override

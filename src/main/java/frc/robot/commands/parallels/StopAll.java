@@ -24,7 +24,7 @@ import frc.robot.subsystems.TurretSubsystem;
 import frc.robot.utils.logging.commands.LoggableParallelCommandGroup;
 import frc.robot.utils.logging.commands.LoggableSequentialCommandGroup;
 
-public class StopAll extends LoggableParallelCommandGroup {
+public class StopAll extends LoggableSequentialCommandGroup {
 
   public StopAll(AnglerSubsystem anglerSubsystem, ClimberSubsystem climberSubsystem,
       FeederSubsystem feederSubsystem, HopperSubsystem hopperSubsystem,

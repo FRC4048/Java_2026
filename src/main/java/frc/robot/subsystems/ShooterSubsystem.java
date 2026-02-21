@@ -30,17 +30,13 @@ public class ShooterSubsystem extends SubsystemBase {
     public static final String LOGGING_NAME = "ShooterSubsystem";
     
     private final SparkMaxPidMotorIo io;
-    private final SparkMax followerMotor;
-    private final SparkMaxConfig followerConfig;
+    private static SparkMax followerIo; 
     private final TunablePIDManager pidManager;
-    public ShooterSubsystem(SparkMaxPidMotorIo io) {
+    public ShooterSubsystem(SparkMaxPidMotorIo io, SparkMax followerIo) {
         this.pidManager = new TunablePIDManager(LOGGING_NAME, io, createPidConfig());
         this.io = io;
+        this.followerIo = followerIo;
       //  io.setPid(0.0000002, 0.000015, 0.000015); // Pid needs tuning
-        followerMotor = new SparkMax(Constants.SHOOTER_FOLLOWER_MOTOR_ID, SparkLowLevel.MotorType.kBrushless);
-        followerConfig = new SparkMaxConfig();
-        followerConfig.follow(Constants.SHOOTER_MOTOR_ID, true).idleMode(IdleMode.kCoast);
-        followerMotor.configure(followerConfig, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
         stopMotors();
 
     }
@@ -85,7 +81,10 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public static SparkMaxPidMotor createMotor() {
+        followerIo = new SparkMax(Constants.SHOOTER_FOLLOWER_MOTOR_ID, SparkLowLevel.MotorType.kBrushless);
+        SparkMaxConfig followerConfig = new SparkMaxConfig();
+        followerConfig.follow(Constants.SHOOTER_MOTOR_ID, true).idleMode(IdleMode.kCoast);
+        followerIo.configure(followerConfig, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
         return new SparkMaxPidMotor(Constants.SHOOTER_MOTOR_ID, createPidConfig());
     }
-
 }

@@ -18,6 +18,8 @@ import frc.robot.commands.AddApriltagReading;
 import frc.robot.commands.AddGarbageReading;
 import frc.robot.commands.climber.ClimberDown;
 import frc.robot.commands.climber.ClimberUp;
+import frc.robot.commands.feeder.DefaultSpinFeeder;
+import frc.robot.commands.hopper.DefaultSpinHopper;
 import frc.robot.commands.hopper.SpinHopper;
 import frc.robot.commands.drive.DriveDirectionTime;
 import frc.robot.commands.feeder.SpinFeeder;
@@ -315,8 +317,8 @@ public class RobotContainer {
                 anglerSubsystem.setDefaultCommand(new DefaultAnglerControl(anglerSubsystem, controllerSubsystem));
                 shooterSubsystem.setDefaultCommand(new DefaultShooterControl(shooterSubsystem, controllerSubsystem));
                 turretSubsystem.setDefaultCommand(new DefaultTurretControl(turretSubsystem, controllerSubsystem));
-                hopperSubsystem.setDefaultCommand(new SpinHopper(hopperSubsystem, controllerSubsystem));
-                feederSubsystem.setDefaultCommand(new SpinFeeder(feederSubsystem, controllerSubsystem));
+                hopperSubsystem.setDefaultCommand(new DefaultSpinHopper(hopperSubsystem, controllerSubsystem));
+                feederSubsystem.setDefaultCommand(new DefaultSpinFeeder(feederSubsystem, controllerSubsystem));
             }
 
             if (!Constants.TESTBED) {
@@ -443,7 +445,7 @@ public class RobotContainer {
 
                         SmartDashboard.putData(
                                         "Start Hopper",
-                                        new SpinHopper(hopperSubsystem, controllerSubsystem));
+                                        new SpinHopper(hopperSubsystem));
 
                         SmartDashboard.putData(
                                         "Climber Up",
@@ -455,7 +457,7 @@ public class RobotContainer {
 
                         SmartDashboard.putData(
                                         "Spin Feeder",
-                                        new SpinFeeder(feederSubsystem, controllerSubsystem));
+                                        new SpinFeeder(feederSubsystem));
 
                         SmartDashboard.putData(
                                         "Spins Shooter",

@@ -97,7 +97,6 @@ public class GameConstants {
     public static final double ANGLER_D = 0.0;
     public static final double ANGLER_FF = 0.0;
     public static final double ANGLER_HOME_ROTATIONS = 0.0;
-    public static final double ANGLER_HOME_ANGLE = 0.0;
     public static final double ANGLER_ENCODER_LOW = 0; //Lowest encoder position of Angler
     public static final double ANGLER_ENCODER_HIGH = 100; //Highest encoder position of Angler
     public static final double ANGLER_ANGLE_LOW = 0; //Lowest angle position of Angler

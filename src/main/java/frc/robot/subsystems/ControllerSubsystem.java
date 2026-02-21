@@ -34,7 +34,7 @@ public class ControllerSubsystem extends SubsystemBase {
 
     // Placeholder fixed-state settings.
     private static final ShotTargets STOPPED_TARGETS =
-            new ShotTargets(Constants.ANGLER_HOME_ANGLE, 0.0, 0.0, 0.0, false, false);
+            new ShotTargets(Constants.ANGLER_ANGLE_LOW, 0.0, 0.0, 0.0, false, false);
     private static final ShotTargets FIXED_TARGETS =
             new ShotTargets(10.0, 120.0, 5.0, 0.0, true, true);
     private static final ShotTargets FIXED_2_TARGETS =
@@ -52,6 +52,7 @@ public class ControllerSubsystem extends SubsystemBase {
 
     private ShootState previousState;
     private ShotTargets activeTargets;
+    private boolean driverActivatedShooting = false;
 
 
     public ControllerSubsystem(SwerveSubsystem drivebase, RobotContainer robotContainer) {
@@ -135,7 +136,7 @@ public class ControllerSubsystem extends SubsystemBase {
         double shooterVelocity = stopDelayTimer.hasElapsed(STOP_DELAY_SECONDS)
                 ? 0.0
                 : activeTargets.shooterVelocityRpm;
-                
+
         activeTargets = new ShotTargets(
                 STOPPED_TARGETS.anglerAngleDegrees,
                 shooterVelocity,
@@ -146,7 +147,14 @@ public class ControllerSubsystem extends SubsystemBase {
     }
 
     private void useShotTargets(ShotTargets shotTargets) {
-        activeTargets = shotTargets;
+        boolean driverEnabled = driverActivatedShootingEnabled();
+        activeTargets = new ShotTargets(
+                shotTargets.anglerAngleDegrees,
+                shotTargets.shooterVelocityRpm,
+                shotTargets.turretAngleDegrees,
+                shotTargets.distanceMeters,
+                driverEnabled,
+                driverEnabled);
     }
 
     private ShotTargets calculateTargetsFromPose(PoseControlProfile profile, Pose2d robotPose) {
@@ -199,6 +207,14 @@ public class ControllerSubsystem extends SubsystemBase {
 
     public boolean shouldHopperSpin() {
         return activeTargets.hopperSpin;
+    }
+
+    public void setDriverActivatedShooting(boolean set) {
+        driverActivatedShooting = set;
+    }
+
+    public boolean driverActivatedShootingEnabled() {
+        return driverActivatedShooting;
     }
 
 

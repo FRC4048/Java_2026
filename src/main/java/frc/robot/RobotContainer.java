@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.AddTunableApriltagReading;
+import frc.robot.commands.ShootButton;
 import frc.robot.commands.AddApriltagReading;
 import frc.robot.commands.AddGarbageReading;
 import frc.robot.commands.climber.ClimberDown;
@@ -271,6 +272,9 @@ public class RobotContainer {
         }
 
         private void configureBindings() {
+                if (controllerSubsystem != null) {
+                        steerJoystick.trigger().whileTrue(new ShootButton(controllerSubsystem));
+                }
                 // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
                 // new Trigger(m_exampleSubsystem::exampleCondition)
                 // .onTrue(new ExampleCommand(m_exampleSubsystem));

@@ -25,6 +25,7 @@ public class SpinShooter extends LoggableCommand{
 
     @Override
     public void execute() {
+        System.out.println("CALIFONIA");
         subsystem.setPidVelocity(speed);
     }
 

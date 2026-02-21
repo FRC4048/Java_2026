@@ -348,7 +348,7 @@ public class RobotContainer {
                     new SpinFeeder(feederSubsystem));
 
                         SmartDashboard.putData(
-                                        "Spin Shooter",
+                                        "Spins Shooter",
                                         new SpinShooter(shooterSubsystem, Constants.SHOOTER_SPEED));
 
                         SmartDashboard.putData(

@@ -1,8 +1,11 @@
 package frc.robot.constants;
 
+import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.Vector;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.RobotBase;
 import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
@@ -149,6 +152,7 @@ public class GameConstants {
     public static final int ENDGAME_START = 30;
 
     public static final double VISION_CONSISTENCY_THRESHOLD = 0.25; //How close 2 vision measurements have to be (needs to be tuned potentially but seemingly from my testing it also might not be needed)
+    public static final double VISION_STD_THRESHOLD = 0.25;
     public static final boolean ENABLE_VISION = true;
     public static final double POSE_BUFFER_STORAGE_TIME = 2; //how many past measurements are stored in the buffer (might increase if we need further back)
 
@@ -159,4 +163,8 @@ public class GameConstants {
     public static final double AVERAGE_CAM_LATENCY = 0; // seconds; TODO: change Later
     public static final double AVERAGE_CAM_LATENCY_STD_DEV = 0; // seconds; TODO: change Later
     public static final double MAX_VISION_DISTANCE_SIMULATION = 6;
+    public static final double AVERAGE_PIR_LATENCY = 20; //ms
+    public static final double VISION_SMOOTHER = 1.0;
+    public static final Vector<N3> INITIAL_VISION_STD_DEVS = VecBuilder.fill(0,0,0); // TODO: Change later
+    public static final double VISION_STD_DEV_CONST = 1.0/148.0; // TODO: Change later
 }

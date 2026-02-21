@@ -12,6 +12,7 @@ import frc.robot.subsystems.swervedrive.vision.truster.VisionMeasurement;
 import frc.robot.subsystems.swervedrive.vision.truster.VisionTruster;
 import org.littletonrobotics.junction.Logger;
 
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.Optional;
 import java.util.Queue;
@@ -23,7 +24,7 @@ import java.util.Queue;
 public class PoseManager {
     private final TimeInterpolatableBuffer<Pose2d> estimatedPoseBuffer;
     //private final SwerveDrivePoseEstimator poseEstimator;
-    protected final Queue<VisionMeasurement> visionMeasurementQueue = new LinkedList<>();
+    protected final LinkedHashMap<Integer, Queue<VisionMeasurement>> visionMeasurementQueueMap = new LinkedHashMap<>();
     protected final SwerveSubsystem drivebase;
     protected final VisionTruster visionTruster;
 
@@ -62,23 +63,22 @@ public class PoseManager {
         estimatedPoseBuffer.addSample(timestamp, pose);
     }
 
-    public void registerVisionMeasurement(VisionMeasurement measurement) {
+    public void registerVisionMeasurement(VisionMeasurement measurement, int tagId) {
         if (measurement == null) {
             return;
         }
-        while (visionMeasurementQueue.size() >= 3) {
-            visionMeasurementQueue.poll();
-        }
-        visionMeasurementQueue.add(measurement);
+        visionMeasurementQueueMap.computeIfAbsent(tagId, k -> new LinkedList<>()).add(measurement);
     }
 
     // override for filtering
     public void processQueue() {
-        VisionMeasurement m = visionMeasurementQueue.poll();
-        while (m != null) {
-            setVisionSTD(visionTruster.calculateTrust(m));
-            addVisionMeasurement(m);
-            m = visionMeasurementQueue.poll();
+        for (Queue<VisionMeasurement> visionMeasurementQueue : visionMeasurementQueueMap.values()) {
+            VisionMeasurement m = visionMeasurementQueue.poll();
+            while (m != null) {
+                setVisionSTD(visionTruster.calculateTrust(m,drivebase.getCameraPose()));
+                addVisionMeasurement(m);
+                m = visionMeasurementQueue.poll();
+            }
         }
     }
 

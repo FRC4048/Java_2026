@@ -73,7 +73,7 @@ public class ApriltagSubsystem extends SubsystemBase {
                 double distance = tag.getTranslation().getDistance(cameraPos.getTranslation());
                 if (distance / cosIncidenceAngle < Constants.MAX_VISION_DISTANCE_SIMULATION) {
                     VisionMeasurement measurement = new VisionMeasurement(new Pose2d(), tag.getTagInfo(),distance, 0);
-                    Vector<N3> stdDevs = estimator.getVisionTruster().calculateTrust(measurement);
+                    Vector<N3> stdDevs = estimator.getVisionTruster().calculateTrust(measurement,cameraPos);
                     double readingX = robotPoseSupplier.get().getX() + random.nextGaussian() * stdDevs.get(0);
                     double readingY = robotPoseSupplier.get().getY() + random.nextGaussian() * stdDevs.get(1);
                     double readingYaw = robotPoseSupplier.get().getRotation().getDegrees() + random.nextGaussian() * stdDevs.get(2);

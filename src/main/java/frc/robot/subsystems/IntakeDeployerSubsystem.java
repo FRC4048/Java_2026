@@ -15,7 +15,9 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Robot;
 import frc.robot.commands.intakeDeployment.RunDeployer;
 import frc.robot.constants.Constants;
+import frc.robot.constants.GameConstants;
 import frc.robot.constants.enums.DeploymentState;
+import frc.robot.utils.diag.DiagSparkMaxEncoder;
 import frc.robot.utils.diag.DiagSparkMaxSwitch;
 import frc.robot.utils.diag.DiagSparkMaxSwitch.Direction;
 import frc.robot.utils.logging.input.MotorLoggableInputs;
@@ -56,6 +58,11 @@ public class IntakeDeployerSubsystem extends SubsystemBase {
   public static SparkMaxIo createRealIo() {
 
     SparkMax motor = createMotor();
+
+    Robot.getDiagnostics()
+        .addDiagnosable(
+            new DiagSparkMaxEncoder(
+                "Intake Deployer", "Encoder", GameConstants.INTAKE_DEPLOYER_DIAGS_ENCODER, motor));
 
     Robot.getDiagnostics()
         .addDiagnosable(

@@ -13,6 +13,7 @@ import frc.robot.Robot;
 import frc.robot.constants.Constants;
 import frc.robot.constants.GameConstants;
 import frc.robot.utils.diag.DiagSparkMaxEncoder;
+import frc.robot.utils.diag.DiagSparkMaxSwitch;
 import frc.robot.utils.logging.input.DigitalInputLoggableInputs;
 import frc.robot.utils.logging.input.MotorLoggableInputs;
 import frc.robot.utils.logging.io.motor.DigitalInputIo;
@@ -59,6 +60,16 @@ public class ClimberSubsystem extends SubsystemBase {
         .addDiagnosable(
             new DiagSparkMaxEncoder(
                 "Climber", "Encoder", GameConstants.CLIMBER_DIAGS_ENCODER, motor));
+
+        Robot.getDiagnostics()
+        .addDiagnosable(
+            new DiagSparkMaxSwitch(
+                "Climber", "Lower Limit", motor, DiagSparkMaxSwitch.Direction.REVERSE));
+
+         Robot.getDiagnostics()
+        .addDiagnosable(
+            new DiagSparkMaxSwitch(
+                "Climber", "Upper Limit", motor, DiagSparkMaxSwitch.Direction.FORWARD));
 
         return new RealSparkMaxIo(LOGGING_NAME, motor, MotorLoggableInputs.allMetrics());
     }

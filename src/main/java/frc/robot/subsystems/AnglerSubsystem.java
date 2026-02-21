@@ -13,6 +13,7 @@ import frc.robot.Robot;
 import frc.robot.constants.Constants;
 import frc.robot.constants.Constants2026;
 import frc.robot.constants.GameConstants;
+import frc.robot.utils.diag.DiagSparkMaxEncoder;
 import frc.robot.utils.diag.DiagSparkMaxSwitch;
 import frc.robot.utils.logging.input.MotorLoggableInputs;
 import frc.robot.utils.logging.io.pidmotor.MockSparkMaxPidMotorIo;
@@ -120,6 +121,11 @@ public class AnglerSubsystem extends SubsystemBase {
     public static SparkMaxPidMotorIo createRealIo() {
 
         SparkMaxPidMotor motor = createMotor();
+
+        Robot.getDiagnostics()
+        .addDiagnosable(
+            new DiagSparkMaxEncoder(
+                "Angler", "Encoder", GameConstants.ANGLER_DIAGS_ENCODER, motor.getNeoMotor()));
 
         Robot.getDiagnostics()
         .addDiagnosable(

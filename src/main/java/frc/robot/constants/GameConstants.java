@@ -65,6 +65,9 @@ public class GameConstants {
     public static final double CLIMBER_DIAGS_ENCODER = 1;
     public static final double SHOOTER_DIAGS_ENCODER = 1;
     public static final double GYRO_DIAGS_ANGLE = 30;
+    public static final double TURRET_DIAGS_ENCODER = 1;
+    public static final double INTAKE_DEPLOYER_DIAGS_ENCODER = 1;
+    public static final double ANGLER_DIAGS_ENCODER = 1;
 
     //Timeouts
     public static final double SPIN_TIMEOUT = 5;

@@ -40,7 +40,4 @@ public class MockSparkMaxPidMotorIo extends MockSparkMaxIo implements SparkMaxPi
     @Override
     public void resetEncoderPosition(double positionRotations) {
     }
-    @Override
-    public void idleMode(IdleMode mode){
-    }
 }

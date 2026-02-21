@@ -53,7 +53,7 @@ public class SparkMaxPidMotor {
         config
                 .smartCurrentLimit(pidConfig.getCurrentLimit())
                 .closedLoopRampRate(RAMP_RATE)
-                .idleMode(IdleMode.kBrake);
+                .idleMode(pidConfig.getIdleMode());
         config
                 .closedLoop
                 .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
@@ -79,11 +79,6 @@ public class SparkMaxPidMotor {
         .reverseLimitSwitchTriggerBehavior(LimitSwitchConfig.Behavior.kStopMovingMotor);
 
         neoMotor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-    }
-    public void idleMode(IdleMode mode){
-        SparkMaxConfig config = new SparkMaxConfig();
-        config.idleMode(mode);
-        neoMotor.configure(config, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
     }
     /**
      * Reconfigure the PID fully using some of the values from motor params.

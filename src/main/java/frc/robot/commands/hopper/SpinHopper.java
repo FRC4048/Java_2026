@@ -38,11 +38,7 @@ public class SpinHopper extends LoggableCommand {
 
     @Override
     public boolean isFinished() {
-        if (timer.hasElapsed(Constants.HOPPER_TIMEOUT)) {
-            return true;
-        } else {
-            return false;
-        }
+        return false;
     }
 
     @Override

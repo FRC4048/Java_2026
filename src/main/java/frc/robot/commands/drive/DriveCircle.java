@@ -11,15 +11,6 @@ public class DriveCircle extends LoggableCommand {
     private final double angularVelocityRadPerSec;
     private final double time;
     private final Timer timer;
-
-    /**
-     * Drives the robot in a circle while keeping the front facing the center.
-     *
-     * @param drivebase     The swerve subsystem.
-     * @param radiusMeters  The distance from the center of rotation (in meters).
-     * @param angularVelocityRadPerSec Speed of rotation (Radians/Sec). Positive is CCW, Negative is CW.
-     * @param time          Duration to run the command (seconds).
-     */
     public DriveCircle(SwerveSubsystem drivebase, double radiusMeters, double angularVelocityRadPerSec, double time) {
         this.drivebase = drivebase;
         this.radiusMeters = radiusMeters;

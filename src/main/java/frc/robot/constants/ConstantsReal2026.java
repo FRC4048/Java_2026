@@ -1,12 +1,12 @@
 package frc.robot.constants;
 
-public class ConstantsReal2026 extends ConstantsPushbot2026 {
+public class ConstantsReal2026 extends GameConstants {
 
     public static final String SWERVE_JSON_DIRECTORY = "real";
 
     // shooter related
-    public static final int SHOOTER_MOTOR_ID = 53;
-    public static final int SHOOTER_FOLLOWER_MOTOR_ID = 54;
+    public static final int SHOOTER_MOTOR_ID = 54;
+    public static final int SHOOTER_FOLLOWER_MOTOR_ID = 53;
     public static final int ANGLER_MOTOR_ID = 52;
 
     // other CAN-ID's

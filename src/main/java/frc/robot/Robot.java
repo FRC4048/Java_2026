@@ -7,6 +7,7 @@ package frc.robot;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 
+import frc.robot.constants.GameConstants;
 import frc.robot.utils.diag.Diagnostics;
 import org.littletonrobotics.junction.LogFileUtil;
 import org.littletonrobotics.junction.LoggedRobot;
@@ -123,7 +124,9 @@ public class Robot extends LoggedRobot {
       if(!Constants.TESTBED){
           Logger.recordOutput("MyPose", robotContainer.getDriveBase().getPose());
           Logger.recordOutput("OdomPose", robotContainer.getDriveBase().getOdom());
-          Logger.recordOutput("SimPose", robotContainer.getDriveBase().getSimulationPose());
+          if (Constants.currentMode == GameConstants.Mode.SIM) {
+              Logger.recordOutput("SimPose", robotContainer.getDriveBase().getSimulationPose().get());
+          }
         // Puts data on the elastic dashboard
       SmartDashboard.putString("Alliance Color", Robot.allianceColorString());
       SmartDashboard.putBoolean("Hub Active?", hubActive());

@@ -335,8 +335,8 @@ public class SwerveSubsystem extends SubsystemBase {
     public double getAverageError(){
         return poseError.stream().mapToDouble(record -> record.error).average().orElse(0);
     }
-    public Pose3d getCameraPose() {
-        return new Pose3d(getSimulationPose()).transformBy(Constants.ROBOT_TO_CAMERA);
+    public Pose3d getCameraPose(int camera) {
+        return new Pose3d(getSimulationPose()).transformBy(Constants.ROBOT_TO_CAMERA[camera]);
     }
 
     public Pose2d getSimulationPose() {

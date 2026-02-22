@@ -61,9 +61,9 @@ public class GameConstants {
     //Timeouts
     public static final double SPIN_TIMEOUT = 5;
     public static final double TILT_TIMEOUT = 5;
-    public static final double HOPPER_TIMEOUT = 10;
+    public static final double HOPPER_TIMEOUT = 60;
     public static final double CLIMBER_TIMEOUT = 10;
-    public static final double FEEDER_TIMEOUT = 3;
+    public static final double FEEDER_TIMEOUT = 60;
     public static final double ANGLER_TIMEOUT = 5;
     public static final int SERVER_SOCKET_CONNECTION_TIMEOUT = 2000;
     public static final double SHOOTER_TIMEOUT = 5;
@@ -102,6 +102,7 @@ public class GameConstants {
     public static final double ANGLER_ANGLE_LOW = 0; //Lowest angle position of Angler
     public static final double ANGLER_ANGLE_HIGH = 45; //Highest angle position of Angler
     public static final double ANGLER_FIXED_ROTATIONS = 0.1; //Fixed encoder position of Angler in Fixed ShootState
+    public static final double ANGLER_FIXED_ANGLE = 10; //Fixed encoder position of Angler in Fixed ShootState
     public static final double ANGLER_LIMIT_SPEED = 0.2;
 
     

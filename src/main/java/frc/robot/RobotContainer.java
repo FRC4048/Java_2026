@@ -149,7 +149,7 @@ public class RobotContainer {
                                 SwerveIMU swerveIMU = new ThreadedGyroSwerveIMU(threadedGyro);
 
                                 drivebase = !Constants.TESTBED ? new SwerveSubsystem(
-                                                new File(Filesystem.getDeployDirectory(), "YAGSL"), swerveIMU) : null;
+                                                new File(Filesystem.getDeployDirectory(), "YAGSL/" + Constants.SWERVE_JSON_DIRECTORY), swerveIMU) : null;
                             apriltagSubsystem = !Constants.TESTBED ? new ApriltagSubsystem(ApriltagSubsystem.createRealIo(), drivebase) : null;
                             controllerSubsystem = !Constants.TESTBED ? new ControllerSubsystem(drivebase, this) : null;
 
@@ -168,7 +168,7 @@ public class RobotContainer {
                                 intakeDeployer = new IntakeDeployerSubsystem(IntakeDeployerSubsystem.createMockIo());
                 // No GyroSubsystem in REPLAY for now
                 // create the drive subsystem with null gyro (use default json)
-                drivebase = !Constants.TESTBED ? new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "YAGSL"), null) : null;
+                drivebase = !Constants.TESTBED ? new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "YAGSL/" + Constants.SWERVE_JSON_DIRECTORY), null) : null;
                 apriltagSubsystem = !Constants.TESTBED ? new ApriltagSubsystem(ApriltagSubsystem.createMockIo(), drivebase) : null;
                 controllerSubsystem = !Constants.TESTBED ? new ControllerSubsystem(drivebase, this) : null;
 
@@ -189,7 +189,7 @@ public class RobotContainer {
                                 intakeDeployer = new IntakeDeployerSubsystem(
                                                 IntakeDeployerSubsystem.createSimIo(robotVisualizer));// No GyroSubsystem in REPLAY for now
                 // create the drive subsystem with null gyro (use default json)
-                drivebase = !Constants.TESTBED ? new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "YAGSL"), null) : null;
+                drivebase = !Constants.TESTBED ? new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "YAGSL/" + Constants.SWERVE_JSON_DIRECTORY), null) : null;
                 controllerSubsystem = !Constants.TESTBED ? new ControllerSubsystem(drivebase, this) : null;
                 apriltagSubsystem = !Constants.TESTBED ? new ApriltagSubsystem(ApriltagSubsystem.createSimIo(), drivebase) : null;
             }
@@ -219,7 +219,7 @@ public class RobotContainer {
          * joysticks}.
          */
         private void setUpAutoFactory() {
-
+                if(!Constants.TESTBED){
                 drive = new Drive(drivebase);
 
                 // Sets up Choreo with pose, odometry, drivebase, and a follow trajectory
@@ -277,7 +277,7 @@ public class RobotContainer {
                          * trajectory.doneFor(int)
                          * trajectory.recentlyDone()
                          */
-                }
+                }}
         }
 
         private void configureBindings() {
@@ -513,9 +513,10 @@ public class RobotContainer {
      * @return the command to run in autonomous
      */
     public Command getAutonomousCommand() {
-        //return autoChooser.getCommand();
+        return autoChooser.getCommand();
     // return straightRoutine.cmd(straightTrajectory.done());
-                return new ExampleAuto(drivebase, autoFactory);
+                
+            //    return new ExampleAuto(drivebase, autoFactory);
         }
 
         public ClimberSubsystem getClimberSubsystem() {

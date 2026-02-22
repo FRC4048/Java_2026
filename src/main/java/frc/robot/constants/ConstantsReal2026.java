@@ -34,6 +34,6 @@ public class ConstantsReal2026 extends GameConstants {
     public static final int TCP_SERVER_PORT = 5806;
 
     // other
-    public static final boolean TESTBED = true;
+    public static final boolean TESTBED = false;
 
 }

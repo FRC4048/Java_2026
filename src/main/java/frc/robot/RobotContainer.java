@@ -25,6 +25,7 @@ import frc.robot.commands.drive.DriveDirectionTime;
 import frc.robot.commands.feeder.SpinFeeder;
 import frc.robot.commands.drive.FakeVision;
 import frc.robot.commands.intake.SpinIntake;
+import frc.robot.commands.intake.StopIntake;
 import frc.robot.commands.intakeDeployment.InitialRunDeployment;
 import frc.robot.commands.intakeDeployment.RunDeployer;
 import frc.robot.commands.intakeDeployment.SetDeploymentState;
@@ -439,6 +440,9 @@ public class RobotContainer {
                         SmartDashboard.putData(
                                         "Spin Intake",
                                         new SpinIntake(intakeSubsystem));
+                        SmartDashboard.putData(
+                                        "Stop Intake",
+                                        new StopIntake(intakeSubsystem));
 
                         SmartDashboard.putData(
                                         "Start Hopper",
@@ -488,7 +492,6 @@ public class RobotContainer {
                         SmartDashboard.putData(
                                         "intakedeployer/Deployment State: STOPPED",
                         new SetDeploymentState(intakeDeployer, DeploymentState.STOPPED));
-
 
                 }
 

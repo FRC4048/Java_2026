@@ -10,8 +10,8 @@ public class ConstantsReal2026 extends ConstantsPushbot2026 {
     public static final int ANGLER_MOTOR_ID = 52;
 
     // other CAN-ID's
-    public static final int TURRET_MOTOR_ID = 1;
-    public static final int FEEDER_MOTOR_ID = 2;
+    public static final int TURRET_MOTOR_ID = 9;
+    public static final int FEEDER_MOTOR_ID = 10;
     public static final int HOPPER_MOTOR_ID = 3;
     public static final int INTAKE_MOTOR_ID = 4;
     public static final int INTAKE_DEPLOYMENT_ID = 5;

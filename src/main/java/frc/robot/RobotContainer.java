@@ -132,8 +132,7 @@ public class RobotContainer {
                                 // rollerSubsystem = new RollerSubsystem(RollerSubsystem.createRealIo());
                                 // tiltSubsystem = new TiltSubsystem(TiltSubsystem.createRealIo());
                                 anglerSubsystem = new AnglerSubsystem(AnglerSubsystem.createRealIo());
-                                intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createRealIo(),
-                                                IntakeSubsystem.createRealDeploymentSwitch());
+                                intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createRealIo());
                                 hopperSubsystem = new HopperSubsystem(HopperSubsystem.createRealIo());
                                 intakeDeployer = new IntakeDeployerSubsystem(IntakeDeployerSubsystem.createRealIo());
                                 turretSubsystem = new TurretSubsystem(TurretSubsystem.createRealIo());
@@ -149,7 +148,7 @@ public class RobotContainer {
                                 SwerveIMU swerveIMU = new ThreadedGyroSwerveIMU(threadedGyro);
 
                                 drivebase = !Constants.TESTBED ? new SwerveSubsystem(
-                                                new File(Filesystem.getDeployDirectory(), "YAGSL"), swerveIMU) : null;
+                                                new File(Filesystem.getDeployDirectory(), "YAGSL/" + Constants.SWERVE_JSON_DIRECTORY), swerveIMU) : null;
                             apriltagSubsystem = !Constants.TESTBED ? new ApriltagSubsystem(ApriltagSubsystem.createRealIo(), drivebase) : null;
                             controllerSubsystem = !Constants.TESTBED ? new ControllerSubsystem(drivebase, this) : null;
 
@@ -158,8 +157,7 @@ public class RobotContainer {
                                 // rollerSubsystem = new RollerSubsystem(RollerSubsystem.createMockIo());
                                 // tiltSubsystem = new TiltSubsystem(TiltSubsystem.createMockIo());
                                 anglerSubsystem = new AnglerSubsystem(AnglerSubsystem.createMockIo());
-                                intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createMockIo(),
-                                                IntakeSubsystem.createMockDeploymentSwitch());
+                                intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createMockIo());
                                 hopperSubsystem = new HopperSubsystem(HopperSubsystem.createMockIo());
                                 climberSubsystem = new ClimberSubsystem(ClimberSubsystem.createMockIo());
                                 feederSubsystem = new FeederSubsystem(FeederSubsystem.createMockIo());
@@ -168,7 +166,7 @@ public class RobotContainer {
                                 intakeDeployer = new IntakeDeployerSubsystem(IntakeDeployerSubsystem.createMockIo());
                 // No GyroSubsystem in REPLAY for now
                 // create the drive subsystem with null gyro (use default json)
-                drivebase = !Constants.TESTBED ? new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "YAGSL"), null) : null;
+                drivebase = !Constants.TESTBED ? new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "YAGSL/" + Constants.SWERVE_JSON_DIRECTORY), null) : null;
                 apriltagSubsystem = !Constants.TESTBED ? new ApriltagSubsystem(ApriltagSubsystem.createMockIo(), drivebase) : null;
                 controllerSubsystem = !Constants.TESTBED ? new ControllerSubsystem(drivebase, this) : null;
 
@@ -179,8 +177,7 @@ public class RobotContainer {
                                 // tiltSubsystem = new
                                 // TiltSubsystem(TiltSubsystem.createSimIo(robotVisualizer));
                                 anglerSubsystem = new AnglerSubsystem(AnglerSubsystem.createSimIo(robotVisualizer));
-                                intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createSimIo(robotVisualizer),
-                                                IntakeSubsystem.createSimDeploymentSwitch());
+                                intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createSimIo(robotVisualizer));
                                 hopperSubsystem = new HopperSubsystem(HopperSubsystem.createSimIo(robotVisualizer));
                                 climberSubsystem = new ClimberSubsystem(ClimberSubsystem.createSimIo(robotVisualizer));
                                 feederSubsystem = new FeederSubsystem(FeederSubsystem.createSimIo(robotVisualizer));
@@ -189,7 +186,7 @@ public class RobotContainer {
                                 intakeDeployer = new IntakeDeployerSubsystem(
                                                 IntakeDeployerSubsystem.createSimIo(robotVisualizer));// No GyroSubsystem in REPLAY for now
                 // create the drive subsystem with null gyro (use default json)
-                drivebase = !Constants.TESTBED ? new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "YAGSL"), null) : null;
+                drivebase = !Constants.TESTBED ? new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "YAGSL/" + Constants.SWERVE_JSON_DIRECTORY), null) : null;
                 controllerSubsystem = !Constants.TESTBED ? new ControllerSubsystem(drivebase, this) : null;
                 apriltagSubsystem = !Constants.TESTBED ? new ApriltagSubsystem(ApriltagSubsystem.createSimIo(), drivebase) : null;
             }
@@ -219,7 +216,7 @@ public class RobotContainer {
          * joysticks}.
          */
         private void setUpAutoFactory() {
-
+                if(!Constants.TESTBED){
                 drive = new Drive(drivebase);
 
                 // Sets up Choreo with pose, odometry, drivebase, and a follow trajectory
@@ -277,7 +274,7 @@ public class RobotContainer {
                          * trajectory.doneFor(int)
                          * trajectory.recentlyDone()
                          */
-                }
+                }}
         }
 
         private void configureBindings() {
@@ -513,9 +510,10 @@ public class RobotContainer {
      * @return the command to run in autonomous
      */
     public Command getAutonomousCommand() {
-        //return autoChooser.getCommand();
+        return autoChooser.getCommand();
     // return straightRoutine.cmd(straightTrajectory.done());
-                return new ExampleAuto(drivebase, autoFactory);
+                
+            //    return new ExampleAuto(drivebase, autoFactory);
         }
 
         public ClimberSubsystem getClimberSubsystem() {

@@ -1,7 +1,5 @@
 package frc.robot.commands.intake;
 
-import javax.lang.model.util.ElementScanner14;
-
 import frc.robot.constants.Constants;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.utils.logging.commands.LoggableCommand;
@@ -21,11 +19,7 @@ public class SpinIntake extends LoggableCommand {
 
     @Override
     public void execute() {
-        if (subsystem.isDeployed()) {
-            subsystem.setSpeed(Constants.INTAKE_SPEED);
-        } else {
-            subsystem.setSpeed(0);
-        }
+        subsystem.setSpeed(Constants.INTAKE_SPEED);
     }
 
     @Override

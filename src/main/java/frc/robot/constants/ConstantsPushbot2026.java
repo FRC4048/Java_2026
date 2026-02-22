@@ -4,7 +4,7 @@ public class ConstantsPushbot2026 extends GameConstants {
 
     // ConstantsPushbot2026 is only for CANIDs and nothing else, everything else goes into GameConstants.
     
-    public static final int ROLLER_MOTOR_ID = 10; // we dont have a roller this year i thought?
+    //public static final int ROLLER_MOTOR_ID = 10; // we dont have a roller this year i thought?
     public static final int TILT_MOTOR_ID = 20; // we dont have a tilt this year i thought?
     public static final int INTAKE_MOTOR_ID = 4;
     public static final int ANGLER_MOTOR_ID = 52;

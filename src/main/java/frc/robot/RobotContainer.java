@@ -219,7 +219,7 @@ public class RobotContainer {
          * joysticks}.
          */
         private void setUpAutoFactory() {
-
+                if(!Constants.TESTBED){
                 drive = new Drive(drivebase);
 
                 // Sets up Choreo with pose, odometry, drivebase, and a follow trajectory
@@ -277,7 +277,7 @@ public class RobotContainer {
                          * trajectory.doneFor(int)
                          * trajectory.recentlyDone()
                          */
-                }
+                }}
         }
 
         private void configureBindings() {
@@ -513,9 +513,10 @@ public class RobotContainer {
      * @return the command to run in autonomous
      */
     public Command getAutonomousCommand() {
-        //return autoChooser.getCommand();
+        return autoChooser.getCommand();
     // return straightRoutine.cmd(straightTrajectory.done());
-                return new ExampleAuto(drivebase, autoFactory);
+                
+            //    return new ExampleAuto(drivebase, autoFactory);
         }
 
         public ClimberSubsystem getClimberSubsystem() {

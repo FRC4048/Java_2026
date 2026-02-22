@@ -26,7 +26,7 @@ public class ClimberDown extends LoggableCommand {
 
     @Override
     public void execute() {
-        subsystem.setSpeed(1 * Constants.CLIMBER_SPEED_DOWN);
+        subsystem.setSpeed(Constants.CLIMBER_SPEED_DOWN);
     }
 
     @Override

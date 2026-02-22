@@ -78,8 +78,9 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public static MotorPairIO createRealIo() {
-        RealSparkMaxIo motorIO = new RealSparkMaxPidMotorIo(LOGGING_NAME, createMotor().mainMotor, MotorLoggableInputs.allMetrics());
-        RealSparkMaxIo followerIO = new RealSparkMaxIo(LOGGING_NAME, createMotor().followerMotor, MotorLoggableInputs.allMetrics());
+        MotorPair motor = createMotor();
+        RealSparkMaxIo motorIO = new RealSparkMaxPidMotorIo(LOGGING_NAME, motor.mainMotor, MotorLoggableInputs.allMetrics());
+        RealSparkMaxIo followerIO = new RealSparkMaxIo(LOGGING_NAME, motor.followerMotor, MotorLoggableInputs.allMetrics());
         return new MotorPairIO(motorIO, followerIO);
     }
 

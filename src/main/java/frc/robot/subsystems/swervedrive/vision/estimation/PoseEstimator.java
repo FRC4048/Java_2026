@@ -135,7 +135,10 @@ public class PoseEstimator {
     }
     long end = System.currentTimeMillis();
     Logger.recordOutput("RegisteringVisionTimeMillis", end - start);
-    poseManager.processQueue();
+    for (int i=0; i<Constants.ROBOT_TO_CAMERA.length; i++) {
+        poseManager.processQueue(i);
+    }
+    poseManager.log();
   }
 
   private VisionMeasurement getVisionMeasurement(double[] pos, int index) {

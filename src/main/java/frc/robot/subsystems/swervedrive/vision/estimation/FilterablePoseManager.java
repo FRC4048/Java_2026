@@ -29,6 +29,10 @@ public class FilterablePoseManager extends PoseManager {
 
   private final VisionFilter filter;
   private final ConcurrentLinkedDeque<MeasurementRecord> lastSecondMeasurements = new ConcurrentLinkedDeque<>();
+  private final List<Pose2d> validMeasurementsPose = new ArrayList<>();
+  private final List<Pose2d> invalidMeasurementsPose = new ArrayList<>();;
+  private final List<Pose3d> acceptedTagsPose = new ArrayList<>();
+  private final List<VisionLog> log = new ArrayList<>();
 
   public FilterablePoseManager(
       PoseDeviation PoseDeviation,
@@ -57,19 +61,15 @@ public class FilterablePoseManager extends PoseManager {
   }
 
   @Override
-  public void processQueue() {
+  public void processQueue(int camera) {
     double currentTime = Logger.getTimestamp()/1000000.0;
     double oneSecondAgo = currentTime - 1.0;
     lastSecondMeasurements.removeIf(record -> record.timestamp < oneSecondAgo);
-    List<VisionLog> log = new ArrayList<>();
-    List<Pose2d> validMeasurementsPose = new ArrayList<>();
-    List<Pose2d> invalidMeasurementsPose = new ArrayList<>();;
-    List<Pose3d> acceptedTagsPose = new ArrayList<>();
     for (Map.Entry<Integer, Queue<VisionMeasurement>> queueEntry : visionMeasurementQueueMap.entrySet()) {
       int tagId = queueEntry.getKey();
       Queue<VisionMeasurement> queue = queueEntry.getValue();
       LinkedHashMap<VisionMeasurement, FilterResult> filteredData =
-              filter.filter(queue, drivebase.getCameraPose());
+              filter.filter(queue, drivebase.getCameraPose(camera));
       queue.clear();
       for (Map.Entry<VisionMeasurement, FilterResult> filterEntry : filteredData.entrySet()) {
         VisionMeasurement v = filterEntry.getKey();
@@ -78,11 +78,10 @@ public class FilterablePoseManager extends PoseManager {
         lastSecondMeasurements.add(new MeasurementRecord(Apriltag.of(tagId), v.timeOfMeasurement(),r));
         switch (r) {
           case ACCEPTED -> {
-            setVisionSTD(visionTruster.calculateTrust(v, drivebase.getCameraPose()));
+            setVisionSTD(visionTruster.calculateTrust(v, drivebase.getCameraPose(camera)));
             validMeasurementsPose.add(v.measurement());
             addVisionMeasurement(v);
             acceptedTagsPose.add(Apriltag.of(tagId).getPose());
-
           }
           case NOT_PROCESSED -> queue.add(v);
           case REJECTED -> {
@@ -91,6 +90,10 @@ public class FilterablePoseManager extends PoseManager {
         }
       }
     }
+
+
+  }
+  public void log() {
     Logger.recordOutput("Apriltag/acceptedMeasurementsPose", validMeasurementsPose.toArray(Pose2d[]::new));
     Logger.recordOutput("Apriltag/rejectedMeasurementsPose", invalidMeasurementsPose.toArray(Pose2d[]::new));
     Logger.recordOutput("Apriltag/numberAcceptedLastSecond", lastSecondMeasurements.stream().filter(record -> record.result == FilterResult.ACCEPTED).count());
@@ -98,8 +101,11 @@ public class FilterablePoseManager extends PoseManager {
     Logger.recordOutput("Apriltag/numberRejectedLastSecond", lastSecondMeasurements.stream().filter(record -> record.result == FilterResult.REJECTED).count());
     Logger.recordOutput("Apriltag/acceptedTagPose", acceptedTagsPose.toArray(Pose3d[]::new));
     Logger.recordOutput("Apriltag/Log", log.toArray(VisionLog[]::new));
+    validMeasurementsPose.clear();
+    invalidMeasurementsPose.clear();
+    acceptedTagsPose.clear();
+    log.clear();
   }
-
   public VisionTruster getVisionTruster() {
     return visionTruster;
   }

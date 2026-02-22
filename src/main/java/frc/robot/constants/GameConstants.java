@@ -164,7 +164,10 @@ public class GameConstants {
 
     public static final double HORIZONTAL_FOV = Units.degreesToRadians(110); // radians; TODO: Change Later
     public static final double VERTICAL_FOV = Units.degreesToRadians(90); // radians; TODO: Change Later
-    public static final Transform3d ROBOT_TO_CAMERA = new Transform3d(0,0,0, new Rotation3d(0,0,0)); // TODO: change Later
+    public static final Transform3d[] ROBOT_TO_CAMERA = {new Transform3d(0,0,0, new Rotation3d(0,0,0)),
+            new Transform3d(0,0,0, new Rotation3d(0,0,Math.PI/2)),
+            new Transform3d(0,0,0, new Rotation3d(0,0,Math.PI)),
+            new Transform3d(0,0,0, new Rotation3d(0,0,3*Math.PI/2))}; // TODO: change Later
     public static final double AVERAGE_CAM_LATENCY = 0; // seconds; TODO: change Later
     public static final double AVERAGE_CAM_LATENCY_STD_DEV = 0; // seconds; TODO: change Later
     public static final double AVERAGE_PIR_LATENCY = 20; //ms

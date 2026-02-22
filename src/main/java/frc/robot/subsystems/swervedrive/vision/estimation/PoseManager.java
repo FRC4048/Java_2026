@@ -67,15 +67,18 @@ public class PoseManager {
         if (measurement == null) {
             return;
         }
-        visionMeasurementQueueMap.computeIfAbsent(tagId, k -> new LinkedList<>()).add(measurement);
+        while (visionMeasurementQueueMap.computeIfAbsent(tagId,k -> new LinkedList<>()).size() >= 3) {
+            visionMeasurementQueueMap.get(tagId).poll();
+        }
+        visionMeasurementQueueMap.get(tagId).add(measurement);
     }
 
     // override for filtering
-    public void processQueue() {
+    public void processQueue(int camera) {
         for (Queue<VisionMeasurement> queue : visionMeasurementQueueMap.values()) {
             VisionMeasurement m = queue.poll();
             while (m != null) {
-                setVisionSTD(visionTruster.calculateTrust(m, drivebase.getCameraPose()));
+                setVisionSTD(visionTruster.calculateTrust(m, drivebase.getCameraPose(camera)));
                 addVisionMeasurement(m);
                 m = queue.poll();
             }

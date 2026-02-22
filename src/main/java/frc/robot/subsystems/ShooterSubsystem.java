@@ -1,7 +1,6 @@
 package frc.robot.subsystems;
 
 
-
 import com.ctre.phoenix6.controls.Follower;
 import com.revrobotics.spark.SparkLowLevel;
 import com.revrobotics.spark.SparkMax;
@@ -14,7 +13,6 @@ import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Robot;
 import frc.robot.constants.Constants;
-import frc.robot.constants.Constants2026;
 import frc.robot.constants.GameConstants;
 import frc.robot.utils.diag.DiagSparkMaxEncoder;
 import frc.robot.utils.logging.input.MotorLoggableInputs;
@@ -41,6 +39,7 @@ public class ShooterSubsystem extends SubsystemBase {
     public ShooterSubsystem(MotorPairIO motorPairIO) {
         this((SparkMaxPidMotorIo) motorPairIO.mainMotor);
         this.followerIo = motorPairIO.followerMotor;
+        stopMotors();
     }
 
     public ShooterSubsystem(SparkMaxPidMotorIo io) {
@@ -88,7 +87,7 @@ public class ShooterSubsystem extends SubsystemBase {
         Robot.getDiagnostics()
                 .addDiagnosable(
                         new DiagSparkMaxEncoder(
-                                "Shooter", "Encoder", GameConstants.SHOOTER_DIAGS_ENCODER, motor.getNeoMotor()));
+                                "Shooter", "Encoder", GameConstants.SHOOTER_DIAGS_ENCODER, motor.mainMotor.getNeoMotor()));
 
         return new MotorPairIO(motorIO, followerIO);
     }

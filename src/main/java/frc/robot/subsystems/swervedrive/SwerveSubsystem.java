@@ -26,6 +26,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Config;
 import frc.robot.constants.Constants;
 
+import frc.robot.constants.GameConstants;
 import frc.robot.utils.logging.io.gyro.ThreadedGyro;
 import org.littletonrobotics.junction.Logger;
 import swervelib.SwerveController;
@@ -42,6 +43,7 @@ import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
 
 import java.io.File;
 import java.util.Arrays;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
@@ -130,11 +132,13 @@ public class SwerveSubsystem extends SubsystemBase {
         );
 
         rawOdomField.setRobotPose(rawOdometry.getPoseMeters());
-        double currentTime = Logger.getTimestamp()/1000000.0;
-        double oneSecondAgo = currentTime - 1.0;
-        poseError.removeIf(record -> record.timestamp < oneSecondAgo);
-        poseError.add(new PoseErrorRecord(currentTime, getError()));
-        Logger.recordOutput("AveragePoseError", getAverageError());
+        if (Constants.currentMode == GameConstants.Mode.SIM) {
+            double currentTime = Logger.getTimestamp() / 1000000.0;
+            double oneSecondAgo = currentTime - 1.0;
+            poseError.removeIf(record -> record.timestamp < oneSecondAgo);
+            poseError.add(new PoseErrorRecord(currentTime, getError()));
+            Logger.recordOutput("AveragePoseError", getAverageError());
+        }
     }
 
     @Override
@@ -334,13 +338,13 @@ public class SwerveSubsystem extends SubsystemBase {
         return new Pose3d(getSimulationPose()).transformBy(Constants.ROBOT_TO_CAMERA);
     }
     public double getError() {
-        return getPose().getTranslation().getDistance((getSimulationPose().getTranslation()));
+        return getPose().getTranslation().getDistance((getSimulationPose().get().getTranslation()));
     }
     public double getAverageError(){
         return poseError.stream().mapToDouble(record -> record.error).average().orElse(0);
     }
-    public Pose2d getSimulationPose() {
-        return swerveDrive.getSimulationDriveTrainPose().orElse(new Pose2d());
+    public Optional<Pose2d> getSimulationPose() {
+        return swerveDrive.getSimulationDriveTrainPose();
     }
     // Todo: fix to only get odomtry
     public Pose2d getOdom() {

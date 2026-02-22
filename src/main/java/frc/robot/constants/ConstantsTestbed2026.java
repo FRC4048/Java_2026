@@ -10,8 +10,8 @@ package frc.robot.constants;
   */
 public class ConstantsTestbed2026 extends ConstantsPushbot2026 {
     
-    public static final int ROLLER_MOTOR_ID = 99;
-    public static final int TILT_MOTOR_ID = 98;
+    public static final int ROLLER_MOTOR_ID = 99; // fake id for example subsytem to prevent crashes
+    public static final int TILT_MOTOR_ID = 98; // fake id for example subsytem to prevent crashes
     //Intake motor id (43) isn't real
     // public static final int HOPPER_MOTOR_ID = 43;
 

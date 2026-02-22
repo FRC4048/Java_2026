@@ -136,18 +136,4 @@ public enum Apriltag {
   public TagPose getTagInfo() {
     return new TagPose(this, pose);
   }
-  public boolean canSee(Pose3d cameraPose, double HorizontalFOV, double VerticalFOV) {
-    Pose3d adjPose = getPose().relativeTo(cameraPose);
-    double horizontalAngle = Math.atan2(adjPose.getY(), adjPose.getX());
-    double verticalAngle = Math.asin(adjPose.getZ()/adjPose.getTranslation().getNorm());
-    double tagAngle = adjPose.getRotation().getZ()+PI;
-    double diffAngle = abs(horizontalAngle-tagAngle);
-    if (diffAngle>=2*PI) {
-      diffAngle-=2*PI;
-    }
-    if (diffAngle >= PI/2 && diffAngle <=3*PI/2) {
-      return false;
-    }
-    return abs(horizontalAngle) < HorizontalFOV/2 && abs(verticalAngle) < VerticalFOV/2;// TODO: Maybe change Later By Implementing Math Calculations (Linear Algebra)
-  }
 }

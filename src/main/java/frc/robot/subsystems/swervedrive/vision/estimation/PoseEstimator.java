@@ -62,7 +62,8 @@ public class PoseEstimator {
       SwerveDriveKinematics kinematics,
       SwerveSubsystem drivebase,
       double initGyroValueDeg,
-      ApriltagSubsystem apriltagSystem) {
+      ApriltagSubsystem apriltagSystem,
+      VisionTruster truster) {
    /*this.frontLeft = frontLeftMotor;
     this.frontRight = frontRightMotor;
     this.backLeft = backLeftMotor;
@@ -90,8 +91,7 @@ public class PoseEstimator {
               public Pose2d getVisionPose(VisionMeasurement measurement) {
                 return measurement.measurement();
               }
-            },
-            new ConstantVisionTruster(visionMeasurementStdDevs2));
+            }, truster);
     SmartDashboard.putData(field);
   }
 

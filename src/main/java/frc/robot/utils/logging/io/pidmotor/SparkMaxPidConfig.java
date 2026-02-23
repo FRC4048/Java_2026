@@ -1,5 +1,7 @@
 package frc.robot.utils.logging.io.pidmotor;
 
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
+
 /**
  * Value container helper class for configuring a PidMotor.
  */
@@ -12,6 +14,7 @@ public class SparkMaxPidConfig {
     public static final double MAX_VELOCITY = 5000;
     public static final double MAX_ACCELERATION = 10000;
     public static final double ALLOWED_ERROR = 1.0;
+    public static final IdleMode DEFAULT_IDLE_MODE = IdleMode.kBrake;
 
     private double p = DEFAULT_P;
     private double i = DEFAULT_I;
@@ -19,6 +22,7 @@ public class SparkMaxPidConfig {
     private double iZone = DEFAULT_IZONE;
     private double ff = DEFAULT_FF;
     private int currentLimit = 20;
+    private IdleMode mode = DEFAULT_IDLE_MODE;
     /**
      * This is the cruise velocity for the MAX_MOTION config.
      */
@@ -130,4 +134,14 @@ public class SparkMaxPidConfig {
     public boolean getUsesMaxMotion() {
         return usesMaxMotion;
     }
+
+    public SparkMaxPidConfig setIdleMode(IdleMode mode){
+        this.mode = mode;
+        return this;
+    }
+
+    public IdleMode getIdleMode(){
+        return mode;
+    }
 }
+

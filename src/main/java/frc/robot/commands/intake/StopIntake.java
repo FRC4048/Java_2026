@@ -1,14 +1,12 @@
 package frc.robot.commands.intake;
-
-import frc.robot.constants.Constants;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.utils.logging.commands.LoggableCommand;
 
-public class SpinIntake extends LoggableCommand {
+public class StopIntake extends LoggableCommand {
     
     private final IntakeSubsystem subsystem;
   
-    public SpinIntake(IntakeSubsystem subsystem) {
+    public StopIntake(IntakeSubsystem subsystem) {
         this.subsystem = subsystem;
         addRequirements(subsystem);
     }
@@ -19,16 +17,15 @@ public class SpinIntake extends LoggableCommand {
 
     @Override
     public void execute() {
-        subsystem.setSpeed(Constants.INTAKE_SPEED);
-    }
+            subsystem.stopMotors();
+        }
 
     @Override
     public boolean isFinished() {
-        return false;
+        return true;
     }
 
     @Override
     public void end(boolean interrupted) {
-        subsystem.stopMotors();
     }
 }

@@ -17,10 +17,10 @@ public class ObjectUtils {
         Pose3d adjPose = objectPose.relativeTo(cameraPose);
         double horizontalAngle = Math.atan2(adjPose.getY(), adjPose.getX());
         double verticalAngle = Math.asin(adjPose.getZ()/adjPose.getTranslation().getNorm());
-        Vector<N3> tagNormalVector = new Translation3d(new Translation2d(1,new Rotation2d(adjPose.getRotation().getZ()))).toVector();
-        Vector<N3> tagToCameraVector = cameraPose.relativeTo(objectPose).getTranslation().toVector().unit();
-        double cosIncidenceAngle = -tagNormalVector.dot(tagToCameraVector);
-        if (cosIncidenceAngle<=0) {
+        Translation3d adjPose2 = cameraPose.relativeTo(objectPose).getTranslation();
+        double distanceToCamera = adjPose2.getNorm();
+        double cosIncidence = adjPose2.getX() / distanceToCamera;
+        if (cosIncidence<=0) {
             return false;
         }
         return abs(horizontalAngle) < HorizontalFOV/2 && abs(verticalAngle) < VerticalFOV/2;// TODO: Maybe change Later By Implementing Math Calculations (Linear Algebra)

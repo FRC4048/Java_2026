@@ -62,6 +62,7 @@ import frc.robot.subsystems.ClimberSubsystem;
 //import frc.robot.subsystems.TiltSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import frc.robot.subsystems.swervedrive.vision.truster.ConstantVisionTruster;
+import frc.robot.subsystems.swervedrive.vision.truster.SquareVisionTruster;
 import frc.robot.subsystems.swervedrive.vision.truster.VisionTruster;
 import frc.robot.utils.logging.io.gyro.RealGyroIo;
 import frc.robot.utils.logging.io.gyro.ThreadedGyro;
@@ -120,7 +121,7 @@ public class RobotContainer {
         private AutoFactory autoFactory;
         private static AutoRoutine straightRoutine;
         private static AutoTrajectory straightTrajectory;
-        private final VisionTruster truster = new ConstantVisionTruster(visionMeasurementStdDevs2);
+        private final VisionTruster truster = new SquareVisionTruster(visionMeasurementStdDevs2, Constants.VISION_STD_DEV_CONST);
 
     // Replace with CommandPS4Controller or CommandJoystick if needed
         // new CommandXboxController(OperatorConstants.kDriverControllerPort);private

@@ -67,7 +67,10 @@ public class PoseManager {
         if (measurement == null) {
             return;
         }
-        visionMeasurementQueueMap.computeIfAbsent(tagId, k -> new LinkedList<>()).add(measurement);
+        while (visionMeasurementQueueMap.computeIfAbsent(tagId,k -> new LinkedList<>()).size() >= 3) {
+            visionMeasurementQueueMap.get(tagId).poll();
+        }
+        visionMeasurementQueueMap.get(tagId).add(measurement);
     }
 
     // override for filtering

@@ -335,7 +335,11 @@ public class SwerveSubsystem extends SubsystemBase {
         return swerveDrive.getPose();
     }
     public Pose3d getCameraPose() {
-        return new Pose3d(getSimulationPose()).transformBy(Constants.ROBOT_TO_CAMERA);
+        if (Constants.currentMode == GameConstants.Mode.SIM) {
+            return new Pose3d(getSimulationPose().get()).transformBy(Constants.ROBOT_TO_CAMERA);
+        } else {
+            return new Pose3d(getPose()).transformBy(Constants.ROBOT_TO_CAMERA);
+        }
     }
     public double getError() {
         return getPose().getTranslation().getDistance((getSimulationPose().get().getTranslation()));

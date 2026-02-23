@@ -64,7 +64,4 @@ public class ApriltagSubsystem extends SubsystemBase {
         estimator.updatePosition(drivebase.getOdom());
         io.periodic();
     }
-    public Vector<N3> calculateTrust(VisionMeasurement measurement) {
-        return estimator.getVisionTruster().calculateTrust(measurement,cameraPos);
-    }
 }

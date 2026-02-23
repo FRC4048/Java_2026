@@ -157,7 +157,7 @@ public class GameConstants {
     public static final double POSE_BUFFER_STORAGE_TIME = 2; //how many past measurements are stored in the buffer (might increase if we need further back)
 
     // Vision
-    public static final Transform3d ROBOT_TO_CAMERA = new Transform3d(0,0,0, new Rotation3d(0,0,0)); // TODO: change
+    public static final Transform3d ROBOT_TO_CAMERA = new Transform3d(0,0,0, new Rotation3d(0,0,0));
     public static final double HORIZONTAL_FOV = Units.degreesToRadians(110); // radians; TODO: Change Later
     public static final double VERTICAL_FOV = Units.degreesToRadians(90); // radians; TODO: Change Later
     public static final double AVERAGE_CAM_LATENCY = 0; // seconds; TODO: change Later

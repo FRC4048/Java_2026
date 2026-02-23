@@ -77,7 +77,6 @@ public class PoseEstimator {
             initGyroValueDeg);*/
     TimeInterpolatableBuffer<Pose2d> m1Buffer =
         TimeInterpolatableBuffer.createBuffer(Constants.POSE_BUFFER_STORAGE_TIME);
-      VisionTruster truster = new SquareVisionTruster(Constants.INITIAL_VISION_STD_DEVS, Constants.VISION_STD_DEV_CONST);
     this.poseManager =
         new FilterablePoseManager(
             Constants.INITIAL_VISION_STD_DEVS,
@@ -136,7 +135,8 @@ public class PoseEstimator {
     }
     long end = System.currentTimeMillis();
     Logger.recordOutput("RegisteringVisionTimeMillis", end - start);
-    poseManager.processQueue();
+        poseManager.processQueue();
+      poseManager.log();
   }
 
   private VisionMeasurement getVisionMeasurement(double[] pos, int index) {

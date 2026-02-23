@@ -35,11 +35,13 @@ public class SimApriltagIO extends TCPApriltagIo {
                 Pose3d cameraPos = new Pose3d(robotPoseSupplier.get().get()).transformBy(Constants.ROBOT_TO_CAMERA);
                 if (ObjectUtils.canSee(tag.getPose(), cameraPos, Constants.HORIZONTAL_FOV, Constants.VERTICAL_FOV)) {
                     Pose3d adjPose = tag.getPose().relativeTo(cameraPos);
-                    double cosIncidenceAngle = (-adjPose.getX() * Math.cos(adjPose.getRotation().getZ()) - adjPose.getY() * Math.sin(adjPose.getRotation().getZ())) / (adjPose.getTranslation().getNorm());
+                    Vector<N3> tagNormalVector = new Translation3d(new Translation2d(1,new Rotation2d(adjPose.getRotation().getZ()))).toVector();
+                    Vector<N3> tagToCameraVector = cameraPos.relativeTo(tag.getPose()).getTranslation().toVector();
+                    double distanceTimesCosIncidenceAngle = -tagNormalVector.dot(tagToCameraVector);
                     double distance = tag.getTranslation().getDistance(cameraPos.getTranslation());
-                    if (distance / cosIncidenceAngle < Constants.MAX_VISION_DISTANCE_SIMULATION) {
+                    if (distanceTimesCosIncidenceAngle < Constants.MAX_VISION_DISTANCE_SIMULATION) {
                         VisionMeasurement measurement = new VisionMeasurement(new Pose2d(), tag.getTagInfo(), distance, 0);
-                        Vector<N3> stdDevs = truster.calculateTrust(measurement);
+                        Vector<N3> stdDevs = truster.calculateTrust(measurement, cameraPos);
                         double readingX = robotPoseSupplier.get().get().getX() + random.nextGaussian() * stdDevs.get(0);
                         double readingY = robotPoseSupplier.get().get().getY() + random.nextGaussian() * stdDevs.get(1);
                         double readingYaw = robotPoseSupplier.get().get().getRotation().getDegrees() + random.nextGaussian() * stdDevs.get(2);

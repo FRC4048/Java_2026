@@ -99,7 +99,7 @@ public class AutoChooser {
         Optional<DriverStation.Alliance> alliance = DriverStation.getAlliance();
         if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Blue) {
             //blue
-            commandMap.put(new AutoEvent(AutoAction.SHOOT_AND_CLIMB, FieldLocation.LEFT),
+            commandMap.put(new AutoEvent(AutoAction.COMPLETE, FieldLocation.LEFT),
                 new BlueDepot(drivetrain, auto, shooter, shootstate, climber, hopper, feeder));
         }  
         

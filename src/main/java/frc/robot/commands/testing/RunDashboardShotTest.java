@@ -63,5 +63,8 @@ public class RunDashboardShotTest extends LoggableCommand {
     @Override
     public void end(boolean interrupted) {
         timer.stop();
+        anglerSubsystem.stopMotors();
+        shooterSubsystem.stopMotors();
+        turretSubsystem.stopMotors();
     }
 }

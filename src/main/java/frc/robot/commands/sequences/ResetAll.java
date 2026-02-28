@@ -48,9 +48,9 @@ public class ResetAll extends LoggableSequentialCommandGroup {
         //new LoggableParallelCommandGroup(
             new StowAngler(anglerSubsystem),
             new ClimberDown(climberSubsystem),
-            new IntakeUpSequence(intakeDeployerSubsystem, intakeSubsystem)
-            //new SetShootingState(shootState, ShootState.STOPPED),
-            //new StopShooter(shooterSubsystem),
+            new IntakeUpSequence(intakeDeployerSubsystem, intakeSubsystem),
+            new SetShootingState(shootState, ShootState.STOPPED),
+            new StopShooter(shooterSubsystem)
             //new RunTurretToFwdLimit(turretSubsystem),
         //new LoggableParallelCommandGroup(
             //new ResetAnglerEncoder(anglerSubsystem),

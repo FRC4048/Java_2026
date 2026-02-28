@@ -533,4 +533,8 @@ public class RobotContainer {
         return shootState;
     }
 
+    public IntakeDeployerSubsystem getDeployer(){
+        return intakeDeployer;
+}
+
 }

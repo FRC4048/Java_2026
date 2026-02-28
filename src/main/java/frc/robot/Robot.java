@@ -108,8 +108,6 @@ public class Robot extends LoggedRobot {
         }
 
         Logger.recordOutput("shootingState/", robotContainer.getShootingState().getShootState().toString());
-        Logger.recordOutput("deployment State", robotContainer.getDeploymentState());
-
         if (Constants.currentMode.equals(Constants.Mode.SIM)) {
             robotContainer.getRobotVisualizer().logMechanism();
         }
@@ -119,6 +117,7 @@ public class Robot extends LoggedRobot {
         }
 
     if (Constants.DEBUG) {
+      System.out.println( robotContainer.getDeployer().getDeploymentState()); 
       SmartDashboard.putNumber("driverXbox.getLeftY()",driverXbox.getLeftY());
       SmartDashboard.putNumber("driverXbox::getRightX", driverXbox.getRightX());
       if(!Constants.TESTBED){

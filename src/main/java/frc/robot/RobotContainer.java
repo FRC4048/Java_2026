@@ -402,6 +402,11 @@ public class RobotContainer {
                                         "angler/Home Rev (Reset)",
                                         new StowAngler(anglerSubsystem));
 
+                        SmartDashboard.putData(
+                                        "reset All",
+                                        new ResetAll(anglerSubsystem, climberSubsystem, feederSubsystem, 
+                                        hopperSubsystem, intakeDeployer, intakeSubsystem, shooterSubsystem, 
+                                        turretSubsystem, shootState));
             SmartDashboard.putData(
                     "turret/Turret Go 45",
                     new SetTurretAngle(turretSubsystem, 45));

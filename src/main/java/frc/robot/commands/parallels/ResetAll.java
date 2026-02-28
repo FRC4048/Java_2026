@@ -24,6 +24,7 @@ import frc.robot.utils.logging.commands.LoggableSequentialCommandGroup;
 
 public class ResetAll extends LoggableSequentialCommandGroup {
 
+  /*
   public ResetAll(AnglerSubsystem anglerSubsystem, ClimberSubsystem climberSubsystem,
       FeederSubsystem feederSubsystem, HopperSubsystem hopperSubsystem,
       IntakeDeployerSubsystem intakeDeployerSubsystem, IntakeSubsystem intakeSubsystem,
@@ -42,5 +43,17 @@ public class ResetAll extends LoggableSequentialCommandGroup {
                 new ResetClimberEncoder(climberSubsystem),
                 new ResetTurretEncoder(turretSubsystem)));
   }
+                */
 
+                public ResetAll(AnglerSubsystem anglerSubsystem, ClimberSubsystem climberSubsystem,
+      FeederSubsystem feederSubsystem, HopperSubsystem hopperSubsystem,
+      IntakeDeployerSubsystem intakeDeployerSubsystem, IntakeSubsystem intakeSubsystem,
+      ShooterSubsystem shooterSubsystem, TurretSubsystem turretSubsystem, ShootingState shootState) {
+    super(
+        new LoggableSequentialCommandGroup(
+            new ClimberDown(climberSubsystem),
+            new LoggableParallelCommandGroup(
+                new ResetClimberEncoder(climberSubsystem))
+                ));
+  }
 }

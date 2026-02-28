@@ -15,6 +15,7 @@ import frc.robot.commands.auto.BlueDepot;
 import frc.robot.commands.auto.BlueLeftShootClimb;
 import frc.robot.commands.auto.BlueMidShootClimb;
 import frc.robot.commands.auto.BlueRightShootClimb;
+import frc.robot.commands.auto.CommandDescription;
 import frc.robot.commands.auto.LeftShoot;
 import frc.robot.commands.auto.RedLeftShootClimb;
 import frc.robot.commands.auto.MidShoot;
@@ -99,6 +100,15 @@ public class AutoChooser {
         commandMap.put(new AutoEvent(AutoAction.DO_NOTHING, FieldLocation.MIDDLE),
             new DoNothingCommand());
         // Commands where alliance color is relevant.
+        commandMap.put(new AutoEvent(AutoAction.COMPLETE, FieldLocation.LEFT, null), 
+        new CommandDescription("depot")); /*
+        For each pair of alliance-specific commands (one for red,
+        one for blue), There should also be a key with a null
+        color passed that is associated with a CommandDescription.
+        This allows a more vague description of what the command might
+        do, regardless of the alliance color, to be put on the dashboard
+        while the chooser is in use by the drive team, rather than it
+        appearing as though the selection is invalid. */
         commandMap.put(new AutoEvent(AutoAction.COMPLETE, FieldLocation.LEFT,
             Alliance.Blue),
             new BlueDepot(drivetrain, auto, shooter, shootstate, climber, hopper, feeder));
@@ -108,23 +118,30 @@ public class AutoChooser {
         AutoAction chosenAction = actionChooser.get();
         FieldLocation chosenLocation = locationChooser.get();
         Alliance color = Robot.allianceColor().orElse(null);
-        if (color == null) return null; /*
-        If the alliance color is not present, then
-        robotContainer.getAutonoumousCommand() should return null,
-        in which case robotContainer.getAutonomousCommand()
-        will be called again until the return value is not null. */
-        return new AutoEvent(chosenAction, chosenLocation, color);
+        if (color == null) { /*
+            Passing null explicitly will internally
+            mark the instance as irrelevant, which
+            is not wanted in this case. */
+            return new AutoEvent(chosenAction, chosenLocation);
+        } else {
+            return new AutoEvent(chosenAction, chosenLocation, color);
+        }
     }
 
     public Command getSelectedCommand() {
         AutoEvent event = getSelectedEvent();
-        return commandMap.getOrDefault(event, null); /*
-        HashMap permits null keys, so if event is null then this will
-        return null - no further null-checking needed. */
+        return commandMap.get(event);
     }
 
     public Command getCommand() {
-        return getSelectedCommand();
+        Command command = getSelectedCommand();
+        if (command instanceof CommandDescription) {
+            return null; /*
+            CommandDescription is not meant to be
+            an actual command. */
+        } else {
+            return command;
+        }
     }
 
     public String getCommandDescription() {

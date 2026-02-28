@@ -11,6 +11,7 @@ public class AutoEvent {
   private final AutoAction action;
   private final FieldLocation location;
   private Alliance allianceColor;
+  private boolean relevant = true;
 
   /**
    * This instantiates the AutoEvent without the alliance color.
@@ -35,6 +36,9 @@ public class AutoEvent {
   public AutoEvent(AutoAction action, FieldLocation location, Alliance color) {
     this.action = action;
     this.location = location;
+    if (color == null) relevant = false; /*
+    If null is explicitly passed, this means this instance is
+    just there to put a CommandDescription in the commandMap. */
     this.allianceColor = color;
   }
 
@@ -58,6 +62,7 @@ public class AutoEvent {
 
   @Override
   public boolean equals(Object obj) {
+    if (!relevant) return false;
     if (this == obj) return true;
     if (obj == null) return false;
     if (obj instanceof AutoEvent other) {

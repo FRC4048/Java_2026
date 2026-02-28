@@ -1,13 +1,11 @@
 package frc.robot.commands.intake;
-
-import frc.robot.constants.enums.DeploymentState;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.utils.logging.commands.LoggableCommand;
 
 public class StopIntake extends LoggableCommand {
-
+    
     private final IntakeSubsystem subsystem;
-
+  
     public StopIntake(IntakeSubsystem subsystem) {
         this.subsystem = subsystem;
         addRequirements(subsystem);
@@ -15,12 +13,12 @@ public class StopIntake extends LoggableCommand {
 
     @Override
     public void initialize() {
-    }
+    }  
 
     @Override
     public void execute() {
-        subsystem.stopMotors();
-    }
+            subsystem.stopMotors();
+        }
 
     @Override
     public boolean isFinished() {

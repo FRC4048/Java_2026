@@ -281,7 +281,7 @@ public class RobotContainer {
         private void configureBindings() {
                 intakeSubsystem.setDefaultCommand(new SpinIntake(intakeSubsystem, intakeDeployer));
                 controller.a().onTrue(new InitialRunDeployment(intakeDeployer));
-               controller.b().onTrue(new IntakeStoppedSequence(intakeDeployer, intakeSubsystem));
+                controller.b().onTrue(new SetDeploymentState(intakeDeployer, DeploymentState.STOPPED));
                 controller.y().onTrue(new ClimberUp(climberSubsystem));
                 controller.x().onTrue(new ClimberDown(climberSubsystem));
                 controller.povUp().onTrue(new SetShootingState(shootState, ShootState.FIXED));

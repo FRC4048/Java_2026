@@ -38,6 +38,7 @@ import frc.robot.commands.angler.RunAnglerToReverseLimit;
 import frc.robot.commands.shooter.DefaultShooterControl;
 import frc.robot.commands.auto.ExampleAuto;
 import frc.robot.commands.shooter.SetShootingState;
+import frc.robot.commands.testing.RunDashboardShotTest;
 import frc.robot.commands.turret.DefaultTurretControl;
 import frc.robot.commands.turret.RunTurretToFwdLimit;
 import frc.robot.commands.turret.RunTurretToRevLimit;
@@ -89,11 +90,6 @@ import choreo.auto.AutoTrajectory;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
-        private static final String DASHBOARD_ANGLER_TARGET_ROTATIONS_KEY = "angler/TargetRotations";
-        private static final String DASHBOARD_ANGLER_TARGET_ANGLE_KEY = "angler/TargetAngle";
-        private static final String DASHBOARD_TURRET_TARGET_ANGLE_KEY = "turret/TargetAngle";
-        private static final String DASHBOARD_SHOOTER_TARGET_RPM_KEY = "shooter/TargetRPM";
-
         // Instantiate the autochooser.
         private final AutoChooser autoChooser = new AutoChooser();
         // The robot's subsystems and commands are defined here...
@@ -316,10 +312,9 @@ public class RobotContainer {
                 }
 
             if (controllerSubsystem != null) {
-                // Disabled for manual dashboard tuning.
-                // anglerSubsystem.setDefaultCommand(new DefaultAnglerControl(anglerSubsystem, controllerSubsystem));
-                // shooterSubsystem.setDefaultCommand(new DefaultShooterControl(shooterSubsystem, controllerSubsystem));
-                // turretSubsystem.setDefaultCommand(new DefaultTurretControl(turretSubsystem, controllerSubsystem));
+                anglerSubsystem.setDefaultCommand(new DefaultAnglerControl(anglerSubsystem, controllerSubsystem));
+                shooterSubsystem.setDefaultCommand(new DefaultShooterControl(shooterSubsystem, controllerSubsystem));
+                turretSubsystem.setDefaultCommand(new DefaultTurretControl(turretSubsystem, controllerSubsystem));
                 hopperSubsystem.setDefaultCommand(new DefaultSpinHopper(hopperSubsystem, controllerSubsystem));
                 feederSubsystem.setDefaultCommand(new DefaultSpinFeeder(feederSubsystem, controllerSubsystem));
             }
@@ -369,38 +364,16 @@ public class RobotContainer {
                                         "Intake/Stop",
                                         new InstantCommand(intakeSubsystem::stopMotors));
 
-                        SmartDashboard.putNumber(DASHBOARD_ANGLER_TARGET_ROTATIONS_KEY, Constants.ANGLER_HOME_ROTATIONS);
-
-                        SmartDashboard.putNumber(DASHBOARD_ANGLER_TARGET_ANGLE_KEY, 0.0);
-                        SmartDashboard.putNumber(DASHBOARD_TURRET_TARGET_ANGLE_KEY, Constants.TURRET_HOME_ANGLE);
-                        SmartDashboard.putNumber(DASHBOARD_SHOOTER_TARGET_RPM_KEY, Constants.SHOOTER_SPEED);
+                        SmartDashboard.putNumber(RunDashboardShotTest.ANGLER_TARGET_POSITION_KEY, 0.0);
+                        SmartDashboard.putNumber(RunDashboardShotTest.TURRET_TARGET_POSITION_KEY, Constants.TURRET_HOME_ANGLE);
+                        SmartDashboard.putNumber(RunDashboardShotTest.SHOOTER_TARGET_RPM_KEY, Constants.SHOOTER_SPEED);
 
                         SmartDashboard.putData("RunHoppperAndFeeder",
                                         new RunHopperAndFeeder(hopperSubsystem, feederSubsystem));
 
                         SmartDashboard.putData(
-                                        "angler/Set Position",
-                                        new InstantCommand(() -> anglerSubsystem.setPosition(
-                                                        SmartDashboard.getNumber(DASHBOARD_ANGLER_TARGET_ROTATIONS_KEY, 0.0))));
-
-                        SmartDashboard.putData(
-                                        "angler/Set Angle",
-                                        new InstantCommand(() -> anglerSubsystem.setAngle(
-                                                        SmartDashboard.getNumber(DASHBOARD_ANGLER_TARGET_ANGLE_KEY, 0.0))));
-
-                        SmartDashboard.putData(
-                                        "turret/Set Angle",
-                                        new InstantCommand(() -> turretSubsystem.setAngle(
-                                                        SmartDashboard.getNumber(DASHBOARD_TURRET_TARGET_ANGLE_KEY, Constants.TURRET_HOME_ANGLE))));
-
-                        SmartDashboard.putData(
-                                        "shooter/Set RPM",
-                                        new InstantCommand(() -> shooterSubsystem.setPidVelocity(
-                                                        SmartDashboard.getNumber(DASHBOARD_SHOOTER_TARGET_RPM_KEY, 0.0))));
-
-                        SmartDashboard.putData(
-                                        "shooter/Stop",
-                                        new InstantCommand(shooterSubsystem::stopMotors));
+                                        "test/Run Dashboard Shot Test (30s)",
+                                        new RunDashboardShotTest(anglerSubsystem, turretSubsystem, shooterSubsystem));
 
                         SmartDashboard.putData(
                                         "angler/Go Home",

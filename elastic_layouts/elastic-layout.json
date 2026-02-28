@@ -1,0 +1,983 @@
+{
+  "version": 1.0,
+  "grid_size": 128,
+  "tabs": [
+    {
+      "name": "Dashboard",
+      "grid_layout": {
+        "layouts": [
+          {
+            "title": "Shooting State",
+            "x": 512.0,
+            "y": 384.0,
+            "width": 256.0,
+            "height": 256.0,
+            "type": "List Layout",
+            "properties": {
+              "label_position": "TOP"
+            },
+            "children": [
+              {
+                "title": "",
+                "x": 1024.0,
+                "y": 256.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "/AdvantageKit/RealOutputs/shootingState/",
+                  "period": 0.06,
+                  "data_type": "string",
+                  "show_submit_button": false
+                }
+              }
+            ]
+          },
+          {
+            "title": "Intake Deployed",
+            "x": 256.0,
+            "y": 384.0,
+            "width": 256.0,
+            "height": 256.0,
+            "type": "List Layout",
+            "properties": {
+              "label_position": "TOP"
+            },
+            "children": [
+              {
+                "title": "Deployment Switch Pressed",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Boolean Box",
+                "properties": {
+                  "topic": "/AdvantageKit/LoggableInputs/IntakeSubsystem/DeploymentSwitch/pressed",
+                  "period": 0.06,
+                  "data_type": "boolean",
+                  "true_color": 4283215696,
+                  "false_color": 4294198070,
+                  "true_icon": "None",
+                  "false_icon": "None"
+                }
+              }
+            ]
+          }
+        ],
+        "containers": [
+          {
+            "title": "Alliance Color",
+            "x": 0.0,
+            "y": 384.0,
+            "width": 256.0,
+            "height": 256.0,
+            "type": "Boolean Box",
+            "properties": {
+              "topic": "/FMSInfo/IsRedAlliance",
+              "period": 0.06,
+              "data_type": "boolean",
+              "true_color": 4294901760,
+              "false_color": 4278190591,
+              "true_icon": "None",
+              "false_icon": "None"
+            }
+          },
+          {
+            "title": "Field",
+            "x": 0.0,
+            "y": 0.0,
+            "width": 768.0,
+            "height": 384.0,
+            "type": "Field",
+            "properties": {
+              "topic": "/SmartDashboard/Field",
+              "period": 0.06,
+              "field_game": "Rebuilt",
+              "robot_width": 0.85,
+              "robot_length": 0.85,
+              "show_other_objects": true,
+              "show_trajectories": true,
+              "field_rotation": 0.0,
+              "robot_color": 4294198070,
+              "trajectory_color": 4294967295,
+              "show_robot_outside_widget": true
+            }
+          },
+          {
+            "title": "Auto Chooser",
+            "x": 1024.0,
+            "y": 512.0,
+            "width": 256.0,
+            "height": 128.0,
+            "type": "ComboBox Chooser",
+            "properties": {
+              "topic": "/SmartDashboard/Action Chooser",
+              "period": 0.06,
+              "sort_options": false
+            }
+          },
+          {
+            "title": "DriverCam",
+            "x": 768.0,
+            "y": 0.0,
+            "width": 512.0,
+            "height": 384.0,
+            "type": "Camera Stream",
+            "properties": {
+              "topic": "/CameraPublisher/DriverCam",
+              "period": 0.06,
+              "rotation_turns": 0
+            }
+          },
+          {
+            "title": "Location Chooser",
+            "x": 768.0,
+            "y": 512.0,
+            "width": 256.0,
+            "height": 128.0,
+            "type": "ComboBox Chooser",
+            "properties": {
+              "topic": "/SmartDashboard/Location Chooser",
+              "period": 0.06,
+              "sort_options": false
+            }
+          },
+          {
+            "title": "Selected Action",
+            "x": 768.0,
+            "y": 384.0,
+            "width": 512.0,
+            "height": 128.0,
+            "type": "Text Display",
+            "properties": {
+              "topic": "/SmartDashboard/Selected Action",
+              "period": 0.06,
+              "data_type": "string",
+              "show_submit_button": false
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "Diags",
+      "grid_layout": {
+        "layouts": [
+          {
+            "title": "D",
+            "x": 0.0,
+            "y": 0.0,
+            "width": 256.0,
+            "height": 640.0,
+            "type": "List Layout",
+            "properties": {
+              "label_position": "TOP"
+            },
+            "children": []
+          },
+          {
+            "title": "I",
+            "x": 256.0,
+            "y": 0.0,
+            "width": 256.0,
+            "height": 640.0,
+            "type": "List Layout",
+            "properties": {
+              "label_position": "TOP"
+            },
+            "children": []
+          },
+          {
+            "title": "A",
+            "x": 512.0,
+            "y": 0.0,
+            "width": 256.0,
+            "height": 640.0,
+            "type": "List Layout",
+            "properties": {
+              "label_position": "TOP"
+            },
+            "children": []
+          },
+          {
+            "title": "G",
+            "x": 768.0,
+            "y": 0.0,
+            "width": 256.0,
+            "height": 640.0,
+            "type": "List Layout",
+            "properties": {
+              "label_position": "TOP"
+            },
+            "children": []
+          },
+          {
+            "title": "S",
+            "x": 1024.0,
+            "y": 0.0,
+            "width": 256.0,
+            "height": 640.0,
+            "type": "List Layout",
+            "properties": {
+              "label_position": "TOP"
+            },
+            "children": []
+          }
+        ],
+        "containers": []
+      }
+    },
+    {
+      "name": "Debug",
+      "grid_layout": {
+        "layouts": [
+          {
+            "title": "Climber",
+            "x": 0.0,
+            "y": 384.0,
+            "width": 256.0,
+            "height": 256.0,
+            "type": "List Layout",
+            "properties": {
+              "label_position": "TOP"
+            },
+            "children": [
+              {
+                "title": "Climber Up",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 256.0,
+                "height": 128.0,
+                "type": "Command",
+                "properties": {
+                  "topic": "/SmartDashboard/Climber Up",
+                  "period": 0.06,
+                  "show_type": false,
+                  "maximize_button_space": true
+                }
+              },
+              {
+                "title": "Climber Down",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 256.0,
+                "height": 128.0,
+                "type": "Command",
+                "properties": {
+                  "topic": "/SmartDashboard/Climber Down",
+                  "period": 0.06,
+                  "show_type": false,
+                  "maximize_button_space": true
+                }
+              }
+            ]
+          },
+          {
+            "title": "Intake",
+            "x": 0.0,
+            "y": 0.0,
+            "width": 256.0,
+            "height": 384.0,
+            "type": "List Layout",
+            "properties": {
+              "label_position": "TOP"
+            },
+            "children": [
+              {
+                "title": "Spin Backward",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 256.0,
+                "height": 128.0,
+                "type": "Command",
+                "properties": {
+                  "topic": "/SmartDashboard/Intake/Spin Backward",
+                  "period": 0.06,
+                  "show_type": false,
+                  "maximize_button_space": true
+                }
+              },
+              {
+                "title": "Spin Forward",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 256.0,
+                "height": 128.0,
+                "type": "Command",
+                "properties": {
+                  "topic": "/SmartDashboard/Intake/Spin Forward",
+                  "period": 0.06,
+                  "show_type": false,
+                  "maximize_button_space": true
+                }
+              },
+              {
+                "title": "Stop",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 256.0,
+                "height": 128.0,
+                "type": "Command",
+                "properties": {
+                  "topic": "/SmartDashboard/Intake/Stop",
+                  "period": 0.06,
+                  "show_type": false,
+                  "maximize_button_space": true
+                }
+              }
+            ]
+          },
+          {
+            "title": "Shooter",
+            "x": 1024.0,
+            "y": 0.0,
+            "width": 256.0,
+            "height": 640.0,
+            "type": "List Layout",
+            "properties": {
+              "label_position": "TOP"
+            },
+            "children": [
+              {
+                "title": "Spin Shooter",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 256.0,
+                "height": 128.0,
+                "type": "Command",
+                "properties": {
+                  "topic": "/SmartDashboard/Spin Shooter",
+                  "period": 0.06,
+                  "show_type": false,
+                  "maximize_button_space": true
+                }
+              },
+              {
+                "title": "Shooting State: Fixed",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 256.0,
+                "height": 128.0,
+                "type": "Command",
+                "properties": {
+                  "topic": "/SmartDashboard/Shooting State: Fixed",
+                  "period": 0.06,
+                  "show_type": false,
+                  "maximize_button_space": true
+                }
+              },
+              {
+                "title": "Shooting State: Fixed 2",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 256.0,
+                "height": 128.0,
+                "type": "Command",
+                "properties": {
+                  "topic": "/SmartDashboard/Shooting State: Fixed 2",
+                  "period": 0.06,
+                  "show_type": false,
+                  "maximize_button_space": true
+                }
+              },
+              {
+                "title": "Shooting State: Into Hub",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 256.0,
+                "height": 128.0,
+                "type": "Command",
+                "properties": {
+                  "topic": "/SmartDashboard/Shooting State: Into Hub",
+                  "period": 0.06,
+                  "show_type": false,
+                  "maximize_button_space": true
+                }
+              },
+              {
+                "title": "Shooting State: Shuttling",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 256.0,
+                "height": 128.0,
+                "type": "Command",
+                "properties": {
+                  "topic": "/SmartDashboard/Shooting State: Shuttling",
+                  "period": 0.06,
+                  "show_type": false,
+                  "maximize_button_space": true
+                }
+              },
+              {
+                "title": "Shooting State: Stopped",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 256.0,
+                "height": 128.0,
+                "type": "Command",
+                "properties": {
+                  "topic": "/SmartDashboard/Shooting State: Stopped",
+                  "period": 0.06,
+                  "show_type": false,
+                  "maximize_button_space": true
+                }
+              }
+            ]
+          },
+          {
+            "title": "Angler",
+            "x": 768.0,
+            "y": 0.0,
+            "width": 256.0,
+            "height": 640.0,
+            "type": "List Layout",
+            "properties": {
+              "label_position": "TOP"
+            },
+            "children": [
+              {
+                "title": "Go High",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 256.0,
+                "height": 128.0,
+                "type": "Command",
+                "properties": {
+                  "topic": "/SmartDashboard/angler/Go High",
+                  "period": 0.06,
+                  "show_type": false,
+                  "maximize_button_space": true
+                }
+              },
+              {
+                "title": "Go Home",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 256.0,
+                "height": 128.0,
+                "type": "Command",
+                "properties": {
+                  "topic": "/SmartDashboard/angler/Go Home",
+                  "period": 0.06,
+                  "show_type": false,
+                  "maximize_button_space": true
+                }
+              },
+              {
+                "title": "Go Low",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 256.0,
+                "height": 128.0,
+                "type": "Command",
+                "properties": {
+                  "topic": "/SmartDashboard/angler/Go Low",
+                  "period": 0.06,
+                  "show_type": false,
+                  "maximize_button_space": true
+                }
+              },
+              {
+                "title": "Home Rev (Reset)",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 256.0,
+                "height": 128.0,
+                "type": "Command",
+                "properties": {
+                  "topic": "/SmartDashboard/angler/Home Rev (Reset)",
+                  "period": 0.06,
+                  "show_type": false,
+                  "maximize_button_space": true
+                }
+              },
+              {
+                "title": "Reset Encoder",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 256.0,
+                "height": 128.0,
+                "type": "Command",
+                "properties": {
+                  "topic": "/SmartDashboard/angler/Reset Encoder",
+                  "period": 0.06,
+                  "show_type": false,
+                  "maximize_button_space": true
+                }
+              },
+              {
+                "title": "Run To Fwd Limit",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 256.0,
+                "height": 128.0,
+                "type": "Command",
+                "properties": {
+                  "topic": "/SmartDashboard/angler/Run To Fwd Limit",
+                  "period": 0.06,
+                  "show_type": false,
+                  "maximize_button_space": true
+                }
+              },
+              {
+                "title": "Run To Rev Limit",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 256.0,
+                "height": 128.0,
+                "type": "Command",
+                "properties": {
+                  "topic": "/SmartDashboard/angler/Run To Rev Limit",
+                  "period": 0.06,
+                  "show_type": false,
+                  "maximize_button_space": true
+                }
+              },
+              {
+                "title": "Set Angle",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 256.0,
+                "height": 128.0,
+                "type": "Command",
+                "properties": {
+                  "topic": "/SmartDashboard/angler/Set Angle",
+                  "period": 0.06,
+                  "show_type": false,
+                  "maximize_button_space": true
+                }
+              },
+              {
+                "title": "Set Position",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 256.0,
+                "height": 128.0,
+                "type": "Command",
+                "properties": {
+                  "topic": "/SmartDashboard/angler/Set Position",
+                  "period": 0.06,
+                  "show_type": false,
+                  "maximize_button_space": true
+                }
+              },
+              {
+                "title": "TargetAngle",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "/SmartDashboard/angler/TargetAngle",
+                  "period": 0.06,
+                  "data_type": "double",
+                  "show_submit_button": false
+                }
+              },
+              {
+                "title": "TargetRotations",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "/SmartDashboard/angler/TargetRotations",
+                  "period": 0.06,
+                  "data_type": "double",
+                  "show_submit_button": false
+                }
+              }
+            ]
+          },
+          {
+            "title": "Intake Deployment",
+            "x": 256.0,
+            "y": 0.0,
+            "width": 256.0,
+            "height": 384.0,
+            "type": "List Layout",
+            "properties": {
+              "label_position": "TOP"
+            },
+            "children": [
+              {
+                "title": "Deployment State: UP",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 256.0,
+                "height": 128.0,
+                "type": "Command",
+                "properties": {
+                  "topic": "/SmartDashboard/Deployment State: UP",
+                  "period": 0.06,
+                  "show_type": false,
+                  "maximize_button_space": true
+                }
+              },
+              {
+                "title": "Deployment State: DOWN",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 256.0,
+                "height": 128.0,
+                "type": "Command",
+                "properties": {
+                  "topic": "/SmartDashboard/Deployment State: DOWN",
+                  "period": 0.06,
+                  "show_type": false,
+                  "maximize_button_space": true
+                }
+              },
+              {
+                "title": "Deployment State: STOPPED",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 256.0,
+                "height": 128.0,
+                "type": "Command",
+                "properties": {
+                  "topic": "/SmartDashboard/Deployment State: STOPPED",
+                  "period": 0.06,
+                  "show_type": false,
+                  "maximize_button_space": true
+                }
+              }
+            ]
+          }
+        ],
+        "containers": [
+          {
+            "title": "Feeder",
+            "x": 256.0,
+            "y": 384.0,
+            "width": 256.0,
+            "height": 128.0,
+            "type": "Command",
+            "properties": {
+              "topic": "/SmartDashboard/Spin Feeder",
+              "period": 0.06,
+              "show_type": false,
+              "maximize_button_space": true
+            }
+          },
+          {
+            "title": "Drive Command",
+            "x": 512.0,
+            "y": 512.0,
+            "width": 256.0,
+            "height": 128.0,
+            "type": "Command",
+            "properties": {
+              "topic": "/SmartDashboard/Drive Command",
+              "period": 0.06,
+              "show_type": false,
+              "maximize_button_space": true
+            }
+          },
+          {
+            "title": "Hopper",
+            "x": 256.0,
+            "y": 512.0,
+            "width": 256.0,
+            "height": 128.0,
+            "type": "Command",
+            "properties": {
+              "topic": "/SmartDashboard/Start Hopper",
+              "period": 0.06,
+              "show_type": false,
+              "maximize_button_space": true
+            }
+          },
+          {
+            "title": "Location Chooser",
+            "x": 512.0,
+            "y": 384.0,
+            "width": 256.0,
+            "height": 128.0,
+            "type": "ComboBox Chooser",
+            "properties": {
+              "topic": "/SmartDashboard/Location Chooser",
+              "period": 0.06,
+              "sort_options": false
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "Tab 4",
+      "grid_layout": {
+        "layouts": [
+          {
+            "title": "angler",
+            "x": 640.0,
+            "y": 256.0,
+            "width": 256.0,
+            "height": 256.0,
+            "type": "List Layout",
+            "properties": {
+              "label_position": "TOP"
+            },
+            "children": [
+              {
+                "title": "Go High",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 256.0,
+                "height": 128.0,
+                "type": "Command",
+                "properties": {
+                  "topic": "/SmartDashboard/angler/Go High",
+                  "period": 0.06,
+                  "show_type": true,
+                  "maximize_button_space": false
+                }
+              },
+              {
+                "title": "Go Home",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 256.0,
+                "height": 128.0,
+                "type": "Command",
+                "properties": {
+                  "topic": "/SmartDashboard/angler/Go Home",
+                  "period": 0.06,
+                  "show_type": true,
+                  "maximize_button_space": false
+                }
+              },
+              {
+                "title": "Go Low",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 256.0,
+                "height": 128.0,
+                "type": "Command",
+                "properties": {
+                  "topic": "/SmartDashboard/angler/Go Low",
+                  "period": 0.06,
+                  "show_type": true,
+                  "maximize_button_space": false
+                }
+              },
+              {
+                "title": "Home Rev (Reset)",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 256.0,
+                "height": 128.0,
+                "type": "Command",
+                "properties": {
+                  "topic": "/SmartDashboard/angler/Home Rev (Reset)",
+                  "period": 0.06,
+                  "show_type": true,
+                  "maximize_button_space": false
+                }
+              },
+              {
+                "title": "Reset Encoder",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 256.0,
+                "height": 128.0,
+                "type": "Command",
+                "properties": {
+                  "topic": "/SmartDashboard/angler/Reset Encoder",
+                  "period": 0.06,
+                  "show_type": true,
+                  "maximize_button_space": false
+                }
+              },
+              {
+                "title": "Run To Fwd Limit",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 256.0,
+                "height": 128.0,
+                "type": "Command",
+                "properties": {
+                  "topic": "/SmartDashboard/angler/Run To Fwd Limit",
+                  "period": 0.06,
+                  "show_type": true,
+                  "maximize_button_space": false
+                }
+              },
+              {
+                "title": "Run To Rev Limit",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 256.0,
+                "height": 128.0,
+                "type": "Command",
+                "properties": {
+                  "topic": "/SmartDashboard/angler/Run To Rev Limit",
+                  "period": 0.06,
+                  "show_type": true,
+                  "maximize_button_space": false
+                }
+              },
+              {
+                "title": "TargetPosition",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "/SmartDashboard/angler/TargetPosition",
+                  "period": 0.06,
+                  "data_type": "double",
+                  "show_submit_button": false
+                }
+              }
+            ]
+          },
+          {
+            "title": "turret",
+            "x": 896.0,
+            "y": 256.0,
+            "width": 256.0,
+            "height": 256.0,
+            "type": "List Layout",
+            "properties": {
+              "label_position": "TOP"
+            },
+            "children": [
+              {
+                "title": "Run Turret to Fwd Limit",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 256.0,
+                "height": 128.0,
+                "type": "Command",
+                "properties": {
+                  "topic": "/SmartDashboard/turret/Run Turret to Fwd Limit",
+                  "period": 0.06,
+                  "show_type": true,
+                  "maximize_button_space": false
+                }
+              },
+              {
+                "title": "Run Turret to Rev Limit",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 256.0,
+                "height": 128.0,
+                "type": "Command",
+                "properties": {
+                  "topic": "/SmartDashboard/turret/Run Turret to Rev Limit",
+                  "period": 0.06,
+                  "show_type": true,
+                  "maximize_button_space": false
+                }
+              },
+              {
+                "title": "Turret Go 0",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 256.0,
+                "height": 128.0,
+                "type": "Command",
+                "properties": {
+                  "topic": "/SmartDashboard/turret/Turret Go 0",
+                  "period": 0.06,
+                  "show_type": true,
+                  "maximize_button_space": false
+                }
+              },
+              {
+                "title": "Turret Go 45",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 256.0,
+                "height": 128.0,
+                "type": "Command",
+                "properties": {
+                  "topic": "/SmartDashboard/turret/Turret Go 45",
+                  "period": 0.06,
+                  "show_type": true,
+                  "maximize_button_space": false
+                }
+              },
+              {
+                "title": "Turret Go 75",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 256.0,
+                "height": 128.0,
+                "type": "Command",
+                "properties": {
+                  "topic": "/SmartDashboard/turret/Turret Go 75",
+                  "period": 0.06,
+                  "show_type": true,
+                  "maximize_button_space": false
+                }
+              },
+              {
+                "title": "TargetPosition",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "/SmartDashboard/turret/TargetPosition",
+                  "period": 0.06,
+                  "data_type": "double",
+                  "show_submit_button": false
+                }
+              }
+            ]
+          }
+        ],
+        "containers": [
+          {
+            "title": "Run Dashboard Shot Test (30s)",
+            "x": 640.0,
+            "y": 128.0,
+            "width": 256.0,
+            "height": 128.0,
+            "type": "Command",
+            "properties": {
+              "topic": "/SmartDashboard/test/Run Dashboard Shot Test (30s)",
+              "period": 0.06,
+              "show_type": true,
+              "maximize_button_space": false
+            }
+          },
+          {
+            "title": "RunHoppperAndFeeder",
+            "x": 896.0,
+            "y": 128.0,
+            "width": 256.0,
+            "height": 128.0,
+            "type": "Command",
+            "properties": {
+              "topic": "/SmartDashboard/RunHoppperAndFeeder",
+              "period": 0.06,
+              "show_type": true,
+              "maximize_button_space": false
+            }
+          },
+          {
+            "title": "TargetRPM",
+            "x": 1152.0,
+            "y": 256.0,
+            "width": 128.0,
+            "height": 128.0,
+            "type": "Text Display",
+            "properties": {
+              "topic": "/SmartDashboard/shooter/TargetRPM",
+              "period": 0.06,
+              "data_type": "double",
+              "show_submit_button": false
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

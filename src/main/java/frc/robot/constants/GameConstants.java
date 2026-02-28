@@ -49,7 +49,7 @@ public class GameConstants {
     public static final double HOPPER_SPEED = 0.1;//Want to increase this later
     public static final double CLIMBER_SPEED_UP = 0.1;
     public static final double CLIMBER_SPEED_DOWN = -0.1;
-    public static final double FEEDER_SPEED = 0.5;//Might make veolcity PID
+    public static final double FEEDER_SPEED = 1.0;//Might make veolcity PID
     public static final double MAX_SPEED = Units.feetToMeters(14.5);
     public static final double SHOOTER_SPEED = 100;
     public static final double INTAKE_DEPLOYER_SPEED = 0.25;
@@ -114,7 +114,7 @@ public class GameConstants {
     public static final double ANGLER_ANGLE_HIGH = 45; //Highest angle position of Angler
     public static final double ANGLER_FIXED_ROTATIONS = 0.1; //Fixed encoder position of Angler in Fixed ShootState
     public static final double ANGLER_FIXED_ANGLE = 10; //Fixed encoder position of Angler in Fixed ShootState
-    public static final double ANGLER_LIMIT_SPEED = 0.2;
+    public static final double ANGLER_LIMIT_SPEED = 0.1;
 
     
  // turret (pan angle) PID

@@ -91,23 +91,17 @@ public class AutoChooser {
     /** Put mappings here.
      *  @see AutoCommand */
     private void populateMap() {
+        // Commands where alliance color is irrelevant.
         commandMap.put(new AutoEvent(AutoAction.DO_NOTHING, FieldLocation.LEFT),
             new DoNothingCommand());
         commandMap.put(new AutoEvent(AutoAction.DO_NOTHING, FieldLocation.RIGHT), 
             new DoNothingCommand());
         commandMap.put(new AutoEvent(AutoAction.DO_NOTHING, FieldLocation.MIDDLE),
             new DoNothingCommand());
-
-        Optional<DriverStation.Alliance> alliance = DriverStation.getAlliance();
-        if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Blue) {
-            //blue
-            commandMap.put(new AutoEvent(AutoAction.COMPLETE, FieldLocation.LEFT),
-                new BlueDepot(drivetrain, auto, shooter, shootstate, climber, hopper, feeder));
-        }  
-        
-        if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red) {
-            //red
-        }
+        // Commands where alliance color is relevant.
+        commandMap.put(new AutoEvent(AutoAction.COMPLETE, FieldLocation.LEFT,
+            Alliance.Blue),
+            new BlueDepot(drivetrain, auto, shooter, shootstate, climber, hopper, feeder));
     }
 
     public AutoEvent getSelectedEvent() {

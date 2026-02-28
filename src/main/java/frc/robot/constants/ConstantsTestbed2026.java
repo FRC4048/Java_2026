@@ -24,8 +24,6 @@ public class ConstantsTestbed2026 extends ConstantsPushbot2026 {
   // public static final int INTAKE_MOTOR_ID = 50;
   // public static final int ANGLER_MOTOR_ID = 40;
 
-    public static final int INTAKE_MOTOR_ID = 40;
-    public static final int INTAKE_DEPLOYMENT_ID = 50;
 
     public static final boolean TESTBED = true;
 }

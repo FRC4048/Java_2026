@@ -35,7 +35,7 @@ public class IntakeDeployerSubsystem extends SubsystemBase {
 
   public IntakeDeployerSubsystem(SparkMaxIo io) {
     this.io = io;
-    setDefaultCommand(new RunDeployer(this));
+//    setDefaultCommand(new RunDeployer(this));
   }
 
   public void setSpeed(double speed) {

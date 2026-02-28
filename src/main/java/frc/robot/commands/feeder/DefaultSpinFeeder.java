@@ -2,16 +2,19 @@ package frc.robot.commands.feeder;
 
 import edu.wpi.first.wpilibj.Timer;
 import frc.robot.constants.Constants;
+import frc.robot.subsystems.ControllerSubsystem;
 import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.utils.logging.commands.LoggableCommand;
 
-public class SpinFeeder extends LoggableCommand {
-    
+public class DefaultSpinFeeder extends LoggableCommand {
+
     private final FeederSubsystem subsystem;
     private final Timer timer;
-  
-    public SpinFeeder(FeederSubsystem subsystem) {
+    private final ControllerSubsystem controllerSubsystem;
+
+    public DefaultSpinFeeder(FeederSubsystem subsystem, ControllerSubsystem controllerSubsystem) {
         this.subsystem = subsystem;
+        this.controllerSubsystem = controllerSubsystem;
         timer = new Timer();
         addRequirements(subsystem);
     }
@@ -23,16 +26,16 @@ public class SpinFeeder extends LoggableCommand {
 
     @Override
     public void execute() {
-       subsystem.setSpeed(Constants.FEEDER_SPEED);
+        if (controllerSubsystem.shouldFeederSpin()) {
+            subsystem.setSpeed(Constants.FEEDER_SPEED);
+        } else {
+            subsystem.stopMotors();
+        }
     }
 
     @Override
     public boolean isFinished() {
-        if (timer.hasElapsed(Constants.FEEDER_TIMEOUT)) {
-            return true;
-        } else {
-            return false;
-        }
+        return false;
     }
 
     @Override

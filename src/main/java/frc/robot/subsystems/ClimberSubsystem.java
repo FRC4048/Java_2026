@@ -72,9 +72,5 @@ public class ClimberSubsystem extends SubsystemBase {
     public boolean forwardSwitchPressed() {
         return io.isFwdSwitchPressed();
     }
-
-    public void resetEncoderToZero() {
-       io.resetEncoder();
-    }
  
 }

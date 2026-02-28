@@ -108,6 +108,7 @@ public class Robot extends LoggedRobot {
         }
 
         Logger.recordOutput("shootingState/", robotContainer.getShootingState().getShootState().toString());
+        Logger.recordOutput("deployment State", robotContainer.getDeploymentState());
 
         if (Constants.currentMode.equals(Constants.Mode.SIM)) {
             robotContainer.getRobotVisualizer().logMechanism();
@@ -133,6 +134,7 @@ public class Robot extends LoggedRobot {
     SmartDashboard.putString("Selected Action", 
       robotContainer.getAutoChooser().getCommandDescription());
     SmartDashboard.putString("Starting Location", location().toString());
+    
 
     // Gets the alliance color.
     if (DriverStation.isDSAttached() && allianceColor.isEmpty()) {

@@ -40,7 +40,4 @@ public class MockSparkMaxIo extends BaseIoImpl<MotorLoggableInputs> implements S
     @Override
     protected void updateInputs(MotorLoggableInputs inputs) {
     }
-
-    public void resetEncoder(){
-    }
 }

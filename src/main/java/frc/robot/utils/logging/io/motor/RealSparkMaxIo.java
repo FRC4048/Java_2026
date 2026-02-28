@@ -50,8 +50,4 @@ public class RealSparkMaxIo extends BaseIoImpl<MotorLoggableInputs> implements S
         inputs.fromHardware(motor);
   
     }
-
-    public void resetEncoder() {
-        motor.getEncoder().setPosition(0.0);
-    }
 }

@@ -14,6 +14,4 @@ public interface SparkMaxIo extends BaseIo {
 
     boolean isFwdSwitchPressed();
     boolean isRevSwitchPressed();
-
-    void resetEncoder();
 }

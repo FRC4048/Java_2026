@@ -26,9 +26,9 @@ import frc.robot.commands.intakeDeployment.InitialRunDeployment;
 import frc.robot.commands.intakeDeployment.RunDeployer;
 import frc.robot.commands.intakeDeployment.SetDeploymentState;
 import frc.robot.commands.parallels.RunHopperAndFeeder;
-import frc.robot.commands.parallels.ResetAll;
 import frc.robot.commands.sequences.IntakeDownSequence;
 import frc.robot.commands.sequences.IntakeUpSequence;
+import frc.robot.commands.sequences.ResetAll;
 import frc.robot.autochooser.AutoChooser;
 import frc.robot.commands.angler.AimAngler;
 import frc.robot.commands.angler.StowAngler;
@@ -428,7 +428,7 @@ public class RobotContainer {
                     new RunTurretToFwdLimit(turretSubsystem));
 
                         SmartDashboard.putData(
-                                        "intakedeployer/InitlizeDeployer",
+                                        "intakedeployer/InitializeDeployer",
                                         new InitialRunDeployment(intakeDeployer));
                         SmartDashboard.putData(
                                         "Spin Intake",
@@ -529,7 +529,8 @@ public class RobotContainer {
         return drivebase;
     }
 
-        public ShootingState getShootingState() {
-                return shootState;
-        }
+    public ShootingState getShootingState() {
+        return shootState;
+    }
+
 }

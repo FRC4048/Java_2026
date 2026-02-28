@@ -30,8 +30,8 @@ import frc.robot.commands.intakeDeployment.InitialRunDeployment;
 import frc.robot.commands.intakeDeployment.RunDeployer;
 import frc.robot.commands.intakeDeployment.SetDeploymentState;
 import frc.robot.commands.parallels.RunHopperAndFeeder;
-import frc.robot.commands.sequences.IntakeDownSequence;
-import frc.robot.commands.sequences.IntakeUpSequence;
+import frc.robot.commands.sequences.IntakeSequence;
+import frc.robot.commands.sequences.IntakeStoppedSequence;
 import frc.robot.autochooser.AutoChooser;
 import frc.robot.commands.angler.AimAngler;
 import frc.robot.commands.angler.DefaultAnglerControl;
@@ -279,8 +279,8 @@ public class RobotContainer {
         }
 
         private void configureBindings() {
-                controller.a().onTrue(new IntakeUpSequence(intakeDeployer, intakeSubsystem));
-                controller.b().onTrue(new IntakeDownSequence(intakeDeployer, intakeSubsystem));
+                controller.a().onTrue(new IntakeSequence(intakeDeployer, intakeSubsystem));
+                controller.b().onTrue(new IntakeStoppedSequence(intakeDeployer, intakeSubsystem));
                 controller.y().onTrue(new ClimberUp(climberSubsystem));
                 controller.x().onTrue(new ClimberDown(climberSubsystem));
                 controller.povUp().onTrue(new SetShootingState(shootState, ShootState.FIXED));

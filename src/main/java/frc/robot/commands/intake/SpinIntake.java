@@ -22,7 +22,7 @@ public class SpinIntake extends LoggableCommand {
 
     @Override
     public void execute() {
-        if (intakeDeployer.getDeploymentState() == DeploymentState.UP) {
+        if (intakeDeployer.getDeploymentState() == DeploymentState.DOWN) {
             subsystem.setSpeed(Constants.INTAKE_SPEED);
         }else{
             subsystem.stopMotors();

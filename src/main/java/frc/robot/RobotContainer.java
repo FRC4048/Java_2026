@@ -419,6 +419,9 @@ public class RobotContainer {
                                         "angler/Home Rev (Reset)",
                                         new StowAngler(anglerSubsystem));
 
+                        SmartDashboard.putData("stop Intake",
+                                        new StopIntake(intakeSubsystem));   
+
                         SmartDashboard.putData(
                                         "reset All",
                                         new ResetAll(anglerSubsystem, climberSubsystem, feederSubsystem, 

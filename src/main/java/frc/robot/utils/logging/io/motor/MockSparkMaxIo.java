@@ -4,7 +4,6 @@
 
 package frc.robot.utils.logging.io.motor;
 
-import com.revrobotics.spark.SparkMax;
 import frc.robot.utils.logging.input.MotorLoggableInputs;
 import frc.robot.utils.logging.io.BaseIoImpl;
 
@@ -40,5 +39,8 @@ public class MockSparkMaxIo extends BaseIoImpl<MotorLoggableInputs> implements S
 
     @Override
     protected void updateInputs(MotorLoggableInputs inputs) {
+    }
+
+    public void resetEncoder(){
     }
 }

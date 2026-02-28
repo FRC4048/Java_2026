@@ -1,7 +1,6 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.PersistMode;
-import com.revrobotics.RelativeEncoder;
 import com.revrobotics.ResetMode;
 import com.revrobotics.spark.SparkLowLevel;
 import com.revrobotics.spark.SparkMax;
@@ -22,11 +21,9 @@ public class ClimberSubsystem extends SubsystemBase {
     
     public static final String LOGGING_NAME = "ClimberSubsystem";
     private final SparkMaxIo io;
-    private final RelativeEncoder encoder;
 
-    public ClimberSubsystem(SparkMaxIo io, RelativeEncoder encoder) {
+    public ClimberSubsystem(SparkMaxIo io) {
        this.io = io;
-       this.encoder = encoder;
     }
 
     public void setSpeed(double speed) {
@@ -77,7 +74,7 @@ public class ClimberSubsystem extends SubsystemBase {
     }
 
     public void resetEncoderToZero() {
-     encoder.setPosition(0.0);
+       io.resetEncoder();
     }
  
 }

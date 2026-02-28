@@ -4,13 +4,11 @@ import frc.robot.commands.angler.ResetAnglerEncoder;
 import frc.robot.commands.angler.StowAngler;
 import frc.robot.commands.climber.ClimberDown;
 import frc.robot.commands.climber.ResetClimberEncoder;
-import frc.robot.commands.intakeDeployment.InitialRunDeployment;
-import frc.robot.commands.intakeDeployment.SetDeploymentState;
+import frc.robot.commands.sequences.IntakeUpSequence;
 import frc.robot.commands.shooter.SetShootingState;
 import frc.robot.commands.shooter.StopShooter;
 import frc.robot.commands.turret.ResetTurretEncoder;
 import frc.robot.commands.turret.RunTurretToFwdLimit;
-import frc.robot.constants.enums.DeploymentState;
 import frc.robot.constants.enums.ShootingState;
 import frc.robot.constants.enums.ShootingState.ShootState;
 import frc.robot.subsystems.AnglerSubsystem;
@@ -24,9 +22,9 @@ import frc.robot.subsystems.TurretSubsystem;
 import frc.robot.utils.logging.commands.LoggableParallelCommandGroup;
 import frc.robot.utils.logging.commands.LoggableSequentialCommandGroup;
 
-public class StopAll extends LoggableSequentialCommandGroup {
+public class ResetAll extends LoggableSequentialCommandGroup {
 
-  public StopAll(AnglerSubsystem anglerSubsystem, ClimberSubsystem climberSubsystem,
+  public ResetAll(AnglerSubsystem anglerSubsystem, ClimberSubsystem climberSubsystem,
       FeederSubsystem feederSubsystem, HopperSubsystem hopperSubsystem,
       IntakeDeployerSubsystem intakeDeployerSubsystem, IntakeSubsystem intakeSubsystem,
       ShooterSubsystem shooterSubsystem, TurretSubsystem turretSubsystem, ShootingState shootState) {
@@ -34,16 +32,15 @@ public class StopAll extends LoggableSequentialCommandGroup {
         new LoggableParallelCommandGroup(
             new StowAngler(anglerSubsystem),
             new ClimberDown(climberSubsystem),
-            new SetDeploymentState(intakeDeployerSubsystem, DeploymentState.UP),
+            new IntakeUpSequence(intakeDeployerSubsystem, intakeSubsystem),
             new SetShootingState(shootState, ShootState.STOPPED),
-            new StopShooter(shooterSubsystem),
+            new StopShooter(shooterSubsystem)),
             new LoggableSequentialCommandGroup(
-                new RunTurretToFwdLimit(turretSubsystem),
-                new InitialRunDeployment(intakeDeployerSubsystem)),
+                new RunTurretToFwdLimit(turretSubsystem)),
             new LoggableParallelCommandGroup(
                 new ResetAnglerEncoder(anglerSubsystem),
                 new ResetClimberEncoder(climberSubsystem),
-                new ResetTurretEncoder(turretSubsystem))));
+                new ResetTurretEncoder(turretSubsystem)));
   }
 
 }

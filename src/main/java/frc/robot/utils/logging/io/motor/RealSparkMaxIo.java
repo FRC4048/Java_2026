@@ -6,8 +6,6 @@ package frc.robot.utils.logging.io.motor;
 
 import com.revrobotics.spark.SparkMax;
 
-import frc.robot.Robot;
-import frc.robot.utils.diag.DiagSparkMaxEncoder;
 import frc.robot.utils.logging.input.MotorLoggableInputs;
 import frc.robot.utils.logging.io.BaseIoImpl;
 
@@ -50,5 +48,10 @@ public class RealSparkMaxIo extends BaseIoImpl<MotorLoggableInputs> implements S
     @Override
     protected void updateInputs(MotorLoggableInputs inputs) {
         inputs.fromHardware(motor);
+  
+    }
+
+    public void resetEncoder() {
+        motor.getEncoder().setPosition(0.0);
     }
 }

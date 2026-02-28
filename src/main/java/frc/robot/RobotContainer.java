@@ -26,7 +26,7 @@ import frc.robot.commands.intakeDeployment.InitialRunDeployment;
 import frc.robot.commands.intakeDeployment.RunDeployer;
 import frc.robot.commands.intakeDeployment.SetDeploymentState;
 import frc.robot.commands.parallels.RunHopperAndFeeder;
-import frc.robot.commands.parallels.StopAll;
+import frc.robot.commands.parallels.ResetAll;
 import frc.robot.commands.sequences.IntakeDownSequence;
 import frc.robot.commands.sequences.IntakeUpSequence;
 import frc.robot.autochooser.AutoChooser;
@@ -65,7 +65,6 @@ import frc.robot.apriltags.ApriltagReading;
 
 import java.io.File;
 
-import com.revrobotics.RelativeEncoder;
 
 import choreo.auto.AutoFactory;
 import choreo.auto.AutoRoutine;
@@ -92,9 +91,7 @@ public class RobotContainer {
         private final CommandXboxController controller =
             new CommandXboxController(Constants.XBOX_CONTROLLER_PORT);
         private final ClimberSubsystem climberSubsystem;
-        private final RelativeEncoder climberEncoder;
         private final AnglerSubsystem anglerSubsystem;
-        private final RelativeEncoder anglerEncoder;
         private final IntakeSubsystem intakeSubsystem;
         private final FeederSubsystem feederSubsystem;
         private final ApriltagSubsystem apriltagSubsystem;
@@ -102,7 +99,6 @@ public class RobotContainer {
         private RobotVisualizer robotVisualizer = null;
         private final HopperSubsystem hopperSubsystem;
         private final TurretSubsystem turretSubsystem;
-        private final RelativeEncoder turretEncoder;
         private final IntakeDeployerSubsystem intakeDeployer;
         private SwerveSubsystem drivebase = null;
         private GyroSubsystem gyroSubsystem = null;
@@ -137,7 +133,7 @@ public class RobotContainer {
 
 
 
-                                climberSubsystem = new ClimberSubsystem(ClimberSubsystem.createRealIo(), climberEncoder);
+                                climberSubsystem = new ClimberSubsystem(ClimberSubsystem.createRealIo());
                                 feederSubsystem = new FeederSubsystem(FeederSubsystem.createRealIo());
                                 shooterSubsystem = new ShooterSubsystem(ShooterSubsystem.createRealIo());
                                 RealGyroIo gyroIo = (RealGyroIo) GyroSubsystem.createRealIo();
@@ -156,7 +152,7 @@ public class RobotContainer {
                                 intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createMockIo(),
                                                 IntakeSubsystem.createMockDeploymentSwitch());
                                 hopperSubsystem = new HopperSubsystem(HopperSubsystem.createMockIo());
-                                climberSubsystem = new ClimberSubsystem(ClimberSubsystem.createMockIo(), climberEncoder);
+                                climberSubsystem = new ClimberSubsystem(ClimberSubsystem.createMockIo());
                                 feederSubsystem = new FeederSubsystem(FeederSubsystem.createMockIo());
                                 turretSubsystem = new TurretSubsystem(TurretSubsystem.createMockIo());
                                 shooterSubsystem = new ShooterSubsystem(ShooterSubsystem.createMockIo());
@@ -175,7 +171,7 @@ public class RobotContainer {
                                 intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createSimIo(robotVisualizer),
                                                 IntakeSubsystem.createSimDeploymentSwitch());
                                 hopperSubsystem = new HopperSubsystem(HopperSubsystem.createSimIo(robotVisualizer));
-                                climberSubsystem = new ClimberSubsystem(ClimberSubsystem.createSimIo(robotVisualizer), climberEncoder);
+                                climberSubsystem = new ClimberSubsystem(ClimberSubsystem.createSimIo(robotVisualizer));
                                 feederSubsystem = new FeederSubsystem(FeederSubsystem.createSimIo(robotVisualizer));
                                 turretSubsystem = new TurretSubsystem(TurretSubsystem.createSimIo(robotVisualizer));
                                 shooterSubsystem = new ShooterSubsystem(ShooterSubsystem.createSimIo(robotVisualizer));
@@ -283,7 +279,7 @@ public class RobotContainer {
                 controller.povLeft().onTrue(new SetShootingState(shootState, ShootState.SHUTTLING));
                 steerJoystick.trigger().whileTrue((new RunHopperAndFeeder(hopperSubsystem, feederSubsystem)));
                 driveJoystick.trigger().whileTrue((new SetShootingState(shootState, ShootState.STOPPED)));
-                controller.leftTrigger().onTrue((new StopAll(anglerSubsystem, climberSubsystem, feederSubsystem, 
+                controller.leftTrigger().onTrue((new ResetAll(anglerSubsystem, climberSubsystem, feederSubsystem, 
                 hopperSubsystem, intakeDeployer, intakeSubsystem, shooterSubsystem, turretSubsystem, shootState)));
 
                 

@@ -280,7 +280,7 @@ public class RobotContainer {
 
         private void configureBindings() {
                 controller.a().onTrue(new IntakeSequence(intakeDeployer, intakeSubsystem));
-                controller.b().onTrue(new IntakeStoppedSequence(intakeDeployer, intakeSubsystem));
+               // controller.b().onTrue(new IntakeStoppedSequence(intakeDeployer, intakeSubsystem));
                 controller.y().onTrue(new ClimberUp(climberSubsystem));
                 controller.x().onTrue(new ClimberDown(climberSubsystem));
                 controller.povUp().onTrue(new SetShootingState(shootState, ShootState.FIXED));
@@ -439,7 +439,7 @@ public class RobotContainer {
                                         new InitialRunDeployment(intakeDeployer));
                         SmartDashboard.putData(
                                         "Spin Intake",
-                                        new SpinIntake(intakeSubsystem));
+                                        new SpinIntake(intakeSubsystem, intakeDeployer));
                         SmartDashboard.putData(
                                         "Stop Intake",
                                         new StopIntake(intakeSubsystem));
@@ -541,5 +541,8 @@ public class RobotContainer {
 
         public ShootingState getShootingState() {
                 return shootState;
+        }
+        public IntakeDeployerSubsystem getDeployer(){
+                return intakeDeployer;
         }
 }

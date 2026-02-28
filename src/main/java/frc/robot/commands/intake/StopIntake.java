@@ -1,4 +1,5 @@
 package frc.robot.commands.intake;
+import frc.robot.constants.enums.DeploymentState;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.utils.logging.commands.LoggableCommand;
 
@@ -17,7 +18,6 @@ public class StopIntake extends LoggableCommand {
 
     @Override
     public void execute() {
-            subsystem.stopMotors();
         }
 
     @Override

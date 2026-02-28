@@ -12,7 +12,7 @@ public class DeployAndSpinIntake extends LoggableParallelCommandGroup{
 
         super(
             new InitialRunDeployment(deployer),
-            new SpinIntake(intakeSubsystem)
+            new SpinIntake(intakeSubsystem, deployer)
 
         );
     }

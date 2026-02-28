@@ -30,8 +30,6 @@ import frc.robot.commands.intakeDeployment.InitialRunDeployment;
 import frc.robot.commands.intakeDeployment.RunDeployer;
 import frc.robot.commands.intakeDeployment.SetDeploymentState;
 import frc.robot.commands.parallels.RunHopperAndFeeder;
-import frc.robot.commands.sequences.IntakeSequence;
-import frc.robot.commands.sequences.IntakeStoppedSequence;
 import frc.robot.autochooser.AutoChooser;
 import frc.robot.commands.angler.AimAngler;
 import frc.robot.commands.angler.DefaultAnglerControl;
@@ -279,7 +277,6 @@ public class RobotContainer {
         }
 
         private void configureBindings() {
-                intakeSubsystem.setDefaultCommand(new SpinIntake(intakeSubsystem, intakeDeployer));
                 controller.a().onTrue(new InitialRunDeployment(intakeDeployer));
                 controller.b().onTrue(new SetDeploymentState(intakeDeployer, DeploymentState.STOPPED));
                 controller.y().onTrue(new ClimberUp(climberSubsystem));
@@ -311,7 +308,7 @@ public class RobotContainer {
                                         () -> drivebase != null ? drivebase.getPose() : null,
                                         shootState);
                 }
-
+                intakeSubsystem.setDefaultCommand(new SpinIntake(intakeSubsystem, intakeDeployer));
             if (controllerSubsystem != null) {
                 anglerSubsystem.setDefaultCommand(new DefaultAnglerControl(anglerSubsystem, controllerSubsystem));
                 shooterSubsystem.setDefaultCommand(new DefaultShooterControl(shooterSubsystem, controllerSubsystem));

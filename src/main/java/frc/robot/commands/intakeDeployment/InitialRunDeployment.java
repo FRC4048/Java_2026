@@ -21,7 +21,6 @@ public class InitialRunDeployment extends LoggableCommand {
 
   @Override
   public void initialize() {
-    System.out.println("HHUFHFEUFIUHWEUFHIUWEHFUIEFHUWEHIUFEUIWEHFUIHWEFUIHEFUIHWEUIFHWEUIFHUIEWFH");
     subsystem.toggleState();
     timer.restart();
   }

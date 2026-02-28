@@ -4,8 +4,8 @@
 
 package frc.robot.constants.enums;
 
-public enum DeploymentState{
-    UP, //When intake should be all the way up
-    DOWN, //When intake should be all the way down
-    STOPPED //When the intake should not be moving
+public enum DeploymentState {
+    UP, // When intake should be all the way up
+    DOWN, // When intake should be all the way down
+    STOPPED // When the intake should not be moving
 }

@@ -711,7 +711,132 @@
       "grid_layout": {
         "layouts": [
           {
-            "title": "angler",
+            "title": "AnglerSubsystem",
+            "x": 512.0,
+            "y": 0.0,
+            "width": 256.0,
+            "height": 256.0,
+            "type": "List Layout",
+            "properties": {
+              "label_position": "TOP"
+            },
+            "children": [
+              {
+                "title": "PID_ALLOWED_ERROR",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "/Tuning/AnglerSubsystem/PID_ALLOWED_ERROR",
+                  "period": 0.06,
+                  "data_type": "double",
+                  "show_submit_button": false
+                }
+              },
+              {
+                "title": "PID_D",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "/Tuning/AnglerSubsystem/PID_D",
+                  "period": 0.06,
+                  "data_type": "double",
+                  "show_submit_button": false
+                }
+              },
+              {
+                "title": "PID_FF",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "/Tuning/AnglerSubsystem/PID_FF",
+                  "period": 0.06,
+                  "data_type": "double",
+                  "show_submit_button": false
+                }
+              },
+              {
+                "title": "PID_I",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "/Tuning/AnglerSubsystem/PID_I",
+                  "period": 0.06,
+                  "data_type": "double",
+                  "show_submit_button": false
+                }
+              },
+              {
+                "title": "PID_I_ZONE",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "/Tuning/AnglerSubsystem/PID_I_ZONE",
+                  "period": 0.06,
+                  "data_type": "double",
+                  "show_submit_button": false
+                }
+              },
+              {
+                "title": "PID_MAX_ACCEL",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "/Tuning/AnglerSubsystem/PID_MAX_ACCEL",
+                  "period": 0.06,
+                  "data_type": "double",
+                  "show_submit_button": false
+                }
+              },
+              {
+                "title": "PID_MAX_VEL",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "/Tuning/AnglerSubsystem/PID_MAX_VEL",
+                  "period": 0.06,
+                  "data_type": "double",
+                  "show_submit_button": false
+                }
+              },
+              {
+                "title": "PID_P",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "/Tuning/AnglerSubsystem/PID_P",
+                  "period": 0.06,
+                  "data_type": "double",
+                  "show_submit_button": false
+                }
+              }
+            ]
+          },
+          {
+            "title": "ShooterSubsystem",
             "x": 640.0,
             "y": 256.0,
             "width": 256.0,
@@ -722,209 +847,112 @@
             },
             "children": [
               {
-                "title": "Go High",
-                "x": 0.0,
-                "y": 0.0,
-                "width": 256.0,
-                "height": 128.0,
-                "type": "Command",
-                "properties": {
-                  "topic": "/SmartDashboard/angler/Go High",
-                  "period": 0.06,
-                  "show_type": true,
-                  "maximize_button_space": false
-                }
-              },
-              {
-                "title": "Go Home",
-                "x": 0.0,
-                "y": 0.0,
-                "width": 256.0,
-                "height": 128.0,
-                "type": "Command",
-                "properties": {
-                  "topic": "/SmartDashboard/angler/Go Home",
-                  "period": 0.06,
-                  "show_type": true,
-                  "maximize_button_space": false
-                }
-              },
-              {
-                "title": "Go Low",
-                "x": 0.0,
-                "y": 0.0,
-                "width": 256.0,
-                "height": 128.0,
-                "type": "Command",
-                "properties": {
-                  "topic": "/SmartDashboard/angler/Go Low",
-                  "period": 0.06,
-                  "show_type": true,
-                  "maximize_button_space": false
-                }
-              },
-              {
-                "title": "Home Rev (Reset)",
-                "x": 0.0,
-                "y": 0.0,
-                "width": 256.0,
-                "height": 128.0,
-                "type": "Command",
-                "properties": {
-                  "topic": "/SmartDashboard/angler/Home Rev (Reset)",
-                  "period": 0.06,
-                  "show_type": true,
-                  "maximize_button_space": false
-                }
-              },
-              {
-                "title": "Reset Encoder",
-                "x": 0.0,
-                "y": 0.0,
-                "width": 256.0,
-                "height": 128.0,
-                "type": "Command",
-                "properties": {
-                  "topic": "/SmartDashboard/angler/Reset Encoder",
-                  "period": 0.06,
-                  "show_type": true,
-                  "maximize_button_space": false
-                }
-              },
-              {
-                "title": "Run To Fwd Limit",
-                "x": 0.0,
-                "y": 0.0,
-                "width": 256.0,
-                "height": 128.0,
-                "type": "Command",
-                "properties": {
-                  "topic": "/SmartDashboard/angler/Run To Fwd Limit",
-                  "period": 0.06,
-                  "show_type": true,
-                  "maximize_button_space": false
-                }
-              },
-              {
-                "title": "Run To Rev Limit",
-                "x": 0.0,
-                "y": 0.0,
-                "width": 256.0,
-                "height": 128.0,
-                "type": "Command",
-                "properties": {
-                  "topic": "/SmartDashboard/angler/Run To Rev Limit",
-                  "period": 0.06,
-                  "show_type": true,
-                  "maximize_button_space": false
-                }
-              },
-              {
-                "title": "TargetPosition",
+                "title": "PID_ALLOWED_ERROR",
                 "x": 0.0,
                 "y": 0.0,
                 "width": 128.0,
                 "height": 128.0,
                 "type": "Text Display",
                 "properties": {
-                  "topic": "/SmartDashboard/angler/TargetPosition",
+                  "topic": "/Tuning/ShooterSubsystem/PID_ALLOWED_ERROR",
                   "period": 0.06,
                   "data_type": "double",
                   "show_submit_button": false
                 }
-              }
-            ]
-          },
-          {
-            "title": "turret",
-            "x": 896.0,
-            "y": 256.0,
-            "width": 256.0,
-            "height": 256.0,
-            "type": "List Layout",
-            "properties": {
-              "label_position": "TOP"
-            },
-            "children": [
-              {
-                "title": "Run Turret to Fwd Limit",
-                "x": 0.0,
-                "y": 0.0,
-                "width": 256.0,
-                "height": 128.0,
-                "type": "Command",
-                "properties": {
-                  "topic": "/SmartDashboard/turret/Run Turret to Fwd Limit",
-                  "period": 0.06,
-                  "show_type": true,
-                  "maximize_button_space": false
-                }
               },
               {
-                "title": "Run Turret to Rev Limit",
-                "x": 0.0,
-                "y": 0.0,
-                "width": 256.0,
-                "height": 128.0,
-                "type": "Command",
-                "properties": {
-                  "topic": "/SmartDashboard/turret/Run Turret to Rev Limit",
-                  "period": 0.06,
-                  "show_type": true,
-                  "maximize_button_space": false
-                }
-              },
-              {
-                "title": "Turret Go 0",
-                "x": 0.0,
-                "y": 0.0,
-                "width": 256.0,
-                "height": 128.0,
-                "type": "Command",
-                "properties": {
-                  "topic": "/SmartDashboard/turret/Turret Go 0",
-                  "period": 0.06,
-                  "show_type": true,
-                  "maximize_button_space": false
-                }
-              },
-              {
-                "title": "Turret Go 45",
-                "x": 0.0,
-                "y": 0.0,
-                "width": 256.0,
-                "height": 128.0,
-                "type": "Command",
-                "properties": {
-                  "topic": "/SmartDashboard/turret/Turret Go 45",
-                  "period": 0.06,
-                  "show_type": true,
-                  "maximize_button_space": false
-                }
-              },
-              {
-                "title": "Turret Go 75",
-                "x": 0.0,
-                "y": 0.0,
-                "width": 256.0,
-                "height": 128.0,
-                "type": "Command",
-                "properties": {
-                  "topic": "/SmartDashboard/turret/Turret Go 75",
-                  "period": 0.06,
-                  "show_type": true,
-                  "maximize_button_space": false
-                }
-              },
-              {
-                "title": "TargetPosition",
+                "title": "PID_D",
                 "x": 0.0,
                 "y": 0.0,
                 "width": 128.0,
                 "height": 128.0,
                 "type": "Text Display",
                 "properties": {
-                  "topic": "/SmartDashboard/turret/TargetPosition",
+                  "topic": "/Tuning/ShooterSubsystem/PID_D",
+                  "period": 0.06,
+                  "data_type": "double",
+                  "show_submit_button": false
+                }
+              },
+              {
+                "title": "PID_FF",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "/Tuning/ShooterSubsystem/PID_FF",
+                  "period": 0.06,
+                  "data_type": "double",
+                  "show_submit_button": false
+                }
+              },
+              {
+                "title": "PID_I",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "/Tuning/ShooterSubsystem/PID_I",
+                  "period": 0.06,
+                  "data_type": "double",
+                  "show_submit_button": false
+                }
+              },
+              {
+                "title": "PID_I_ZONE",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "/Tuning/ShooterSubsystem/PID_I_ZONE",
+                  "period": 0.06,
+                  "data_type": "double",
+                  "show_submit_button": false
+                }
+              },
+              {
+                "title": "PID_MAX_ACCEL",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "/Tuning/ShooterSubsystem/PID_MAX_ACCEL",
+                  "period": 0.06,
+                  "data_type": "double",
+                  "show_submit_button": false
+                }
+              },
+              {
+                "title": "PID_MAX_VEL",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "/Tuning/ShooterSubsystem/PID_MAX_VEL",
+                  "period": 0.06,
+                  "data_type": "double",
+                  "show_submit_button": false
+                }
+              },
+              {
+                "title": "PID_P",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "/Tuning/ShooterSubsystem/PID_P",
                   "period": 0.06,
                   "data_type": "double",
                   "show_submit_button": false
@@ -936,7 +964,7 @@
         "containers": [
           {
             "title": "Run Dashboard Shot Test (30s)",
-            "x": 640.0,
+            "x": 0.0,
             "y": 128.0,
             "width": 256.0,
             "height": 128.0,
@@ -950,7 +978,7 @@
           },
           {
             "title": "RunHoppperAndFeeder",
-            "x": 896.0,
+            "x": 256.0,
             "y": 128.0,
             "width": 256.0,
             "height": 128.0,
@@ -971,6 +999,34 @@
             "type": "Text Display",
             "properties": {
               "topic": "/SmartDashboard/shooter/TargetRPM",
+              "period": 0.06,
+              "data_type": "double",
+              "show_submit_button": false
+            }
+          },
+          {
+            "title": "TargetRPM",
+            "x": 256.0,
+            "y": 256.0,
+            "width": 128.0,
+            "height": 128.0,
+            "type": "Text Display",
+            "properties": {
+              "topic": "/SmartDashboard/shooter/TargetRPM",
+              "period": 0.06,
+              "data_type": "double",
+              "show_submit_button": false
+            }
+          },
+          {
+            "title": "TargetPosition",
+            "x": 128.0,
+            "y": 256.0,
+            "width": 128.0,
+            "height": 128.0,
+            "type": "Text Display",
+            "properties": {
+              "topic": "/SmartDashboard/angler/TargetPosition",
               "period": 0.06,
               "data_type": "double",
               "show_submit_button": false

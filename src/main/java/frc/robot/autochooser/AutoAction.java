@@ -7,8 +7,8 @@ import java.util.stream.Collectors;
 
 public enum AutoAction {
   DO_NOTHING("Do Nothing"),
-  SHOOT("Shoot"),
-  SHOOT_AND_CLIMB("Shoot and Climb"),
+  SHOOT("shoot"),
+  COMPLETE("complete"),
   INVALID("INVALID");
   private final String name;
   private static final HashMap<String, AutoAction> nameMap =

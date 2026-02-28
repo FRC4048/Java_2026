@@ -8,7 +8,9 @@ import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
 import choreo.auto.AutoFactory;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Robot;
 import frc.robot.commands.auto.BlueDepot;
 import frc.robot.commands.auto.BlueLeftShootClimb;
 import frc.robot.commands.auto.BlueMidShootClimb;
@@ -111,12 +113,20 @@ public class AutoChooser {
     public AutoEvent getSelectedEvent() {
         AutoAction chosenAction = actionChooser.get();
         FieldLocation chosenLocation = locationChooser.get();
-        return new AutoEvent(chosenAction, chosenLocation);
+        Alliance color = Robot.allianceColor().orElse(null);
+        if (color == null) return null; /*
+        If the alliance color is not present, then
+        robotContainer.getAutonoumousCommand() should return null,
+        in which case robotContainer.getAutonomousCommand()
+        will be called again until the return value is not null. */
+        return new AutoEvent(chosenAction, chosenLocation, color);
     }
 
     public Command getSelectedCommand() {
         AutoEvent event = getSelectedEvent();
-        return commandMap.getOrDefault(event, new DoNothingCommand());
+        return commandMap.getOrDefault(event, null); /*
+        HashMap permits null keys, so if event is null then this will
+        return null - no further null-checking needed. */
     }
 
     public Command getCommand() {

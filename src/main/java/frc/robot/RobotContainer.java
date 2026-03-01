@@ -26,7 +26,7 @@ import frc.robot.commands.feeder.SpinFeeder;
 import frc.robot.commands.drive.FakeVision;
 import frc.robot.commands.intake.SpinIntake;
 import frc.robot.commands.intake.StopIntake;
-import frc.robot.commands.intakeDeployment.InitialRunDeployment;
+import frc.robot.commands.intakeDeployment.ToggleDeployment;
 import frc.robot.commands.intakeDeployment.RunDeployer;
 import frc.robot.commands.intakeDeployment.SetDeploymentState;
 import frc.robot.commands.parallels.RunHopperAndFeeder;
@@ -278,7 +278,7 @@ public class RobotContainer {
         }
 
         private void configureBindings() {
-                controller.a().onTrue(new InitialRunDeployment(intakeDeployer));
+                controller.a().onTrue(new ToggleDeployment(intakeDeployer));
                 controller.b().onTrue(new SetDeploymentState(intakeDeployer, DeploymentState.STOPPED));
                 controller.y().onTrue(new ClimberUp(climberSubsystem));
                 controller.x().onTrue(new ClimberDown(climberSubsystem));
@@ -429,7 +429,7 @@ public class RobotContainer {
 
                         SmartDashboard.putData(
                                         "intakedeployer/InitlizeDeployer",
-                                        new InitialRunDeployment(intakeDeployer));
+                                        new ToggleDeployment(intakeDeployer));
                         SmartDashboard.putData(
                                         "Spin Intake",
                                         new SpinIntake(intakeSubsystem, intakeDeployer));

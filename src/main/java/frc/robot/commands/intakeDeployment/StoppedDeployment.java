@@ -4,30 +4,24 @@
 
 package frc.robot.commands.intakeDeployment;
 
-import frc.robot.constants.Constants;
+import frc.robot.constants.enums.DeploymentState;
 import frc.robot.subsystems.IntakeDeployerSubsystem;
 import frc.robot.utils.logging.commands.LoggableCommand;
 
-public class RunDeployer extends LoggableCommand {
+public class StoppedDeployment extends LoggableCommand {
   private final IntakeDeployerSubsystem subsystem;
 
-  public RunDeployer(IntakeDeployerSubsystem subsystem) {
+  public StoppedDeployment(IntakeDeployerSubsystem subsystem) {
     this.subsystem = subsystem;
-    addRequirements(subsystem);
   }
 
   @Override
   public void initialize() {
+    subsystem.setDeploymentState(subsystem.getDeploymentState() == DeploymentState.DOWN ? DeploymentState.STOPPED : DeploymentState.UP);
   }
 
   @Override
   public void execute() {
-    switch (subsystem.getDeploymentState()) {
-      case UP -> subsystem.setSpeed(Constants.INTAKE_RETRACTION_SPEED);
-      case DOWN -> subsystem.setSpeed(Constants.INTAKE_DEPLOYER_SPEED);
-      case STOPPED -> subsystem.stopMotors();
-      default -> subsystem.stopMotors();
-    }
   }
 
   @Override
@@ -36,6 +30,6 @@ public class RunDeployer extends LoggableCommand {
 
   @Override
   public boolean isFinished() {
-    return false;
+    return true;
   }
 }

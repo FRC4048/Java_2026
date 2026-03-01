@@ -9,11 +9,11 @@ import frc.robot.constants.Constants;
 import frc.robot.subsystems.IntakeDeployerSubsystem;
 import frc.robot.utils.logging.commands.LoggableCommand;
 
-public class InitialRunDeployment extends LoggableCommand {
+public class ToggleDeployment extends LoggableCommand {
   private final IntakeDeployerSubsystem subsystem;
   private final Timer timer;
 
-  public InitialRunDeployment(IntakeDeployerSubsystem subsystem) {
+  public ToggleDeployment(IntakeDeployerSubsystem subsystem) {
     timer = new Timer();
     this.subsystem = subsystem;
     addRequirements(subsystem);
@@ -28,8 +28,8 @@ public class InitialRunDeployment extends LoggableCommand {
   @Override
   public void execute() {
     switch (subsystem.getDeploymentState()) {
-      case UP -> subsystem.setSpeed(Constants.INITIAL_INTAKE_DEPLOYER_SPEED);
-      case DOWN -> subsystem.setSpeed(Constants.INITIAL_INTAKE_RETRACTION_SPEED);
+      case UP -> subsystem.setSpeed(Constants.INITIAL_INTAKE_RETRACTION_SPEED);
+      case DOWN -> subsystem.setSpeed(Constants.INITIAL_INTAKE_DEPLOYMENT_SPEED);
       case STOPPED -> subsystem.stopMotors();
       default -> subsystem.stopMotors();
     }

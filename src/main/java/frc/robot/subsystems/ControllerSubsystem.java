@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import org.dyn4j.UnitConversion;
 import org.littletonrobotics.junction.Logger;
 
 import frc.robot.RobotContainer;
@@ -170,12 +171,24 @@ public class ControllerSubsystem extends SubsystemBase {
     }
 
     private double calculateAnglerAngleDegrees(double computedDistanceMeters, PoseControlProfile profile) {
-        // TODO: Replace with distance angler angle calculation.
+        if (profile == HUB_PROFILE) {
+            double distance = UnitConversion.METER_TO_FOOT * computedDistanceMeters;
+			return 
+				0.169 * distance * distance
+			  - 1.73 * distance
+	          + 20.4;
+		}
         return profile.defaultAnglerAngleDegrees;
     }
 
     private double calculateShooterVelocity(double computedDistanceMeters, PoseControlProfile profile) {
-        // TODO: Replace with distance shooter velocity calculation.
+        if (profile == HUB_PROFILE) {
+            double distance = UnitConversion.METER_TO_FOOT * computedDistanceMeters;
+			return 
+				8.46 * distance * distance
+			  - 237 * distance
+			  - 1_380;
+		}
         return profile.defaultShooterVelocityRpm;
     }
 

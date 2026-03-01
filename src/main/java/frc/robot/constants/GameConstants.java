@@ -127,7 +127,7 @@ public class GameConstants {
     public static final double TURRET_HOME_ANGLE = 0.0; //Turret facing forward
     public static final double TURRET_LEFT_ANGLE = -90;
     public static final double TURRET_RIGHT_ANGLE = 90;
-    public static final double TURRET_LIMIT_SPEED = 0.2;
+    public static final double TURRET_LIMIT_SPEED = 0.1;
 
     //swerve config
     public static final TelemetryVerbosity TELEMENTRY_VERBOSITY = TelemetryVerbosity.HIGH;

@@ -343,21 +343,14 @@ public class RobotContainer {
                         SmartDashboard.putData(
                                         "test/Run Dashboard Shot Test (30s)",
                                         new RunDashboardShotTest(anglerSubsystem, turretSubsystem, shooterSubsystem));
-                        SmartDashboard.putData(
-                                        "intakedeployer/Deployment State: UP",
-                                        new SetDeploymentState(intakeDeployer, DeploymentState.UP));
-                        SmartDashboard.putData(
-                                        "intakedeployer/Deployment State: DOWN",
-                                        new SetDeploymentState(intakeDeployer, DeploymentState.DOWN));
-                        SmartDashboard.putData(
-                                        "intakedeployer/Deployment State: STOPPED",
-                                        new SetDeploymentState(intakeDeployer, DeploymentState.STOPPED));
-                        SmartDashboard.putData(
-                                        "Spin Intake",
-                                        new SpinIntake(intakeSubsystem));
-                        SmartDashboard.putData(
-                                        "Stop Intake",
-                                        new StopIntake(intakeSubsystem));
+                                    SmartDashboard.putData(
+                    "turret/Run Turret to Rev Limit",
+                    new RunTurretToRevLimit(turretSubsystem));
+
+            SmartDashboard.putData(
+                    "turret/Run Turret to Fwd Limit",
+                    new RunTurretToFwdLimit(turretSubsystem));
+                        
                 if (Constants.DEBUG) {
 
                         /*
@@ -433,15 +426,6 @@ public class RobotContainer {
             SmartDashboard.putData(
                     "turret/Turret Go 75",
                     new SetTurretAngle(turretSubsystem, 75));
-
-            SmartDashboard.putData(
-                    "turret/Run Turret to Rev Limit",
-                    new RunTurretToRevLimit(turretSubsystem));
-
-            SmartDashboard.putData(
-                    "turret/Run Turret to Fwd Limit",
-                    new RunTurretToFwdLimit(turretSubsystem));
-
                         SmartDashboard.putData(
                                         "intakedeployer/InitlizeDeployer",
                                         new InitialRunDeployment(intakeDeployer));

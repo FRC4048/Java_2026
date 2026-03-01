@@ -115,18 +115,18 @@ public class AutoChooser {
             new RedShoot(drivetrain, auto, shooter, shootstate, climber, hopper, feeder)); // shoot outpost red
 
         commandMap.put(new AutoEvent(AutoAction.SHOOT_RELOAD_CLIMB, FieldLocation.DEPOT_SIDE, Alliance.Blue), //shoot, reload & climb
-            new BlueDepotShootReloadClimb(drivetrain, auto, shooter, shootstate, climber, hopper, feeder));
+            new RedDepotShootReloadClimb(drivetrain, auto, shooter, shootstate, climber, hopper, feeder));
         commandMap.put(new AutoEvent(AutoAction.SHOOT_RELOAD_CLIMB, FieldLocation.MID, Alliance.Blue),
-            new BlueDepotShootReloadClimb(drivetrain, auto, shooter, shootstate, climber, hopper, feeder)); //shoot & climb
+            new RedDepotShootReloadClimb(drivetrain, auto, shooter, shootstate, climber, hopper, feeder)); //shoot & climb
         commandMap.put(new AutoEvent(AutoAction.SHOOT_RELOAD_CLIMB, FieldLocation.OUTPOST_SIDE, Alliance.Blue),
-            new BlueDepotShootReloadClimb(drivetrain, auto, shooter, shootstate, climber, hopper, feeder)); //shoot, reload & climb
+            new RedDepotShootReloadClimb(drivetrain, auto, shooter, shootstate, climber, hopper, feeder)); //shoot, reload & climb
 
         commandMap.put(new AutoEvent(AutoAction.SHOOT_RELOAD_CLIMB, FieldLocation.DEPOT_SIDE, Alliance.Red),
-            new BlueMidShootClimb(drivetrain, auto, shooter, shootstate, climber, hopper, feeder)); //shoot, reload & climb
+            new RedMidShootClimb(drivetrain, auto, shooter, shootstate, climber, hopper, feeder)); //shoot, reload & climb
         commandMap.put(new AutoEvent(AutoAction.SHOOT_RELOAD_CLIMB, FieldLocation.MID, Alliance.Red),
-            new BlueMidShootClimb(drivetrain, auto, shooter, shootstate, climber, hopper, feeder)); //shoot & climb
+            new RedMidShootClimb(drivetrain, auto, shooter, shootstate, climber, hopper, feeder)); //shoot & climb
         commandMap.put(new AutoEvent(AutoAction.SHOOT_RELOAD_CLIMB, FieldLocation.OUTPOST_SIDE, Alliance.Red),
-            new BlueMidShootClimb(drivetrain, auto, shooter, shootstate, climber, hopper, feeder)); //shoot, reload & climb
+            new RedMidShootClimb(drivetrain, auto, shooter, shootstate, climber, hopper, feeder)); //shoot, reload & climb
     }
 
     public AutoEvent getSelectedEvent() {

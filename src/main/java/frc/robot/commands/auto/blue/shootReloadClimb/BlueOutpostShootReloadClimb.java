@@ -1,4 +1,4 @@
-package frc.robot.commands.auto;
+package frc.robot.commands.auto.blue.shootReloadClimb;
 
 import choreo.auto.AutoFactory;
 import frc.robot.commands.angler.RunAnglerToReverseLimit;
@@ -23,8 +23,8 @@ import frc.robot.utils.logging.commands.LoggableCommandWrapper;
 import frc.robot.utils.logging.commands.LoggableParallelCommandGroup;
 import frc.robot.utils.logging.commands.LoggableSequentialCommandGroup;
 
-public class BlueDepotShootReloadClimb extends LoggableSequentialCommandGroup{
-    public BlueDepotShootReloadClimb(
+public class BlueOutpostShootReloadClimb extends LoggableSequentialCommandGroup{
+    public BlueOutpostShootReloadClimb(
         SwerveSubsystem drivetrain, AutoFactory auto, ShooterSubsystem shooter, ShootingState shootstate, 
         ClimberSubsystem climber, HopperSubsystem hopper, FeederSubsystem feeder, TurretSubsystem turret, AnglerSubsystem angler) {
         super(  
@@ -33,14 +33,14 @@ public class BlueDepotShootReloadClimb extends LoggableSequentialCommandGroup{
                     new RunAnglerToReverseLimit(angler),
                     new SetShootingState(shootstate, ShootState.SHOOTING_HUB)
                 ),
-                LoggableCommandWrapper.wrap(auto.resetOdometry("BlueDepot_OriginToDepot")),
+                LoggableCommandWrapper.wrap(auto.resetOdometry("BlueOutpost_OriginToOutpost")),
                 new LoggableParallelCommandGroup(
-                    LoggableCommandWrapper.wrap(auto.trajectoryCmd("BlueDepot_OriginToDepot").withTimeout(1.5)), //path = 1.3s
+                    LoggableCommandWrapper.wrap(auto.trajectoryCmd("BlueOutpost_OriginToOutpost").withTimeout(1.5)), //path = 1.3s
                     new SpinShooter(shooter, Constants.SHOOTER_SPEED),
                     new SpinHopper(hopper),
                     new SpinFeeder(feeder)
                 ), //shoots the 8 preloaded fuel in parallel with the path
-                LoggableCommandWrapper.wrap(auto.resetOdometry("BlueDepot_TowardDepot")),
+                LoggableCommandWrapper.wrap(auto.resetOdometry("BlueOutpost_OutpostTo")),
                 new LoggableParallelCommandGroup(
                     LoggableCommandWrapper.wrap(auto.trajectoryCmd("BlueLeftClimb").withTimeout(3)), //path = 2.7s
                     new SpinShooter(shooter, Constants.SHOOTER_SPEED),

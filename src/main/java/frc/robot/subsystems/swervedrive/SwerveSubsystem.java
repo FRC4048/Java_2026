@@ -55,7 +55,6 @@ public class SwerveSubsystem extends SubsystemBase {
      */
     private final SwerveDrive swerveDrive;
     private Vector<N3> variance = VecBuilder.fill(0.1,0.1,0.1);
-    private final Field2d rawOdomField = new Field2d();
     private SwerveDriveOdometry rawOdometry;
     private final ConcurrentLinkedDeque<PoseErrorRecord> poseError = new ConcurrentLinkedDeque<>();
     private record PoseErrorRecord(double timestamp, double error) {
@@ -130,7 +129,6 @@ public class SwerveSubsystem extends SubsystemBase {
                 swerveDrive.getModulePositions()
         );
 
-        rawOdomField.setRobotPose(rawOdometry.getPoseMeters());
         if (Constants.currentMode == GameConstants.Mode.SIM) {
             double currentTime = Logger.getTimestamp() / 1000000.0;
             double oneSecondAgo = currentTime - 1.0;

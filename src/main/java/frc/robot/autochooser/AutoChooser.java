@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Robot;
-import frc.robot.commands.auto.BlueDepot;
+import frc.robot.commands.auto.BlueDepotShootReloadClimb;
 import frc.robot.commands.auto.BlueLeftShootClimb;
 import frc.robot.commands.auto.BlueMidShootClimb;
 import frc.robot.commands.auto.BlueRightShootClimb;
@@ -92,26 +92,41 @@ public class AutoChooser {
     /** Put mappings here.
      *  @see AutoCommand */
     private void populateMap() {
-        // Commands where alliance color is irrelevant.
-        commandMap.put(new AutoEvent(AutoAction.DO_NOTHING, FieldLocation.LEFT),
+        //do nothing
+        commandMap.put(new AutoEvent(AutoAction.DO_NOTHING, FieldLocation.DEPOT_SIDE, null),
             new DoNothingCommand());
-        commandMap.put(new AutoEvent(AutoAction.DO_NOTHING, FieldLocation.RIGHT), 
+        commandMap.put(new AutoEvent(AutoAction.DO_NOTHING, FieldLocation.MID, null),
             new DoNothingCommand());
-        commandMap.put(new AutoEvent(AutoAction.DO_NOTHING, FieldLocation.MIDDLE),
+        commandMap.put(new AutoEvent(AutoAction.DO_NOTHING, FieldLocation.OUTPOST_SIDE, null), 
             new DoNothingCommand());
-        // Commands where alliance color is relevant.
-        commandMap.put(new AutoEvent(AutoAction.COMPLETE, FieldLocation.LEFT, null), 
-        new CommandDescription("depot")); /*
-        For each pair of alliance-specific commands (one for red,
-        one for blue), There should also be a key with a null
-        color passed that is associated with a CommandDescription.
-        This allows a more vague description of what the command might
-        do, regardless of the alliance color, to be put on the dashboard
-        while the chooser is in use by the drive team, rather than it
-        appearing as though the selection is invalid. */
-        commandMap.put(new AutoEvent(AutoAction.COMPLETE, FieldLocation.LEFT,
-            Alliance.Blue),
-            new BlueDepot(drivetrain, auto, shooter, shootstate, climber, hopper, feeder));
+
+        commandMap.put(new AutoEvent(AutoAction.SHOOT, FieldLocation.DEPOT_SIDE, Alliance.Blue),
+            new BlueShoot(drivetrain, auto, shooter, shootstate, climber, hopper, feeder)); //shoot depot blue
+        commandMap.put(new AutoEvent(AutoAction.SHOOT, FieldLocation.MID, Alliance.Blue),
+            new BlueShoot(drivetrain, auto, shooter, shootstate, climber, hopper, feeder)); //shoot mid blue
+        commandMap.put(new AutoEvent(AutoAction.SHOOT, FieldLocation.OUTPOST_SIDE, Alliance.Blue),
+            new BlueShoot(drivetrain, auto, shooter, shootstate, climber, hopper, feeder)); //shoot outpost blue
+
+        commandMap.put(new AutoEvent(AutoAction.SHOOT, FieldLocation.DEPOT_SIDE, Alliance.Red),
+            new RedShoot(drivetrain, auto, shooter, shootstate, climber, hopper, feeder)); //shoot depot red
+        commandMap.put(new AutoEvent(AutoAction.SHOOT, FieldLocation.MID, Alliance.Red),
+            new RedShoot(drivetrain, auto, shooter, shootstate, climber, hopper, feeder)); //shoot mid red
+        commandMap.put(new AutoEvent(AutoAction.SHOOT, FieldLocation.OUTPOST_SIDE, Alliance.Red),
+            new RedShoot(drivetrain, auto, shooter, shootstate, climber, hopper, feeder)); // shoot outpost red
+
+        commandMap.put(new AutoEvent(AutoAction.SHOOT_RELOAD_CLIMB, FieldLocation.DEPOT_SIDE, Alliance.Blue), //shoot, reload & climb
+            new BlueDepotShootReloadClimb(drivetrain, auto, shooter, shootstate, climber, hopper, feeder));
+        commandMap.put(new AutoEvent(AutoAction.SHOOT_RELOAD_CLIMB, FieldLocation.MID, Alliance.Blue),
+            new BlueDepotShootReloadClimb(drivetrain, auto, shooter, shootstate, climber, hopper, feeder)); //shoot & climb
+        commandMap.put(new AutoEvent(AutoAction.SHOOT_RELOAD_CLIMB, FieldLocation.OUTPOST_SIDE, Alliance.Blue),
+            new BlueDepotShootReloadClimb(drivetrain, auto, shooter, shootstate, climber, hopper, feeder)); //shoot, reload & climb
+
+        commandMap.put(new AutoEvent(AutoAction.SHOOT_RELOAD_CLIMB, FieldLocation.DEPOT_SIDE, Alliance.Red),
+            new BlueMidShootClimb(drivetrain, auto, shooter, shootstate, climber, hopper, feeder)); //shoot, reload & climb
+        commandMap.put(new AutoEvent(AutoAction.SHOOT_RELOAD_CLIMB, FieldLocation.MID, Alliance.Red),
+            new BlueMidShootClimb(drivetrain, auto, shooter, shootstate, climber, hopper, feeder)); //shoot & climb
+        commandMap.put(new AutoEvent(AutoAction.SHOOT_RELOAD_CLIMB, FieldLocation.OUTPOST_SIDE, Alliance.Red),
+            new BlueMidShootClimb(drivetrain, auto, shooter, shootstate, climber, hopper, feeder)); //shoot, reload & climb
     }
 
     public AutoEvent getSelectedEvent() {

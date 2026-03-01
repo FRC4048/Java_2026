@@ -55,16 +55,10 @@ public class ApriltagSubsystem extends SubsystemBase {
     public ApriltagIO getIO(){
         return io;
     }
-    public VisionTruster getVisionTruster() {
-        return estimator.getVisionTruster();
-    }
     @Override
     public void periodic() {
         estimator.updateVision();
         estimator.updatePosition(drivebase.getOdom());
         io.periodic();
-    }
-    public Vector<N3> calculateTrust(VisionMeasurement measurement) {
-        return estimator.getVisionTruster().calculateTrust(measurement);
     }
 }

@@ -151,7 +151,8 @@ public class GameConstants {
     public static final double VISION_CONSISTENCY_THRESHOLD = 0.25; //How close 2 vision measurements have to be (needs to be tuned potentially but seemingly from my testing it also might not be needed)
     public static final boolean ENABLE_VISION = true;
     public static final double POSE_BUFFER_STORAGE_TIME = 2; //how many past measurements are stored in the buffer (might increase if we need further back)
-
+    public static final double FIELD_LENGTH = 16.5; //TODO: Change Later
+    public static final double FIELD_WIDTH = 8.1; //TODO: Change Later
     // Vision
     public static final Transform3d ROBOT_TO_CAMERA = new Transform3d(0,0,0, new Rotation3d(0,0,0)); // TODO: change
     public static final double HORIZONTAL_FOV = Units.degreesToRadians(110); // radians; TODO: Change Later

@@ -298,6 +298,7 @@ public class SwerveSubsystem extends SubsystemBase {
     public Pose2d getPose() {
         return swerveDrive.getPose();
     }
+
     public Optional<Pose2d> getSimulationPose() {
         return swerveDrive.getSimulationDriveTrainPose();
     }

@@ -37,12 +37,13 @@ public class SimApriltagIO extends TCPApriltagIo {
                     Pose3d adjPose = tag.getPose().relativeTo(cameraPos);
                     double cosIncidenceAngle = (-adjPose.getX() * Math.cos(adjPose.getRotation().getZ()) - adjPose.getY() * Math.sin(adjPose.getRotation().getZ())) / (adjPose.getTranslation().getNorm());
                     double distance = tag.getTranslation().getDistance(cameraPos.getTranslation());
-                    if (distance / cosIncidenceAngle < Constants.MAX_VISION_DISTANCE_SIMULATION) {
+                    if (cosIncidenceAngle!=0 && distance / cosIncidenceAngle < Constants.MAX_VISION_DISTANCE_SIMULATION) {
                         VisionMeasurement measurement = new VisionMeasurement(new Pose2d(), distance, 0);
                         Vector<N3> stdDevs = truster.calculateTrust(measurement);
-                        double readingX = robotPoseSupplier.get().get().getX() + random.nextGaussian() * stdDevs.get(0);
-                        double readingY = robotPoseSupplier.get().get().getY() + random.nextGaussian() * stdDevs.get(1);
-                        double readingYaw = robotPoseSupplier.get().get().getRotation().getDegrees() + random.nextGaussian() * stdDevs.get(2);
+                        Pose2d pose = robotPoseSupplier.get().get();
+                        double readingX = pose.getX() + random.nextGaussian() * stdDevs.get(0);
+                        double readingY = pose.getY() + random.nextGaussian() * stdDevs.get(1);
+                        double readingYaw = pose.getRotation().getDegrees() + random.nextGaussian() * stdDevs.get(2);
                         Pose2d readingPos = new Pose2d(readingX, readingY, Rotation2d.fromDegrees(readingYaw));
                         distance = readingPos.getTranslation().getDistance(tag.getPose().toPose2d().getTranslation());
                         if (BasicVisionFilter.inBounds(readingPos)) {
@@ -56,8 +57,7 @@ public class SimApriltagIO extends TCPApriltagIo {
     }
     @Override
     public void periodic() {
-        updateInputs(inputs);
-        Logger.processInputs(prefix, inputs);
+        super.periodic();
         simReadings();
     }
 }

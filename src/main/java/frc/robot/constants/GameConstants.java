@@ -51,17 +51,28 @@ public class GameConstants {
     public static final double ROLLER_SPEED = 0.25;
     public static final double TILT_SPEED = -0.5; // Arm motor is inverted - use negative speed
     public static final double INTAKE_SPEED = -0.5;
-    public static final double HOPPER_SPEED = 0.1;
-    public static final double CLIMBER_SPEED_UP = 0.5;
-    public static final double CLIMBER_SPEED_DOWN = -0.25;
-    public static final double FEEDER_SPEED = 0.5;
+    public static final double HOPPER_SPEED = 0.1;//Want to increase this later
+    public static final double CLIMBER_SPEED_UP = 0.1;
+    public static final double CLIMBER_SPEED_DOWN = -0.1;
+    public static final double FEEDER_SPEED = 0.5;//Might make veolcity PID
     public static final double MAX_SPEED = Units.feetToMeters(14.5);
     public static final double SHOOTER_SPEED = 100;
-    public static final double INTAKE_DEPLOYER_SPEED = 0.5;
-    public static final double INTAKE_RETRACTION_SPEED = -0.5;
-    public static final double INITIAL_INTAKE_DEPLOYER_SPEED = 10;
-    public static final double INITIAL_INTAKE_RETRACTION_SPEED = -10;
+    public static final double INTAKE_DEPLOYER_SPEED = 0.25;
+    public static final double INTAKE_RETRACTION_SPEED = -0.1;
+    public static final double INITIAL_INTAKE_DEPLOYER_SPEED = 0.25;
+    public static final double INITIAL_INTAKE_RETRACTION_SPEED = -0.1;
 
+
+    //Diags
+    public static final double HOPPER_DIAGS_ENCODER = 1;
+    public static final double INTAKE_ROLLER_DIAGS_ENCODER = 1;
+    public static final double FEEDER_DIAGS_ENCODER = 1;
+    public static final double CLIMBER_DIAGS_ENCODER = 1;
+    public static final double SHOOTER_DIAGS_ENCODER = 1;
+    public static final double GYRO_DIAGS_ANGLE = 30;
+    public static final double TURRET_DIAGS_ENCODER = 1;
+    public static final double INTAKE_DEPLOYER_DIAGS_ENCODER = 1;
+    public static final double ANGLER_DIAGS_ENCODER = 1;
 
     //Timeouts
     public static final double SPIN_TIMEOUT = 5;
@@ -155,7 +166,8 @@ public class GameConstants {
     public static final double VISION_STD_THRESHOLD = 0.25;
     public static final boolean ENABLE_VISION = true;
     public static final double POSE_BUFFER_STORAGE_TIME = 2; //how many past measurements are stored in the buffer (might increase if we need further back)
-
+    public static final double FIELD_LENGTH = 16.5; //TODO: Change Later
+    public static final double FIELD_WIDTH = 8.1; //TODO: Change Later
     // Vision
     public static final Transform3d ROBOT_TO_CAMERA = new Transform3d(0,0,0, new Rotation3d(0,0,0));
     public static final double HORIZONTAL_FOV = Units.degreesToRadians(110); // radians; TODO: Change Later

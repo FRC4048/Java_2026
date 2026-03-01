@@ -8,8 +8,12 @@ import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Robot;
 import frc.robot.commands.intake.SpinIntake;
 import frc.robot.constants.Constants;
+import frc.robot.constants.GameConstants;
+import frc.robot.utils.diag.DiagSparkMaxEncoder;
+import frc.robot.utils.logging.input.DigitalInputLoggableInputs;
 import frc.robot.utils.logging.input.MotorLoggableInputs;
 import frc.robot.utils.logging.io.motor.MockSparkMaxIo;
 import frc.robot.utils.logging.io.motor.RealSparkMaxIo;
@@ -45,7 +49,15 @@ public class IntakeSubsystem extends SubsystemBase {
         return new MockSparkMaxIo(LOGGING_NAME, MotorLoggableInputs.allMetrics());
     }
     public static SparkMaxIo createRealIo() {
-        return new RealSparkMaxIo(LOGGING_NAME, createMotor(), MotorLoggableInputs.allMetrics());
+
+        SparkMax motor = createMotor();
+
+        Robot.getDiagnostics()
+        .addDiagnosable(
+            new DiagSparkMaxEncoder(
+                "Intake Roller", "Encoder", GameConstants.INTAKE_ROLLER_DIAGS_ENCODER, motor));
+
+        return new RealSparkMaxIo(LOGGING_NAME, motor, MotorLoggableInputs.allMetrics());
     }
     public static SparkMaxIo createSimIo(RobotVisualizer visualizer) {
         SparkMax motor = createMotor();
@@ -64,5 +76,5 @@ public class IntakeSubsystem extends SubsystemBase {
                 PersistMode.kPersistParameters);
         return motor;
     }
-    
+
 }

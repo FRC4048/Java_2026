@@ -89,6 +89,6 @@ public abstract class BasicVisionFilter implements VisionFilter, VisionTransform
   }
   
   public static boolean inBounds(Pose2d pose2d) {
-    return pose2d.getX() > 0 && pose2d.getX() < 16.5 && pose2d.getY() > 0 && pose2d.getY() < 8.1;
+    return pose2d.getX() > 0 && pose2d.getX() < Constants.FIELD_LENGTH && pose2d.getY() > 0 && pose2d.getY() < Constants.FIELD_WIDTH;
   }
 }

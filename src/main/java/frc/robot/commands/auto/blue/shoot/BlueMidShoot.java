@@ -30,8 +30,8 @@ public class BlueMidShoot extends LoggableSequentialCommandGroup{
                     new RunAnglerToReverseLimit(angler),
                     new SetShootingState(shootstate, ShootState.SHOOTING_HUB)
                 ),
-                LoggableCommandWrapper.wrap(auto.resetOdometry("BlueMidForward").withTimeout(3)),
-                LoggableCommandWrapper.wrap(auto.trajectoryCmd("BlueMidForward").withTimeout(3)), //path = 2.7s
+                LoggableCommandWrapper.wrap(auto.resetOdometry("BlueMidForward")),
+                LoggableCommandWrapper.wrap(auto.trajectoryCmd("BlueMidForward").withTimeout(1)), //path = 0.8 s
                 new LoggableParallelCommandGroup(
                     new SpinShooter(shooter, Constants.SHOOTER_SPEED),
                     new SpinHopper(hopper),

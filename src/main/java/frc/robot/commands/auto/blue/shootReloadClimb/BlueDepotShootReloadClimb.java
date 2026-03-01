@@ -35,14 +35,14 @@ public class BlueDepotShootReloadClimb extends LoggableSequentialCommandGroup{
                 ),
                 LoggableCommandWrapper.wrap(auto.resetOdometry("BlueDepot_OriginToDepot")),
                 new LoggableParallelCommandGroup(
-                    LoggableCommandWrapper.wrap(auto.trajectoryCmd("BlueDepot_OriginToDepot").withTimeout(1.5)), //path = 1.3s
+                    LoggableCommandWrapper.wrap(auto.trajectoryCmd("BlueDepot_OriginToDepot").withTimeout(1.7)), //path = 1.4s
                     new SpinShooter(shooter, Constants.SHOOTER_SPEED),
                     new SpinHopper(hopper),
                     new SpinFeeder(feeder)
                 ), //shoots the 8 preloaded fuel in parallel with the path
                 LoggableCommandWrapper.wrap(auto.resetOdometry("BlueDepot_TowardDepot")),
                 new LoggableParallelCommandGroup(
-                    LoggableCommandWrapper.wrap(auto.trajectoryCmd("BlueLeftClimb").withTimeout(3)), //path = 2.7s
+                    LoggableCommandWrapper.wrap(auto.trajectoryCmd("BlueDepot_TowardDepot").withTimeout(3)), //path = 2.7s
                     new SpinShooter(shooter, Constants.SHOOTER_SPEED),
                     new SpinHopper(hopper),
                     new SpinFeeder(feeder)

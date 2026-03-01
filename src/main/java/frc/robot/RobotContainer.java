@@ -334,23 +334,21 @@ public class RobotContainer {
         }
 
         public void putShuffleboardCommands() {
-                        SmartDashboard.putNumber(RunDashboardShotTest.ANGLER_TARGET_POSITION_KEY, 0.0);
-                        SmartDashboard.putNumber(RunDashboardShotTest.TURRET_TARGET_POSITION_KEY, Constants.TURRET_HOME_ANGLE);
-                        SmartDashboard.putNumber(RunDashboardShotTest.SHOOTER_TARGET_RPM_KEY, Constants.SHOOTER_SPEED);
-                        SmartDashboard.putData("RunHoppperAndFeeder",
-                                        new RunHopperAndFeeder(hopperSubsystem, feederSubsystem));
-
-                        SmartDashboard.putData(
-                                        "test/Run Dashboard Shot Test (30s)",
-                                        new RunDashboardShotTest(anglerSubsystem, turretSubsystem, shooterSubsystem));
-                                    SmartDashboard.putData(
+                SmartDashboard.putData(
                     "turret/Run Turret to Rev Limit",
                     new RunTurretToRevLimit(turretSubsystem));
-
-            SmartDashboard.putData(
+                 SmartDashboard.putData(
                     "turret/Run Turret to Fwd Limit",
                     new RunTurretToFwdLimit(turretSubsystem));
-                        
+                SmartDashboard.putData(
+                    "turret/Turret Go 0",
+                    new SetTurretAngle(turretSubsystem, 0));
+                SmartDashboard.putData(
+                    "turret/Turret Go 45",
+                    new SetTurretAngle(turretSubsystem, 45));
+                SmartDashboard.putData(
+                    "turret/Turret Go -45",
+                    new SetTurretAngle(turretSubsystem, -45));
                 if (Constants.DEBUG) {
 
                         /*
@@ -370,6 +368,15 @@ public class RobotContainer {
 
 
             // TODO: These commands do not REQUIRE the subsystem therefore cannot be used in// production
+             SmartDashboard.putNumber(RunDashboardShotTest.ANGLER_TARGET_POSITION_KEY, 0.0);
+                        SmartDashboard.putNumber(RunDashboardShotTest.TURRET_TARGET_POSITION_KEY, Constants.TURRET_HOME_ANGLE);
+                        SmartDashboard.putNumber(RunDashboardShotTest.SHOOTER_TARGET_RPM_KEY, Constants.SHOOTER_SPEED);
+            SmartDashboard.putData("RunHoppperAndFeeder",
+                                        new RunHopperAndFeeder(hopperSubsystem, feederSubsystem));
+
+                        SmartDashboard.putData(
+                                        "test/Run Dashboard Shot Test (30s)",
+                                        new RunDashboardShotTest(anglerSubsystem, turretSubsystem, shooterSubsystem));
                         SmartDashboard.putData(
                                         "Intake/Spin Forward",
                                         new InstantCommand(() -> intakeSubsystem.setSpeed(1.0)));
@@ -418,10 +425,6 @@ public class RobotContainer {
             SmartDashboard.putData(
                     "turret/Turret Go 45",
                     new SetTurretAngle(turretSubsystem, 45));
-
-            SmartDashboard.putData(
-                    "turret/Turret Go 0",
-                    new SetTurretAngle(turretSubsystem, 0));
 
             SmartDashboard.putData(
                     "turret/Turret Go 75",
@@ -485,7 +488,7 @@ public class RobotContainer {
                                         "intakedeployer/Deployment State: STOPPED",
                         new SetDeploymentState(intakeDeployer, DeploymentState.STOPPED));
 
-                }
+                
 
         //basic drive command
         if (!Constants.TESTBED) {
@@ -495,6 +498,7 @@ public class RobotContainer {
             SmartDashboard.putData("AddApriltagReading", new AddApriltagReading(apriltagSubsystem, new ApriltagReading(0, 0, 0, 0, 0, 0, 0)));
             SmartDashboard.putData("AddGarbageReading", new AddGarbageReading(apriltagSubsystem));
             SmartDashboard.putData("AddTunedApriltagReading", new AddTunableApriltagReading(apriltagSubsystem));
+        }
         }
 
         }

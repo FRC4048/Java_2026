@@ -118,15 +118,15 @@ public class GameConstants {
 
     
  // turret (pan angle) PID
-    public static final double TURRET_P = .5;
-    public static final double TURRET_I = 0.000001;
+    public static final double TURRET_P = .025;
+    public static final double TURRET_I = 0.00000;
     public static final double TURRET_D = 0.0;
     public static final double TURRET_FF = 0.0;
     public static final double TURRET_ENCODER_MIN = 0; //Lowest encoder position of Turret
-    public static final double TURRET_ENCODER_MAX = 100; //Highest encoder position of Turret
+    public static final double TURRET_ENCODER_MAX = 77; //Highest encoder position of Turret
     public static final double TURRET_HOME_ANGLE = 0.0; //Turret facing forward
-    public static final double TURRET_LEFT_ANGLE = -90;
-    public static final double TURRET_RIGHT_ANGLE = 90;
+    public static final double TURRET_LEFT_ANGLE = 95;
+    public static final double TURRET_RIGHT_ANGLE = -95;
     public static final double TURRET_LIMIT_SPEED = 0.1;
 
     //swerve config

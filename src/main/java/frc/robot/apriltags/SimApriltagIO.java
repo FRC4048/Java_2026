@@ -37,7 +37,7 @@ public class SimApriltagIO extends TCPApriltagIo {
                     Translation3d adjPose2 = cameraPos.relativeTo(tag.getPose()).getTranslation();
                     double distance = adjPose2.getNorm();
                     double distanceTimesCosIncidenceAngle = adjPose2.getX();
-                    if (distanceTimesCosIncidenceAngle < Constants.MAX_VISION_DISTANCE_SIMULATION) {
+                    if (distance*distance/distanceTimesCosIncidenceAngle < Constants.MAX_VISION_DISTANCE_SIMULATION) {
                         VisionMeasurement measurement = new VisionMeasurement(new Pose2d(), tag.getTagInfo(), distance, 0);
                         Vector<N3> stdDevs = truster.calculateTrust(measurement, cameraPos);
                         double readingX = robotPoseSupplier.get().get().getX() + random.nextGaussian() * stdDevs.get(0);

@@ -164,7 +164,7 @@ public class GameConstants {
     public static final double AVERAGE_CAM_LATENCY_STD_DEV = 0; // seconds; TODO: change Later
     public static final double MAX_VISION_DISTANCE_SIMULATION = 3.5;
     public static final double AVERAGE_PIR_LATENCY = 20; //ms
-    public static final double VISION_SMOOTHER = 1.0;
+    public static final double VISION_SMOOTHER = 100.0;
     public static final Vector<N3> INITIAL_VISION_STD_DEVS = VecBuilder.fill(0,0,0); // TODO: Change later
     public static final double VISION_STD_DEV_CONST = 1.0/148.0; // TODO: Change later
 }

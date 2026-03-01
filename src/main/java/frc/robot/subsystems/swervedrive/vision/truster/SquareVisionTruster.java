@@ -21,7 +21,7 @@ public class SquareVisionTruster extends DistanceVisionTruster {
   @Override
   public Vector<N3> calculateTrust(VisionMeasurement measurement, Pose3d cameraPose) {
     Translation3d adjPose2 = cameraPose.relativeTo(measurement.tag().tag().getPose()).getTranslation();
-    double distanceTimesCosIncidenceAngle = adjPose2.getX();
+    double distanceTimesCosIncidenceAngle = adjPose2.getX()/adjPose2.getNorm();
     double std = Math.pow(measurement.distanceFromTag(), 2) * constant / distanceTimesCosIncidenceAngle;
     return initialSTD.plus(VecBuilder.fill(std, std, std*10000));
   }

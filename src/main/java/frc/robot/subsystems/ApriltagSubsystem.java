@@ -46,7 +46,7 @@ public class ApriltagSubsystem extends SubsystemBase {
     }
 
     public static ApriltagIO createSimIo(VisionTruster truster, SwerveSubsystem drivebase) {
-        return new SimApriltagIO(LOGGING_NAME, new ApriltagInputs(), new SimTCPServer(0), truster, drivebase::getSimulationPose); // port doesnt matter at all
+        return new SimApriltagIO(LOGGING_NAME, new ApriltagInputs(), new SimTCPServer(0), truster, drivebase); // port doesnt matter at all
     }
     // This is used to inject april tag readings manually and will pretty much only be used for simulation.
     public void addSimReading(ApriltagReading reading) {

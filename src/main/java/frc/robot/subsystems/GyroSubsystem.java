@@ -1,10 +1,14 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Robot;
+import frc.robot.constants.GameConstants;
+import frc.robot.utils.diag.DiagGyro;
 import frc.robot.utils.logging.input.GyroValues;
 import frc.robot.utils.logging.io.gyro.GyroIo;
 import frc.robot.utils.logging.io.gyro.MockGyroIo;
 import frc.robot.utils.logging.io.gyro.RealGyroIo;
+import frc.robot.utils.logging.io.gyro.ThreadedGyro;
 import frc.robot.utils.simulation.RobotVisualizer;
 
 public class GyroSubsystem extends SubsystemBase {
@@ -37,7 +41,11 @@ public class GyroSubsystem extends SubsystemBase {
 
     public static GyroIo createRealIo() {
         RealGyroIo realGyroIo = new RealGyroIo();
+        ThreadedGyro gyro = realGyroIo.getThreadedGyro();
         realGyroIo.start();
+        Robot.getDiagnostics()
+        .addDiagnosable(new DiagGyro("Gyro", "Gyro Angle", GameConstants.GYRO_DIAGS_ANGLE, gyro));
+    
         return realGyroIo;
     }
 

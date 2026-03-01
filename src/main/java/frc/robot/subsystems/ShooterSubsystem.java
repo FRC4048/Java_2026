@@ -45,7 +45,7 @@ public class ShooterSubsystem extends SubsystemBase {
     public ShooterSubsystem(SparkMaxPidMotorIo io) {
         this.io = io ;
         this.pidManager = new TunablePIDManager(LOGGING_NAME, io, createPidConfig());
-        //  io.setPid(0.0000002, 0.000015, 0.000015); // Pid needs tuning
+        io.setPid(0.000000, 0.0000, 0.0000); // Pid needs tuning
         stopMotors();
     }
 
@@ -53,7 +53,9 @@ public class ShooterSubsystem extends SubsystemBase {
         return new SparkMaxPidConfig(false)
                 .setCurrentLimit(Constants.NEO_CURRENT_LIMIT)
                 .setAllowedError(.1)
-                .setIdleMode(IdleMode.kCoast);
+                .setIdleMode(IdleMode.kCoast)
+                .setPid(0,0,0)
+                .setFF(0.0025);
     }
 
     // setSpeed expects a power value from -1 to 1

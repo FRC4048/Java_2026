@@ -334,6 +334,30 @@ public class RobotContainer {
         }
 
         public void putShuffleboardCommands() {
+                        SmartDashboard.putNumber(RunDashboardShotTest.ANGLER_TARGET_POSITION_KEY, 0.0);
+                        SmartDashboard.putNumber(RunDashboardShotTest.TURRET_TARGET_POSITION_KEY, Constants.TURRET_HOME_ANGLE);
+                        SmartDashboard.putNumber(RunDashboardShotTest.SHOOTER_TARGET_RPM_KEY, Constants.SHOOTER_SPEED);
+                        SmartDashboard.putData("RunHoppperAndFeeder",
+                                        new RunHopperAndFeeder(hopperSubsystem, feederSubsystem));
+
+                        SmartDashboard.putData(
+                                        "test/Run Dashboard Shot Test (30s)",
+                                        new RunDashboardShotTest(anglerSubsystem, turretSubsystem, shooterSubsystem));
+                        SmartDashboard.putData(
+                                        "intakedeployer/Deployment State: UP",
+                                        new SetDeploymentState(intakeDeployer, DeploymentState.UP));
+                        SmartDashboard.putData(
+                                        "intakedeployer/Deployment State: DOWN",
+                                        new SetDeploymentState(intakeDeployer, DeploymentState.DOWN));
+                        SmartDashboard.putData(
+                                        "intakedeployer/Deployment State: STOPPED",
+                                        new SetDeploymentState(intakeDeployer, DeploymentState.STOPPED));
+                        SmartDashboard.putData(
+                                        "Spin Intake",
+                                        new SpinIntake(intakeSubsystem));
+                        SmartDashboard.putData(
+                                        "Stop Intake",
+                                        new StopIntake(intakeSubsystem));
                 if (Constants.DEBUG) {
 
                         /*
@@ -364,17 +388,6 @@ public class RobotContainer {
                         SmartDashboard.putData(
                                         "Intake/Stop",
                                         new InstantCommand(intakeSubsystem::stopMotors));
-
-                        SmartDashboard.putNumber(RunDashboardShotTest.ANGLER_TARGET_POSITION_KEY, 0.0);
-                        SmartDashboard.putNumber(RunDashboardShotTest.TURRET_TARGET_POSITION_KEY, Constants.TURRET_HOME_ANGLE);
-                        SmartDashboard.putNumber(RunDashboardShotTest.SHOOTER_TARGET_RPM_KEY, Constants.SHOOTER_SPEED);
-
-                        SmartDashboard.putData("RunHoppperAndFeeder",
-                                        new RunHopperAndFeeder(hopperSubsystem, feederSubsystem));
-
-                        SmartDashboard.putData(
-                                        "test/Run Dashboard Shot Test (30s)",
-                                        new RunDashboardShotTest(anglerSubsystem, turretSubsystem, shooterSubsystem));
 
                         SmartDashboard.putData(
                                         "angler/Go Home",

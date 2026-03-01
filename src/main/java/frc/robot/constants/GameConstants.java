@@ -34,7 +34,7 @@ public class GameConstants {
     public static final boolean ENABLE_LOGGING = true;
 
     //Debugs
-    public static final boolean DEBUG = true;
+    public static final boolean DEBUG = false;
     public static final boolean ARM_DEBUG = true;
 
     //Joystick
@@ -46,7 +46,7 @@ public class GameConstants {
     public static final double ROLLER_SPEED = 0.25;
     public static final double TILT_SPEED = -0.5; // Arm motor is inverted - use negative speed
     public static final double INTAKE_SPEED = -0.5;
-    public static final double HOPPER_SPEED = 0.1;//Want to increase this later
+    public static final double HOPPER_SPEED = 0.35;//Want to increase this later
     public static final double CLIMBER_SPEED_UP = 0.1;
     public static final double CLIMBER_SPEED_DOWN = -0.1;
     public static final double FEEDER_SPEED = 1.0;//Might make veolcity PID

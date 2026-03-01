@@ -29,7 +29,7 @@ public class IntakeSubsystem extends SubsystemBase {
 
     public IntakeSubsystem(SparkMaxIo io) {
         this.io = io;
-//        setDefaultCommand(new SpinIntake(this));
+      // setDefaultCommand(new SpinIntake(this));
     }
 
     public void setSpeed(double speed) {

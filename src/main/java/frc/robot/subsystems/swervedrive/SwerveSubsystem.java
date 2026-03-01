@@ -339,6 +339,7 @@ public class SwerveSubsystem extends SubsystemBase {
     public double getAverageError(){
         return poseError.stream().mapToDouble(record -> record.error).average().orElse(0);
     }
+
     public Optional<Pose2d> getSimulationPose() {
         return swerveDrive.getSimulationDriveTrainPose();
     }

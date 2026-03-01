@@ -46,7 +46,7 @@ public class ApriltagSubsystem extends SubsystemBase {
     }
 
     public static ApriltagIO createSimIo(VisionTruster truster, SwerveSubsystem drivebase) {
-        return new SimApriltagIO(LOGGING_NAME, new ApriltagInputs(), new SimTCPServer(0), truster, drivebase::getSimulationPose); // port doesnt matter at all
+        return new SimApriltagIO(LOGGING_NAME, new ApriltagInputs(), new SimTCPServer(0), truster, drivebase); // port doesnt matter at all
     }
     // This is used to inject april tag readings manually and will pretty much only be used for simulation.
     public void addSimReading(ApriltagReading reading) {
@@ -55,16 +55,10 @@ public class ApriltagSubsystem extends SubsystemBase {
     public ApriltagIO getIO(){
         return io;
     }
-    public VisionTruster getVisionTruster() {
-        return estimator.getVisionTruster();
-    }
     @Override
     public void periodic() {
         estimator.updateVision();
         estimator.updatePosition(drivebase.getOdom());
         io.periodic();
-    }
-    public Vector<N3> calculateTrust(VisionMeasurement measurement) {
-        return estimator.getVisionTruster().calculateTrust(measurement);
     }
 }

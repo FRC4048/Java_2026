@@ -9,8 +9,11 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Robot;
 import frc.robot.commands.intake.SpinIntake;
 import frc.robot.constants.Constants;
+import frc.robot.constants.GameConstants;
+import frc.robot.utils.diag.DiagSparkMaxEncoder;
 import frc.robot.utils.logging.input.DigitalInputLoggableInputs;
 import frc.robot.utils.logging.input.MotorLoggableInputs;
 import frc.robot.utils.logging.io.motor.DigitalInputIo;
@@ -51,7 +54,14 @@ public class FeederSubsystem extends SubsystemBase {
     }
 
     public static SparkMaxIo createRealIo() {
-        return new RealSparkMaxIo(LOGGING_NAME, createMotor(), MotorLoggableInputs.allMetrics());
+        SparkMax motor = createMotor();
+
+        Robot.getDiagnostics()
+        .addDiagnosable(
+            new DiagSparkMaxEncoder(
+                "Feeder", "Encoder", GameConstants.FEEDER_DIAGS_ENCODER, motor));
+                
+        return new RealSparkMaxIo(LOGGING_NAME, motor, MotorLoggableInputs.allMetrics());
     }
 
     public static SparkMaxIo createSimIo(RobotVisualizer visualizer) {

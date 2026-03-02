@@ -39,7 +39,6 @@ import frc.robot.commands.angler.RunAnglerToReverseLimit;
 import frc.robot.commands.shooter.DefaultShooterControl;
 import frc.robot.commands.auto.ExampleAuto;
 import frc.robot.commands.shooter.SetShootingState;
-import frc.robot.commands.turret.AimTurret;
 import frc.robot.commands.testing.RunDashboardShotTest;
 import frc.robot.commands.turret.DefaultTurretControl;
 import frc.robot.commands.turret.RunTurretToFwdLimit;
@@ -334,7 +333,6 @@ public class RobotContainer {
                         drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity);
                 }
 
-                turretSubsystem.setDefaultCommand(new AimTurret(turretSubsystem, drivebase::getPose, getShootingState()));
         }
 
         public void putShuffleboardCommands() {

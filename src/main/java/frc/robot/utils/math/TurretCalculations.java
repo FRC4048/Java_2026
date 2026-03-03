@@ -30,11 +30,6 @@ public class TurretCalculations {
     // robotRotation is the angle between the horizontal (by the alliance side chute) and the robot
     public static double calculateTurretAngle(double robotPosX, double robotPosY, double robotRotation, boolean isBlueAlliance) {
         
-        // calculates the position of the turret with respect to the origin using the robot center 
-        // and the constant distance between the robot center and the turret.
-        double turretPosX = robotPosX + GameConstants.X_DISTANCE_BETWEEN_ROBOT_AND_TURRET;
-        double turretPosY = robotPosY + GameConstants.Y_DISTANCE_BETWEEN_ROBOT_AND_TURRET;
-
         double hubPosX;
         double hubPosY;
 
@@ -55,7 +50,7 @@ public class TurretCalculations {
          * of the input numbers.
          * 
          */
-        double panAngleUnadjusted = Math.atan2(hubPosY - turretPosY, hubPosX - turretPosX);
+        double panAngleUnadjusted = Math.atan2(hubPosY - robotPosY, hubPosX - robotPosX);
 
         /*
          * Adjusts the pan angle to account for the robot's current rotation. We subtract the
@@ -70,11 +65,6 @@ public class TurretCalculations {
 
     // shuttlePosX and shuttlePosY are given values from the constants file -- gives the x and y positions of the shuttle site (in meters)
     public static double calculateTurretShuttleAngle(double robotPosX, double robotPosY, double robotRotation, boolean isBlueAlliance) {
-        
-        // calculates the position of the turret with respect to the origin using the robot center 
-        // and the constant distance between the robot center and the turret.
-        double turretPosX = robotPosX + GameConstants.X_DISTANCE_BETWEEN_ROBOT_AND_TURRET;
-        double turretPosY = robotPosY + GameConstants.Y_DISTANCE_BETWEEN_ROBOT_AND_TURRET;
 
         double shuttlePosX;
         double shuttlePosY;
@@ -96,7 +86,7 @@ public class TurretCalculations {
          * of the input numbers.
          * 
          */
-        double panAngleUnadjusted = Math.atan2(shuttlePosY - turretPosY, shuttlePosX - turretPosX);
+        double panAngleUnadjusted = Math.atan2(shuttlePosY - robotPosY, shuttlePosX - robotPosX);
 
         /*
          * Adjusts the pan angle to account for the robot's current rotation. We subtract the

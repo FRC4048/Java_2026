@@ -46,16 +46,16 @@ public class GameConstants {
     public static final double ROLLER_SPEED = 0.25;
     public static final double TILT_SPEED = -0.5; // Arm motor is inverted - use negative speed
     public static final double INTAKE_SPEED = -0.5;
-    public static final double HOPPER_SPEED = 0.1;
-    public static final double CLIMBER_SPEED_UP = 0.5;
-    public static final double CLIMBER_SPEED_DOWN = -0.25;
-    public static final double FEEDER_SPEED = 0.5;
+    public static final double HOPPER_SPEED = 0.1;//Want to increase this later
+    public static final double CLIMBER_SPEED_UP = 0.1;
+    public static final double CLIMBER_SPEED_DOWN = -0.1;
+    public static final double FEEDER_SPEED = 0.5;//Might make veolcity PID
     public static final double MAX_SPEED = Units.feetToMeters(14.5);
     public static final double SHOOTER_SPEED = 100;
-    public static final double INTAKE_DEPLOYER_SPEED = 0.5;
-    public static final double INTAKE_RETRACTION_SPEED = -0.5;
-    public static final double INITIAL_INTAKE_DEPLOYER_SPEED = 10;
-    public static final double INITIAL_INTAKE_RETRACTION_SPEED = -10;
+    public static final double INTAKE_DEPLOYER_SPEED = 0.25;
+    public static final double INTAKE_RETRACTION_SPEED = -0.1;
+    public static final double INITIAL_INTAKE_DEPLOYER_SPEED = 0.25;
+    public static final double INITIAL_INTAKE_RETRACTION_SPEED = -0.1;
 
 
     //Diags

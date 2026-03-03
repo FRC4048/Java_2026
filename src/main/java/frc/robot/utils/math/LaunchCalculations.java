@@ -22,11 +22,6 @@ public class LaunchCalculations {
         // Target value -- what we're trying to find
         double shooterVelocity; // Initial velocity of the shooter -- related to flywheel speed
 
-        // calculates the position of the turret with respect to the origin using the robot center 
-        // and the constant distance between the robot center and the turret.
-        double turretPosX = robotPosX + GameConstants.X_DISTANCE_BETWEEN_ROBOT_AND_TURRET;
-        double turretPosY = robotPosY + GameConstants.Y_DISTANCE_BETWEEN_ROBOT_AND_TURRET;
-
         // Given values -- from Constants file
         double hubHeight = GameConstants.HUB_HEIGHT; // height of the top of the hub
         double shooterHeight = GameConstants.SHOOTER_HEIGHT; // height of shooter
@@ -47,8 +42,8 @@ public class LaunchCalculations {
         }
         
         // Compute distance between hub and robot with Pythagorean Theorem
-        deltaDistance = Math.sqrt(Math.pow(hubPosY - turretPosY, 2) 
-        + Math.pow(hubPosX - turretPosX, 2));
+        deltaDistance = Math.sqrt(Math.pow(hubPosY - robotPosY, 2) 
+        + Math.pow(hubPosX - robotPosX, 2));
 
         // Compute the change in height between the shooter and the hub
         deltaHeight = hubHeight - shooterHeight;

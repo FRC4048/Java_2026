@@ -39,7 +39,6 @@ public class AutoChooser {
     private final ShootingState shootstate;
     private final ShooterSubsystem shooter;
     private final AutoFactory auto;
-    private final ClimberSubsystem climber;
     private final FeederSubsystem feeder;
     private final HopperSubsystem hopper;
     private final TurretSubsystem turret;
@@ -52,7 +51,6 @@ public class AutoChooser {
         this.auto = auto;
         this.shootstate = shootstate;
         this.shooter = shooter;
-        this.climber = climber;
         this.hopper = hopper;
         this.feeder = feeder;
         this.turret = turret;

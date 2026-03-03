@@ -1,7 +1,5 @@
 package frc.robot.autochooser;
 
-import static edu.wpi.first.wpilibj.DriverStation.Alliance;
-
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.util.Units;

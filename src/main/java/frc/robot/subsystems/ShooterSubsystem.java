@@ -45,7 +45,7 @@ public class ShooterSubsystem extends SubsystemBase {
     public ShooterSubsystem(SparkMaxPidMotorIo io) {
         this.io = io ;
         this.pidManager = new TunablePIDManager(LOGGING_NAME, io, createPidConfig());
-        io.setPid(0.000000, 0.0000, 0.0000); // Pid needs tuning
+        io.setPid(0.001, 0.0000, 0.007); // Pid needs tuning
         stopMotors();
     }
 

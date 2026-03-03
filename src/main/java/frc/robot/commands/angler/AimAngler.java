@@ -99,7 +99,7 @@ public class AimAngler extends LoggableCommand {
     }
 
     private boolean shouldUseManual(Pose2d robotPose) {
-        return (Constants.currentMode == Constants.Mode.SIM) || Constants.TESTBED;
+        return (Constants.currentMode == Constants.Mode.SIM);// || Constants.TESTBED;
     }
 
     private Pose2d getManualPose() {

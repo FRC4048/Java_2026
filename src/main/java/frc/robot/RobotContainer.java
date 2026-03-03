@@ -334,22 +334,20 @@ public class RobotContainer {
         }
 
         public void putShuffleboardCommands() {
+            SmartDashboard.putData("RunHoppperAndFeeder",
+                                        new RunHopperAndFeeder(hopperSubsystem, feederSubsystem));
+
                 SmartDashboard.putData(
-                    "turret/Run Turret to Rev Limit",
-                    new RunTurretToRevLimit(turretSubsystem));
-                 SmartDashboard.putData(
-                    "turret/Run Turret to Fwd Limit",
-                    new RunTurretToFwdLimit(turretSubsystem));
-                SmartDashboard.putData(
-                    "turret/Turret Go 0",
-                    new SetTurretAngle(turretSubsystem, 0));
-                SmartDashboard.putData(
-                    "turret/Turret Go 45",
-                    new SetTurretAngle(turretSubsystem, 45));
-                SmartDashboard.putData(
-                    "turret/Turret Go -45",
-                    new SetTurretAngle(turretSubsystem, -45));
-                if (Constants.DEBUG) {
+                                        "test/Run Dashboard Shot Test (30s)",
+                                        new RunDashboardShotTest(anglerSubsystem, turretSubsystem, shooterSubsystem));
+               
+                   SmartDashboard.putNumber(RunDashboardShotTest.ANGLER_TARGET_POSITION_KEY, 0.0);
+                SmartDashboard.putNumber(RunDashboardShotTest.TURRET_TARGET_POSITION_KEY, Constants.TURRET_HOME_ANGLE);
+                SmartDashboard.putNumber(RunDashboardShotTest.SHOOTER_TARGET_RPM_KEY, Constants.SHOOTER_SPEED);
+                                       SmartDashboard.putData(
+                                        "angler/Home Rev (Reset)",
+                                        new RunAnglerToReverseLimit(anglerSubsystem));
+                        if (Constants.DEBUG) {
 
                         /*
                          * SmartDashboard.putData(
@@ -367,16 +365,7 @@ public class RobotContainer {
 
 
 
-            // TODO: These commands do not REQUIRE the subsystem therefore cannot be used in// production
-             SmartDashboard.putNumber(RunDashboardShotTest.ANGLER_TARGET_POSITION_KEY, 0.0);
-                        SmartDashboard.putNumber(RunDashboardShotTest.TURRET_TARGET_POSITION_KEY, Constants.TURRET_HOME_ANGLE);
-                        SmartDashboard.putNumber(RunDashboardShotTest.SHOOTER_TARGET_RPM_KEY, Constants.SHOOTER_SPEED);
-            SmartDashboard.putData("RunHoppperAndFeeder",
-                                        new RunHopperAndFeeder(hopperSubsystem, feederSubsystem));
-
-                        SmartDashboard.putData(
-                                        "test/Run Dashboard Shot Test (30s)",
-                                        new RunDashboardShotTest(anglerSubsystem, turretSubsystem, shooterSubsystem));
+            // TODO: These commands do not REQUIRE the subsystem therefore cannot be used in// productio
                         SmartDashboard.putData(
                                         "Intake/Spin Forward",
                                         new InstantCommand(() -> intakeSubsystem.setSpeed(1.0)));
@@ -409,18 +398,12 @@ public class RobotContainer {
                                         new RunCommand(anglerSubsystem::runForward, anglerSubsystem)
                                                         .until(anglerSubsystem::isAtForwardLimit));
 
-                        SmartDashboard.putData(
-                                        "angler/Run To Rev Limit",
-                                        new RunCommand(anglerSubsystem::runReverse, anglerSubsystem)
-                                                        .until(anglerSubsystem::isAtReverseLimit));
+
 
                         SmartDashboard.putData(
                                         "angler/Reset Encoder",
                                         new InstantCommand(anglerSubsystem::resetEncoderToZero));
 
-                        SmartDashboard.putData(
-                                        "angler/Home Rev (Reset)",
-                                        new RunAnglerToReverseLimit(anglerSubsystem));
 
             SmartDashboard.putData(
                     "turret/Turret Go 45",

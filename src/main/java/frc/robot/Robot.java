@@ -132,7 +132,6 @@ public class Robot extends LoggedRobot {
     SmartDashboard.putBoolean("Hub Active?", hubActive());
     SmartDashboard.putString("Selected Action", 
       robotContainer.getAutoChooser().getCommandDescription());
-    SmartDashboard.putString("Starting Location", location().toString());
 
     // Gets the alliance color.
     if (DriverStation.isDSAttached() && allianceColor.isEmpty()) {
@@ -156,12 +155,6 @@ public class Robot extends LoggedRobot {
 
     // schedule the autonomous command (example)
     mode.set(RobotMode.AUTONOMOUS);
-    autonomousCommand = robotContainer.getAutonomousCommand();
-
-    // schedule the autonomous command (example)
-    if (autonomousCommand != null) {
-      CommandScheduler.getInstance().schedule(autonomousCommand);
-    }
 
     // Hub is always active during autonomous.
     hubActive = true;
@@ -169,7 +162,16 @@ public class Robot extends LoggedRobot {
 
   /** This function is called periodically during autonomous. */
   @Override
-  public void autonomousPeriodic() {}
+  public void autonomousPeriodic() {
+
+    // schedule the autonomous command
+    if (this.autonomousCommand == null) {
+      autonomousCommand = robotContainer.getAutonomousCommand();
+      if (autonomousCommand != null) {
+        CommandScheduler.getInstance().schedule(autonomousCommand);
+      }
+    }
+  }
 
   @Override
   public void teleopInit() {

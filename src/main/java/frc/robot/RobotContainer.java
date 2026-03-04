@@ -28,6 +28,7 @@ import frc.robot.commands.intake.SpinIntake;
 import frc.robot.commands.intakeDeployment.InitialRunDeployment;
 import frc.robot.commands.intakeDeployment.RunDeployer;
 import frc.robot.commands.intakeDeployment.SetDeploymentState;
+import frc.robot.commands.lightStrip.SetLedFromShootingState;
 import frc.robot.commands.parallels.RunHopperAndFeeder;
 import frc.robot.commands.sequences.IntakeDownSequence;
 import frc.robot.commands.sequences.IntakeUpSequence;
@@ -55,6 +56,7 @@ import frc.robot.subsystems.IntakeDeployerSubsystem;
 import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.subsystems.GyroSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.LightStripSubsystem;
 import frc.robot.subsystems.TurretSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.ClimberSubsystem;
@@ -104,6 +106,7 @@ public class RobotContainer {
         private final ControllerSubsystem controllerSubsystem;
         private RobotVisualizer robotVisualizer = null;
         private final HopperSubsystem hopperSubsystem;
+        private final LightStripSubsystem lightStripSubsystem;
 
         private final TurretSubsystem turretSubsystem;
         private final IntakeDeployerSubsystem intakeDeployer;
@@ -137,7 +140,7 @@ public class RobotContainer {
                                 hopperSubsystem = new HopperSubsystem(HopperSubsystem.createRealIo());
                                 intakeDeployer = new IntakeDeployerSubsystem(IntakeDeployerSubsystem.createRealIo());
                                 turretSubsystem = new TurretSubsystem(TurretSubsystem.createRealIo());
-
+                                lightStripSubsystem = new LightStripSubsystem();
 
 
                                 climberSubsystem = new ClimberSubsystem(ClimberSubsystem.createRealIo());
@@ -166,7 +169,8 @@ public class RobotContainer {
                                 turretSubsystem = new TurretSubsystem(TurretSubsystem.createMockIo());
                                 shooterSubsystem = new ShooterSubsystem(ShooterSubsystem.createMockIo());
                                 intakeDeployer = new IntakeDeployerSubsystem(IntakeDeployerSubsystem.createMockIo());
-                // No GyroSubsystem in REPLAY for now
+                                lightStripSubsystem = new LightStripSubsystem();
+                                // No GyroSubsystem in REPLAY for now
                 // create the drive subsystem with null gyro (use default json)
                 drivebase = !Constants.TESTBED ? new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "YAGSL/" + Constants.SWERVE_JSON_DIRECTORY), null) : null;
                 apriltagSubsystem = !Constants.TESTBED ? new ApriltagSubsystem(ApriltagSubsystem.createMockIo(), drivebase) : null;
@@ -188,7 +192,8 @@ public class RobotContainer {
                                 shooterSubsystem = new ShooterSubsystem(ShooterSubsystem.createSimIo(robotVisualizer));
                                 intakeDeployer = new IntakeDeployerSubsystem(
                                                 IntakeDeployerSubsystem.createSimIo(robotVisualizer));// No GyroSubsystem in REPLAY for now
-                // create the drive subsystem with null gyro (use default json)
+                                lightStripSubsystem = new LightStripSubsystem();
+                                                // create the drive subsystem with null gyro (use default json)
                 drivebase = !Constants.TESTBED ? new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "YAGSL/" + Constants.SWERVE_JSON_DIRECTORY), null) : null;
                 controllerSubsystem = !Constants.TESTBED ? new ControllerSubsystem(drivebase, this) : null;
                 apriltagSubsystem = !Constants.TESTBED ? new ApriltagSubsystem(ApriltagSubsystem.createSimIo(), drivebase) : null;
@@ -490,7 +495,10 @@ public class RobotContainer {
                                         new SetDeploymentState(intakeDeployer, DeploymentState.DOWN));
                         SmartDashboard.putData(
                                         "intakedeployer/Deployment State: STOPPED",
-                        new SetDeploymentState(intakeDeployer, DeploymentState.STOPPED));
+                                        new SetDeploymentState(intakeDeployer, DeploymentState.STOPPED));
+                        SmartDashboard.putData(
+                                        "light",
+                                        new SetLedFromShootingState(lightStripSubsystem, shootState));
 
 
                 }

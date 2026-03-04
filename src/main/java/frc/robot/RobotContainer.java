@@ -412,6 +412,15 @@ public class RobotContainer {
             SmartDashboard.putData(
                     "turret/Turret Go 75",
                     new SetTurretAngle(turretSubsystem, 75));
+
+            SmartDashboard.putNumber("turret/Target Turret Encoder", turretSubsystem.
+            findTargetRotations(controllerSubsystem.getTargetTurretAngleDegrees()));
+
+            SmartDashboard.putData(
+                "turret/Set Turret Angle",
+                new SetTurretAngle(turretSubsystem, controllerSubsystem.getTargetTurretAngleDegrees())
+            );
+
                         SmartDashboard.putData(
                                         "intakedeployer/InitlizeDeployer",
                                         new InitialRunDeployment(intakeDeployer));

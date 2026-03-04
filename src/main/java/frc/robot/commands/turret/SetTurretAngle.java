@@ -1,5 +1,6 @@
 package frc.robot.commands.turret;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.TurretSubsystem;
 import frc.robot.utils.logging.commands.LoggableCommand;
 
@@ -16,6 +17,10 @@ public class SetTurretAngle extends LoggableCommand {
         this.turret = turret;
         this.targetAngle = targetAngle;
         addRequirements(turret);
+    }
+
+    public SetTurretAngle(TurretSubsystem turret) {
+        this(turret, SmartDashboard.getNumber("turret/Target Turret Angle", 0));
     }
 
     @Override

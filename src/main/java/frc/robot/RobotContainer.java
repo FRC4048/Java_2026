@@ -25,6 +25,7 @@ import frc.robot.commands.drive.DriveDirectionTime;
 import frc.robot.commands.feeder.SpinFeeder;
 import frc.robot.commands.drive.FakeVision;
 import frc.robot.commands.intake.SpinIntake;
+import frc.robot.commands.intake.StopIntake;
 import frc.robot.commands.intakeDeployment.InitialRunDeployment;
 import frc.robot.commands.intakeDeployment.RunDeployer;
 import frc.robot.commands.intakeDeployment.SetDeploymentState;
@@ -39,6 +40,7 @@ import frc.robot.commands.angler.RunAnglerToReverseLimit;
 import frc.robot.commands.shooter.DefaultShooterControl;
 import frc.robot.commands.auto.ExampleAuto;
 import frc.robot.commands.shooter.SetShootingState;
+import frc.robot.commands.testing.RunDashboardShotTest;
 import frc.robot.commands.turret.DefaultTurretControl;
 import frc.robot.commands.turret.RunTurretToFwdLimit;
 import frc.robot.commands.turret.RunTurretToRevLimit;
@@ -135,8 +137,7 @@ public class RobotContainer {
                                 // rollerSubsystem = new RollerSubsystem(RollerSubsystem.createRealIo());
                                 // tiltSubsystem = new TiltSubsystem(TiltSubsystem.createRealIo());
                                 anglerSubsystem = new AnglerSubsystem(AnglerSubsystem.createRealIo());
-                                intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createRealIo(),
-                                                IntakeSubsystem.createRealDeploymentSwitch());
+                                intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createRealIo());
                                 hopperSubsystem = new HopperSubsystem(HopperSubsystem.createRealIo());
                                 intakeDeployer = new IntakeDeployerSubsystem(IntakeDeployerSubsystem.createRealIo());
                                 turretSubsystem = new TurretSubsystem(TurretSubsystem.createRealIo());
@@ -161,8 +162,7 @@ public class RobotContainer {
                                 // rollerSubsystem = new RollerSubsystem(RollerSubsystem.createMockIo());
                                 // tiltSubsystem = new TiltSubsystem(TiltSubsystem.createMockIo());
                                 anglerSubsystem = new AnglerSubsystem(AnglerSubsystem.createMockIo());
-                                intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createMockIo(),
-                                                IntakeSubsystem.createMockDeploymentSwitch());
+                                intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createMockIo());
                                 hopperSubsystem = new HopperSubsystem(HopperSubsystem.createMockIo());
                                 climberSubsystem = new ClimberSubsystem(ClimberSubsystem.createMockIo());
                                 feederSubsystem = new FeederSubsystem(FeederSubsystem.createMockIo());
@@ -183,8 +183,7 @@ public class RobotContainer {
                                 // tiltSubsystem = new
                                 // TiltSubsystem(TiltSubsystem.createSimIo(robotVisualizer));
                                 anglerSubsystem = new AnglerSubsystem(AnglerSubsystem.createSimIo(robotVisualizer));
-                                intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createSimIo(robotVisualizer),
-                                                IntakeSubsystem.createSimDeploymentSwitch());
+                                intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createSimIo(robotVisualizer));
                                 hopperSubsystem = new HopperSubsystem(HopperSubsystem.createSimIo(robotVisualizer));
                                 climberSubsystem = new ClimberSubsystem(ClimberSubsystem.createSimIo(robotVisualizer));
                                 feederSubsystem = new FeederSubsystem(FeederSubsystem.createSimIo(robotVisualizer));
@@ -371,22 +370,16 @@ public class RobotContainer {
                                         "Intake/Stop",
                                         new InstantCommand(intakeSubsystem::stopMotors));
 
-                        SmartDashboard.putNumber("angler/TargetRotations", Constants.ANGLER_HOME_ROTATIONS);
-
-                        SmartDashboard.putNumber("angler/TargetAngle", 0);
+                        SmartDashboard.putNumber(RunDashboardShotTest.ANGLER_TARGET_POSITION_KEY, 0.0);
+                        SmartDashboard.putNumber(RunDashboardShotTest.TURRET_TARGET_POSITION_KEY, Constants.TURRET_HOME_ANGLE);
+                        SmartDashboard.putNumber(RunDashboardShotTest.SHOOTER_TARGET_RPM_KEY, Constants.SHOOTER_SPEED);
 
                         SmartDashboard.putData("RunHoppperAndFeeder",
                                         new RunHopperAndFeeder(hopperSubsystem, feederSubsystem));
 
                         SmartDashboard.putData(
-                                        "angler/Set Position",
-                                        new InstantCommand(() -> anglerSubsystem.setPosition(
-                                                        SmartDashboard.getNumber("angler/TargetRotations", 0.0))));
-
-                        SmartDashboard.putData(
-                                        "angler/Set Angle",
-                                        new InstantCommand(() -> anglerSubsystem.setAngle(
-                                                        SmartDashboard.getNumber("angler/TargetAngle", 0.0))));
+                                        "test/Run Dashboard Shot Test (30s)",
+                                        new RunDashboardShotTest(anglerSubsystem, turretSubsystem, shooterSubsystem));
 
                         SmartDashboard.putData(
                                         "angler/Go Home",
@@ -447,6 +440,9 @@ public class RobotContainer {
                         SmartDashboard.putData(
                                         "Spin Intake",
                                         new SpinIntake(intakeSubsystem));
+                        SmartDashboard.putData(
+                                        "Stop Intake",
+                                        new StopIntake(intakeSubsystem));
 
                         SmartDashboard.putData(
                                         "Start Hopper",
@@ -500,7 +496,6 @@ public class RobotContainer {
                                         "light",
                                         new SetLedFromShootingState(lightStripSubsystem, shootState));
 
-
                 }
 
         //basic drive command
@@ -542,7 +537,7 @@ public class RobotContainer {
     public IntakeSubsystem getIntakeSubsystem() {
         return intakeSubsystem;
     }
-
+    
     public SwerveSubsystem getDriveBase() {
         return drivebase;
     }

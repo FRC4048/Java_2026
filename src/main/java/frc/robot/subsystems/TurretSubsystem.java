@@ -57,13 +57,19 @@ public class TurretSubsystem extends SubsystemBase {
    * @param targetAngle Desired angle position of turret in degrees */
   
     public void setAngle(double targetAngle) {
-        double targetRotations = calculateRotationsForAngle(
-                targetAngle,
-                Constants.TURRET_ENCODER_MAX,
-                Constants.TURRET_ENCODER_MIN,
-                Constants.TURRET_RIGHT_ANGLE,
-                Constants.TURRET_LEFT_ANGLE);
+        double targetRotations = findTargetRotations(targetAngle);
         setPosition(targetRotations);
+    }
+
+    // Find encoder value given a target angle
+    public double findTargetRotations(double targetAngle) {
+        double targetRotations = calculateRotationsForAngle(
+            targetAngle,
+            Constants.TURRET_ENCODER_MAX,
+            Constants.TURRET_ENCODER_MIN,
+            Constants.TURRET_RIGHT_ANGLE,
+            Constants.TURRET_LEFT_ANGLE);
+        return targetRotations;
     }
 
     //Range translate code with a clamp

@@ -10,6 +10,7 @@ import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Robot;
 import frc.robot.constants.Constants;
@@ -74,6 +75,7 @@ public class ShooterSubsystem extends SubsystemBase {
     public void periodic() {
         pidManager.periodic();
         io.periodic();
+        SmartDashboard.putNumber("turret/setPosition", 0);
     }
 
     public static SparkMaxPidMotorIo createMockIo() {

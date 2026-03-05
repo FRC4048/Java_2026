@@ -88,7 +88,7 @@ public class ControllerSubsystem extends SubsystemBase {
         Logger.recordOutput(TARGET_TURRET_ANGLE_KEY, activeTargets.turretAngleDegrees);
         Logger.recordOutput(TARGET_FEEDER_SPEED_KEY, activeTargets.feederSpin);
         Logger.recordOutput(TARGET_HOPPER_SPEED_KEY, activeTargets.hopperSpin);
-
+        
         previousState = currentState;
     }
 

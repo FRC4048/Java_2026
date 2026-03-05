@@ -12,7 +12,7 @@ public class ConstantsReal2026 extends GameConstants {
     // other CAN-ID's
     public static final int ROLLER_MOTOR_ID = 99; //remove
     public static final int TILT_MOTOR_ID = 98; //remove
-    public static final int TURRET_MOTOR_ID = 9;
+    public static final int TURRET_MOTOR_ID = 19;
     public static final int FEEDER_MOTOR_ID = 10;
     public static final int HOPPER_MOTOR_ID = 3;
     public static final int INTAKE_MOTOR_ID = 4;
@@ -34,6 +34,6 @@ public class ConstantsReal2026 extends GameConstants {
     public static final int TCP_SERVER_PORT = 5806;
 
     // other
-    public static final boolean TESTBED = false;
+    public static final boolean TESTBED = true;
 
 }

@@ -31,6 +31,7 @@ import frc.robot.commands.intakeDeployment.RunDeployer;
 import frc.robot.commands.intakeDeployment.SetDeploymentState;
 import frc.robot.commands.lightStrip.SetLedFromShootingState;
 import frc.robot.commands.parallels.RunHopperAndFeeder;
+import frc.robot.commands.parallels.SetShootingStateAndLight;
 import frc.robot.commands.sequences.IntakeDownSequence;
 import frc.robot.commands.sequences.IntakeUpSequence;
 import frc.robot.autochooser.AutoChooser;
@@ -289,11 +290,11 @@ public class RobotContainer {
                 controller.b().onTrue(new IntakeDownSequence(intakeDeployer, intakeSubsystem));
                 controller.y().onTrue(new ClimberUp(climberSubsystem));
                 controller.x().onTrue(new ClimberDown(climberSubsystem));
-                controller.povUp().onTrue(new SetShootingState(shootState, ShootState.FIXED));
-                controller.povRight().onTrue(new SetShootingState(shootState, ShootState.FIXED_2));
-                controller.povDown().onTrue(new SetShootingState(shootState, ShootState.SHOOTING_HUB));
-                controller.povLeft().onTrue(new SetShootingState(shootState, ShootState.SHUTTLING));
-                driveJoystick.trigger().whileTrue((new SetShootingState(shootState, ShootState.STOPPED)));
+                controller.povUp().onTrue(new SetShootingStateAndLight(shootState, lightStripSubsystem, ShootState.FIXED));
+                controller.povRight().onTrue(new SetShootingStateAndLight(shootState, lightStripSubsystem, ShootState.FIXED_2));
+                controller.povDown().onTrue(new SetShootingStateAndLight(shootState, lightStripSubsystem, ShootState.SHOOTING_HUB));
+                controller.povLeft().onTrue(new SetShootingStateAndLight(shootState, lightStripSubsystem, ShootState.SHUTTLING));
+                driveJoystick.trigger().whileTrue((new SetShootingStateAndLight(shootState, lightStripSubsystem, ShootState.STOPPED)));
                 if (controllerSubsystem != null) {
                         steerJoystick.trigger().whileTrue(new ShootButton(controllerSubsystem));
                 }

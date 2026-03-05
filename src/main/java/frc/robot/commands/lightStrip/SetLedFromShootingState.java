@@ -26,7 +26,7 @@ public class SetLedFromShootingState extends LoggableCommand{
     public void execute() {
         switch (shootingState.getShootState()) {
             case STOPPED:
-                subsystem.setPattern(BlinkinPattern.COLOR_WAVES_LAVA_PALETTE);
+                subsystem.setPattern(BlinkinPattern.DARK_RED);
                 break;
             case FIXED:
                 subsystem.setPattern(BlinkinPattern.COLOR_WAVES_OCEAN_PALETTE);
@@ -38,7 +38,7 @@ public class SetLedFromShootingState extends LoggableCommand{
                 subsystem.setPattern(BlinkinPattern.RAINBOW_RAINBOW_PALETTE);
                 break;
             case SHUTTLING:
-                subsystem.setPattern(BlinkinPattern.COLOR_WAVES_FOREST_PALETTE);
+                subsystem.setPattern(BlinkinPattern.GREEN);
                 break;
         }
     }

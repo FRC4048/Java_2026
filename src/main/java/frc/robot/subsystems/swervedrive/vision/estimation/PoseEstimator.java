@@ -16,10 +16,7 @@ import frc.robot.RobotMode;
 import frc.robot.constants.Constants;
 import frc.robot.subsystems.ApriltagSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
-import frc.robot.subsystems.swervedrive.vision.truster.BasicVisionFilter;
-import frc.robot.subsystems.swervedrive.vision.truster.ConstantVisionTruster;
-import frc.robot.subsystems.swervedrive.vision.truster.VisionMeasurement;
-import frc.robot.subsystems.swervedrive.vision.truster.VisionTruster;
+import frc.robot.subsystems.swervedrive.vision.truster.*;
 import frc.robot.utils.Apriltag;
 import frc.robot.utils.math.ArrayUtils;
 
@@ -51,7 +48,7 @@ public class PoseEstimator {
   private static final double visionStdRateOfChange = 1;
 
   /* standard deviation of vision readings, the lower the numbers arm, the more we trust vision */
-  public static final Vector<N3> visionMeasurementStdDevs2 = VecBuilder.fill(0.3, 0.3, 100);
+  public static final Vector<N3> visionMeasurementStdDevs2 = VecBuilder.fill(0, 0, 100);
   private final FilterablePoseManager poseManager;
 
   public PoseEstimator(
@@ -82,11 +79,11 @@ public class PoseEstimator {
         TimeInterpolatableBuffer.createBuffer(Constants.POSE_BUFFER_STORAGE_TIME);
     this.poseManager =
         new FilterablePoseManager(
-            visionMeasurementStdDevs2,
+            Constants.INITIAL_VISION_STD_DEVS,
             kinematics,
             drivebase,
             m1Buffer,
-            new BasicVisionFilter(m1Buffer) {
+            new BasicVisionFilter(m1Buffer,truster) {
               @Override
               public Pose2d getVisionPose(VisionMeasurement measurement) {
                 return measurement.measurement();
@@ -129,7 +126,7 @@ public class PoseEstimator {
             && !ArrayUtils.contains(
                 invalidApriltagNumbers, apriltagSystem.getIO().getInputs().apriltagNumber[i])) {
           VisionMeasurement measurement = getVisionMeasurement(pos, i);
-          poseManager.registerVisionMeasurement(measurement);
+          poseManager.registerVisionMeasurement(measurement,measurement.tag().tag().number());
         } else {
           invalidCounter++;
           Logger.recordOutput("Apriltag/ValidationFailureCount", invalidCounter);
@@ -138,7 +135,8 @@ public class PoseEstimator {
     }
     long end = System.currentTimeMillis();
     Logger.recordOutput("RegisteringVisionTimeMillis", end - start);
-    poseManager.processQueue();
+        poseManager.processQueue();
+      poseManager.log();
   }
 
   private VisionMeasurement getVisionMeasurement(double[] pos, int index) {
@@ -160,7 +158,7 @@ public class PoseEstimator {
    * are sent to the {@link PoseManager} for further processing
    */
   public void updateVision() {
-    updateVision(15, 4, 14, 5, 16, 3);
+    updateVision(0);
   }
 
   public void updateVision(Apriltag focusedTag) {
@@ -206,7 +204,7 @@ public class PoseEstimator {
 
   public void addMockVisionMeasurement() {
     poseManager.registerVisionMeasurement(
-        new VisionMeasurement(getEstimatedPose(), Apriltag.of(1).getTagInfo(), 0, Logger.getTimestamp() / 1e6));
+        new VisionMeasurement(getEstimatedPose(), Apriltag.of(1).getTagInfo(), 0, Logger.getTimestamp() / 1e6),1);
   }
     public VisionTruster getVisionTruster() {
         return poseManager.getVisionTruster();

@@ -9,6 +9,7 @@ import edu.wpi.first.math.Vector;
 import static edu.wpi.first.units.Units.Meter;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -331,6 +332,13 @@ public class SwerveSubsystem extends SubsystemBase {
     public Pose2d getPose() {
         return swerveDrive.getPose();
     }
+    public Pose3d getCameraPose() {
+        if (Constants.currentMode == GameConstants.Mode.SIM) {
+            return new Pose3d(getSimulationPose().get()).transformBy(Constants.ROBOT_TO_CAMERA);
+        } else {
+            return new Pose3d(getPose()).transformBy(Constants.ROBOT_TO_CAMERA);
+        }
+    }
     public double getError() {
         return getPose().getTranslation().getDistance((getSimulationPose().get().getTranslation()));
     }
@@ -514,7 +522,7 @@ public class SwerveSubsystem extends SubsystemBase {
         return swerveDrive;
     }
     public void setVariance(Vector<N3> variance){
-        this.variance = variance;
+        this.variance = variance.times(Constants.VISION_SMOOTHER);
     }
     public void addVisionMeasurement(Pose2d pose, double visionTimestamp){
         swerveDrive.addVisionMeasurement(pose, visionTimestamp, variance);

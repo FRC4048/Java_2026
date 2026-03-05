@@ -2,7 +2,6 @@ package frc.robot.constants;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.units.measure.Time;
 import edu.wpi.first.wpilibj.RobotBase;
 import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
 
@@ -47,31 +46,48 @@ public class GameConstants {
     public static final double ROLLER_SPEED = 0.25;
     public static final double TILT_SPEED = -0.5; // Arm motor is inverted - use negative speed
     public static final double INTAKE_SPEED = -0.5;
-    public static final double HOPPER_SPEED = 0.1;
-    public static final double CLIMBER_SPEED_UP = 0.5;
-    public static final double CLIMBER_SPEED_DOWN = -0.25;
-    public static final double FEEDER_SPEED = 0.5;
+    public static final double HOPPER_SPEED = 0.1;//Want to increase this later
+    public static final double CLIMBER_SPEED_UP = 0.1;
+    public static final double CLIMBER_SPEED_DOWN = -0.1;
+    public static final double FEEDER_SPEED = 0.5;//Might make veolcity PID
     public static final double MAX_SPEED = Units.feetToMeters(14.5);
     public static final double SHOOTER_SPEED = 100;
-    public static final double INTAKE_DEPLOYER_SPEED = 10;
-    public static final double INTAKE_RETRACTION_SPEED = -10;
+    public static final double INTAKE_DEPLOYER_SPEED = 0.25;
+    public static final double INTAKE_RETRACTION_SPEED = -0.1;
+    public static final double INITIAL_INTAKE_DEPLOYER_SPEED = 0.25;
+    public static final double INITIAL_INTAKE_RETRACTION_SPEED = -0.1;
 
+
+    //Diags
+    public static final double HOPPER_DIAGS_ENCODER = 1;
+    public static final double INTAKE_ROLLER_DIAGS_ENCODER = 1;
+    public static final double FEEDER_DIAGS_ENCODER = 1;
+    public static final double CLIMBER_DIAGS_ENCODER = 1;
+    public static final double SHOOTER_DIAGS_ENCODER = 1;
+    public static final double GYRO_DIAGS_ANGLE = 30;
+    public static final double TURRET_DIAGS_ENCODER = 1;
+    public static final double INTAKE_DEPLOYER_DIAGS_ENCODER = 1;
+    public static final double ANGLER_DIAGS_ENCODER = 1;
 
     //Timeouts
     public static final double SPIN_TIMEOUT = 5;
     public static final double TILT_TIMEOUT = 5;
-    public static final double HOPPER_TIMEOUT = 10;
+    public static final double HOPPER_TIMEOUT = 60;
     public static final double CLIMBER_TIMEOUT = 10;
-    public static final double FEEDER_TIMEOUT = 3;
+    public static final double FEEDER_TIMEOUT = 60;
     public static final double ANGLER_TIMEOUT = 5;
     public static final int SERVER_SOCKET_CONNECTION_TIMEOUT = 2000;
     public static final double SHOOTER_TIMEOUT = 5;
+    public static final double INTAKE_DEPLOYER_BURNOUT_TIMER = 2;
+    public static final double TURRET_TIMEOUT = 5;
 
     //Angles
     public static final Rotation2d TILT_MIN_ANGLE = Rotation2d.fromDegrees(45);
     public static final Rotation2d TILT_MAX_ANGLE = Rotation2d.fromDegrees(90);
     public static final Rotation2d ANGLER_MIN_ANGLE = Rotation2d.fromDegrees(45);
     public static final Rotation2d ANGLER_MAX_ANGLE = Rotation2d.fromDegrees(90);
+    public static final Rotation2d TURRET_MIN_ANGLE = Rotation2d.fromDegrees(-90);
+    public static final Rotation2d TURRET_MAX_ANGLE = Rotation2d.fromDegrees(90);
 
     public static final double TILT_LENGTH = 0.2;
     public static final double TILT_INERTIA = 0.5;
@@ -82,10 +98,13 @@ public class GameConstants {
     public static final double ANGLER_GEARING = 45.0;
     public static final boolean ANGLER_SIMULATE_GRAVITY = false;
     public static final int NEO_CURRENT_LIMIT = 20;
+    public static final double TURRET_LENGTH = 0.4;
+    public static final double TURRET_INERTIA = 0.5;
+    public static final double TURRET_GEARING = 45.0;
 
     // angler (turret) PID
     public static final double ANGLER_P = 0.1;
-    public static final double ANGLER_I = 0.000001;
+    public static final double ANGLER_I = 0.0000001;
     public static final double ANGLER_D = 0.0;
     public static final double ANGLER_FF = 0.0;
     public static final double ANGLER_HOME_ROTATIONS = 0.0;
@@ -94,9 +113,22 @@ public class GameConstants {
     public static final double ANGLER_ANGLE_LOW = 0; //Lowest angle position of Angler
     public static final double ANGLER_ANGLE_HIGH = 45; //Highest angle position of Angler
     public static final double ANGLER_FIXED_ROTATIONS = 0.1; //Fixed encoder position of Angler in Fixed ShootState
+    public static final double ANGLER_FIXED_ANGLE = 10; //Fixed encoder position of Angler in Fixed ShootState
     public static final double ANGLER_LIMIT_SPEED = 0.2;
 
     
+ // turret (pan angle) PID
+    public static final double TURRET_P = .5;
+    public static final double TURRET_I = 0.000001;
+    public static final double TURRET_D = 0.0;
+    public static final double TURRET_FF = 0.0;
+    public static final double TURRET_ENCODER_MIN = 0; //Lowest encoder position of Turret
+    public static final double TURRET_ENCODER_MAX = 100; //Highest encoder position of Turret
+    public static final double TURRET_HOME_ANGLE = 0.0; //Turret facing forward
+    public static final double TURRET_LEFT_ANGLE = -90;
+    public static final double TURRET_RIGHT_ANGLE = 90;
+    public static final double TURRET_LIMIT_SPEED = 0.2;
+
     //swerve config
     public static final TelemetryVerbosity TELEMENTRY_VERBOSITY = TelemetryVerbosity.HIGH;
     public static final boolean SET_HEADING_CORRECTION = false;
@@ -125,5 +157,8 @@ public class GameConstants {
     public static final int SHIFT_4_START = 55;
     public static final int ENDGAME_START = 30;
 
+    public static final double VISION_CONSISTENCY_THRESHOLD = 0.25; //How close 2 vision measurements have to be (needs to be tuned potentially but seemingly from my testing it also might not be needed)
+    public static final boolean ENABLE_VISION = true;
+    public static final double POSE_BUFFER_STORAGE_TIME = 2; //how many past measurements are stored in the buffer (might increase if we need further back)
     public static final String DRIVER_CAM_IP_ADDRESS = "10.40.48.2:1181/?action=stream";
 }

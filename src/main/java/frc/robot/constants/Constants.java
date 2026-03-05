@@ -4,6 +4,7 @@
 
 package frc.robot.constants;
 
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants. This class should not be used for any other purpose. All constants should be declared
@@ -13,5 +14,10 @@ package frc.robot.constants;
  * constants are needed, to reduce verbosity.
  */
 
-public class Constants extends Constants2026 {}
 
+// To use the other constatns files, change which line is not commented out here.
+// Then discard changes to this file before committing.
+public class Constants extends ConstantsReal2026 {
+// public class Constants extends ConstantsPushbot2026 {
+// public class Constants extends ConstantsTestbed2026 {
+}

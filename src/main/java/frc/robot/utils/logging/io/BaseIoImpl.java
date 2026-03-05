@@ -10,7 +10,7 @@ import org.littletonrobotics.junction.inputs.LoggableInputs;
 public abstract class BaseIoImpl<I extends LoggableInputs> implements BaseIo {
     // The name of the "folder" where the logs from this IO will be logged
     private final String prefix;
-    private final I inputs;
+    protected final I inputs;
 
     public BaseIoImpl(String folder, I inputs) {
         this.inputs = inputs;

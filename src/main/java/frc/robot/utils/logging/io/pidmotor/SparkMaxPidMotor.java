@@ -98,9 +98,9 @@ public class SparkMaxPidMotor {
             config
                     .closedLoop
                     .maxMotion
-                    .cruiseVelocity(pidConfig.getMaxVelocity())
+                    .cruiseVelocity(params.getMaxVelocity())
                     .maxAcceleration(params.getMaxAccel())
-                    .allowedProfileError(pidConfig.getAllowedError());
+                    .allowedProfileError(params.getAllowedError());
         }
         neoMotor.configure(config, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
     }

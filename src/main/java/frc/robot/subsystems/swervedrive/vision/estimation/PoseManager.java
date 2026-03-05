@@ -2,6 +2,7 @@ package frc.robot.subsystems.swervedrive.vision.estimation;
 
 import edu.wpi.first.math.Vector;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.interpolation.TimeInterpolatableBuffer;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.numbers.N3;
@@ -116,5 +117,9 @@ public class PoseManager {
         } else {
             return sample.get();
         }
+    }
+
+    public Rotation2d getRotation() {
+        return drivebase.getHeading();
     }
 }

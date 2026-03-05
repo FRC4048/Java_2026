@@ -6,6 +6,7 @@ import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.interpolation.TimeInterpolatableBuffer;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.numbers.N3;
+import frc.robot.constants.GameConstants;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import frc.robot.subsystems.swervedrive.vision.truster.FilterResult;
 import frc.robot.subsystems.swervedrive.vision.truster.PoseDeviation;
@@ -25,8 +26,7 @@ import org.littletonrobotics.junction.Logger;
  */
 public class FilterablePoseManager extends PoseManager {
   private final VisionFilter filter;
-  private record MeasurementRecord(Apriltag tag, double timestamp, FilterResult result) { }
-  public record VisionLog(VisionMeasurement measurement, FilterResult result) {}
+  private record MeasurementRecord(int tag, double timestamp, FilterResult result) { }
   private final ConcurrentLinkedDeque<MeasurementRecord> lastSecondMeasurements = new ConcurrentLinkedDeque<>();
 
   public FilterablePoseManager(
@@ -60,9 +60,8 @@ public class FilterablePoseManager extends PoseManager {
     double currentTime = Logger.getTimestamp()/1000000.0;
     double oneSecondAgo = currentTime - 1.0;
     lastSecondMeasurements.removeIf(record -> record.timestamp < oneSecondAgo);
-    List<VisionLog> log = new ArrayList<>();
-    List<Pose2d> validMeasurementsPose = new ArrayList<>();
-    List<Pose2d> invalidMeasurementsPose = new ArrayList<>();;
+//    List<Pose2d> validMeasurementsPose = new ArrayList<>();
+//    List<Pose2d> invalidMeasurementsPose = new ArrayList<>();
     List<Pose3d> acceptedTagsPose = new ArrayList<>();
 
     LinkedHashMap<VisionMeasurement, FilterResult> filteredData =
@@ -72,29 +71,32 @@ public class FilterablePoseManager extends PoseManager {
       VisionMeasurement v = filterEntry.getKey();
       Apriltag tag = v.tag().tag();
       FilterResult r = filterEntry.getValue();
-      log.add(new VisionLog(v, r));
-      lastSecondMeasurements.add(new MeasurementRecord(tag, v.timeOfMeasurement(),r));
+      lastSecondMeasurements.add(new MeasurementRecord(tag.number(), v.timeOfMeasurement(),r));
       switch (r) {
         case ACCEPTED -> {
           setVisionSTD(visionTruster.calculateTrust(v));
-          validMeasurementsPose.add(v.measurement());
+//          validMeasurementsPose.add(v.measurement());
           addVisionMeasurement(v);
-          acceptedTagsPose.add(tag.getPose());
+          if (GameConstants.currentMode == GameConstants.Mode.SIM) {
+            acceptedTagsPose.add(tag.getPose());
+          }
 
         }
         case NOT_PROCESSED -> visionMeasurementQueue.add(v);
         case REJECTED -> {
-          invalidMeasurementsPose.add(v.measurement());
+//          invalidMeasurementsPose.add(v.measurement());
         }
       }
     }
-    Logger.recordOutput("Apriltag/acceptedMeasurementsPose", validMeasurementsPose.toArray(Pose2d[]::new));
-    Logger.recordOutput("Apriltag/rejectedMeasurementsPose", invalidMeasurementsPose.toArray(Pose2d[]::new));
+//    Logger.recordOutput("Apriltag/acceptedMeasurementsPose", validMeasurementsPose.toArray(Pose2d[]::new));
+//    Logger.recordOutput("Apriltag/rejectedMeasurementsPose", invalidMeasurementsPose.toArray(Pose2d[]::new));
     Logger.recordOutput("Apriltag/numberAcceptedLastSecond", lastSecondMeasurements.stream().filter(record -> record.result == FilterResult.ACCEPTED).count());
-    Logger.recordOutput("Apriltag/numberNotProcessedLastSecond", lastSecondMeasurements.stream().filter(record -> record.result == FilterResult.NOT_PROCESSED).count());
+//    Logger.recordOutput("Apriltag/numberNotProcessedLastSecond", lastSecondMeasurements.stream().filter(record -> record.result == FilterResult.NOT_PROCESSED).count());
     Logger.recordOutput("Apriltag/numberRejectedLastSecond", lastSecondMeasurements.stream().filter(record -> record.result == FilterResult.REJECTED).count());
-    Logger.recordOutput("Apriltag/acceptedTagPose", acceptedTagsPose.toArray(Pose3d[]::new));
-    Logger.recordOutput("Apriltag/Log", log.toArray(VisionLog[]::new));
+    Logger.recordOutput("Apriltag/acceptedIdsLastSecond", lastSecondMeasurements.stream().filter(record -> record.result == FilterResult.ACCEPTED).mapToInt(record->record.tag).distinct().toArray());
+    if (GameConstants.currentMode == GameConstants.Mode.SIM) {
+      Logger.recordOutput("Apriltag/acceptedTagPose", acceptedTagsPose.toArray(Pose3d[]::new));
+    }
   }
 
   public VisionTruster getVisionTruster() {

@@ -10,15 +10,16 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Robot;
 import frc.robot.commands.auto.CommandDescription;
-import frc.robot.commands.auto.shoot.BlueDepotShoot;
-import frc.robot.commands.auto.shoot.BlueMidShoot;
-import frc.robot.commands.auto.shoot.BlueOutpostShoot;
-import frc.robot.commands.auto.shoot.RedDepotShoot;
-import frc.robot.commands.auto.shoot.RedMidShoot;
-import frc.robot.commands.auto.shoot.RedOutpostShoot;
+import frc.robot.commands.auto.shoot.BlueDepotShootClimb;
+import frc.robot.commands.auto.shoot.BlueMidShootClimb;
+import frc.robot.commands.auto.shoot.BlueOutpostShootClimb;
+import frc.robot.commands.auto.shoot.RedDepotShootClimb;
+import frc.robot.commands.auto.shoot.RedMidShootClimb;
+import frc.robot.commands.auto.shoot.RedOutpostShootClimb;
 import frc.robot.constants.enums.ShootingState;
 import frc.robot.subsystems.AnglerSubsystem;
 import frc.robot.subsystems.ClimberSubsystem;
+import frc.robot.subsystems.ControllerSubsystem;
 import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.subsystems.HopperSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
@@ -43,18 +44,22 @@ public class AutoChooser {
     private final HopperSubsystem hopper;
     private final TurretSubsystem turret;
     private final AnglerSubsystem angler;
-
-    public AutoChooser(SwerveSubsystem drivetrain, ShootingState shootstate, AutoFactory auto, 
-    ShooterSubsystem shooter, ClimberSubsystem climber, FeederSubsystem feeder, HopperSubsystem hopper, 
-    TurretSubsystem turret, AnglerSubsystem angler) {
-        this.drivetrain = drivetrain;
-        this.auto = auto;
-        this.shootstate = shootstate;
-        this.shooter = shooter;
-        this.hopper = hopper;
-        this.feeder = feeder;
-        this.turret = turret;
-        this.angler = angler;
+    private final ClimberSubsystem climber;
+    private final ControllerSubsystem controller;
+                
+                    public AutoChooser(SwerveSubsystem drivetrain, ShootingState shootstate, AutoFactory auto, 
+                    ShooterSubsystem shooter, ClimberSubsystem climber, FeederSubsystem feeder, HopperSubsystem hopper, 
+                    TurretSubsystem turret, AnglerSubsystem angler, ControllerSubsystem controller) {
+                        this.drivetrain = drivetrain;
+                        this.auto = auto;
+                        this.shootstate = shootstate;
+                        this.shooter = shooter;
+                        this.hopper = hopper;
+                        this.feeder = feeder;
+                        this.turret = turret;
+                        this.angler = angler;
+                        this.climber = climber;
+                        this.controller = controller;
 
         this.locationChooser = new LoggedDashboardChooser<>(
             "Location Chooser"
@@ -100,18 +105,18 @@ public class AutoChooser {
             new DoNothingCommand());
 
         commandMap.put(new AutoEvent(AutoAction.SHOOT, FieldLocation.DEPOT_SIDE, Alliance.Blue),
-            new BlueDepotShoot(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler)); //shoot depot blue
+            new BlueDepotShootClimb(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, climber, controller)); //shoot depot blue
         commandMap.put(new AutoEvent(AutoAction.SHOOT, FieldLocation.MID, Alliance.Blue),
-            new BlueMidShoot(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler)); //shoot mid blue
+            new BlueMidShootClimb(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, climber, controller)); //shoot mid blue
         commandMap.put(new AutoEvent(AutoAction.SHOOT, FieldLocation.OUTPOST_SIDE, Alliance.Blue),
-            new BlueOutpostShoot(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler)); //shoot outpost blue
+            new BlueOutpostShootClimb(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, climber, controller)); //shoot outpost blue
 
         commandMap.put(new AutoEvent(AutoAction.SHOOT, FieldLocation.DEPOT_SIDE, Alliance.Red),
-            new RedDepotShoot(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler)); //shoot depot red
+            new RedDepotShootClimb(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, climber, controller)); //shoot depot red
         commandMap.put(new AutoEvent(AutoAction.SHOOT, FieldLocation.MID, Alliance.Red),
-            new RedMidShoot(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler)); //shoot mid red
+            new RedMidShootClimb(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, climber, controller)); //shoot mid red
         commandMap.put(new AutoEvent(AutoAction.SHOOT, FieldLocation.OUTPOST_SIDE, Alliance.Red),
-            new RedOutpostShoot(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler)); // shoot outpost red
+            new RedOutpostShootClimb(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, climber, controller)); // shoot outpost red
     }
 
     public AutoEvent getSelectedEvent() {

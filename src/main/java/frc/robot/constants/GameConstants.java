@@ -34,7 +34,7 @@ public class GameConstants {
     public static final boolean ENABLE_LOGGING = true;
 
     //Debugs
-    public static final boolean DEBUG = false;
+    public static final boolean DEBUG = true;
     public static final boolean ARM_DEBUG = true;
 
     //Joystick
@@ -118,8 +118,8 @@ public class GameConstants {
 
     
  // turret (pan angle) PID
-    public static final double TURRET_P = .025;
-    public static final double TURRET_I = 0.00000;
+    public static final double TURRET_P = 1;
+    public static final double TURRET_I = 0.0000002;
     public static final double TURRET_D = 0.0;
     public static final double TURRET_FF = 0.0;
     public static final double TURRET_ENCODER_MIN = 0; //Lowest encoder position of Turret

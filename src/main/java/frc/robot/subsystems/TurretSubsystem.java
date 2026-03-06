@@ -149,14 +149,16 @@ public class TurretSubsystem extends SubsystemBase {
     }
 
     private static SparkMaxPidConfig createPidConfig() {
-        return new SparkMaxPidConfig(false)
+        return new SparkMaxPidConfig(true)
                 .setCurrentLimit(Constants.NEO_CURRENT_LIMIT)
                 .setAllowedError(.1)
                 .setPidf(
                         Constants.TURRET_P,
                         Constants.TURRET_I,
                         Constants.TURRET_D,
-                        Constants.TURRET_FF);
+                        Constants.TURRET_FF)
+                .setMaxAccel(6000)
+                .setMaxVelocity(3000);
     }
 
     private static SparkMaxPidMotor createMotor() {

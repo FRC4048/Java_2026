@@ -108,7 +108,7 @@ public class Robot extends LoggedRobot {
             CommandScheduler.getInstance().run();
         }
 
-        Logger.recordOutput("shootingState/", robotContainer.getShootingState().getShootState().toString());
+        Logger.recordOutput("shootingState", robotContainer.getShootingState().getShootState().toString());
 
         if (Constants.currentMode.equals(Constants.Mode.SIM)) {
             robotContainer.getRobotVisualizer().logMechanism();
@@ -121,6 +121,7 @@ public class Robot extends LoggedRobot {
     if (Constants.DEBUG) {
       SmartDashboard.putNumber("driverXbox.getLeftY()",driverXbox.getLeftY());
       SmartDashboard.putNumber("driverXbox::getRightX", driverXbox.getRightX());
+      SmartDashboard.putString("DeploymentState", robotContainer.getDeployer().getDeploymentState().toString());
       if(!Constants.TESTBED){
           Logger.recordOutput("MyPose", robotContainer.getDriveBase().getPose());
           Logger.recordOutput("OdomPose", robotContainer.getDriveBase().getOdom());

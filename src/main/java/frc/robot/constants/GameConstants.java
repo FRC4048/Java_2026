@@ -36,7 +36,7 @@ public class GameConstants {
     public static final boolean ENABLE_LOGGING = true;
 
     //Debugs
-    public static final boolean DEBUG = true;
+    public static final boolean DEBUG = false;
     public static final boolean ARM_DEBUG = true;
 
     //Joystick
@@ -48,16 +48,16 @@ public class GameConstants {
     public static final double ROLLER_SPEED = 0.25;
     public static final double TILT_SPEED = -0.5; // Arm motor is inverted - use negative speed
     public static final double INTAKE_SPEED = -0.5;
-    public static final double HOPPER_SPEED = 0.1;//Want to increase this later
+    public static final double HOPPER_SPEED = 0.35;//Want to increase this later
     public static final double CLIMBER_SPEED_UP = 0.1;
     public static final double CLIMBER_SPEED_DOWN = -0.1;
     public static final double FEEDER_SPEED = 0.5;//Might make veolcity PID
     public static final double MAX_SPEED = Units.feetToMeters(14.5);
     public static final double SHOOTER_SPEED = 100;
-    public static final double INTAKE_DEPLOYER_SPEED = 0.25;
-    public static final double INTAKE_RETRACTION_SPEED = -0.1;
-    public static final double INITIAL_INTAKE_DEPLOYER_SPEED = 0.25;
-    public static final double INITIAL_INTAKE_RETRACTION_SPEED = -0.1;
+    public static final double INTAKE_DEPLOYER_SPEED = -0.075;
+    public static final double INTAKE_RETRACTION_SPEED = 0.1;
+    public static final double INITIAL_INTAKE_DEPLOYMENT_SPEED = -0.1;
+    public static final double INITIAL_INTAKE_RETRACTION_SPEED = 0.25;
 
 
     //Diags
@@ -77,7 +77,7 @@ public class GameConstants {
     public static final double HOPPER_TIMEOUT = 60;
     public static final double CLIMBER_TIMEOUT = 10;
     public static final double FEEDER_TIMEOUT = 60;
-    public static final double ANGLER_TIMEOUT = 5;
+    public static final double ANGLER_TIMEOUT = 60;
     public static final int SERVER_SOCKET_CONNECTION_TIMEOUT = 2000;
     public static final double SHOOTER_TIMEOUT = 5;
     public static final double INTAKE_DEPLOYER_BURNOUT_TIMER = 2;
@@ -105,14 +105,14 @@ public class GameConstants {
     public static final double TURRET_GEARING = 45.0;
 
     // angler (turret) PID
-    public static final double ANGLER_P = 0.1;
-    public static final double ANGLER_I = 0.0000001;
+    public static final double ANGLER_P = 0.7;
+    public static final double ANGLER_I = 0.000001;
     public static final double ANGLER_D = 0.0;
     public static final double ANGLER_FF = 0.0;
     public static final double ANGLER_HOME_ROTATIONS = 0.0;
     public static final double ANGLER_ENCODER_LOW = 0; //Lowest encoder position of Angler
     public static final double ANGLER_ENCODER_HIGH = 100; //Highest encoder position of Angler
-    public static final double ANGLER_ANGLE_LOW = 0; //Lowest angle position of Angler
+    public static final double ANGLER_ANGLE_LOW = 17; //Lowest angle position of Angler
     public static final double ANGLER_ANGLE_HIGH = 45; //Highest angle position of Angler
     public static final double ANGLER_FIXED_ROTATIONS = 0.1; //Fixed encoder position of Angler in Fixed ShootState
     public static final double ANGLER_FIXED_ANGLE = 10; //Fixed encoder position of Angler in Fixed ShootState
@@ -120,16 +120,16 @@ public class GameConstants {
 
 
  // turret (pan angle) PID
-    public static final double TURRET_P = .5;
-    public static final double TURRET_I = 0.000001;
+    public static final double TURRET_P = .025;
+    public static final double TURRET_I = 0.00000;
     public static final double TURRET_D = 0.0;
     public static final double TURRET_FF = 0.0;
     public static final double TURRET_ENCODER_MIN = 0; //Lowest encoder position of Turret
-    public static final double TURRET_ENCODER_MAX = 100; //Highest encoder position of Turret
+    public static final double TURRET_ENCODER_MAX = 77; //Highest encoder position of Turret
     public static final double TURRET_HOME_ANGLE = 0.0; //Turret facing forward
-    public static final double TURRET_LEFT_ANGLE = -90;
-    public static final double TURRET_RIGHT_ANGLE = 90;
-    public static final double TURRET_LIMIT_SPEED = 0.2;
+    public static final double TURRET_LEFT_ANGLE = 95;
+    public static final double TURRET_RIGHT_ANGLE = -95;
+    public static final double TURRET_LIMIT_SPEED = 0.1;
 
     //swerve config
     public static final TelemetryVerbosity TELEMENTRY_VERBOSITY = TelemetryVerbosity.HIGH;

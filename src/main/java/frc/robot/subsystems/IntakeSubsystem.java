@@ -12,6 +12,7 @@ import frc.robot.Robot;
 import frc.robot.commands.intake.SpinIntake;
 import frc.robot.constants.Constants;
 import frc.robot.constants.GameConstants;
+import frc.robot.constants.enums.DeploymentState;
 import frc.robot.utils.diag.DiagSparkMaxEncoder;
 import frc.robot.utils.logging.input.DigitalInputLoggableInputs;
 import frc.robot.utils.logging.input.MotorLoggableInputs;
@@ -23,13 +24,12 @@ import frc.robot.utils.simulation.MotorSimulator;
 import frc.robot.utils.simulation.RobotVisualizer;
 
 public class IntakeSubsystem extends SubsystemBase {
-    
+
     public static final String LOGGING_NAME = "IntakeSubsystem";
     private final SparkMaxIo io;
 
     public IntakeSubsystem(SparkMaxIo io) {
         this.io = io;
-        setDefaultCommand(new SpinIntake(this));
     }
 
     public void setSpeed(double speed) {
@@ -48,17 +48,19 @@ public class IntakeSubsystem extends SubsystemBase {
     public static SparkMaxIo createMockIo() {
         return new MockSparkMaxIo(LOGGING_NAME, MotorLoggableInputs.allMetrics());
     }
+
     public static SparkMaxIo createRealIo() {
 
         SparkMax motor = createMotor();
 
         Robot.getDiagnostics()
-        .addDiagnosable(
-            new DiagSparkMaxEncoder(
-                "Intake Roller", "Encoder", GameConstants.INTAKE_ROLLER_DIAGS_ENCODER, motor));
+                .addDiagnosable(
+                        new DiagSparkMaxEncoder(
+                                "Intake Roller", "Encoder", GameConstants.INTAKE_ROLLER_DIAGS_ENCODER, motor));
 
         return new RealSparkMaxIo(LOGGING_NAME, motor, MotorLoggableInputs.allMetrics());
     }
+
     public static SparkMaxIo createSimIo(RobotVisualizer visualizer) {
         SparkMax motor = createMotor();
         return new SimSparkMaxIo(LOGGING_NAME, motor, MotorLoggableInputs.allMetrics(),
@@ -76,5 +78,4 @@ public class IntakeSubsystem extends SubsystemBase {
                 PersistMode.kPersistParameters);
         return motor;
     }
-
 }

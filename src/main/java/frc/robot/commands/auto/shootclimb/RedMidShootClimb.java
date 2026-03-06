@@ -1,4 +1,4 @@
-package frc.robot.commands.auto.shoot;
+package frc.robot.commands.auto.shootclimb;
 
 import choreo.auto.AutoFactory;
 import frc.robot.commands.ShootButton;
@@ -22,8 +22,8 @@ import frc.robot.utils.logging.commands.LoggableParallelCommandGroup;
 import frc.robot.utils.logging.commands.LoggableSequentialCommandGroup;
 import frc.robot.utils.logging.commands.LoggableWaitCommand;
 
-public class BlueOutpostShootClimb extends LoggableSequentialCommandGroup{
-    public BlueOutpostShootClimb(
+public class RedMidShootClimb extends LoggableSequentialCommandGroup{
+    public RedMidShootClimb(
         SwerveSubsystem drivetrain, AutoFactory auto, ShooterSubsystem shooter, ShootingState shootstate, 
         HopperSubsystem hopper, FeederSubsystem feeder, TurretSubsystem turret, AnglerSubsystem angler, 
         ClimberSubsystem climber, ControllerSubsystem controller) {
@@ -34,15 +34,15 @@ public class BlueOutpostShootClimb extends LoggableSequentialCommandGroup{
                     new RunAnglerToReverseLimit(angler)
                 ),
                 new SetShootingState(shootstate, ShootState.FIXED_2), //or some other shoot state
-                LoggableCommandWrapper.wrap(auto.resetOdometry("BlueOutpostShoot")),
-                LoggableCommandWrapper.wrap(auto.trajectoryCmd("BlueOutpostShoot")),
+                LoggableCommandWrapper.wrap(auto.resetOdometry("RedMidShoot")),
+                LoggableCommandWrapper.wrap(auto.trajectoryCmd("RedMidShoot")),
                 new LoggableParallelCommandGroup(
                     new ShootButton(controller),
                     new LoggableWaitCommand(3)
                 ),
-                LoggableCommandWrapper.wrap(auto.resetOdometry("BlueOutpostClimb")),
+                LoggableCommandWrapper.wrap(auto.resetOdometry("RedMidClimb")),
                 new LoggableParallelCommandGroup(
-                    LoggableCommandWrapper.wrap(auto.trajectoryCmd("BlueOutpostClimb")),
+                    LoggableCommandWrapper.wrap(auto.trajectoryCmd("RedMidClimb")),
                     new ClimberUp(climber)
                 )
                 //new ClimberSequence()   

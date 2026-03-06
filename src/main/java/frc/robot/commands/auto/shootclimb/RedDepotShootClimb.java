@@ -1,4 +1,4 @@
-package frc.robot.commands.auto.shoot;
+package frc.robot.commands.auto.shootclimb;
 
 import choreo.auto.AutoFactory;
 import frc.robot.commands.ShootButton;

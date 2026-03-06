@@ -4,13 +4,13 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.TurretSubsystem;
 import frc.robot.utils.logging.commands.LoggableCommand;
 
-public class DefaultSetTurretAngle extends LoggableCommand {
+public class TestSetTurretAngle extends LoggableCommand {
     private final TurretSubsystem turret;
     private double targetAngle;
 
 
     
-    public DefaultSetTurretAngle(TurretSubsystem turret) {
+    public TestSetTurretAngle(TurretSubsystem turret) {
         this.turret = turret;
         addRequirements(turret);
     }

@@ -38,7 +38,7 @@ import frc.robot.commands.shooter.DefaultShooterControl;
 import frc.robot.commands.auto.ExampleAuto;
 import frc.robot.commands.shooter.SetShootingState;
 import frc.robot.commands.testing.RunDashboardShotTest;
-import frc.robot.commands.turret.DefaultSetTurretAngle;
+import frc.robot.commands.turret.TestSetTurretAngle;
 import frc.robot.commands.turret.DefaultTurretControl;
 import frc.robot.commands.turret.RunTurretToFwdLimit;
 import frc.robot.commands.turret.RunTurretToRevLimit;
@@ -371,7 +371,7 @@ public class RobotContainer {
                         SmartDashboard.putData("RunHoppperAndFeeder",
                                         new RunHopperAndFeeder(hopperSubsystem, feederSubsystem));
                         SmartDashboard.putData("RunTurret",
-                                        new DefaultSetTurretAngle(turretSubsystem));
+                                        new TestSetTurretAngle(turretSubsystem));
 
                         SmartDashboard.putData(
                                         "test/Run Dashboard Shot Test (30s)",

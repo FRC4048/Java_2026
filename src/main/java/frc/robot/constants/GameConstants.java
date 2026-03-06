@@ -126,7 +126,7 @@ public class GameConstants {
     public static final double TURRET_ENCODER_MAX = 77; //Highest encoder position of Turret
     public static final double TURRET_HOME_ANGLE = 0.0; //Turret facing forward
     public static final double TURRET_LEFT_ANGLE = 95;
-    public static final double TURRET_RIGHT_ANGLE = -95;
+    public static final double TURRET_RIGHT_ANGLE = -98;
     public static final double TURRET_LIMIT_SPEED = 0.1;
 
     //swerve config

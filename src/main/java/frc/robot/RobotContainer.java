@@ -336,16 +336,16 @@ public class RobotContainer {
         public void putShuffleboardCommands() {
                                         SmartDashboard.putData(
                                         "Drive/Forward",
-                                        new DriveSwerve(drivebase, DriveDirection.FORWARD, 1));
+                                        new DriveSwerve(drivebase, DriveDirection.FORWARD, 0.5));
                                         SmartDashboard.putData(
                                         "Drive/Backward",
-                                        new DriveSwerve(drivebase, DriveDirection.BACKWARD, 1));
+                                        new DriveSwerve(drivebase, DriveDirection.BACKWARD, 0.5));
                                         SmartDashboard.putData(
                                         "Drive/Left",
-                                        new DriveSwerve(drivebase, DriveDirection.LEFT, 1));
+                                        new DriveSwerve(drivebase, DriveDirection.LEFT, 0.5));
                                         SmartDashboard.putData(
                                         "Drive/Right",
-                                        new DriveSwerve(drivebase, DriveDirection.RIGHT, 1));
+                                        new DriveSwerve(drivebase, DriveDirection.RIGHT, 0.5));
                 if (Constants.DEBUG) {
 
                         /*

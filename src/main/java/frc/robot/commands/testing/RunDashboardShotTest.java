@@ -48,11 +48,7 @@ public class RunDashboardShotTest extends LoggableCommand {
         anglerSubsystem.setPosition(anglerAngle);
         turretSubsystem.setPosition(turretAngle);
 
-        if (shooterRpm > 0.0) {
-            shooterSubsystem.setPidVelocity(shooterRpm);
-        } else {
-            shooterSubsystem.stopMotors();
-        }
+        shooterSubsystem.setPidVelocity(shooterRpm);
     }
 
     @Override

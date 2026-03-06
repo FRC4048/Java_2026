@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import org.dyn4j.UnitConversion;
 import org.littletonrobotics.junction.Logger;
 
 import frc.robot.RobotContainer;
@@ -72,23 +73,23 @@ public class ControllerSubsystem extends SubsystemBase {
 
         updateStopDelayState(currentState);
         updateTargets(currentState, robotPose);
+        if(Constants.DEBUG){
+            SmartDashboard.putString(CURRENT_SHOOT_STATE_KEY, currentState.toString());
+            SmartDashboard.putNumber(DISTANCE_METERS_KEY, activeTargets.distanceMeters);
+            SmartDashboard.putNumber(TARGET_ANGLER_ANGLE_KEY, activeTargets.anglerAngleDegrees);
+            SmartDashboard.putNumber(TARGET_SHOOTER_VELOCITY_KEY, activeTargets.shooterVelocityRpm);
+            SmartDashboard.putNumber(TARGET_TURRET_ANGLE_KEY, activeTargets.turretAngleDegrees);
+            SmartDashboard.putBoolean(TARGET_FEEDER_SPEED_KEY, activeTargets.feederSpin);
+            SmartDashboard.putBoolean(TARGET_HOPPER_SPEED_KEY, activeTargets.hopperSpin);
 
-        SmartDashboard.putString(CURRENT_SHOOT_STATE_KEY, currentState.toString());
-        SmartDashboard.putNumber(DISTANCE_METERS_KEY, activeTargets.distanceMeters);
-        SmartDashboard.putNumber(TARGET_ANGLER_ANGLE_KEY, activeTargets.anglerAngleDegrees);
-        SmartDashboard.putNumber(TARGET_SHOOTER_VELOCITY_KEY, activeTargets.shooterVelocityRpm);
-        SmartDashboard.putNumber(TARGET_TURRET_ANGLE_KEY, activeTargets.turretAngleDegrees);
-        SmartDashboard.putBoolean(TARGET_FEEDER_SPEED_KEY, activeTargets.feederSpin);
-        SmartDashboard.putBoolean(TARGET_HOPPER_SPEED_KEY, activeTargets.hopperSpin);
-
-        Logger.recordOutput(CURRENT_SHOOT_STATE_KEY, currentState.toString());
-        Logger.recordOutput(DISTANCE_METERS_KEY, activeTargets.distanceMeters);
-        Logger.recordOutput(TARGET_ANGLER_ANGLE_KEY, activeTargets.anglerAngleDegrees);
-        Logger.recordOutput(TARGET_SHOOTER_VELOCITY_KEY, activeTargets.shooterVelocityRpm);
-        Logger.recordOutput(TARGET_TURRET_ANGLE_KEY, activeTargets.turretAngleDegrees);
-        Logger.recordOutput(TARGET_FEEDER_SPEED_KEY, activeTargets.feederSpin);
-        Logger.recordOutput(TARGET_HOPPER_SPEED_KEY, activeTargets.hopperSpin);
-
+            Logger.recordOutput(CURRENT_SHOOT_STATE_KEY, currentState.toString());
+            Logger.recordOutput(DISTANCE_METERS_KEY, activeTargets.distanceMeters);
+            Logger.recordOutput(TARGET_ANGLER_ANGLE_KEY, activeTargets.anglerAngleDegrees);
+            Logger.recordOutput(TARGET_SHOOTER_VELOCITY_KEY, activeTargets.shooterVelocityRpm);
+            Logger.recordOutput(TARGET_TURRET_ANGLE_KEY, activeTargets.turretAngleDegrees);
+            Logger.recordOutput(TARGET_FEEDER_SPEED_KEY, activeTargets.feederSpin);
+            Logger.recordOutput(TARGET_HOPPER_SPEED_KEY, activeTargets.hopperSpin);
+        }
         previousState = currentState;
     }
 
@@ -170,12 +171,24 @@ public class ControllerSubsystem extends SubsystemBase {
     }
 
     private double calculateAnglerAngleDegrees(double computedDistanceMeters, PoseControlProfile profile) {
-        // TODO: Replace with distance angler angle calculation.
+        if (profile == HUB_PROFILE) {
+            double distance = UnitConversion.METER_TO_FOOT * computedDistanceMeters;
+			return 
+				0.169 * distance * distance
+			  - 1.73 * distance
+	          + 20.4;
+		}
         return profile.defaultAnglerAngleDegrees;
     }
 
     private double calculateShooterVelocity(double computedDistanceMeters, PoseControlProfile profile) {
-        // TODO: Replace with distance shooter velocity calculation.
+        if (profile == HUB_PROFILE) {
+            double distance = UnitConversion.METER_TO_FOOT * computedDistanceMeters;
+			return 
+				8.46 * distance * distance
+			  - 237 * distance
+			  - 1_380;
+		}
         return profile.defaultShooterVelocityRpm;
     }
 

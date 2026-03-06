@@ -26,12 +26,10 @@ import frc.robot.commands.feeder.SpinFeeder;
 import frc.robot.commands.drive.FakeVision;
 import frc.robot.commands.intake.SpinIntake;
 import frc.robot.commands.intake.StopIntake;
-import frc.robot.commands.intakeDeployment.InitialRunDeployment;
+import frc.robot.commands.intakeDeployment.ToggleDeployment;
 import frc.robot.commands.intakeDeployment.RunDeployer;
 import frc.robot.commands.intakeDeployment.SetDeploymentState;
 import frc.robot.commands.parallels.RunHopperAndFeeder;
-import frc.robot.commands.sequences.IntakeDownSequence;
-import frc.robot.commands.sequences.IntakeUpSequence;
 import frc.robot.autochooser.AutoChooser;
 import frc.robot.commands.angler.AimAngler;
 import frc.robot.commands.angler.DefaultAnglerControl;
@@ -40,6 +38,7 @@ import frc.robot.commands.shooter.DefaultShooterControl;
 import frc.robot.commands.auto.ExampleAuto;
 import frc.robot.commands.shooter.SetShootingState;
 import frc.robot.commands.testing.RunDashboardShotTest;
+import frc.robot.commands.turret.TestSetTurretAngle;
 import frc.robot.commands.turret.DefaultTurretControl;
 import frc.robot.commands.turret.RunTurretToFwdLimit;
 import frc.robot.commands.turret.RunTurretToRevLimit;
@@ -277,8 +276,8 @@ public class RobotContainer {
         }
 
         private void configureBindings() {
-                controller.a().onTrue(new IntakeUpSequence(intakeDeployer, intakeSubsystem));
-                controller.b().onTrue(new IntakeDownSequence(intakeDeployer, intakeSubsystem));
+                controller.a().onTrue(new ToggleDeployment(intakeDeployer));
+                controller.b().onTrue(new SetDeploymentState(intakeDeployer, DeploymentState.STOPPED));
                 controller.y().onTrue(new ClimberUp(climberSubsystem));
                 controller.x().onTrue(new ClimberDown(climberSubsystem));
                 controller.povUp().onTrue(new SetShootingState(shootState, ShootState.FIXED));
@@ -308,12 +307,12 @@ public class RobotContainer {
                                         () -> drivebase != null ? drivebase.getPose() : null,
                                         shootState);
                 }
-
+                intakeSubsystem.setDefaultCommand(new SpinIntake(intakeSubsystem, intakeDeployer));
             if (controllerSubsystem != null) {
                 anglerSubsystem.setDefaultCommand(new DefaultAnglerControl(anglerSubsystem, controllerSubsystem));
                 shooterSubsystem.setDefaultCommand(new DefaultShooterControl(shooterSubsystem, controllerSubsystem));
                 turretSubsystem.setDefaultCommand(new DefaultTurretControl(turretSubsystem, controllerSubsystem));
-                hopperSubsystem.setDefaultCommand(new DefaultSpinHopper(hopperSubsystem, controllerSubsystem));
+               hopperSubsystem.setDefaultCommand(new DefaultSpinHopper(hopperSubsystem, controllerSubsystem));
                 feederSubsystem.setDefaultCommand(new DefaultSpinFeeder(feederSubsystem, controllerSubsystem));
             }
 
@@ -365,9 +364,11 @@ public class RobotContainer {
                         SmartDashboard.putNumber(RunDashboardShotTest.ANGLER_TARGET_POSITION_KEY, 0.0);
                         SmartDashboard.putNumber(RunDashboardShotTest.TURRET_TARGET_POSITION_KEY, Constants.TURRET_HOME_ANGLE);
                         SmartDashboard.putNumber(RunDashboardShotTest.SHOOTER_TARGET_RPM_KEY, Constants.SHOOTER_SPEED);
-
+                        SmartDashboard.putNumber("Target Angle",0);
                         SmartDashboard.putData("RunHoppperAndFeeder",
                                         new RunHopperAndFeeder(hopperSubsystem, feederSubsystem));
+                        SmartDashboard.putData("RunTurret",
+                                        new TestSetTurretAngle(turretSubsystem));
 
                         SmartDashboard.putData(
                                         "test/Run Dashboard Shot Test (30s)",
@@ -428,10 +429,10 @@ public class RobotContainer {
 
                         SmartDashboard.putData(
                                         "intakedeployer/InitlizeDeployer",
-                                        new InitialRunDeployment(intakeDeployer));
+                                        new ToggleDeployment(intakeDeployer));
                         SmartDashboard.putData(
                                         "Spin Intake",
-                                        new SpinIntake(intakeSubsystem));
+                                        new SpinIntake(intakeSubsystem, intakeDeployer));
                         SmartDashboard.putData(
                                         "Stop Intake",
                                         new StopIntake(intakeSubsystem));
@@ -532,5 +533,8 @@ public class RobotContainer {
 
         public ShootingState getShootingState() {
                 return shootState;
+        }
+        public IntakeDeployerSubsystem getDeployer(){
+                return intakeDeployer;
         }
 }

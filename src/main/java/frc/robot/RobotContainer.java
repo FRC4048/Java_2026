@@ -38,6 +38,7 @@ import frc.robot.commands.shooter.DefaultShooterControl;
 import frc.robot.commands.auto.ExampleAuto;
 import frc.robot.commands.shooter.SetShootingState;
 import frc.robot.commands.testing.RunDashboardShotTest;
+import frc.robot.commands.turret.TestSetTurretAngle;
 import frc.robot.commands.turret.DefaultTurretControl;
 import frc.robot.commands.turret.RunTurretToFwdLimit;
 import frc.robot.commands.turret.RunTurretToRevLimit;
@@ -314,7 +315,7 @@ public class RobotContainer {
                 anglerSubsystem.setDefaultCommand(new DefaultAnglerControl(anglerSubsystem, controllerSubsystem));
                 shooterSubsystem.setDefaultCommand(new DefaultShooterControl(shooterSubsystem, controllerSubsystem));
                 turretSubsystem.setDefaultCommand(new DefaultTurretControl(turretSubsystem, controllerSubsystem));
-                hopperSubsystem.setDefaultCommand(new DefaultSpinHopper(hopperSubsystem, controllerSubsystem));
+               hopperSubsystem.setDefaultCommand(new DefaultSpinHopper(hopperSubsystem, controllerSubsystem));
                 feederSubsystem.setDefaultCommand(new DefaultSpinFeeder(feederSubsystem, controllerSubsystem));
             }
 
@@ -366,9 +367,11 @@ public class RobotContainer {
                         SmartDashboard.putNumber(RunDashboardShotTest.ANGLER_TARGET_POSITION_KEY, 0.0);
                         SmartDashboard.putNumber(RunDashboardShotTest.TURRET_TARGET_POSITION_KEY, Constants.TURRET_HOME_ANGLE);
                         SmartDashboard.putNumber(RunDashboardShotTest.SHOOTER_TARGET_RPM_KEY, Constants.SHOOTER_SPEED);
-
+                        SmartDashboard.putNumber("Target Angle",0);
                         SmartDashboard.putData("RunHoppperAndFeeder",
                                         new RunHopperAndFeeder(hopperSubsystem, feederSubsystem));
+                        SmartDashboard.putData("RunTurret",
+                                        new TestSetTurretAngle(turretSubsystem));
 
                         SmartDashboard.putData(
                                         "test/Run Dashboard Shot Test (30s)",

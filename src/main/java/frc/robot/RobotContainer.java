@@ -22,6 +22,7 @@ import frc.robot.commands.feeder.DefaultSpinFeeder;
 import frc.robot.commands.hopper.DefaultSpinHopper;
 import frc.robot.commands.hopper.SpinHopper;
 import frc.robot.commands.drive.DriveDirectionTime;
+import frc.robot.commands.drive.DriveSwerve;
 import frc.robot.commands.feeder.SpinFeeder;
 import frc.robot.commands.drive.FakeVision;
 import frc.robot.commands.intake.SpinIntake;
@@ -47,6 +48,7 @@ import frc.robot.commands.turret.SetTurretAngle;
 import frc.robot.commands.shooter.SpinShooter;
 import frc.robot.constants.Constants;
 import frc.robot.constants.enums.DeploymentState;
+import frc.robot.constants.enums.DriveDirection;
 import frc.robot.constants.enums.ShootingState;
 import frc.robot.constants.enums.ShootingState.ShootState;
 import frc.robot.subsystems.AnglerSubsystem;
@@ -334,6 +336,18 @@ public class RobotContainer {
         }
 
         public void putShuffleboardCommands() {
+                                        SmartDashboard.putData(
+                                        "Drive/Forward",
+                                        new DriveSwerve(drivebase, DriveDirection.FORWARD, 1));
+                                        SmartDashboard.putData(
+                                        "Drive/Backward",
+                                        new DriveSwerve(drivebase, DriveDirection.BACKWARD, 1));
+                                        SmartDashboard.putData(
+                                        "Drive/Left",
+                                        new DriveSwerve(drivebase, DriveDirection.LEFT, 1));
+                                        SmartDashboard.putData(
+                                        "Drive/Right",
+                                        new DriveSwerve(drivebase, DriveDirection.RIGHT, 1));
                 if (Constants.DEBUG) {
 
                         /*

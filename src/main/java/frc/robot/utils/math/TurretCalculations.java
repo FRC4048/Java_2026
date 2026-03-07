@@ -1,6 +1,10 @@
 package frc.robot.utils.math;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import frc.robot.constants.GameConstants;
+import org.littletonrobotics.junction.Logger;
 
 public class TurretCalculations {
 
@@ -63,7 +67,7 @@ public class TurretCalculations {
          * pan angle, which is the proper angle of the turret adjusted for the robot's rotation.
          */
         double panAngle = panAngleUnadjusted - robotRotation;
-
+        Logger.recordOutput("Hub Pose", new Pose2d(new Translation2d(hubPosX,hubPosY), new Rotation2d())); 
         return panAngle;
 
     }

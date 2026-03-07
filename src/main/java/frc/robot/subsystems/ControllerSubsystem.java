@@ -6,12 +6,14 @@ import org.littletonrobotics.junction.Logger;
 import frc.robot.RobotContainer;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.constants.Constants;
+import frc.robot.constants.GameConstants;
 import frc.robot.constants.enums.ShootingState;
 import frc.robot.constants.enums.ShootingState.ShootState;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
@@ -92,6 +94,7 @@ public class ControllerSubsystem extends SubsystemBase {
             Logger.recordOutput(TARGET_TURRET_ANGLE_KEY, activeTargets.turretAngleDegrees);
             Logger.recordOutput(TARGET_FEEDER_SPEED_KEY, activeTargets.feederSpin);
             Logger.recordOutput(TARGET_HOPPER_SPEED_KEY, activeTargets.hopperSpin);
+            Logger.recordOutput("Turret Pose", new Pose2d(new Translation2d(drivebase.getPose().getX()+ GameConstants.X_DISTANCE_BETWEEN_ROBOT_AND_TURRET,drivebase.getPose().getY()+ GameConstants.Y_DISTANCE_BETWEEN_ROBOT_AND_TURRET), new Rotation2d(Math.toRadians(activeTargets.turretAngleDegrees)))); 
         }
         previousState = currentState;
     }
@@ -110,7 +113,7 @@ public class ControllerSubsystem extends SubsystemBase {
     }
 
     private boolean shouldUseManualPose() {
-        return (Constants.currentMode == Constants.Mode.SIM) || Constants.TESTBED;
+        return true;
     }
 
     private Pose2d getManualPose() {
@@ -183,7 +186,7 @@ public class ControllerSubsystem extends SubsystemBase {
 		}
         return profile.defaultAnglerAngleDegrees;
     }
-
+    
     private double calculateShooterVelocity(double computedDistanceMeters, PoseControlProfile profile) {
         if (profile == HUB_PROFILE) {
             double distance = UnitConversion.METER_TO_FOOT * computedDistanceMeters;

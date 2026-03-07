@@ -20,7 +20,6 @@ import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import frc.robot.utils.math.TurretCalculations;
 
 public class ControllerSubsystem extends SubsystemBase {
-    private Pose2d turretPose;
      private static final double STOP_DELAY_SECONDS = 0.5;
     // Placeholder target poses until real field target values are finalized
     private static final Pose2d HUB_TARGET_POSE = new Pose2d(4.0, 4.0, Rotation2d.kZero);
@@ -28,6 +27,7 @@ public class ControllerSubsystem extends SubsystemBase {
 
     private static final String MANUAL_POSE_X_KEY = "controller/ManualPoseX";
     private static final String MANUAL_POSE_Y_KEY = "controller/ManualPoseY";
+    private static final String MANUAL_POSE_R_KEY = "controller/ManualPoseRotation";
     private static final String USING_MANUAL_POSE_KEY = "controller/UsingManualPose";
     private static final String CURRENT_SHOOT_STATE_KEY = "controller/CurrentShootState";
     private static final String DISTANCE_METERS_KEY = "controller/CalculatedDistanceMeters";
@@ -36,7 +36,6 @@ public class ControllerSubsystem extends SubsystemBase {
     private static final String TARGET_TURRET_ANGLE_KEY = "controller/TargetTurretAngleDegrees";
     private static final String TARGET_FEEDER_SPEED_KEY = "controller/TargetFeederSpeed";
     private static final String TARGET_HOPPER_SPEED_KEY = "controller/TargetHopperSpeed";
-
     // Placeholder fixed-state settings.
     private static final ShotTargets STOPPED_TARGETS =
             new ShotTargets(Constants.ANGLER_ANGLE_LOW, 0.0, 0.0, 0.0, false, false);
@@ -51,76 +50,78 @@ public class ControllerSubsystem extends SubsystemBase {
     private static final PoseControlProfile SHUTTLE_PROFILE =
             new PoseControlProfile(SHUTTLE_TARGET_POSE, 16.0, 90.0, -14.0);
 
-    private final SwerveSubsystem drivebase;
-    private final RobotContainer robotContainer;
-    private final Timer stopDelayTimer = new Timer();
-
-    private ShootState previousState;
-    private ShotTargets activeTargets;
-    private boolean driverActivatedShooting = false;
-
-
-    public ControllerSubsystem(SwerveSubsystem drivebase, RobotContainer robotContainer) {
-        this.drivebase = drivebase;
-        this.robotContainer = robotContainer;
-        this.previousState = getCurrentShootState();
-        this.activeTargets = STOPPED_TARGETS;
-
-        SmartDashboard.putNumber(MANUAL_POSE_X_KEY, 0.0);
-        SmartDashboard.putNumber(MANUAL_POSE_Y_KEY, 0.0);
-        turretPose = new Pose2d(new Translation2d(drivebase.getPose().getX()+ GameConstants.X_DISTANCE_BETWEEN_ROBOT_AND_TURRET,drivebase.getPose().getY()+ GameConstants.Y_DISTANCE_BETWEEN_ROBOT_AND_TURRET), new Rotation2d());
-    }
-
-    @Override
-    public void periodic() {
-        Pose2d robotPose = getRobotPose();
-        ShootState currentState = getCurrentShootState();
-
-        updateStopDelayState(currentState);
-        updateTargets(currentState, robotPose);
-        if(Constants.DEBUG){
-            SmartDashboard.putString(CURRENT_SHOOT_STATE_KEY, currentState.toString());
-            SmartDashboard.putNumber(DISTANCE_METERS_KEY, activeTargets.distanceMeters);
-            SmartDashboard.putNumber(TARGET_ANGLER_ANGLE_KEY, activeTargets.anglerAngleDegrees);
-            SmartDashboard.putNumber(TARGET_SHOOTER_VELOCITY_KEY, activeTargets.shooterVelocityRpm);
-            SmartDashboard.putNumber(TARGET_TURRET_ANGLE_KEY, activeTargets.turretAngleDegrees);
-            SmartDashboard.putBoolean(TARGET_FEEDER_SPEED_KEY, activeTargets.feederSpin);
-            SmartDashboard.putBoolean(TARGET_HOPPER_SPEED_KEY, activeTargets.hopperSpin);
-
-            Logger.recordOutput(CURRENT_SHOOT_STATE_KEY, currentState.toString());
-            Logger.recordOutput(DISTANCE_METERS_KEY, activeTargets.distanceMeters);
-            Logger.recordOutput(TARGET_ANGLER_ANGLE_KEY, activeTargets.anglerAngleDegrees);
-            Logger.recordOutput(TARGET_SHOOTER_VELOCITY_KEY, activeTargets.shooterVelocityRpm);
-            Logger.recordOutput(TARGET_TURRET_ANGLE_KEY, activeTargets.turretAngleDegrees);
-            Logger.recordOutput(TARGET_FEEDER_SPEED_KEY, activeTargets.feederSpin);
-            Logger.recordOutput(TARGET_HOPPER_SPEED_KEY, activeTargets.hopperSpin);
-            turretPose = new Pose2d(new Translation2d(drivebase.getPose().getX()+ GameConstants.X_DISTANCE_BETWEEN_ROBOT_AND_TURRET,drivebase.getPose().getY()+ GameConstants.Y_DISTANCE_BETWEEN_ROBOT_AND_TURRET), new Rotation2d(Math.toRadians(activeTargets.turretAngleDegrees)));
-            Logger.recordOutput("Turret Pose", turretPose); 
-        }
-        previousState = currentState;
-    }
-
-    private ShootState getCurrentShootState() {
-        return robotContainer.getShootingState().getShootState();
-    }
-
-    private Pose2d getRobotPose() {
-        SmartDashboard.putBoolean(USING_MANUAL_POSE_KEY, shouldUseManualPose());
-        Logger.recordOutput(USING_MANUAL_POSE_KEY, shouldUseManualPose());
-        if (shouldUseManualPose()) {
-            return getManualPose();
-        }
-        return drivebase.getPose();
-    }
-
-    private boolean shouldUseManualPose() {
-        return true;
-    }
-
-    private Pose2d getManualPose() {
-        double x = SmartDashboard.getNumber(MANUAL_POSE_X_KEY, 0.0);
-        double y = SmartDashboard.getNumber(MANUAL_POSE_Y_KEY, 0.0);
-        return new Pose2d(x, y, Rotation2d.kZero);
+            
+                private final SwerveSubsystem drivebase;
+                private final RobotContainer robotContainer;
+                private final Timer stopDelayTimer = new Timer();
+            
+                private ShootState previousState;
+                private ShotTargets activeTargets;
+                private boolean driverActivatedShooting = false;
+            
+            
+                public ControllerSubsystem(SwerveSubsystem drivebase, RobotContainer robotContainer) {
+                    this.drivebase = drivebase;
+                    this.robotContainer = robotContainer;
+                    this.previousState = getCurrentShootState();
+                    this.activeTargets = STOPPED_TARGETS;
+            
+                    SmartDashboard.putNumber(MANUAL_POSE_X_KEY, 0.0);
+                    SmartDashboard.putNumber(MANUAL_POSE_Y_KEY, 0.0);
+                    SmartDashboard.putNumber(MANUAL_POSE_R_KEY, 0.0);
+                }
+            
+                @Override
+                public void periodic() {
+                    Pose2d robotPose = getRobotPose();
+                    ShootState currentState = getCurrentShootState();
+            
+                    updateStopDelayState(currentState);
+                    updateTargets(currentState, robotPose);
+                    if(Constants.DEBUG){
+                        SmartDashboard.putString(CURRENT_SHOOT_STATE_KEY, currentState.toString());
+                        SmartDashboard.putNumber(DISTANCE_METERS_KEY, activeTargets.distanceMeters);
+                        SmartDashboard.putNumber(TARGET_ANGLER_ANGLE_KEY, activeTargets.anglerAngleDegrees);
+                        SmartDashboard.putNumber(TARGET_SHOOTER_VELOCITY_KEY, activeTargets.shooterVelocityRpm);
+                        SmartDashboard.putNumber(TARGET_TURRET_ANGLE_KEY, activeTargets.turretAngleDegrees);
+                        SmartDashboard.putBoolean(TARGET_FEEDER_SPEED_KEY, activeTargets.feederSpin);
+                        SmartDashboard.putBoolean(TARGET_HOPPER_SPEED_KEY, activeTargets.hopperSpin);
+            
+                        Logger.recordOutput(CURRENT_SHOOT_STATE_KEY, currentState.toString());
+                        Logger.recordOutput(DISTANCE_METERS_KEY, activeTargets.distanceMeters);
+                        Logger.recordOutput(TARGET_ANGLER_ANGLE_KEY, activeTargets.anglerAngleDegrees);
+                        Logger.recordOutput(TARGET_SHOOTER_VELOCITY_KEY, activeTargets.shooterVelocityRpm);
+                        Logger.recordOutput(TARGET_TURRET_ANGLE_KEY, activeTargets.turretAngleDegrees);
+                        Logger.recordOutput(TARGET_FEEDER_SPEED_KEY, activeTargets.feederSpin);
+                        Logger.recordOutput(TARGET_HOPPER_SPEED_KEY, activeTargets.hopperSpin);
+                        Logger.recordOutput("Turret Pose", new Pose2d(new Translation2d(SmartDashboard.getNumber(MANUAL_POSE_X_KEY, 0)+ GameConstants.X_DISTANCE_BETWEEN_ROBOT_AND_TURRET,SmartDashboard.getNumber(MANUAL_POSE_Y_KEY, 0)+ GameConstants.Y_DISTANCE_BETWEEN_ROBOT_AND_TURRET), new Rotation2d(Math.toRadians(activeTargets.turretAngleDegrees)))); 
+                    }
+                    previousState = currentState;
+                }
+            
+                private ShootState getCurrentShootState() {
+                    return robotContainer.getShootingState().getShootState();
+                }
+            
+                private Pose2d getRobotPose() {
+                    SmartDashboard.putBoolean(USING_MANUAL_POSE_KEY, shouldUseManualPose());
+                    Logger.recordOutput(USING_MANUAL_POSE_KEY, shouldUseManualPose());
+                    if (shouldUseManualPose()) {
+                        return getManualPose();
+                    }
+                    return drivebase.getPose();
+                }
+            
+                private boolean shouldUseManualPose() {
+                    return true;
+                }
+            
+                private Pose2d getManualPose() {
+                    double x = SmartDashboard.getNumber(MANUAL_POSE_X_KEY, 0.0);
+                    double y = SmartDashboard.getNumber(MANUAL_POSE_Y_KEY, 0.0);
+                    double r = SmartDashboard.getNumber(MANUAL_POSE_R_KEY, 0.0);
+        Logger.recordOutput("Manual Pose", new Pose2d(new Translation2d(x,y), new Rotation2d(r))); 
+        return new Pose2d(x, y, new Rotation2d(r));
     }
 
     private void updateStopDelayState(ShootState currentState) {

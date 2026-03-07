@@ -124,7 +124,7 @@ public class AutoChooser {
         commandMap.put(new AutoEvent(AutoAction.SHOOT, FieldLocation.OUTPOST_SIDE, null),
             new CommandDescription("shoot and climb from the outpost"));
 
-        commandMap.put(new AutoEvent(AutoAction.SHOOT_AND_CLIMB, FieldLocation.DEPOT_SIDE, Alliance.Blue),
+        commandMap.put(new AutoEvent(AutoAction.SHOOT, FieldLocation.DEPOT_SIDE, Alliance.Blue),
             new BlueDepotShoot(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, controller)); //shoot depot blue
         commandMap.put(new AutoEvent(AutoAction.SHOOT, FieldLocation.MID, Alliance.Blue),
             new BlueMidShoot(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, controller)); //shoot mid blue
@@ -133,9 +133,9 @@ public class AutoChooser {
             
         commandMap.put(new AutoEvent(AutoAction.SHOOT_AND_CLIMB, FieldLocation.DEPOT_SIDE, Alliance.Blue),
             new BlueDepotShootClimb(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, climber, controller)); //shoot and climb depot blue
-        commandMap.put(new AutoEvent(AutoAction.SHOOT, FieldLocation.MID, Alliance.Blue),
+        commandMap.put(new AutoEvent(AutoAction.SHOOT_AND_CLIMB, FieldLocation.MID, Alliance.Blue),
             new BlueMidShootClimb(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, climber, controller)); //shoot and climb mid blue
-        commandMap.put(new AutoEvent(AutoAction.SHOOT, FieldLocation.OUTPOST_SIDE, Alliance.Blue),
+        commandMap.put(new AutoEvent(AutoAction.SHOOT_AND_CLIMB, FieldLocation.OUTPOST_SIDE, Alliance.Blue),
             new BlueOutpostShootClimb(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, climber, controller)); //shoot and climb outpost blue
 
         commandMap.put(new AutoEvent(AutoAction.SHOOT, FieldLocation.DEPOT_SIDE, Alliance.Red),
@@ -145,11 +145,11 @@ public class AutoChooser {
         commandMap.put(new AutoEvent(AutoAction.SHOOT, FieldLocation.OUTPOST_SIDE, Alliance.Red),
             new RedOutpostShoot(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, controller)); // shoot outpost red
 
-        commandMap.put(new AutoEvent(AutoAction.SHOOT, FieldLocation.DEPOT_SIDE, Alliance.Red),
+        commandMap.put(new AutoEvent(AutoAction.SHOOT_AND_CLIMB, FieldLocation.DEPOT_SIDE, Alliance.Red),
             new RedDepotShootClimb(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, climber, controller)); //shoot and climb depot red
-        commandMap.put(new AutoEvent(AutoAction.SHOOT, FieldLocation.MID, Alliance.Red),
+        commandMap.put(new AutoEvent(AutoAction.SHOOT_AND_CLIMB, FieldLocation.MID, Alliance.Red),
             new RedMidShootClimb(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, climber, controller)); //shoot and climb mid red
-        commandMap.put(new AutoEvent(AutoAction.SHOOT, FieldLocation.OUTPOST_SIDE, Alliance.Red),
+        commandMap.put(new AutoEvent(AutoAction.SHOOT_AND_CLIMB, FieldLocation.OUTPOST_SIDE, Alliance.Red),
             new RedOutpostShootClimb(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, climber, controller)); // shoot and climb outpost red
     }
 

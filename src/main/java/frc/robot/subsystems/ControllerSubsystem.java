@@ -6,6 +6,8 @@ import org.littletonrobotics.junction.Logger;
 import frc.robot.RobotContainer;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -13,6 +15,7 @@ import frc.robot.constants.Constants;
 import frc.robot.constants.enums.ShootingState;
 import frc.robot.constants.enums.ShootingState.ShootState;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
+import frc.robot.utils.math.TurretCalculations;
 
 public class ControllerSubsystem extends SubsystemBase {
 
@@ -193,8 +196,7 @@ public class ControllerSubsystem extends SubsystemBase {
     }
 
     private double calculateTurretAngleDegrees(Pose2d robotPose, PoseControlProfile profile) {
-        // TODO: Replace with distance turret angle calculation.
-        return profile.defaultTurretAngleDegrees;
+        return Math.toDegrees(TurretCalculations.calculateTurretAngle(robotPose.getX(), robotPose.getY(), robotPose.getRotation().getRotations(), DriverStation.getAlliance().get()==Alliance.Blue));
     }
 
     //Getters for all the subsystems to set posistion.

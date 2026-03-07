@@ -411,16 +411,28 @@ public class RobotContainer {
                                         new RunAnglerToReverseLimit(anglerSubsystem));
 
             SmartDashboard.putData(
-                    "turret/Turret Go 45",
+                    "turret/TurretTest/Turret Go 45",
                     new SetTurretAngle(turretSubsystem, 45));
 
             SmartDashboard.putData(
-                    "turret/Turret Go 0",
+                    "turret/TurretTest/Turret Go 0",
                     new SetTurretAngle(turretSubsystem, 0));
 
             SmartDashboard.putData(
-                    "turret/Turret Go 75",
-                    new SetTurretAngle(turretSubsystem, 75));
+                    "turret/TurretTest/Turret Go -45",
+                    new SetTurretAngle(turretSubsystem, -45));
+                    SmartDashboard.putData(
+                    "turret/TurretTest/Turret Go 40",
+                    new SetTurretAngle(turretSubsystem, 40));
+                SmartDashboard.putData(
+                    "turret/TurretTest/Turret Go -40",
+                    new SetTurretAngle(turretSubsystem, -40));
+                SmartDashboard.putData(
+                    "turret/TurretTest/Turret Go 35",
+                    new SetTurretAngle(turretSubsystem, 35));
+                SmartDashboard.putData(
+                    "turret/TurretTest/Turret Go -35",
+                    new SetTurretAngle(turretSubsystem, -35));
 
             SmartDashboard.putData(
                     "turret/Run Turret to Rev Limit",

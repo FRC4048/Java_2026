@@ -63,8 +63,8 @@ public class TurretSubsystem extends SubsystemBase {
                 targetAngle,
                 Constants.TURRET_ENCODER_MAX,
                 Constants.TURRET_ENCODER_MIN,
-                Constants.TURRET_RIGHT_ANGLE,
-                Constants.TURRET_LEFT_ANGLE);
+                Constants.TURRET_MAX_ANGLE,
+                Constants.TURRET_MIN_ANGLE);
         SmartDashboard.putNumber("Target Encoder Position", targetRotations);
         setPosition(targetRotations);
     }
@@ -77,9 +77,9 @@ public class TurretSubsystem extends SubsystemBase {
             double angleHigh,
             double angleLow) {
 
-        double multiplier = (encoderHigh - encoderLow) / (angleHigh - angleLow);
-        double targetRotations = targetAngle * multiplier - (multiplier * angleHigh - encoderHigh);
-        return MathUtil.clamp(targetRotations, encoderLow, encoderHigh);
+        double targetEncoder = (targetAngle-angleLow)/(angleHigh - angleLow)*encoderHigh;
+        SmartDashboard.putNumber("Target Turret Encoder to angle", targetEncoder);
+        return MathUtil.clamp(targetEncoder, encoderLow, encoderHigh);
     }
 
     /**
@@ -174,8 +174,8 @@ public class TurretSubsystem extends SubsystemBase {
         params.armGearing = Constants.TURRET_GEARING;
         params.armInertia = Constants.TURRET_INERTIA;
         params.armLength = Constants.TURRET_LENGTH;
-        params.armMinAngle = Constants.TURRET_MIN_ANGLE;
-        params.armMaxAngle = Constants.TURRET_MAX_ANGLE;
+        params.armMinAngle = Constants.TURRET_MIN_ANGLE_2;
+        params.armMaxAngle = Constants.TURRET_MAX_ANGLE_2;
         return params;
     }
 }

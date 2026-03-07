@@ -61,13 +61,9 @@ public class SwerveSubsystem extends SubsystemBase {
      * @param swerveIMU The IMU implementation to provide to the SwerveDrive
      */
     public SwerveSubsystem(File directory, SwerveIMU swerveIMU) {
-        boolean blueAlliance = false;
-        Pose2d startingPose = blueAlliance ? new Pose2d(new Translation2d(Meter.of(4),
-                Meter.of(16)),
-                Rotation2d.fromDegrees(0))
-                : new Pose2d(new Translation2d(Meter.of(0),
+        Pose2d startingPose = new Pose2d(new Translation2d(Meter.of(0),
                 Meter.of(4)),
-                Rotation2d.fromDegrees(0));
+                Rotation2d.fromDegrees(180));
         // Configure the Telemetry before creating the SwerveDrive to avoid unnecessary objects being created.
         SwerveDriveTelemetry.verbosity = TelemetryVerbosity.LOW;
         try {

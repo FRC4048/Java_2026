@@ -50,7 +50,7 @@ public class TurretCalculations {
             hubPosX = GameConstants.RED_HUB_X_POSITION;
             hubPosY = GameConstants.RED_HUB_Y_POSITION;
         }
-
+        Logger.recordOutput("Hub Pose", new Pose2d(new Translation2d(hubPosX,hubPosY), new Rotation2d())); 
         /*
          * This finds the unadjusted pan angle (assuming there is no robot rotation) using
          * trigonometry. We take the arctangent of the y-distance beween the robot and the hub
@@ -67,9 +67,7 @@ public class TurretCalculations {
          * pan angle, which is the proper angle of the turret adjusted for the robot's rotation.
          */
         double panAngle = panAngleUnadjusted - robotRotation;
-        Logger.recordOutput("Hub Pose", new Pose2d(new Translation2d(hubPosX,hubPosY), new Rotation2d())); 
         return panAngle;
-
     }
 
 }

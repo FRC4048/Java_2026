@@ -107,13 +107,13 @@ public class ControllerSubsystem extends SubsystemBase {
                     SmartDashboard.putBoolean(USING_MANUAL_POSE_KEY, shouldUseManualPose());
                     Logger.recordOutput(USING_MANUAL_POSE_KEY, shouldUseManualPose());
                     if (shouldUseManualPose()) {
-                        return getManualPose();
+                       return getManualPose();
                     }
                     return drivebase.getPose();
                 }
             
                 private boolean shouldUseManualPose() {
-                    return true;
+                    return false;
                 }
             
                 private Pose2d getManualPose() {
@@ -201,7 +201,8 @@ public class ControllerSubsystem extends SubsystemBase {
     }
 
     private double calculateTurretAngleDegrees(Pose2d robotPose, PoseControlProfile profile) {
-        return Math.toDegrees(TurretCalculations.calculateTurretAngle(robotPose.getX(), robotPose.getY(), robotPose.getRotation().getRotations(), DriverStation.getAlliance().get()==Alliance.Blue));
+        SmartDashboard.putNumber("Robot rotation", robotPose.getRotation().getDegrees());
+        return Math.toDegrees(TurretCalculations.calculateTurretAngle(robotPose.getX(), robotPose.getY(), robotPose.getRotation().getDegrees(), DriverStation.getAlliance().get()==Alliance.Blue));
     }
 
     //Getters for all the subsystems to set posistion.

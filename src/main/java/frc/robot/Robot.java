@@ -40,6 +40,7 @@ public class Robot extends LoggedRobot {
   private String autonomousWinner;
 
   private boolean hubActive;
+  private double hubCountdown;
   private static Alliance autoWinner;
 
   private static Optional<DriverStation.Alliance> allianceColor = Optional.empty();
@@ -126,6 +127,7 @@ public class Robot extends LoggedRobot {
         // Puts data on the elastic dashboard
       SmartDashboard.putString("Alliance Color", Robot.allianceColorString());
       SmartDashboard.putBoolean("Hub Active?", hubActive());
+      SmartDashboard.putNumber("Countdown Until Next Hub Shift", hubCountdown());
     }
 
     // Puts data on the elastic dashboard
@@ -134,6 +136,7 @@ public class Robot extends LoggedRobot {
     SmartDashboard.putString("Selected Action", 
       robotContainer.getAutoChooser().getCommandDescription());
     SmartDashboard.putString("Starting Location", location().toString());
+    SmartDashboard.putNumber("Countdown Until Next Hub Shift", hubCountdown());
 
     // Gets the alliance color.
     if (DriverStation.isDSAttached() && allianceColor.isEmpty()) {
@@ -234,6 +237,30 @@ public class Robot extends LoggedRobot {
     } else hubActive = true; // transition
   }
 
+  private void determineHubCountdown() {
+
+    // Determine whether the hub is active.
+    double timeLeft = DriverStation.getMatchTime();
+    if (timeLeft < 0) 
+      hubCountdown = 0; // Match has not started.
+
+    if (timeLeft <= Constants.ENDGAME_START) {
+      hubCountdown = timeLeft;
+
+    } else if (timeLeft <= Constants.SHIFT_4_START) {
+      hubCountdown = timeLeft - Constants.ENDGAME_START;
+      // Only the hub of the team that won autonomous is active during shifts 2 and 4.
+    } else if (timeLeft <= Constants.SHIFT_3_START) {
+      hubCountdown = timeLeft - Constants.SHIFT_4_START;
+      // Only the hub of the team that didn't win autonomous is active during shifts 1 and 3.
+
+    } else if (timeLeft <= Constants.SHIFT_2_START) {
+      hubCountdown = timeLeft - Constants.SHIFT_3_START;
+    } else if (timeLeft <= Constants.SHIFT_1_START) {
+      hubCountdown = timeLeft - Constants.SHIFT_2_START;
+    } else hubCountdown = 0;
+  }
+
   @Override
   public void testInit() {
       diagnostics.reset();
@@ -260,6 +287,7 @@ public class Robot extends LoggedRobot {
 
   // Getters
   public boolean hubActive() {return hubActive;}
+  public double hubCountdown(){return hubCountdown;}
   public static Optional<Alliance> allianceColor() {return allianceColor;}
   public static String allianceColorString() {return String.valueOf(allianceColor.orElse(null));}
   public FieldLocation location() {return robotContainer.getAutoChooser().getLocation();}

@@ -189,7 +189,7 @@ public class AutoChooser {
         if (command == null) {
             return "No auto mapped for " + event.getAction() + " at " + event.getLocation();
         }
-        return event.getAction() + " at " + event.getLocation() + " -> " + command.getName();
+        return event.getAction() + " at " + event.getLocation() + " → " + command.getName();
     }
 
     public FieldLocation getLocation() {

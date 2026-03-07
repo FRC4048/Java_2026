@@ -119,7 +119,7 @@ public class GameConstants {
     
  // turret (pan angle) PID
     public static final double TURRET_P = 1;
-    public static final double TURRET_I = 0.0000002;
+    public static final double TURRET_I = 0.000000;
     public static final double TURRET_D = 0.0;
     public static final double TURRET_FF = 0.0;
     public static final double TURRET_ENCODER_MIN = 0; //Lowest encoder position of Turret

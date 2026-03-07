@@ -9,5 +9,5 @@ public class ArmParameters {
     public double armLength = 0;
     public Rotation2d armMinAngle = Rotation2d.fromRadians(0);
     public Rotation2d armMaxAngle = Rotation2d.fromRadians(0);
-    public boolean armSimulateGravity = true;
+    public boolean armSimulateGravity = false;
 }

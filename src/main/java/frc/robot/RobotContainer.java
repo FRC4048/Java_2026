@@ -506,7 +506,7 @@ public class RobotContainer {
          * @return the command to run in autonomous
          */
         public Command getAutonomousCommand() {
-                return autoChooser.getCommand();
+                return autoChooser.getSelectedCommand();
                 // return straightRoutine.cmd(straightTrajectory.done());
                 // return new ExampleAuto(drivebase, autoFactory);
         }

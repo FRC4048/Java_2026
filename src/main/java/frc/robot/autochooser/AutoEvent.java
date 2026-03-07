@@ -28,8 +28,8 @@ public class AutoEvent {
    * This instantiates an autoEvent using an extra alliance
    * color parameter. 
    * @param action The action to do.
-   * @param location 
-   * @param color
+   * @param location The location where the robot starts.
+   * @param color The alliance color.
    */
   public AutoEvent(AutoAction action, FieldLocation location, Alliance color) {
     this.action = action;

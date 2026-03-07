@@ -103,11 +103,11 @@ public class AutoChooser {
      *  @see AutoCommand */
     private void populateMap() {
         //do nothing
-        commandMap.put(new AutoEvent(AutoAction.DO_NOTHING, FieldLocation.DEPOT_SIDE, null),
+        commandMap.put(new AutoEvent(AutoAction.DO_NOTHING, FieldLocation.DEPOT_SIDE),
             new DoNothingCommand());
-        commandMap.put(new AutoEvent(AutoAction.DO_NOTHING, FieldLocation.MID, null),
+        commandMap.put(new AutoEvent(AutoAction.DO_NOTHING, FieldLocation.MID),
             new DoNothingCommand());
-        commandMap.put(new AutoEvent(AutoAction.DO_NOTHING, FieldLocation.OUTPOST_SIDE, null), 
+        commandMap.put(new AutoEvent(AutoAction.DO_NOTHING, FieldLocation.OUTPOST_SIDE), 
             new DoNothingCommand());
 
         commandMap.put(new AutoEvent(AutoAction.SHOOT_AND_CLIMB, FieldLocation.DEPOT_SIDE, null),

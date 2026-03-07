@@ -121,24 +121,25 @@ public class Robot extends LoggedRobot {
       SmartDashboard.putNumber("driverXbox.getLeftY()",driverXbox.getLeftY());
       SmartDashboard.putNumber("driverXbox::getRightX", driverXbox.getRightX());
       SmartDashboard.putString("DeploymentState", robotContainer.getDeployer().getDeploymentState().toString());
-      if(!Constants.TESTBED){
+      if (!Constants.TESTBED) {
           Logger.recordOutput("MyPose", robotContainer.getDriveBase().getPose());
         // Puts data on the elastic dashboard
+        SmartDashboard.putString("Alliance Color", Robot.allianceColorString());
+        SmartDashboard.putBoolean("Hub Active?", hubActive());
+      }
+
+      // Puts data on the elastic dashboard
       SmartDashboard.putString("Alliance Color", Robot.allianceColorString());
       SmartDashboard.putBoolean("Hub Active?", hubActive());
-    }
 
-    // Puts data on the elastic dashboard
-    SmartDashboard.putString("Alliance Color", Robot.allianceColorString());
-    SmartDashboard.putBoolean("Hub Active?", hubActive());
+      // Gets the alliance color.
+      if (DriverStation.isDSAttached() && allianceColor.isEmpty()) {
+        allianceColor = DriverStation.getAlliance();
+      }
+    }
     SmartDashboard.putString("Selected Action", 
       robotContainer.getAutoChooser().getCommandDescription());
-
-    // Gets the alliance color.
-    if (DriverStation.isDSAttached() && allianceColor.isEmpty()) {
-      allianceColor = DriverStation.getAlliance();
-    }}
-    }
+  }
 
   /** This function is called once each time the robot enters Disabled mode. */
   @Override

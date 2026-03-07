@@ -102,7 +102,7 @@ public class AutoChooser {
     /** Put mappings here.
      *  @see AutoCommand */
     private void populateMap() {
-        //do nothing
+        //if AutoEvent is not dependent on alliance color don't put a color
         commandMap.put(new AutoEvent(AutoAction.DO_NOTHING, FieldLocation.DEPOT_SIDE),
             new DoNothingCommand());
         commandMap.put(new AutoEvent(AutoAction.DO_NOTHING, FieldLocation.MID),
@@ -110,13 +110,13 @@ public class AutoChooser {
         commandMap.put(new AutoEvent(AutoAction.DO_NOTHING, FieldLocation.OUTPOST_SIDE), 
             new DoNothingCommand());
 
+        //for command descriptions (seperate field in elastic) put color as null
         commandMap.put(new AutoEvent(AutoAction.SHOOT_AND_CLIMB, FieldLocation.DEPOT_SIDE, null),
             new CommandDescription("shoot from depot")); 
         commandMap.put(new AutoEvent(AutoAction.SHOOT, FieldLocation.MID, Alliance.Blue),
             new CommandDescription("shoot from the middle")); 
         commandMap.put(new AutoEvent(AutoAction.SHOOT, FieldLocation.OUTPOST_SIDE, null),
             new CommandDescription("shoot from the outpost"));
-
         commandMap.put(new AutoEvent(AutoAction.SHOOT_AND_CLIMB, FieldLocation.DEPOT_SIDE, null),
             new CommandDescription("shoot and climb from the depot"));
         commandMap.put(new AutoEvent(AutoAction.SHOOT, FieldLocation.MID, Alliance.Blue),

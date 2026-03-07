@@ -72,7 +72,9 @@ public class AutoChooser {
     public LoggableCommand getCommand() {
         return get().getCommand();
     }
-
+    public AutoAction getAction(){
+        return actionChooser.get();
+    }
     /** @return A human-readable description of the selected command. */
     public String getCommandDescription() {
         return get().getDescription();

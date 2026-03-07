@@ -20,9 +20,8 @@ import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import frc.robot.utils.math.TurretCalculations;
 
 public class ControllerSubsystem extends SubsystemBase {
-
-    private static final double STOP_DELAY_SECONDS = 0.5;
-
+    private Pose2d turretPose;
+     private static final double STOP_DELAY_SECONDS = 0.5;
     // Placeholder target poses until real field target values are finalized
     private static final Pose2d HUB_TARGET_POSE = new Pose2d(4.0, 4.0, Rotation2d.kZero);
     private static final Pose2d SHUTTLE_TARGET_POSE = new Pose2d(1.0, 7.0, Rotation2d.kZero);
@@ -69,6 +68,7 @@ public class ControllerSubsystem extends SubsystemBase {
 
         SmartDashboard.putNumber(MANUAL_POSE_X_KEY, 0.0);
         SmartDashboard.putNumber(MANUAL_POSE_Y_KEY, 0.0);
+        turretPose = new Pose2d(new Translation2d(drivebase.getPose().getX()+ GameConstants.X_DISTANCE_BETWEEN_ROBOT_AND_TURRET,drivebase.getPose().getY()+ GameConstants.Y_DISTANCE_BETWEEN_ROBOT_AND_TURRET), new Rotation2d());
     }
 
     @Override
@@ -94,7 +94,8 @@ public class ControllerSubsystem extends SubsystemBase {
             Logger.recordOutput(TARGET_TURRET_ANGLE_KEY, activeTargets.turretAngleDegrees);
             Logger.recordOutput(TARGET_FEEDER_SPEED_KEY, activeTargets.feederSpin);
             Logger.recordOutput(TARGET_HOPPER_SPEED_KEY, activeTargets.hopperSpin);
-            Logger.recordOutput("Turret Pose", new Pose2d(new Translation2d(drivebase.getPose().getX()+ GameConstants.X_DISTANCE_BETWEEN_ROBOT_AND_TURRET,drivebase.getPose().getY()+ GameConstants.Y_DISTANCE_BETWEEN_ROBOT_AND_TURRET), new Rotation2d(Math.toRadians(activeTargets.turretAngleDegrees)))); 
+            turretPose = new Pose2d(new Translation2d(drivebase.getPose().getX()+ GameConstants.X_DISTANCE_BETWEEN_ROBOT_AND_TURRET,drivebase.getPose().getY()+ GameConstants.Y_DISTANCE_BETWEEN_ROBOT_AND_TURRET), new Rotation2d(Math.toRadians(activeTargets.turretAngleDegrees)));
+            Logger.recordOutput("Turret Pose", turretPose); 
         }
         previousState = currentState;
     }

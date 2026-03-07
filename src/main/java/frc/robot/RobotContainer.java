@@ -30,8 +30,6 @@ import frc.robot.commands.intakeDeployment.ToggleDeployment;
 import frc.robot.commands.intakeDeployment.RunDeployer;
 import frc.robot.commands.intakeDeployment.SetDeploymentState;
 import frc.robot.commands.parallels.RunHopperAndFeeder;
-import frc.robot.commands.sequences.IntakeDownSequence;
-import frc.robot.commands.sequences.IntakeUpSequence;
 import frc.robot.commands.sequences.ResetAll;
 import frc.robot.autochooser.AutoChooser;
 import frc.robot.commands.angler.AimAngler;
@@ -75,10 +73,6 @@ import frc.robot.apriltags.ApriltagReading;
 
 import java.io.File;
 
-
-import choreo.auto.AutoFactory;
-import choreo.auto.AutoRoutine;
-import choreo.auto.AutoTrajectory;
 
 import choreo.auto.AutoFactory;
 import choreo.auto.AutoRoutine;

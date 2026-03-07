@@ -55,7 +55,7 @@ public class GameConstants {
     public static final double INTAKE_DEPLOYER_SPEED = -0.075;
     public static final double INTAKE_RETRACTION_SPEED = 0.1;
     public static final double INITIAL_INTAKE_DEPLOYMENT_SPEED = -0.1;
-    public static final double INITIAL_INTAKE_RETRACTION_SPEED = 0.25;
+    public static final double INITIAL_INTAKE_RETRACTION_SPEED = 0.4;
 
 
     //Diags

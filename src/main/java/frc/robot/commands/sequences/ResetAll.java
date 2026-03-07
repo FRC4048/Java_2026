@@ -2,6 +2,7 @@ package frc.robot.commands.sequences;
 
 import frc.robot.commands.angler.StowAngler;
 import frc.robot.commands.climber.ClimberDown;
+import frc.robot.commands.intakeDeployment.InitialDeploymentState;
 import frc.robot.commands.intakeDeployment.SetDeploymentState;
 import frc.robot.commands.shooter.SetShootingState;
 import frc.robot.commands.shooter.StopShooter;
@@ -18,18 +19,21 @@ import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.TurretSubsystem;
 import frc.robot.utils.logging.commands.LoggableParallelCommandGroup;
+import frc.robot.utils.logging.commands.LoggableSequentialCommandGroup;
 
-public class ResetAll extends LoggableParallelCommandGroup {
+public class ResetAll extends LoggableSequentialCommandGroup {
 
     public ResetAll(AnglerSubsystem anglerSubsystem, ClimberSubsystem climberSubsystem,
             FeederSubsystem feederSubsystem, HopperSubsystem hopperSubsystem,
             IntakeDeployerSubsystem intakeDeployerSubsystem, IntakeSubsystem intakeSubsystem,
             ShooterSubsystem shooterSubsystem, TurretSubsystem turretSubsystem, ShootingState shootState) {
         super(
-                new SetDeploymentState(intakeDeployerSubsystem, DeploymentState.UP),
+            new SetDeploymentState(intakeDeployerSubsystem, DeploymentState.UP),
+            new LoggableParallelCommandGroup(
+                new InitialDeploymentState(intakeDeployerSubsystem),
                 new StowAngler(anglerSubsystem),
                 new ClimberDown(climberSubsystem),
                 new SetShootingState(shootState, ShootState.STOPPED),
-                new RunTurretToRevLimit(turretSubsystem));
+                new RunTurretToRevLimit(turretSubsystem)));
     }
 }

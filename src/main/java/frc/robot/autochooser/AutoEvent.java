@@ -46,33 +46,22 @@ public class AutoEvent {
   }
 
   @Override
-  public int hashCode() {
-    return Objects.hash(this.action, this.location);
-    /* This hashCode() implementation intentionally disregards
-    the alliance color. This is so that when the commandMap
-    checks whether two AutoEvent instances are the "same", the
-    logic for telling whether two alliance colors are the
-    "same" is delayed until the equals() method is called. */
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    AutoEvent autoEvent = (AutoEvent) o;
+    return action == autoEvent.action && location == autoEvent.location && allianceColor == autoEvent.allianceColor;
   }
 
   @Override
-  public boolean equals(Object obj) {
-    if (this == obj) return true;
-    if (obj == null) return false;
-    if (obj instanceof AutoEvent other) {
-      if (this.action != other.action) return false;
-      if (this.location != other.location) return false;
-      if (this.allianceColor == null
-       || other.allianceColor == null) return true; /*
-      If an allianceColor field is null, that means the instance
-      was instantiated in using the first constructor, which
-      means that the alliance color was intentionally chosen to
-      be irrelevant. */
-      return this.allianceColor == other.allianceColor;
-    } 
-    return false;
+  public int hashCode() {
+    return Objects.hash(action, location, allianceColor);
   }
 
-  
-
+  /**
+   * Return an event without color (to allow lookup in the map for a color-agnostic entry)
+   */
+  public AutoEvent withoutColor() {
+    return new AutoEvent(action, location);
+  }
 }

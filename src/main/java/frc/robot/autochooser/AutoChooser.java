@@ -9,7 +9,6 @@ import choreo.auto.AutoFactory;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Robot;
-import frc.robot.commands.auto.CommandDescription;
 import frc.robot.commands.auto.shoot.BlueDepotShoot;
 import frc.robot.commands.auto.shoot.BlueMidShoot;
 import frc.robot.commands.auto.shoot.BlueOutpostShoot;
@@ -176,17 +175,17 @@ public class AutoChooser {
 
     public Command getSelectedCommand() {
         AutoEvent event = getSelectedEvent();
-        return commandMap.get(event);
+        return getCommand(event);
     }
 
     public String getCommandDescription() {
         AutoEvent event = getSelectedEvent();
-        Command command = commandMap.get(event);
+        Command command = getCommand(event);
         String commandDescription;
         if (command == null) {
             return "No auto mapped for " + event.getAction() + " at " + event.getLocation();
         } else {
-            commandDescription = descriptionMap.get(event);
+            commandDescription = descriptionMap.get(event.withoutColor());
         }
         return event.getAction() + " at " + event.getLocation() + " → " + commandDescription + ".";
     }
@@ -195,4 +194,15 @@ public class AutoChooser {
         return locationChooser.get();
     }
 
+
+    private Command getCommand(AutoEvent event) {
+        Command command = commandMap.get(event);
+        if (command != null) {
+            // prioritize color-specific command, if we have one
+            return command;
+        } else {
+            // fall back to color-agnostic command if we didn't find one
+            return commandMap.get(event.withoutColor());
+        }
+    }
 }

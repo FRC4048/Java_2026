@@ -202,7 +202,7 @@ public class ControllerSubsystem extends SubsystemBase {
 
     private double calculateTurretAngleDegrees(Pose2d robotPose, PoseControlProfile profile) {
         SmartDashboard.putNumber("Robot rotation", robotPose.getRotation().getDegrees());
-        return Math.toDegrees(TurretCalculations.calculateTurretAngle(robotPose.getX(), robotPose.getY(), robotPose.getRotation().getDegrees(), DriverStation.getAlliance().get()==Alliance.Blue));
+        return Math.toDegrees(TurretCalculations.calculateTurretAngle(robotPose.getX(), robotPose.getY(), robotPose.getRotation().getRadians(), DriverStation.getAlliance().get()==Alliance.Blue));
     }
 
     //Getters for all the subsystems to set posistion.

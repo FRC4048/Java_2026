@@ -36,10 +36,8 @@ public class BlueDepotShootClimb extends LoggableSequentialCommandGroup{
                 new SetShootingState(shootstate, ShootState.FIXED_2), //or some other shoot state
                 LoggableCommandWrapper.wrap(auto.resetOdometry("BlueDepotShoot")),
                 LoggableCommandWrapper.wrap(auto.trajectoryCmd("BlueDepotShoot")),
-                new LoggableParallelCommandGroup(
-                    new ShootButton(controller),
-                    new LoggableWaitCommand(3)
-                ),
+                new ShootButton(controller),
+                new LoggableWaitCommand(3),
                 LoggableCommandWrapper.wrap(auto.resetOdometry("BlueDepotClimb")),
                 new LoggableParallelCommandGroup(
                     LoggableCommandWrapper.wrap(auto.trajectoryCmd("BlueDepotClimb")),

@@ -1,11 +1,13 @@
 package frc.robot.commands.auto;
 
-import frc.robot.utils.logging.commands.LoggableSequentialCommandGroup;
+import frc.robot.utils.logging.commands.LoggableCommand;
 
-public class DoNothing extends LoggableSequentialCommandGroup{
+public class DoNothing extends LoggableCommand{
     public DoNothing() {
-        super(
-                new DoNothing()
-        );
+    }
+
+    @Override
+    public boolean isFinished() {
+        return true;
     }
 }

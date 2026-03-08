@@ -36,10 +36,8 @@ public class BlueMidShootClimb extends LoggableSequentialCommandGroup{
                 new SetShootingState(shootstate, ShootState.FIXED_2), //or some other shoot state
                 LoggableCommandWrapper.wrap(auto.resetOdometry("BlueMidShoot")),
                 LoggableCommandWrapper.wrap(auto.trajectoryCmd("BlueMidShoot")),
-                new LoggableParallelCommandGroup(
-                    new ShootButton(controller),
-                    new LoggableWaitCommand(3)
-                ),
+                new ShootButton(controller),
+                new LoggableWaitCommand(3),
                 LoggableCommandWrapper.wrap(auto.resetOdometry("BlueMidClimb")),
                 new LoggableParallelCommandGroup(
                     LoggableCommandWrapper.wrap(auto.trajectoryCmd("BlueMidClimb")),

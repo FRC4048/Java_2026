@@ -1,8 +1,8 @@
 package frc.robot.commands.auto;
 
-import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.utils.logging.commands.LoggableCommand;
 
-public class CommandDescription extends Command {
+public class CommandDescription extends LoggableCommand {
     String desc;
     public CommandDescription(String desc) {
         this.desc = desc;

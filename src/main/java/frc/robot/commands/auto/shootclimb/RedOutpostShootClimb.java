@@ -36,10 +36,8 @@ public class RedOutpostShootClimb extends LoggableSequentialCommandGroup{
                 new SetShootingState(shootstate, ShootState.FIXED_2), //or some other shoot state
                 LoggableCommandWrapper.wrap(auto.resetOdometry("RedOutpostShoot")),
                 LoggableCommandWrapper.wrap(auto.trajectoryCmd("RedOutpostShoot")),
-                new LoggableParallelCommandGroup(
-                    new ShootButton(controller),
-                    new LoggableWaitCommand(3)
-                ),
+                new ShootButton(controller),
+                new LoggableWaitCommand(3),
                 LoggableCommandWrapper.wrap(auto.resetOdometry("RedOutpostClimb")),
                 new LoggableParallelCommandGroup(
                     LoggableCommandWrapper.wrap(auto.trajectoryCmd("RedOutpostClimb")),

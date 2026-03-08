@@ -64,6 +64,8 @@ import frc.robot.subsystems.ClimberSubsystem;
 //import frc.robot.subsystems.RollerSubsystem;
 //import frc.robot.subsystems.TiltSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
+import frc.robot.subsystems.swervedrive.vision.truster.ConstantVisionTruster;
+import frc.robot.subsystems.swervedrive.vision.truster.VisionTruster;
 import frc.robot.utils.logging.io.gyro.RealGyroIo;
 import frc.robot.utils.logging.io.gyro.ThreadedGyro;
 import frc.robot.utils.logging.io.gyro.ThreadedGyroSwerveIMU;
@@ -78,6 +80,8 @@ import java.io.File;
 import choreo.auto.AutoFactory;
 import choreo.auto.AutoRoutine;
 import choreo.auto.AutoTrajectory;
+
+import static frc.robot.subsystems.swervedrive.vision.estimation.PoseEstimator.visionMeasurementStdDevs2;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -121,6 +125,7 @@ public class RobotContainer {
         private AutoFactory autoFactory;
         private static AutoRoutine straightRoutine;
         private static AutoTrajectory straightTrajectory;
+        private final VisionTruster truster = new ConstantVisionTruster(visionMeasurementStdDevs2);
 
     // Replace with CommandPS4Controller or CommandJoystick if needed
         // new CommandXboxController(OperatorConstants.kDriverControllerPort);private
@@ -154,7 +159,7 @@ public class RobotContainer {
 
                                 drivebase = !Constants.TESTBED ? new SwerveSubsystem(
                                                 new File(Filesystem.getDeployDirectory(), "YAGSL/" + Constants.SWERVE_JSON_DIRECTORY), swerveIMU) : null;
-                            apriltagSubsystem = !Constants.TESTBED ? new ApriltagSubsystem(ApriltagSubsystem.createRealIo(), drivebase) : null;
+                            apriltagSubsystem = !Constants.TESTBED ? new ApriltagSubsystem(ApriltagSubsystem.createRealIo(), drivebase, truster) : null;
                             controllerSubsystem = !Constants.TESTBED ? new ControllerSubsystem(drivebase, this) : null;
 
             }
@@ -172,7 +177,7 @@ public class RobotContainer {
                 // No GyroSubsystem in REPLAY for now
                 // create the drive subsystem with null gyro (use default json)
                 drivebase = !Constants.TESTBED ? new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "YAGSL/" + Constants.SWERVE_JSON_DIRECTORY), null) : null;
-                apriltagSubsystem = !Constants.TESTBED ? new ApriltagSubsystem(ApriltagSubsystem.createMockIo(), drivebase) : null;
+                apriltagSubsystem = !Constants.TESTBED ? new ApriltagSubsystem(ApriltagSubsystem.createMockIo(), drivebase, truster) : null;
                 controllerSubsystem = !Constants.TESTBED ? new ControllerSubsystem(drivebase, this) : null;
 
             }
@@ -193,7 +198,7 @@ public class RobotContainer {
                 // create the drive subsystem with null gyro (use default json)
                 drivebase = !Constants.TESTBED ? new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "YAGSL/" + Constants.SWERVE_JSON_DIRECTORY), null) : null;
                 controllerSubsystem = !Constants.TESTBED ? new ControllerSubsystem(drivebase, this) : null;
-                apriltagSubsystem = !Constants.TESTBED ? new ApriltagSubsystem(ApriltagSubsystem.createSimIo(), drivebase) : null;
+                apriltagSubsystem = !Constants.TESTBED ? new ApriltagSubsystem(ApriltagSubsystem.createSimIo(truster,drivebase), drivebase, truster) : null;
             }
 
                         default -> {
@@ -516,8 +521,9 @@ public class RobotContainer {
          */
         public Command getAutonomousCommand() {
                 return autoChooser.getSelectedCommand();
-                // return straightRoutine.cmd(straightTrajectory.done());
-                // return new ExampleAuto(drivebase, autoFactory);
+    // return straightRoutine.cmd(straightTrajectory.done());
+
+            //    return new ExampleAuto(drivebase, autoFactory);
         }
 
         public ClimberSubsystem getClimberSubsystem() {
@@ -540,7 +546,7 @@ public class RobotContainer {
         return drivebase;
     }
 
-        public ShootingState getShootingState() {
+    public ShootingState getShootingState() {
                 return shootState;
         }
         public IntakeDeployerSubsystem getDeployer(){

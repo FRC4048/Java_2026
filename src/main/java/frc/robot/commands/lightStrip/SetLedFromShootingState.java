@@ -5,21 +5,22 @@ import frc.robot.subsystems.LightStripSubsystem;
 import frc.robot.utils.BlinkinPattern;
 import frc.robot.utils.logging.commands.LoggableCommand;
 
+// This code is unused. The light strip is fully controlled through SetLed.
+
 public class SetLedFromShootingState extends LoggableCommand{
     
     private final LightStripSubsystem subsystem;
     private ShootingState shootingState;
-   // private final Timer timer;
   
     public SetLedFromShootingState(LightStripSubsystem subsystem, ShootingState shootingState) {
         this.subsystem = subsystem;
         this.shootingState = shootingState;
-        //timer = new Timer();
+        addRequirements(subsystem);
     }
 
     @Override
     public void initialize() {
-        //timer.restart();
+
     }  
 
     @Override
@@ -46,7 +47,6 @@ public class SetLedFromShootingState extends LoggableCommand{
     @Override
     public boolean isFinished() {
         return true;
-        //return timer.hasElapsed(3);
     }
 
     @Override

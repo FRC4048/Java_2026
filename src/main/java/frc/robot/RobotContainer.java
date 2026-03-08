@@ -29,6 +29,7 @@ import frc.robot.commands.intake.StopIntake;
 import frc.robot.commands.intakeDeployment.InitialRunDeployment;
 import frc.robot.commands.intakeDeployment.RunDeployer;
 import frc.robot.commands.intakeDeployment.SetDeploymentState;
+import frc.robot.commands.lightStrip.SetLed;
 import frc.robot.commands.lightStrip.SetLedFromShootingState;
 import frc.robot.commands.parallels.RunHopperAndFeeder;
 import frc.robot.commands.parallels.SetShootingStateAndLight;
@@ -142,7 +143,7 @@ public class RobotContainer {
                                 hopperSubsystem = new HopperSubsystem(HopperSubsystem.createRealIo());
                                 intakeDeployer = new IntakeDeployerSubsystem(IntakeDeployerSubsystem.createRealIo());
                                 turretSubsystem = new TurretSubsystem(TurretSubsystem.createRealIo());
-                                lightStripSubsystem = new LightStripSubsystem();
+                               
 
 
                                 climberSubsystem = new ClimberSubsystem(ClimberSubsystem.createRealIo());
@@ -157,7 +158,7 @@ public class RobotContainer {
                                                 new File(Filesystem.getDeployDirectory(), "YAGSL/" + Constants.SWERVE_JSON_DIRECTORY), swerveIMU) : null;
                             apriltagSubsystem = !Constants.TESTBED ? new ApriltagSubsystem(ApriltagSubsystem.createRealIo(), drivebase) : null;
                             controllerSubsystem = !Constants.TESTBED ? new ControllerSubsystem(drivebase, this) : null;
-
+                                 lightStripSubsystem = new LightStripSubsystem(drivebase, shootState);
             }
                         case REPLAY -> {
                                 // rollerSubsystem = new RollerSubsystem(RollerSubsystem.createMockIo());
@@ -170,12 +171,13 @@ public class RobotContainer {
                                 turretSubsystem = new TurretSubsystem(TurretSubsystem.createMockIo());
                                 shooterSubsystem = new ShooterSubsystem(ShooterSubsystem.createMockIo());
                                 intakeDeployer = new IntakeDeployerSubsystem(IntakeDeployerSubsystem.createMockIo());
-                                lightStripSubsystem = new LightStripSubsystem();
+                                
                                 // No GyroSubsystem in REPLAY for now
                 // create the drive subsystem with null gyro (use default json)
                 drivebase = !Constants.TESTBED ? new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "YAGSL/" + Constants.SWERVE_JSON_DIRECTORY), null) : null;
                 apriltagSubsystem = !Constants.TESTBED ? new ApriltagSubsystem(ApriltagSubsystem.createMockIo(), drivebase) : null;
                 controllerSubsystem = !Constants.TESTBED ? new ControllerSubsystem(drivebase, this) : null;
+                                lightStripSubsystem = new LightStripSubsystem(drivebase, shootState);
 
             }
             case SIM -> {
@@ -192,12 +194,14 @@ public class RobotContainer {
                                 shooterSubsystem = new ShooterSubsystem(ShooterSubsystem.createSimIo(robotVisualizer));
                                 intakeDeployer = new IntakeDeployerSubsystem(
                                                 IntakeDeployerSubsystem.createSimIo(robotVisualizer));// No GyroSubsystem in REPLAY for now
-                                lightStripSubsystem = new LightStripSubsystem();
+                               
                                                 // create the drive subsystem with null gyro (use default json)
                 drivebase = !Constants.TESTBED ? new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "YAGSL/" + Constants.SWERVE_JSON_DIRECTORY), null) : null;
                 controllerSubsystem = !Constants.TESTBED ? new ControllerSubsystem(drivebase, this) : null;
                 apriltagSubsystem = !Constants.TESTBED ? new ApriltagSubsystem(ApriltagSubsystem.createSimIo(), drivebase) : null;
-            }
+                                lightStripSubsystem = new LightStripSubsystem(drivebase, shootState);
+        
+        }
 
                         default -> {
                                 throw new RuntimeException("Did not specify Robot Mode");
@@ -290,11 +294,11 @@ public class RobotContainer {
                 controller.b().onTrue(new IntakeDownSequence(intakeDeployer, intakeSubsystem));
                 controller.y().onTrue(new ClimberUp(climberSubsystem));
                 controller.x().onTrue(new ClimberDown(climberSubsystem));
-                controller.povUp().onTrue(new SetShootingStateAndLight(shootState, lightStripSubsystem, ShootState.FIXED));
-                controller.povRight().onTrue(new SetShootingStateAndLight(shootState, lightStripSubsystem, ShootState.FIXED_2));
-                controller.povDown().onTrue(new SetShootingStateAndLight(shootState, lightStripSubsystem, ShootState.SHOOTING_HUB));
-                controller.povLeft().onTrue(new SetShootingStateAndLight(shootState, lightStripSubsystem, ShootState.SHUTTLING));
-                driveJoystick.trigger().whileTrue((new SetShootingStateAndLight(shootState, lightStripSubsystem, ShootState.STOPPED)));
+                controller.povUp().onTrue(new SetShootingState(shootState, ShootState.FIXED));
+                controller.povRight().onTrue(new SetShootingState(shootState, ShootState.FIXED_2));
+                controller.povDown().onTrue(new SetShootingState(shootState, ShootState.SHOOTING_HUB));
+                controller.povLeft().onTrue(new SetShootingState(shootState, ShootState.SHUTTLING));
+                driveJoystick.trigger().whileTrue((new SetShootingState(shootState, ShootState.STOPPED)));
                 if (controllerSubsystem != null) {
                         steerJoystick.trigger().whileTrue(new ShootButton(controllerSubsystem));
                 }
@@ -493,9 +497,6 @@ public class RobotContainer {
                         SmartDashboard.putData(
                                         "intakedeployer/Deployment State: STOPPED",
                                         new SetDeploymentState(intakeDeployer, DeploymentState.STOPPED));
-                        SmartDashboard.putData(
-                                        "light",
-                                        new SetLedFromShootingState(lightStripSubsystem, shootState));
 
                 }
 
@@ -503,10 +504,12 @@ public class RobotContainer {
         if (!Constants.TESTBED) {
             Command driveDirectionTime = new DriveDirectionTime(drivebase, 0.1, 0.1, true, 1);
             SmartDashboard.putData("Drive Command", driveDirectionTime);
-            SmartDashboard.putData("Fake vision", new FakeVision(drivebase));
+            SmartDashboard.putData("Fake vision near trench", new FakeVision(drivebase, 4, 1));
+            SmartDashboard.putData("Fake vision away from trench", new FakeVision(drivebase, 1, 1));
             SmartDashboard.putData("AddApriltagReading", new AddApriltagReading(apriltagSubsystem, new ApriltagReading(0, 0, 0, 0, 0, 0, 0)));
             SmartDashboard.putData("AddGarbageReading", new AddGarbageReading(apriltagSubsystem));
             SmartDashboard.putData("AddTunedApriltagReading", new AddTunableApriltagReading(apriltagSubsystem));
+        
         }
 
         }

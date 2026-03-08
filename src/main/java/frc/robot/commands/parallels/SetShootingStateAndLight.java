@@ -7,6 +7,8 @@ import frc.robot.constants.enums.ShootingState.ShootState;
 import frc.robot.subsystems.LightStripSubsystem;
 import frc.robot.utils.logging.commands.LoggableParallelCommandGroup;
 
+// This code is unused. The light strip is fully controlled through SetLed.
+
 public class SetShootingStateAndLight extends LoggableParallelCommandGroup{
 
     public SetShootingStateAndLight(ShootingState shootState, LightStripSubsystem lightStrip, ShootState newState) {

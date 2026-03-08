@@ -79,10 +79,6 @@ import choreo.auto.AutoFactory;
 import choreo.auto.AutoRoutine;
 import choreo.auto.AutoTrajectory;
 
-import choreo.auto.AutoFactory;
-import choreo.auto.AutoRoutine;
-import choreo.auto.AutoTrajectory;
-
 /**
  * This class is where the bulk of the robot should be declared. Since
  * Command-based is a
@@ -99,7 +95,7 @@ public class RobotContainer {
         private static final int DRIVER_CAM_FPS = 30;
 
         // Instantiate the autochooser.
-        private final AutoChooser autoChooser = new AutoChooser();
+        private final AutoChooser autoChooser;
         // The robot's subsystems and commands are defined here...
         // private final TiltSubsystem tiltSubsystem;
         private final CommandXboxController controller =
@@ -205,9 +201,10 @@ public class RobotContainer {
                         }
                 }
 
+                setUpAutoFactory();
+                autoChooser = new AutoChooser(drivebase, shootState, autoFactory, shooterSubsystem, climberSubsystem, feederSubsystem, hopperSubsystem, turretSubsystem, anglerSubsystem, controllerSubsystem);
                 configureBindings();
                 putShuffleboardCommands();
-
         }
 
 
@@ -512,16 +509,15 @@ public class RobotContainer {
 
         }
 
-    /**
-     * Use this to pass the autonomous command to the main {@link Robot} class.
-     *
-     * @return the command to run in autonomous
-     */
-    public Command getAutonomousCommand() {
-        return autoChooser.getCommand();
-    // return straightRoutine.cmd(straightTrajectory.done());
-                
-            //    return new ExampleAuto(drivebase, autoFactory);
+        /**
+         * Use this to pass the autonomous command to the main {@link Robot} class.
+         *
+         * @return the command to run in autonomous
+         */
+        public Command getAutonomousCommand() {
+                return autoChooser.getSelectedCommand();
+                // return straightRoutine.cmd(straightTrajectory.done());
+                // return new ExampleAuto(drivebase, autoFactory);
         }
 
         public ClimberSubsystem getClimberSubsystem() {

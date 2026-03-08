@@ -192,10 +192,10 @@ public class ControllerSubsystem extends SubsystemBase {
     private double calculateShooterVelocity(double computedDistanceMeters, PoseControlProfile profile) {
         if (profile == HUB_PROFILE) {
             double distance = UnitConversion.METER_TO_FOOT * computedDistanceMeters;
-			return 
+			return Math.floor( 
 				8.46 * distance * distance
 			  - 237 * distance
-			  - 1_380;
+			  - 1_380);
 		}
         return profile.defaultShooterVelocityRpm;
     }

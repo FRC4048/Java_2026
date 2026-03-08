@@ -5,6 +5,8 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.Filesystem;
+import edu.wpi.first.wpilibj.Filesystem;
+
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -26,15 +28,13 @@ import frc.robot.commands.feeder.SpinFeeder;
 import frc.robot.commands.drive.FakeVision;
 import frc.robot.commands.intake.SpinIntake;
 import frc.robot.commands.intake.StopIntake;
-import frc.robot.commands.intakeDeployment.InitialRunDeployment;
+import frc.robot.commands.intakeDeployment.ToggleDeployment;
 import frc.robot.commands.intakeDeployment.RunDeployer;
 import frc.robot.commands.intakeDeployment.SetDeploymentState;
 import frc.robot.commands.lightStrip.SetLed;
 import frc.robot.commands.lightStrip.SetLedFromShootingState;
 import frc.robot.commands.parallels.RunHopperAndFeeder;
 import frc.robot.commands.parallels.SetShootingStateAndLight;
-import frc.robot.commands.sequences.IntakeDownSequence;
-import frc.robot.commands.sequences.IntakeUpSequence;
 import frc.robot.autochooser.AutoChooser;
 import frc.robot.commands.angler.AimAngler;
 import frc.robot.commands.angler.DefaultAnglerControl;
@@ -43,6 +43,7 @@ import frc.robot.commands.shooter.DefaultShooterControl;
 import frc.robot.commands.auto.ExampleAuto;
 import frc.robot.commands.shooter.SetShootingState;
 import frc.robot.commands.testing.RunDashboardShotTest;
+import frc.robot.commands.turret.TestSetTurretAngle;
 import frc.robot.commands.turret.DefaultTurretControl;
 import frc.robot.commands.turret.RunTurretToFwdLimit;
 import frc.robot.commands.turret.RunTurretToRevLimit;
@@ -67,10 +68,13 @@ import frc.robot.subsystems.ClimberSubsystem;
 //import frc.robot.subsystems.RollerSubsystem;
 //import frc.robot.subsystems.TiltSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
+import frc.robot.subsystems.swervedrive.vision.truster.ConstantVisionTruster;
+import frc.robot.subsystems.swervedrive.vision.truster.VisionTruster;
 import frc.robot.utils.logging.io.gyro.RealGyroIo;
 import frc.robot.utils.logging.io.gyro.ThreadedGyro;
 import frc.robot.utils.logging.io.gyro.ThreadedGyroSwerveIMU;
 import frc.robot.utils.simulation.RobotVisualizer;
+import frc.robot.subsystems.CameraThread;
 import swervelib.SwerveInputStream;
 import swervelib.imu.SwerveIMU;
 import frc.robot.apriltags.ApriltagReading;
@@ -81,9 +85,7 @@ import choreo.auto.AutoFactory;
 import choreo.auto.AutoRoutine;
 import choreo.auto.AutoTrajectory;
 
-import choreo.auto.AutoFactory;
-import choreo.auto.AutoRoutine;
-import choreo.auto.AutoTrajectory;
+import static frc.robot.subsystems.swervedrive.vision.estimation.PoseEstimator.visionMeasurementStdDevs2;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -95,8 +97,13 @@ import choreo.auto.AutoTrajectory;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
+        private static final String DRIVER_CAM_PREFIX = CameraThread.LOGGING_PREFIX;
+        private static final String DRIVER_CAM_SERVER_NAME = "serve_" + DRIVER_CAM_PREFIX;
+        private static final int DRIVER_CAM_PORT = 1182;
+        private static final int DRIVER_CAM_FPS = 30;
+
         // Instantiate the autochooser.
-        private final AutoChooser autoChooser = new AutoChooser();
+        private final AutoChooser autoChooser;
         // The robot's subsystems and commands are defined here...
         // private final TiltSubsystem tiltSubsystem;
         private final CommandXboxController controller =
@@ -123,6 +130,7 @@ public class RobotContainer {
         private AutoFactory autoFactory;
         private static AutoRoutine straightRoutine;
         private static AutoTrajectory straightTrajectory;
+        private final VisionTruster truster = new ConstantVisionTruster(visionMeasurementStdDevs2);
 
     // Replace with CommandPS4Controller or CommandJoystick if needed
         // new CommandXboxController(OperatorConstants.kDriverControllerPort);private
@@ -156,7 +164,7 @@ public class RobotContainer {
 
                                 drivebase = !Constants.TESTBED ? new SwerveSubsystem(
                                                 new File(Filesystem.getDeployDirectory(), "YAGSL/" + Constants.SWERVE_JSON_DIRECTORY), swerveIMU) : null;
-                            apriltagSubsystem = !Constants.TESTBED ? new ApriltagSubsystem(ApriltagSubsystem.createRealIo(), drivebase) : null;
+                            apriltagSubsystem = !Constants.TESTBED ? new ApriltagSubsystem(ApriltagSubsystem.createRealIo(), drivebase, truster) : null;
                             controllerSubsystem = !Constants.TESTBED ? new ControllerSubsystem(drivebase, this) : null;
                                  lightStripSubsystem = new LightStripSubsystem(drivebase, shootState);
             }
@@ -175,7 +183,7 @@ public class RobotContainer {
                                 // No GyroSubsystem in REPLAY for now
                 // create the drive subsystem with null gyro (use default json)
                 drivebase = !Constants.TESTBED ? new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "YAGSL/" + Constants.SWERVE_JSON_DIRECTORY), null) : null;
-                apriltagSubsystem = !Constants.TESTBED ? new ApriltagSubsystem(ApriltagSubsystem.createMockIo(), drivebase) : null;
+                apriltagSubsystem = !Constants.TESTBED ? new ApriltagSubsystem(ApriltagSubsystem.createMockIo(), drivebase, truster) : null;
                 controllerSubsystem = !Constants.TESTBED ? new ControllerSubsystem(drivebase, this) : null;
                                 lightStripSubsystem = new LightStripSubsystem(drivebase, shootState);
 
@@ -198,7 +206,7 @@ public class RobotContainer {
                                                 // create the drive subsystem with null gyro (use default json)
                 drivebase = !Constants.TESTBED ? new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "YAGSL/" + Constants.SWERVE_JSON_DIRECTORY), null) : null;
                 controllerSubsystem = !Constants.TESTBED ? new ControllerSubsystem(drivebase, this) : null;
-                apriltagSubsystem = !Constants.TESTBED ? new ApriltagSubsystem(ApriltagSubsystem.createSimIo(), drivebase) : null;
+                apriltagSubsystem = !Constants.TESTBED ? new ApriltagSubsystem(ApriltagSubsystem.createSimIo(truster,drivebase), drivebase, truster) : null;
                                 lightStripSubsystem = new LightStripSubsystem(drivebase, shootState);
         
         }
@@ -208,10 +216,12 @@ public class RobotContainer {
                         }
                 }
 
+                setUpAutoFactory();
+                autoChooser = new AutoChooser(drivebase, shootState, autoFactory, shooterSubsystem, climberSubsystem, feederSubsystem, hopperSubsystem, turretSubsystem, anglerSubsystem, controllerSubsystem);
                 configureBindings();
                 putShuffleboardCommands();
-                setUpAutoFactory();
         }
+
 
         /**
          * Use this method to define your trigger->command mappings. Triggers can be
@@ -290,8 +300,8 @@ public class RobotContainer {
         }
 
         private void configureBindings() {
-                controller.a().onTrue(new IntakeUpSequence(intakeDeployer, intakeSubsystem));
-                controller.b().onTrue(new IntakeDownSequence(intakeDeployer, intakeSubsystem));
+                controller.a().onTrue(new ToggleDeployment(intakeDeployer));
+                controller.b().onTrue(new SetDeploymentState(intakeDeployer, DeploymentState.STOPPED));
                 controller.y().onTrue(new ClimberUp(climberSubsystem));
                 controller.x().onTrue(new ClimberDown(climberSubsystem));
                 controller.povUp().onTrue(new SetShootingState(shootState, ShootState.FIXED));
@@ -321,12 +331,12 @@ public class RobotContainer {
                                         () -> drivebase != null ? drivebase.getPose() : null,
                                         shootState);
                 }
-
+                intakeSubsystem.setDefaultCommand(new SpinIntake(intakeSubsystem, intakeDeployer));
             if (controllerSubsystem != null) {
                 anglerSubsystem.setDefaultCommand(new DefaultAnglerControl(anglerSubsystem, controllerSubsystem));
                 shooterSubsystem.setDefaultCommand(new DefaultShooterControl(shooterSubsystem, controllerSubsystem));
                 turretSubsystem.setDefaultCommand(new DefaultTurretControl(turretSubsystem, controllerSubsystem));
-                hopperSubsystem.setDefaultCommand(new DefaultSpinHopper(hopperSubsystem, controllerSubsystem));
+               hopperSubsystem.setDefaultCommand(new DefaultSpinHopper(hopperSubsystem, controllerSubsystem));
                 feederSubsystem.setDefaultCommand(new DefaultSpinFeeder(feederSubsystem, controllerSubsystem));
             }
 
@@ -378,9 +388,11 @@ public class RobotContainer {
                         SmartDashboard.putNumber(RunDashboardShotTest.ANGLER_TARGET_POSITION_KEY, 0.0);
                         SmartDashboard.putNumber(RunDashboardShotTest.TURRET_TARGET_POSITION_KEY, Constants.TURRET_HOME_ANGLE);
                         SmartDashboard.putNumber(RunDashboardShotTest.SHOOTER_TARGET_RPM_KEY, Constants.SHOOTER_SPEED);
-
+                        SmartDashboard.putNumber("Target Angle",0);
                         SmartDashboard.putData("RunHoppperAndFeeder",
                                         new RunHopperAndFeeder(hopperSubsystem, feederSubsystem));
+                        SmartDashboard.putData("RunTurret",
+                                        new TestSetTurretAngle(turretSubsystem));
 
                         SmartDashboard.putData(
                                         "test/Run Dashboard Shot Test (30s)",
@@ -441,10 +453,10 @@ public class RobotContainer {
 
                         SmartDashboard.putData(
                                         "intakedeployer/InitlizeDeployer",
-                                        new InitialRunDeployment(intakeDeployer));
+                                        new ToggleDeployment(intakeDeployer));
                         SmartDashboard.putData(
                                         "Spin Intake",
-                                        new SpinIntake(intakeSubsystem));
+                                        new SpinIntake(intakeSubsystem, intakeDeployer));
                         SmartDashboard.putData(
                                         "Stop Intake",
                                         new StopIntake(intakeSubsystem));
@@ -514,15 +526,15 @@ public class RobotContainer {
 
         }
 
-    /**
-     * Use this to pass the autonomous command to the main {@link Robot} class.
-     *
-     * @return the command to run in autonomous
-     */
-    public Command getAutonomousCommand() {
-        return autoChooser.getCommand();
+        /**
+         * Use this to pass the autonomous command to the main {@link Robot} class.
+         *
+         * @return the command to run in autonomous
+         */
+        public Command getAutonomousCommand() {
+                return autoChooser.getSelectedCommand();
     // return straightRoutine.cmd(straightTrajectory.done());
-                
+
             //    return new ExampleAuto(drivebase, autoFactory);
         }
 
@@ -546,7 +558,10 @@ public class RobotContainer {
         return drivebase;
     }
 
-        public ShootingState getShootingState() {
+    public ShootingState getShootingState() {
                 return shootState;
+        }
+        public IntakeDeployerSubsystem getDeployer(){
+                return intakeDeployer;
         }
 }

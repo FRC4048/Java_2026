@@ -8,14 +8,12 @@ import edu.wpi.first.wpilibj.Timer;
 import frc.robot.constants.Constants;
 import frc.robot.subsystems.IntakeDeployerSubsystem;
 import frc.robot.utils.logging.commands.LoggableCommand;
-/**
- * When creating sequences use this AFTER setting the deployment state
- */
-public class InitialRunDeployment extends LoggableCommand {
+
+public class ToggleDeployment extends LoggableCommand {
   private final IntakeDeployerSubsystem subsystem;
   private final Timer timer;
 
-  public InitialRunDeployment(IntakeDeployerSubsystem subsystem) {
+  public ToggleDeployment(IntakeDeployerSubsystem subsystem) {
     timer = new Timer();
     this.subsystem = subsystem;
     addRequirements(subsystem);
@@ -23,14 +21,15 @@ public class InitialRunDeployment extends LoggableCommand {
 
   @Override
   public void initialize() {
+    subsystem.toggleState();
     timer.restart();
   }
 
   @Override
   public void execute() {
     switch (subsystem.getDeploymentState()) {
-      case UP -> subsystem.setSpeed(Constants.INITIAL_INTAKE_DEPLOYER_SPEED);
-      case DOWN -> subsystem.setSpeed(Constants.INITIAL_INTAKE_RETRACTION_SPEED);
+      case UP -> subsystem.setSpeed(Constants.INITIAL_INTAKE_RETRACTION_SPEED);
+      case DOWN -> subsystem.setSpeed(Constants.INITIAL_INTAKE_DEPLOYMENT_SPEED);
       case STOPPED -> subsystem.stopMotors();
       default -> subsystem.stopMotors();
     }

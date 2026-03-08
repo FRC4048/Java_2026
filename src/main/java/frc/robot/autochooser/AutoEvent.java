@@ -1,5 +1,8 @@
 package frc.robot.autochooser;
 
+import java.util.Objects;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
+
 /**
  * Wrapper Class, that Contains a {@link frc.robot.autochooser.AutoAction} and a {@link
  * frc.robot.autochooser.FieldLocation}
@@ -7,10 +10,31 @@ package frc.robot.autochooser;
 public class AutoEvent {
   private final AutoAction action;
   private final FieldLocation location;
-
+  private Alliance allianceColor;
+  /**
+   * This instantiates the AutoEvent without the alliance color.
+   * The importance of doing so is in case the alliance color
+   * is not relevant to this specific combination.
+   * 
+   * @param action The action to do.
+   * @param location The location where the robot starts.
+   */
   public AutoEvent(AutoAction action, FieldLocation location) {
     this.action = action;
     this.location = location;
+  }
+
+  /**
+   * This instantiates an autoEvent using an extra alliance
+   * color parameter. 
+   * @param action The action to do.
+   * @param location The location where the robot starts.
+   * @param color The alliance color.
+   */
+  public AutoEvent(AutoAction action, FieldLocation location, Alliance color) {
+    this.action = action;
+    this.location = location;
+    this.allianceColor = color;
   }
 
   public AutoAction getAction() {
@@ -22,30 +46,22 @@ public class AutoEvent {
   }
 
   @Override
-  public int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result = prime * result + ((action == null) ? 0 : action.hashCode());
-    result = prime * result + ((location == null) ? 0 : location.hashCode());
-    return result;
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    AutoEvent autoEvent = (AutoEvent) o;
+    return action == autoEvent.action && location == autoEvent.location && allianceColor == autoEvent.allianceColor;
   }
 
   @Override
-  public boolean equals(Object obj) {
-    if (this == obj)
-      return true;
-    if (obj == null)
-      return false;
-    if (getClass() != obj.getClass())
-      return false;
-    AutoEvent other = (AutoEvent) obj;
-    if (action != other.action)
-      return false;
-    if (location != other.location)
-      return false;
-    return true;
+  public int hashCode() {
+    return Objects.hash(action, location, allianceColor);
   }
 
-  
-
+  /**
+   * Return an event without color (to allow lookup in the map for a color-agnostic entry)
+   */
+  public AutoEvent withoutColor() {
+    return new AutoEvent(action, location);
+  }
 }

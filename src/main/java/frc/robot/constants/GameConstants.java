@@ -120,15 +120,15 @@ public class GameConstants {
 
 
  // turret (pan angle) PID
-    public static final double TURRET_P = .025;
-    public static final double TURRET_I = 0.00000;
+    public static final double TURRET_P = 1;
+    public static final double TURRET_I = 0.0000002;
     public static final double TURRET_D = 0.0;
     public static final double TURRET_FF = 0.0;
     public static final double TURRET_ENCODER_MIN = 0; //Lowest encoder position of Turret
     public static final double TURRET_ENCODER_MAX = 77; //Highest encoder position of Turret
     public static final double TURRET_HOME_ANGLE = 0.0; //Turret facing forward
     public static final double TURRET_LEFT_ANGLE = 95;
-    public static final double TURRET_RIGHT_ANGLE = -95;
+    public static final double TURRET_RIGHT_ANGLE = -98;
     public static final double TURRET_LIMIT_SPEED = 0.1;
 
     //swerve config
@@ -162,6 +162,7 @@ public class GameConstants {
     public static final double VISION_CONSISTENCY_THRESHOLD = 0.25; //How close 2 vision measurements have to be (needs to be tuned potentially but seemingly from my testing it also might not be needed)
     public static final boolean ENABLE_VISION = true;
     public static final double POSE_BUFFER_STORAGE_TIME = 2; //how many past measurements are stored in the buffer (might increase if we need further back)
+    public static final String DRIVER_CAM_IP_ADDRESS = "10.40.48.2:1181/?action=stream";
     public static final double FIELD_LENGTH = 16.5; //TODO: Change Later
     public static final double FIELD_WIDTH = 8.1; //TODO: Change Later
     // Vision

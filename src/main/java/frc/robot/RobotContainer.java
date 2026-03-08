@@ -5,6 +5,8 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.Filesystem;
+import edu.wpi.first.wpilibj.Filesystem;
+
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -38,6 +40,7 @@ import frc.robot.commands.shooter.DefaultShooterControl;
 import frc.robot.commands.auto.ExampleAuto;
 import frc.robot.commands.shooter.SetShootingState;
 import frc.robot.commands.testing.RunDashboardShotTest;
+import frc.robot.commands.turret.TestSetTurretAngle;
 import frc.robot.commands.turret.DefaultTurretControl;
 import frc.robot.commands.turret.RunTurretToFwdLimit;
 import frc.robot.commands.turret.RunTurretToRevLimit;
@@ -67,6 +70,7 @@ import frc.robot.utils.logging.io.gyro.RealGyroIo;
 import frc.robot.utils.logging.io.gyro.ThreadedGyro;
 import frc.robot.utils.logging.io.gyro.ThreadedGyroSwerveIMU;
 import frc.robot.utils.simulation.RobotVisualizer;
+import frc.robot.subsystems.CameraThread;
 import swervelib.SwerveInputStream;
 import swervelib.imu.SwerveIMU;
 import frc.robot.apriltags.ApriltagReading;
@@ -76,12 +80,6 @@ import java.io.File;
 import choreo.auto.AutoFactory;
 import choreo.auto.AutoRoutine;
 import choreo.auto.AutoTrajectory;
-
-import choreo.auto.AutoFactory;
-import choreo.auto.AutoRoutine;
-import choreo.auto.AutoTrajectory;
-
-import static frc.robot.subsystems.swervedrive.vision.estimation.PoseEstimator.visionMeasurementStdDevs2;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -93,8 +91,13 @@ import static frc.robot.subsystems.swervedrive.vision.estimation.PoseEstimator.v
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
+        private static final String DRIVER_CAM_PREFIX = CameraThread.LOGGING_PREFIX;
+        private static final String DRIVER_CAM_SERVER_NAME = "serve_" + DRIVER_CAM_PREFIX;
+        private static final int DRIVER_CAM_PORT = 1182;
+        private static final int DRIVER_CAM_FPS = 30;
+
         // Instantiate the autochooser.
-        private final AutoChooser autoChooser = new AutoChooser();
+        private final AutoChooser autoChooser;
         // The robot's subsystems and commands are defined here...
         // private final TiltSubsystem tiltSubsystem;
         private final CommandXboxController controller =
@@ -201,10 +204,12 @@ public class RobotContainer {
                         }
                 }
 
+                setUpAutoFactory();
+                autoChooser = new AutoChooser(drivebase, shootState, autoFactory, shooterSubsystem, climberSubsystem, feederSubsystem, hopperSubsystem, turretSubsystem, anglerSubsystem, controllerSubsystem);
                 configureBindings();
                 putShuffleboardCommands();
-                setUpAutoFactory();
         }
+
 
         /**
          * Use this method to define your trigger->command mappings. Triggers can be
@@ -319,7 +324,7 @@ public class RobotContainer {
                 anglerSubsystem.setDefaultCommand(new DefaultAnglerControl(anglerSubsystem, controllerSubsystem));
                 shooterSubsystem.setDefaultCommand(new DefaultShooterControl(shooterSubsystem, controllerSubsystem));
                 turretSubsystem.setDefaultCommand(new DefaultTurretControl(turretSubsystem, controllerSubsystem));
-                hopperSubsystem.setDefaultCommand(new DefaultSpinHopper(hopperSubsystem, controllerSubsystem));
+               hopperSubsystem.setDefaultCommand(new DefaultSpinHopper(hopperSubsystem, controllerSubsystem));
                 feederSubsystem.setDefaultCommand(new DefaultSpinFeeder(feederSubsystem, controllerSubsystem));
             }
 
@@ -371,9 +376,11 @@ public class RobotContainer {
                         SmartDashboard.putNumber(RunDashboardShotTest.ANGLER_TARGET_POSITION_KEY, 0.0);
                         SmartDashboard.putNumber(RunDashboardShotTest.TURRET_TARGET_POSITION_KEY, Constants.TURRET_HOME_ANGLE);
                         SmartDashboard.putNumber(RunDashboardShotTest.SHOOTER_TARGET_RPM_KEY, Constants.SHOOTER_SPEED);
-
+                        SmartDashboard.putNumber("Target Angle",0);
                         SmartDashboard.putData("RunHoppperAndFeeder",
                                         new RunHopperAndFeeder(hopperSubsystem, feederSubsystem));
+                        SmartDashboard.putData("RunTurret",
+                                        new TestSetTurretAngle(turretSubsystem));
 
                         SmartDashboard.putData(
                                         "test/Run Dashboard Shot Test (30s)",
@@ -505,13 +512,13 @@ public class RobotContainer {
 
         }
 
-    /**
-     * Use this to pass the autonomous command to the main {@link Robot} class.
-     *
-     * @return the command to run in autonomous
-     */
-    public Command getAutonomousCommand() {
-        return autoChooser.getCommand();
+        /**
+         * Use this to pass the autonomous command to the main {@link Robot} class.
+         *
+         * @return the command to run in autonomous
+         */
+        public Command getAutonomousCommand() {
+                return autoChooser.getSelectedCommand();
     // return straightRoutine.cmd(straightTrajectory.done());
 
             //    return new ExampleAuto(drivebase, autoFactory);

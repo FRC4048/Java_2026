@@ -8,7 +8,7 @@ public class DefaultTurretControl extends LoggableCommand {
 
     private final TurretSubsystem turretSubsystem;
     private final ControllerSubsystem controllerSubsystem;
-    private double lastValue = 1000;
+
     public DefaultTurretControl(TurretSubsystem turretSubsystem, ControllerSubsystem controllerSubsystem) {
         this.turretSubsystem = turretSubsystem;
         this.controllerSubsystem = controllerSubsystem;
@@ -17,10 +17,7 @@ public class DefaultTurretControl extends LoggableCommand {
 
     @Override
     public void execute() {
-        if(lastValue != controllerSubsystem.getTargetTurretAngleDegrees()){
             turretSubsystem.setAngle(controllerSubsystem.getTargetTurretAngleDegrees());
-            lastValue = controllerSubsystem.getTargetTurretAngleDegrees();
-        }
     }
 
     @Override

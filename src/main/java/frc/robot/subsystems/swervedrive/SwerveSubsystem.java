@@ -63,7 +63,7 @@ public class SwerveSubsystem extends SubsystemBase {
     public SwerveSubsystem(File directory, SwerveIMU swerveIMU) {
         Pose2d startingPose = new Pose2d(new Translation2d(Meter.of(0),
                 Meter.of(4)),
-                Rotation2d.fromDegrees(180));
+                Rotation2d.fromDegrees(0));
         // Configure the Telemetry before creating the SwerveDrive to avoid unnecessary objects being created.
         SwerveDriveTelemetry.verbosity = TelemetryVerbosity.LOW;
         try {

@@ -33,6 +33,7 @@ public class TurretSubsystem extends SubsystemBase {
 
     private final SparkMaxPidMotorIo io;
     private final TunablePIDManager pidManager;
+    private double lastAngle = 999;
 
     public TurretSubsystem(SparkMaxPidMotorIo io) {
         this.io = io;
@@ -51,7 +52,7 @@ public class TurretSubsystem extends SubsystemBase {
    * Gets the desired Encoder Position and uses a PID controller to get the motor there
    */
     public void setPosition(double targetEncoderPosition) {
-        io.setPidPosition(targetEncoderPosition);
+            io.setPidPosition(targetEncoderPosition);
     }   
 
     /**
@@ -66,7 +67,10 @@ public class TurretSubsystem extends SubsystemBase {
                 Constants.TURRET_MAX_ANGLE,
                 Constants.TURRET_MIN_ANGLE);
         SmartDashboard.putNumber("Target Encoder Position", targetRotations);
-        setPosition(targetRotations);
+        if(lastAngle != targetAngle){
+         setPosition(targetRotations);
+         lastAngle = targetAngle;
+        }
     }
 
     //Range translate code with a clamp

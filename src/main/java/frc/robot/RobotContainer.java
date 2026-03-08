@@ -5,6 +5,8 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.Filesystem;
+import edu.wpi.first.wpilibj.Filesystem;
+
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -66,6 +68,7 @@ import frc.robot.utils.logging.io.gyro.RealGyroIo;
 import frc.robot.utils.logging.io.gyro.ThreadedGyro;
 import frc.robot.utils.logging.io.gyro.ThreadedGyroSwerveIMU;
 import frc.robot.utils.simulation.RobotVisualizer;
+import frc.robot.subsystems.CameraThread;
 import swervelib.SwerveInputStream;
 import swervelib.imu.SwerveIMU;
 import frc.robot.apriltags.ApriltagReading;
@@ -90,6 +93,11 @@ import choreo.auto.AutoTrajectory;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
+        private static final String DRIVER_CAM_PREFIX = CameraThread.LOGGING_PREFIX;
+        private static final String DRIVER_CAM_SERVER_NAME = "serve_" + DRIVER_CAM_PREFIX;
+        private static final int DRIVER_CAM_PORT = 1182;
+        private static final int DRIVER_CAM_FPS = 30;
+
         // Instantiate the autochooser.
         private final AutoChooser autoChooser = new AutoChooser();
         // The robot's subsystems and commands are defined here...
@@ -199,8 +207,9 @@ public class RobotContainer {
 
                 configureBindings();
                 putShuffleboardCommands();
-                setUpAutoFactory();
+
         }
+
 
         /**
          * Use this method to define your trigger->command mappings. Triggers can be

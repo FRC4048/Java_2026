@@ -81,6 +81,8 @@ import choreo.auto.AutoFactory;
 import choreo.auto.AutoRoutine;
 import choreo.auto.AutoTrajectory;
 
+import static frc.robot.subsystems.swervedrive.vision.estimation.PoseEstimator.visionMeasurementStdDevs2;
+
 /**
  * This class is where the bulk of the robot should be declared. Since
  * Command-based is a

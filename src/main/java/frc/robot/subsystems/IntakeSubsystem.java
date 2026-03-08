@@ -30,6 +30,7 @@ public class IntakeSubsystem extends SubsystemBase {
 
     public IntakeSubsystem(SparkMaxIo io) {
         this.io = io;
+        
     }
 
     public void setSpeed(double speed) {

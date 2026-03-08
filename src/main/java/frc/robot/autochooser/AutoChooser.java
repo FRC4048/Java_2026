@@ -41,6 +41,8 @@ public class AutoChooser {
     private LoggedDashboardChooser<AutoAction> actionChooser;
     /** Structure for mapping possible choices to commands. */
     private final Map<AutoEvent, Command> commandMap = new HashMap<>();
+    /** Structure for mapping possible choices to commands. */
+    private final Map<AutoEvent, String> descriptionMap = new HashMap<>();
 
     private final SwerveSubsystem drivetrain; 
     private final ShootingState shootstate;
@@ -74,7 +76,8 @@ public class AutoChooser {
             "Action Chooser"
         );
         populateChoosers();
-        populateMap();
+        populateCommandMap();
+        populateDescriptionMap();
     }
 
     /** Populates the drop-down choosers with enum constants. */
@@ -99,9 +102,9 @@ public class AutoChooser {
         }
     }
 
-    /** Put mappings here.
+    /** Put command mappings here.
      *  @see AutoCommand */
-    private void populateMap() {
+    private void populateCommandMap() {
         //if AutoEvent is not dependent on alliance color don't put a color
         commandMap.put(new AutoEvent(AutoAction.DO_NOTHING, FieldLocation.DEPOT_SIDE),
             new DoNothingCommand());
@@ -109,20 +112,6 @@ public class AutoChooser {
             new DoNothingCommand());
         commandMap.put(new AutoEvent(AutoAction.DO_NOTHING, FieldLocation.OUTPOST_SIDE), 
             new DoNothingCommand());
-
-        //for command descriptions (seperate field in elastic) put color as null
-        commandMap.put(new AutoEvent(AutoAction.SHOOT_AND_CLIMB, FieldLocation.DEPOT_SIDE, null),
-            new CommandDescription("shoot from depot")); 
-        commandMap.put(new AutoEvent(AutoAction.SHOOT, FieldLocation.MID, Alliance.Blue),
-            new CommandDescription("shoot from the middle")); 
-        commandMap.put(new AutoEvent(AutoAction.SHOOT, FieldLocation.OUTPOST_SIDE, null),
-            new CommandDescription("shoot from the outpost"));
-        commandMap.put(new AutoEvent(AutoAction.SHOOT_AND_CLIMB, FieldLocation.DEPOT_SIDE, null),
-            new CommandDescription("shoot and climb from the depot"));
-        commandMap.put(new AutoEvent(AutoAction.SHOOT, FieldLocation.MID, Alliance.Blue),
-            new CommandDescription("shoot and climb from the middle"));
-        commandMap.put(new AutoEvent(AutoAction.SHOOT, FieldLocation.OUTPOST_SIDE, null),
-            new CommandDescription("shoot and climb from the outpost"));
 
         commandMap.put(new AutoEvent(AutoAction.SHOOT, FieldLocation.DEPOT_SIDE, Alliance.Blue),
             new BlueDepotShoot(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, controller)); //shoot depot blue
@@ -153,18 +142,36 @@ public class AutoChooser {
             new RedOutpostShootClimb(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, climber, controller)); // shoot and climb outpost red
     }
 
+    /** Put command mappings here.
+     *  @see AutoCommand */
+    private void populateDescriptionMap() {
+        descriptionMap.put(new AutoEvent(AutoAction.DO_NOTHING, FieldLocation.DEPOT_SIDE),
+            "do nothing");
+        descriptionMap.put(new AutoEvent(AutoAction.DO_NOTHING, FieldLocation.MID),
+            "do nothing");
+        descriptionMap.put(new AutoEvent(AutoAction.DO_NOTHING, FieldLocation.OUTPOST_SIDE), 
+            "do nothing");
+
+        descriptionMap.put(new AutoEvent(AutoAction.SHOOT, FieldLocation.DEPOT_SIDE),
+            "shoot from the depot"); 
+        descriptionMap.put(new AutoEvent(AutoAction.SHOOT, FieldLocation.MID),
+            "shoot from the middle"); 
+        descriptionMap.put(new AutoEvent(AutoAction.SHOOT, FieldLocation.OUTPOST_SIDE),
+            "shoot from the outpost"); 
+            
+        descriptionMap.put(new AutoEvent(AutoAction.SHOOT_AND_CLIMB, FieldLocation.DEPOT_SIDE),
+            "shoot and climb from the depot");
+        descriptionMap.put(new AutoEvent(AutoAction.SHOOT_AND_CLIMB, FieldLocation.MID),
+            "shoot and climb from the middle"); 
+        descriptionMap.put(new AutoEvent(AutoAction.SHOOT_AND_CLIMB, FieldLocation.OUTPOST_SIDE),
+            "shoot and climb from the outpost"); 
+    }
+
     public AutoEvent getSelectedEvent() {
         AutoAction chosenAction = actionChooser.get();
         FieldLocation chosenLocation = locationChooser.get();
         Alliance color = Robot.allianceColor().orElse(null);
-        if (color == null) { /*
-            Passing null explicitly will internally
-            mark the instance as irrelevant, which
-            is not wanted in this case. */
-            return new AutoEvent(chosenAction, chosenLocation);
-        } else {
-            return new AutoEvent(chosenAction, chosenLocation, color);
-        }
+        return new AutoEvent(chosenAction, chosenLocation, color);
     }
 
     public Command getSelectedCommand() {
@@ -172,24 +179,16 @@ public class AutoChooser {
         return commandMap.get(event);
     }
 
-    public Command getCommand() {
-        Command command = getSelectedCommand();
-        if (command instanceof CommandDescription) {
-            return null; /*
-            CommandDescription is not meant to be
-            an actual command. */
-        } else {
-            return command;
-        }
-    }
-
     public String getCommandDescription() {
         AutoEvent event = getSelectedEvent();
         Command command = commandMap.get(event);
+        String commandDescription;
         if (command == null) {
             return "No auto mapped for " + event.getAction() + " at " + event.getLocation();
+        } else {
+            commandDescription = descriptionMap.get(event);
         }
-        return event.getAction() + " at " + event.getLocation() + " → " + command.getName();
+        return event.getAction() + " at " + event.getLocation() + " → " + commandDescription + ".";
     }
 
     public FieldLocation getLocation() {

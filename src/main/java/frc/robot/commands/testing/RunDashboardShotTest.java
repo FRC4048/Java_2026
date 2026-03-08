@@ -42,12 +42,9 @@ public class RunDashboardShotTest extends LoggableCommand {
     @Override
     public void execute() {
         double anglerAngle = SmartDashboard.getNumber(ANGLER_TARGET_POSITION_KEY, Constants.ANGLER_ANGLE_LOW);
-        double turretAngle = SmartDashboard.getNumber(TURRET_TARGET_POSITION_KEY, Constants.TURRET_HOME_ANGLE);
         double shooterRpm = SmartDashboard.getNumber(SHOOTER_TARGET_RPM_KEY, 0.0);
 
         anglerSubsystem.setPosition(anglerAngle);
-        turretSubsystem.setPosition(turretAngle);
-
         shooterSubsystem.setPidVelocity(shooterRpm);
     }
 
@@ -61,6 +58,5 @@ public class RunDashboardShotTest extends LoggableCommand {
         timer.stop();
         anglerSubsystem.stopMotors();
         shooterSubsystem.stopMotors();
-        turretSubsystem.stopMotors();
     }
 }

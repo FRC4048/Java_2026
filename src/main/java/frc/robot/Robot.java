@@ -77,6 +77,10 @@ public class Robot extends LoggedRobot {
         Logger.start();
         CommandLogger.get().init();
 
+        UsbCamera camera = CameraServer.startAutomaticCapture("DriverCam", 0);
+        camera.setConnectionStrategy(VideoSource.ConnectionStrategy.kKeepOpen);
+        CameraServer.addCamera(camera);
+
         // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
         // autonomous chooser on the dashboard.
         robotContainer = new RobotContainer();

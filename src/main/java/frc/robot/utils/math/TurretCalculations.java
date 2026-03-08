@@ -76,7 +76,6 @@ public class TurretCalculations {
         
         // normalize angle between -PI and PI
         double normalizedPanAngle = panAngle - 2 * Math.PI * Math.floor((panAngle + Math.PI) / (2 * Math.PI));
-
         return normalizedPanAngle;
     }
 

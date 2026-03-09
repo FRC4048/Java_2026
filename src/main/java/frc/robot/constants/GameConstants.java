@@ -53,7 +53,7 @@ public class GameConstants {
     public static final double CLIMBER_SPEED_DOWN = -0.1;
     public static final double FEEDER_SPEED = 0.5;//Might make veolcity PID
     public static final double MAX_SPEED = Units.feetToMeters(14.5);
-    public static final double SHOOTER_SPEED = 100;
+    public static final double SHOOTER_SPEED = 1500;
     public static final double INTAKE_DEPLOYER_SPEED = -0.075;
     public static final double INTAKE_RETRACTION_SPEED = 0.1;
     public static final double INITIAL_INTAKE_DEPLOYMENT_SPEED = -0.1;
@@ -88,8 +88,6 @@ public class GameConstants {
     public static final Rotation2d TILT_MAX_ANGLE = Rotation2d.fromDegrees(90);
     public static final Rotation2d ANGLER_MIN_ANGLE = Rotation2d.fromDegrees(45);
     public static final Rotation2d ANGLER_MAX_ANGLE = Rotation2d.fromDegrees(90);
-    public static final Rotation2d TURRET_MIN_ANGLE = Rotation2d.fromDegrees(-90);
-    public static final Rotation2d TURRET_MAX_ANGLE = Rotation2d.fromDegrees(90);
 
     public static final double TILT_LENGTH = 0.2;
     public static final double TILT_INERTIA = 0.5;
@@ -121,15 +119,15 @@ public class GameConstants {
 
  // turret (pan angle) PID
     public static final double TURRET_P = 1;
-    public static final double TURRET_I = 0.0000002;
+    public static final double TURRET_I = 0.000000;
     public static final double TURRET_D = 0.0;
     public static final double TURRET_FF = 0.0;
     public static final double TURRET_ENCODER_MIN = 0; //Lowest encoder position of Turret
     public static final double TURRET_ENCODER_MAX = 77; //Highest encoder position of Turret
     public static final double TURRET_HOME_ANGLE = 0.0; //Turret facing forward
-    public static final double TURRET_LEFT_ANGLE = 95;
-    public static final double TURRET_RIGHT_ANGLE = -98;
-    public static final double TURRET_LIMIT_SPEED = 0.1;
+    public static final double TURRET_MIN_ANGLE = -97;
+    public static final double TURRET_MAX_ANGLE = 97;
+    public static final double TURRET_LIMIT_SPEED = 0.2;
 
     //swerve config
     public static final TelemetryVerbosity TELEMENTRY_VERBOSITY = TelemetryVerbosity.HIGH;

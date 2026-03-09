@@ -18,9 +18,9 @@ public class DefaultShooterControl extends LoggableCommand {
     @Override
     public void execute() {
         double targetShooterVelocity = controllerSubsystem.getTargetShooterVelocityRpm();
-        if (targetShooterVelocity > 0.0) {
-            shooterSubsystem.setPidVelocity(targetShooterVelocity);
-        } else {
+        if(targetShooterVelocity != 0){
+        shooterSubsystem.setPidVelocity(targetShooterVelocity);
+        }else{
             shooterSubsystem.stopMotors();
         }
     }

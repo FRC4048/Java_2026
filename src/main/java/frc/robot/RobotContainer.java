@@ -313,11 +313,11 @@ public class RobotContainer {
                 }
                 intakeSubsystem.setDefaultCommand(new SpinIntake(intakeSubsystem, intakeDeployer));
             if (controllerSubsystem != null) {
-                anglerSubsystem.setDefaultCommand(new DefaultAnglerControl(anglerSubsystem, controllerSubsystem));
-                shooterSubsystem.setDefaultCommand(new DefaultShooterControl(shooterSubsystem, controllerSubsystem));
-                turretSubsystem.setDefaultCommand(new DefaultTurretControl(turretSubsystem, controllerSubsystem));
-                hopperSubsystem.setDefaultCommand(new DefaultSpinHopper(hopperSubsystem, controllerSubsystem));
-                feederSubsystem.setDefaultCommand(new DefaultSpinFeeder(feederSubsystem, controllerSubsystem));
+                //anglerSubsystem.setDefaultCommand(new DefaultAnglerControl(anglerSubsystem, controllerSubsystem));
+                //shooterSubsystem.setDefaultCommand(new DefaultShooterControl(shooterSubsystem, controllerSubsystem));
+                //turretSubsystem.setDefaultCommand(new DefaultTurretControl(turretSubsystem, controllerSubsystem));
+                //hopperSubsystem.setDefaultCommand(new DefaultSpinHopper(hopperSubsystem, controllerSubsystem));
+                //feederSubsystem.setDefaultCommand(new DefaultSpinFeeder(feederSubsystem, controllerSubsystem));
             }
 
             if (!Constants.TESTBED) {
@@ -334,18 +334,7 @@ public class RobotContainer {
         }
 
         public void putShuffleboardCommands() {
-                                        SmartDashboard.putData(
-                                        "Drive/Forward",
-                                        new DriveSwerve(drivebase, DriveDirection.FORWARD, 0.5));
-                                        SmartDashboard.putData(
-                                        "Drive/Backward",
-                                        new DriveSwerve(drivebase, DriveDirection.BACKWARD, 0.5));
-                                        SmartDashboard.putData(
-                                        "Drive/Left",
-                                        new DriveSwerve(drivebase, DriveDirection.LEFT, 0.5));
-                                        SmartDashboard.putData(
-                                        "Drive/Right",
-                                        new DriveSwerve(drivebase, DriveDirection.RIGHT, 0.5));
+
                 if (Constants.DEBUG) {
 
                         /*
@@ -365,6 +354,18 @@ public class RobotContainer {
 
 
             // TODO: These commands do not REQUIRE the subsystem therefore cannot be used in// production
+                                SmartDashboard.putData(
+                                        "Drive/Forward",
+                                        new DriveSwerve(drivebase, DriveDirection.FORWARD, 0.5));
+                                SmartDashboard.putData(
+                                        "Drive/Backward",
+                                        new DriveSwerve(drivebase, DriveDirection.BACKWARD, 0.5));
+                                SmartDashboard.putData(
+                                        "Drive/Left",
+                                        new DriveSwerve(drivebase, DriveDirection.LEFT, 0.5));
+                                SmartDashboard.putData(
+                                        "Drive/Right",
+                                        new DriveSwerve(drivebase, DriveDirection.RIGHT, 0.5));
                         SmartDashboard.putData(
                                         "Intake/Spin Forward",
                                         new InstantCommand(() -> intakeSubsystem.setSpeed(1.0)));

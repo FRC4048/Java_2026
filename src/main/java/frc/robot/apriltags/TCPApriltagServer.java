@@ -20,24 +20,29 @@ public class TCPApriltagServer extends TCPServer<ApriltagReading> {
         double posY = -1;
         double poseYaw = -1;
         double distanceToTag = -1;
+        double cameraToTagAngle = -1;
         double timestamp = -1;
+        double stdDev = -1;
         int apriltagNumber = -1;
         double now = 0;
         while (posX == -1
                 && posY == -1
                 && poseYaw == -1
                 && distanceToTag == -1
+                && cameraToTagAngle == -1
                 && apriltagNumber == -1
-                && timestamp == -1) {
+                && timestamp == -1
+                && stdDev == -1) {
             posX = stream.readDouble();
             posY = stream.readDouble();
             poseYaw = stream.readDouble();
             distanceToTag = stream.readDouble();
+            cameraToTagAngle = stream.readDouble();
             timestamp = stream.readDouble();
+            stdDev = stream.readDouble();
             apriltagNumber = stream.readInt();
             now = Timer.getFPGATimestamp() * 1000;
         }
-        return new ApriltagReading(posX, posY, poseYaw, distanceToTag, apriltagNumber, timestamp, now);
+        return new ApriltagReading(posX, posY, poseYaw, distanceToTag, cameraToTagAngle, apriltagNumber, timestamp, stdDev, now);
     }
-
 }

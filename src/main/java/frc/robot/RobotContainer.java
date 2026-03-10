@@ -83,7 +83,6 @@ import choreo.auto.AutoTrajectory;
 
 import static frc.robot.subsystems.swervedrive.vision.estimation.PoseEstimator.visionMeasurementStdDevs2;
 
-import static frc.robot.subsystems.swervedrive.vision.estimation.PoseEstimator.visionMeasurementStdDevs2;
 
 /**
  * This class is where the bulk of the robot should be declared. Since

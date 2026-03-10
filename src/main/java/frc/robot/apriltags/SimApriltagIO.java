@@ -49,7 +49,7 @@ public class SimApriltagIO extends TCPApriltagIo {
                         distance = readingPos.getTranslation().getDistance(tag.getPose().toPose2d().getTranslation());
                         if (BasicVisionFilter.inBounds(readingPos)) {
                             addReading(new ApriltagReading(readingX, readingY, readingYaw,
-                                    distance, tag.number(), Constants.AVERAGE_CAM_LATENCY + random.nextGaussian() * Constants.AVERAGE_CAM_LATENCY_STD_DEV, Logger.getTimestamp() / 1000.0));
+                                    distance,0,tag.number(), Constants.AVERAGE_CAM_LATENCY + random.nextGaussian() * Constants.AVERAGE_CAM_LATENCY_STD_DEV, stdDevs.get(0),Logger.getTimestamp() / 1000.0));
                         }
                     }
                 }

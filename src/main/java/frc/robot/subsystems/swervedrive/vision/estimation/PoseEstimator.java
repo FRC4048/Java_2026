@@ -160,7 +160,7 @@ public class PoseEstimator {
    * are sent to the {@link PoseManager} for further processing
    */
   public void updateVision() {
-    updateVision(15, 4, 14, 5, 16, 3);
+    updateVision(99);
   }
 
   public void updateVision(Apriltag focusedTag) {

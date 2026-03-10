@@ -8,6 +8,7 @@ import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Robot;
 import frc.robot.constants.Constants;
@@ -32,6 +33,7 @@ public class TurretSubsystem extends SubsystemBase {
 
     private final SparkMaxPidMotorIo io;
     private final TunablePIDManager pidManager;
+    private double lastAngle = 999;
 
     public TurretSubsystem(SparkMaxPidMotorIo io) {
         this.io = io;
@@ -61,9 +63,12 @@ public class TurretSubsystem extends SubsystemBase {
                 targetAngle,
                 Constants.TURRET_ENCODER_MAX,
                 Constants.TURRET_ENCODER_MIN,
-                Constants.TURRET_RIGHT_ANGLE,
-                Constants.TURRET_LEFT_ANGLE);
-        setPosition(targetRotations);
+                Constants.TURRET_MAX_ANGLE,
+                Constants.TURRET_MIN_ANGLE);
+        if(lastAngle != targetAngle) {
+            setPosition(targetRotations);
+            lastAngle = targetAngle;
+        }
     }
 
     //Range translate code with a clamp
@@ -74,9 +79,8 @@ public class TurretSubsystem extends SubsystemBase {
             double angleHigh,
             double angleLow) {
 
-        double multiplier = (encoderHigh - encoderLow) / (angleHigh - angleLow);
-        double targetRotations = targetAngle * multiplier - (multiplier * angleHigh - encoderHigh);
-        return MathUtil.clamp(targetRotations, encoderLow, encoderHigh);
+        double targetEncoder = (targetAngle-angleLow)/(angleHigh - angleLow)*encoderHigh;
+        return MathUtil.clamp(targetEncoder, encoderLow, encoderHigh);
     }
 
     /**
@@ -171,8 +175,8 @@ public class TurretSubsystem extends SubsystemBase {
         params.armGearing = Constants.TURRET_GEARING;
         params.armInertia = Constants.TURRET_INERTIA;
         params.armLength = Constants.TURRET_LENGTH;
-        params.armMinAngle = Constants.TURRET_MIN_ANGLE;
-        params.armMaxAngle = Constants.TURRET_MAX_ANGLE;
+        params.armMinAngle = Rotation2d.fromDegrees(Constants.TURRET_MIN_ANGLE);
+        params.armMaxAngle = Rotation2d.fromDegrees(Constants.TURRET_MAX_ANGLE);
         return params;
     }
 }

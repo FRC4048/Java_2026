@@ -20,20 +20,25 @@ public class TurretCalculations {
     // All angles are in radians, all distances are in meters, all velocities in m/s
 
 
-    // pan angle is what we are trying to found - the angle between the turret and the right side of the robot
-    // panAngleUnadjusted gives the turret's pan angle assuming the robot is facing directly to the right 
-    // basically, it doesn't account for the robot's rotation
-    // pan angle is what we are trying to found - the angle between the turret and the right side of the robot
-    // hubPosX and hubPosY are given values from the constants file -- gives the x and y positions of the hub (in meters)
-    // turretPosX and turretPosY is the field position of the turret
-    // robotPosX and robotPosY are given values from the robot pose, the center of the robot
-    // robotRotation is the angle between the horizontal (by the alliance side chute) and the robot
+    // Calculates the turret angle needed to point at the hub
+    // Turret 0 degrees is back of the robotand the angle increases when turning clockwise.
+    // WPILIB field: origin is blue right corner. +X is forward, +y is left, +rotation is CCW
+    // all positions are in meters
+    // robotRotation is in radians
+    // Returns - turret angle in radians
     public static double calculateTurretAngle(double robotPosX, double robotPosY, double robotRotation, boolean isBlueAlliance) {
         
-        // calculates the position of the turret with respect to the origin using the robot center 
-        // and the constant distance between the robot center and the turret.
-        double turretPosX = robotPosX + GameConstants.X_DISTANCE_BETWEEN_ROBOT_AND_TURRET;
-        double turretPosY = robotPosY + GameConstants.Y_DISTANCE_BETWEEN_ROBOT_AND_TURRET;
+        // Get turret offset from robot center
+        double turretOffsetX = GameConstants.X_DISTANCE_BETWEEN_ROBOT_AND_TURRET;
+        double turretOffsetY = GameConstants.Y_DISTANCE_BETWEEN_ROBOT_AND_TURRET;
+
+        // Rotate the offset by robot rotation (offset rotates with robot)
+        double rotatedOffsetX = turretOffsetX * Math.cos(robotRotation) - turretOffsetY * Math.sin(robotRotation);
+        double rotatedOffsetY = turretOffsetX * Math.sin(robotRotation) + turretOffsetY * Math.cos(robotRotation);
+
+        // Calculate actual turret position on field
+        double turretPosX = robotPosX + rotatedOffsetX;
+        double turretPosY = robotPosY + rotatedOffsetY;
 
         double hubPosX;
         double hubPosY;
@@ -60,12 +65,14 @@ public class TurretCalculations {
         /*
          * Adjusts the pan angle to account for the robot's current rotation. We subtract the
          * angle of the robot's rotation from the unadjusted angle of the turret to find the 
-         * pan angle, which is the proper angle of the turret adjusted for the robot's rotation.
+         * pan angle, which is the proper angle of the turret adjusted for the robot's rotation
+         * and the fact that the turret 0 angle in in the back of the robot.
          */
-        double panAngle = panAngleUnadjusted - robotRotation;
+        double panAngle = panAngleUnadjusted - (robotRotation + Math.PI);
 
-        return panAngle;
-
+        // normalize angle between -PI and PI
+        double normalizedPanAngle = panAngle - 2 * Math.PI * Math.floor((panAngle + Math.PI) / (2 * Math.PI));
+        return normalizedPanAngle;
     }
 
 }

@@ -16,6 +16,10 @@ public enum AutoAction {
   ONE_PIECE("1 Piece", new Pose2d(new Translation2d(-9,-9), new Rotation2d())),
   CROSS_THE_LINE("Cross The Line", new Pose2d(new Translation2d(7,7), new Rotation2d())),
   INVALID("INVALID", new Pose2d(new Translation2d(), new Rotation2d()));
+  DO_NOTHING("Do Nothing"),
+  SHOOT("Shoot"),
+  SHOOT_AND_CLIMB("Shoot and Climb"),
+  INVALID("INVALID");
   private final String name;
   private final Pose2d startingPose;
   private static final HashMap<String, AutoAction> nameMap =

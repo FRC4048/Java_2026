@@ -94,12 +94,14 @@ public class SwerveSubsystem extends SubsystemBase {
         swerveDrive.setModuleEncoderAutoSynchronize(Constants.SET_MODULE_ENCODER_AUTO_SYNCHRONIZE,
                 Constants.SET_MODULE_ENCODER_AUTO_SYNCHRONIZE_DEADBAND); // Enable if you want to resynchronize your absolute encoders and motor encoders periodically when they are not moving.
         // swerveDrive.pushOffsetsToEncoders(); // Set the absolute encoder to be used over the internal encoder and push the offsets onto it. Throws warning if not possible
-        rawOdometry = new SwerveDriveOdometry(
+        if (Constants.currentMode==Constants.simMode) {
+            rawOdometry = new SwerveDriveOdometry(
                 swerveDrive.kinematics,
                 swerveDrive.getOdometryHeading(),
                 swerveDrive.getModulePositions(),
-                startingPose
-        );
+                startingPose);
+        }
+        
     }
 
     /**
@@ -121,17 +123,16 @@ public class SwerveSubsystem extends SubsystemBase {
     public void periodic() {
         //add vision pose here
         //addVisionMeasurement(new Pose2d(new Translation2d(16, 2), new Rotation2d()));
-        rawOdometry.update(
-                swerveDrive.getOdometryHeading(),
-                swerveDrive.getModulePositions()
-        );
-
         if (Constants.currentMode == GameConstants.Mode.SIM) {
             double currentTime = Logger.getTimestamp() / 1000000.0;
             double oneSecondAgo = currentTime - 1.0;
             poseError.removeIf(record -> record.timestamp < oneSecondAgo);
             poseError.add(new PoseErrorRecord(currentTime, getError()));
             Logger.recordOutput("AveragePoseError", getAverageError());
+            rawOdometry.update(
+                swerveDrive.getOdometryHeading(),
+                swerveDrive.getModulePositions()
+        );
         }
     }
 
@@ -313,11 +314,13 @@ public class SwerveSubsystem extends SubsystemBase {
     // might be broken
     public void resetOdometry(Pose2d initialHolonomicPose) {
         swerveDrive.resetOdometry(initialHolonomicPose);
-        SwerveModulePosition[] modules = new SwerveModulePosition[4];
-        for (int i=0; i<4; i++) {
-            modules[i] = new SwerveModulePosition();
+        if (Constants.currentMode==Constants.simMode) {
+            SwerveModulePosition[] modules = new SwerveModulePosition[4];
+            for (int i=0; i<4; i++) {
+                modules[i] = new SwerveModulePosition();
+            }
+            rawOdometry.resetPosition(initialHolonomicPose.getRotation(), modules, initialHolonomicPose);
         }
-        rawOdometry.resetPosition(initialHolonomicPose.getRotation(), modules, initialHolonomicPose);
     }
 
     /**
@@ -340,7 +343,11 @@ public class SwerveSubsystem extends SubsystemBase {
     }
     // Todo: fix to only get odomtry
     public Pose2d getOdom() {
-        return rawOdometry.getPoseMeters();
+        if (Constants.currentMode==Constants.simMode) {
+            return rawOdometry.getPoseMeters();
+        } else {
+            return getPose();
+        }
     }
 
     /**

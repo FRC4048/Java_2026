@@ -1,4 +1,4 @@
-        // Copyright (c) FIRST and other WPILib contributors.
+// Copyright (c) FIRST and other WPILib contributors.
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
@@ -82,7 +82,6 @@ import choreo.auto.AutoRoutine;
 import choreo.auto.AutoTrajectory;
 
 import static frc.robot.subsystems.swervedrive.vision.estimation.PoseEstimator.visionMeasurementStdDevs2;
-
 
 /**
  * This class is where the bulk of the robot should be declared. Since

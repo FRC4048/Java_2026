@@ -168,8 +168,7 @@ public class Robot extends LoggedRobot {
 
     // Hub is always active during autonomous.
     hubActive = true;
-    Pose2d pose;
-    robotContainer.getDriveBase().resetOdometry(robotContainer.getAutoChooser().getAction().getPose());
+    robotContainer.getDriveBase().resetOdometry(robotContainer.getAutoChooser().getFieldLocation().getLocation());
   }
 
   /** This function is called periodically during autonomous. */
@@ -290,7 +289,7 @@ public class Robot extends LoggedRobot {
     }
 
     public FieldLocation location() {
-        return robotContainer.getAutoChooser().getLocation();
+        return robotContainer.getAutoChooser().getFieldLocation();
     }
 
     public Pose2d getStartingLocation() {

@@ -193,7 +193,7 @@ public class AutoChooser {
         return event.getAction() + " at " + event.getLocation() + " → " + commandDescription + ".";
     }
 
-    public FieldLocation getLocation() {
+    public FieldLocation getFieldLocation() {
         return locationChooser.get();
     }
 

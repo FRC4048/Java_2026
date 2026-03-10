@@ -12,6 +12,8 @@ public class ApriltagInputs implements LoggableInputs {
     public double[] posY = new double[0];
     public double[] poseYaw = new double[0];
     public double[] distanceToTag = new double[0];
+    public double[] cameraToTagAngle = new double[0];
+    public double[] stdDev = new double[0];
     public int[] apriltagNumber = new int[0];
     public Translation3d[] apriltagPoseArray = new Translation3d[0];
     public Pose2d[] visionPoseArray = new Pose2d[0];
@@ -26,7 +28,9 @@ public class ApriltagInputs implements LoggableInputs {
         table.put("posY", posY);
         table.put("poseYaw", poseYaw);
         table.put("distanceToTag", distanceToTag);
+        table.put("cameraToTagAngle", cameraToTagAngle);
         table.put("apriltagNumber", apriltagNumber);
+        table.put("stdDev", stdDev);
         table.put("aprilTagPositions", apriltagPoseArray);
         table.put("visionPoseArray", visionPoseArray);
     }
@@ -39,8 +43,10 @@ public class ApriltagInputs implements LoggableInputs {
         posY = table.get("posY", posY);
         poseYaw = table.get("poseYaw", poseYaw);
         distanceToTag = table.get("distanceToTag", distanceToTag);
+        cameraToTagAngle = table.get("cameraToTagAngle", cameraToTagAngle);
         apriltagNumber = table.get("apriltagNumber", apriltagNumber);
         apriltagPoseArray = table.get("aprilTagPositions", apriltagPoseArray);
+        stdDev = table.get("stdDev", stdDev);
         visionPoseArray = table.get("visionPoseArray", visionPoseArray);
     }
 }

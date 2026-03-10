@@ -143,10 +143,17 @@ public class GameConstants {
     public static final double GRAVITY = 9.81;
     public static final double HUB_HEIGHT = 1.83;
     public static final double SHOOTER_HEIGHT = 0.5;
+
     public static final double BLUE_HUB_X_POSITION = 4.6256;
     public static final double BLUE_HUB_Y_POSITION = 4.0345;
     public static final double RED_HUB_X_POSITION = 11.9154;
     public static final double RED_HUB_Y_POSITION = 4.0345;
+
+    public static final double RED_SHUTTLING_TARGET_X_POSITION = 13.8;
+    public static final double BLUE_SHUTTLING_TARGET_X_POSITION = 2.8;
+    public static final double SHUTTLING_TARGET_LOWER_Y_POSITION = 1.6;
+    public static final double SHUTTLING_TARGET_HIGHER_Y_POSITION = 6.5;
+
     public static final double X_DISTANCE_BETWEEN_ROBOT_AND_TURRET = .4; // needs value from hardware
     public static final double Y_DISTANCE_BETWEEN_ROBOT_AND_TURRET = .4; // needs value from hardware
 

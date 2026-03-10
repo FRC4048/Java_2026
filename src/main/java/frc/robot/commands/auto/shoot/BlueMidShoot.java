@@ -2,7 +2,7 @@ package frc.robot.commands.auto.shoot;
 
 import choreo.auto.AutoFactory;
 import frc.robot.commands.ShootButton;
-import frc.robot.commands.angler.RunAnglerToReverseLimit;
+import frc.robot.commands.angler.ResetAnglerEncoder;
 import frc.robot.commands.shooter.SetShootingState;
 import frc.robot.commands.turret.SetTurretAngle;
 import frc.robot.constants.enums.ShootingState;
@@ -26,7 +26,7 @@ public class BlueMidShoot extends LoggableSequentialCommandGroup{
         super(  
                 new LoggableParallelCommandGroup(
                     new SetTurretAngle(turret, 0),  
-                    new RunAnglerToReverseLimit(angler)
+                    new ResetAnglerEncoder(angler)
                 ),
                 new SetShootingState(shootstate, ShootState.FIXED_2), //or some other shoot state
                 LoggableCommandWrapper.wrap(auto.resetOdometry("BlueMidShoot")),

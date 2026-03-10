@@ -2,7 +2,7 @@ package frc.robot.commands.auto.shootclimb;
 
 import choreo.auto.AutoFactory;
 import frc.robot.commands.ShootButton;
-import frc.robot.commands.angler.RunAnglerToReverseLimit;
+import frc.robot.commands.angler.ResetAnglerEncoder;
 import frc.robot.commands.climber.ClimberDown;
 import frc.robot.commands.climber.ClimberUp;
 import frc.robot.commands.shooter.SetShootingState;
@@ -31,7 +31,7 @@ public class RedDepotShootClimb extends LoggableSequentialCommandGroup{
                 new LoggableParallelCommandGroup(
                     new ClimberDown(climber),
                     new SetTurretAngle(turret, 0),  
-                    new RunAnglerToReverseLimit(angler)
+                    new ResetAnglerEncoder(angler)
                 ),
                 new SetShootingState(shootstate, ShootState.FIXED_2), //or some other shoot state
                 LoggableCommandWrapper.wrap(auto.resetOdometry("RedDepotShoot")),

@@ -160,6 +160,7 @@ public class GameConstants {
     public static final double VISION_CONSISTENCY_THRESHOLD = 0.25; //How close 2 vision measurements have to be (needs to be tuned potentially but seemingly from my testing it also might not be needed)
     public static final boolean ENABLE_VISION = true;
     public static final double POSE_BUFFER_STORAGE_TIME = 2; //how many past measurements are stored in the buffer (might increase if we need further back)
+    public static final String DRIVER_CAM_IP_ADDRESS = "10.40.48.2:1181/?action=stream";
     public static final double FIELD_LENGTH = 16.5; //TODO: Change Later
     public static final double FIELD_WIDTH = 8.1; //TODO: Change Later
     // Vision
@@ -169,5 +170,4 @@ public class GameConstants {
     public static final double AVERAGE_CAM_LATENCY = 0; // seconds; TODO: change Later
     public static final double AVERAGE_CAM_LATENCY_STD_DEV = 0; // seconds; TODO: change Later
     public static final double MAX_VISION_DISTANCE_SIMULATION = 6;
-    public static final String DRIVER_CAM_IP_ADDRESS = "10.40.48.2:1181/?action=stream";
 }

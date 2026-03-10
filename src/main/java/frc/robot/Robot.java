@@ -139,24 +139,18 @@ public class Robot extends LoggedRobot {
         // Gets the alliance color.
         if (DriverStation.isDSAttached() && allianceColor.isEmpty()) {
             allianceColor = DriverStation.getAlliance();
-        }if (Constants.DEBUG) {
-      SmartDashboard.putNumber("driverXbox.getLeftY()",driverXbox.getLeftY());
-      SmartDashboard.putNumber("driverXbox::getRightX", driverXbox.getRightX());
-      SmartDashboard.putString("DeploymentState", robotContainer.getDeployer().getDeploymentState().toString());
-      if(!Constants.TESTBED){
-          Logger.recordOutput("MyPose", robotContainer.getDriveBase().getPose());
-          Logger.recordOutput("OdomPose", robotContainer.getDriveBase().getOdom());
-          if (Constants.currentMode == GameConstants.Mode.SIM) {
-              Logger.recordOutput("SimPose", robotContainer.getDriveBase().getSimulationPose().get());
-          }
-        // Puts data on the elastic dashboard
-      SmartDashboard.putString("Alliance Color", Robot.allianceColorString());
-      SmartDashboard.putBoolean("Hub Active?", hubActive());
-    }
+        }
 
-            // Puts data on the elastic dashboard
-            SmartDashboard.putString("Alliance Color", Robot.allianceColorString());
-            SmartDashboard.putBoolean("Hub Active?", hubActive());
+        if (Constants.DEBUG) {
+            SmartDashboard.putNumber("driverXbox.getLeftY()", driverXbox.getLeftY());
+            SmartDashboard.putNumber("driverXbox::getRightX", driverXbox.getRightX());
+            SmartDashboard.putString("DeploymentState", robotContainer.getDeployer().getDeploymentState().toString());
+            if (!Constants.TESTBED) {
+                Logger.recordOutput("MyPose", robotContainer.getDriveBase().getPose());
+                // Puts data on the elastic dashboard
+                SmartDashboard.putString("Alliance Color", Robot.allianceColorString());
+                SmartDashboard.putBoolean("Hub Active?", hubActive());
+            }
         }
         SmartDashboard.putString("Selected Action",
                 robotContainer.getAutoChooser().getCommandDescription());

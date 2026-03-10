@@ -152,7 +152,7 @@ public class PoseEstimator {
         visionPose = new Pose2d(pos[0], pos[1], poseManager.getRotation());
     }
     double distanceFromTag = apriltagSystem.getIO().getInputs().distanceToTag[index];
-    return new VisionMeasurement(visionPose,distanceFromTag, timestamp/1000);
+    return new VisionMeasurement(visionPose, distanceFromTag, timestamp/1000);
   }
 
   /**

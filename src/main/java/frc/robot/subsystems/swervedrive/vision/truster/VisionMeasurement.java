@@ -9,5 +9,4 @@ import frc.robot.utils.Apriltag;
  * @param distanceFromTag distance (meters) estimated robot pose was from the tag
  * @param timeOfMeasurement time when the pose was measured (seconds)
  */
-public record VisionMeasurement(
-        Pose2d measurement, double distanceFromTag, double timeOfMeasurement) {}
+public record VisionMeasurement(Pose2d measurement, double distanceFromTag, double timeOfMeasurement) {}

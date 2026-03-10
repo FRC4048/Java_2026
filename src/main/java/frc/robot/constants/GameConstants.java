@@ -1,6 +1,8 @@
 package frc.robot.constants;
 
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.RobotBase;
 import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
@@ -51,11 +53,11 @@ public class GameConstants {
     public static final double CLIMBER_SPEED_DOWN = -0.1;
     public static final double FEEDER_SPEED = 0.5;//Might make veolcity PID
     public static final double MAX_SPEED = Units.feetToMeters(14.5);
-    public static final double SHOOTER_SPEED = 100;
+    public static final double SHOOTER_SPEED = 1500;
     public static final double INTAKE_DEPLOYER_SPEED = -0.075;
     public static final double INTAKE_RETRACTION_SPEED = 0.1;
-    public static final double INITIAL_INTAKE_DEPLOYMENT_SPEED = -0.1;
-    public static final double INITIAL_INTAKE_RETRACTION_SPEED = 0.4;
+    public static final double INITIAL_INTAKE_DEPLOYMENT_SPEED = -0.15;
+    public static final double INITIAL_INTAKE_RETRACTION_SPEED = 0.3;
 
 
     //Diags
@@ -86,8 +88,6 @@ public class GameConstants {
     public static final Rotation2d TILT_MAX_ANGLE = Rotation2d.fromDegrees(90);
     public static final Rotation2d ANGLER_MIN_ANGLE = Rotation2d.fromDegrees(45);
     public static final Rotation2d ANGLER_MAX_ANGLE = Rotation2d.fromDegrees(90);
-    public static final Rotation2d TURRET_MIN_ANGLE = Rotation2d.fromDegrees(-90);
-    public static final Rotation2d TURRET_MAX_ANGLE = Rotation2d.fromDegrees(90);
 
     public static final double TILT_LENGTH = 0.2;
     public static final double TILT_INERTIA = 0.5;
@@ -116,18 +116,18 @@ public class GameConstants {
     public static final double ANGLER_FIXED_ANGLE = 10; //Fixed encoder position of Angler in Fixed ShootState
     public static final double ANGLER_LIMIT_SPEED = 0.2;
 
-    
+
  // turret (pan angle) PID
     public static final double TURRET_P = 1;
-    public static final double TURRET_I = 0.0000002;
+    public static final double TURRET_I = 0.000000;
     public static final double TURRET_D = 0.0;
     public static final double TURRET_FF = 0.0;
     public static final double TURRET_ENCODER_MIN = 0; //Lowest encoder position of Turret
     public static final double TURRET_ENCODER_MAX = 77; //Highest encoder position of Turret
     public static final double TURRET_HOME_ANGLE = 0.0; //Turret facing forward
-    public static final double TURRET_LEFT_ANGLE = 95;
-    public static final double TURRET_RIGHT_ANGLE = -98;
-    public static final double TURRET_LIMIT_SPEED = 0.1;
+    public static final double TURRET_MIN_ANGLE = -97;
+    public static final double TURRET_MAX_ANGLE = 97;
+    public static final double TURRET_LIMIT_SPEED = 0.2;
 
     //swerve config
     public static final TelemetryVerbosity TELEMENTRY_VERBOSITY = TelemetryVerbosity.HIGH;
@@ -160,4 +160,14 @@ public class GameConstants {
     public static final double VISION_CONSISTENCY_THRESHOLD = 0.25; //How close 2 vision measurements have to be (needs to be tuned potentially but seemingly from my testing it also might not be needed)
     public static final boolean ENABLE_VISION = true;
     public static final double POSE_BUFFER_STORAGE_TIME = 2; //how many past measurements are stored in the buffer (might increase if we need further back)
+    public static final String DRIVER_CAM_IP_ADDRESS = "10.40.48.2:1181/?action=stream";
+    public static final double FIELD_LENGTH = 16.5; //TODO: Change Later
+    public static final double FIELD_WIDTH = 8.1; //TODO: Change Later
+    // Vision
+    public static final Transform3d ROBOT_TO_CAMERA = new Transform3d(0,0,0, new Rotation3d(0,0,0)); // TODO: change
+    public static final double HORIZONTAL_FOV = Units.degreesToRadians(110); // radians; TODO: Change Later
+    public static final double VERTICAL_FOV = Units.degreesToRadians(90); // radians; TODO: Change Later
+    public static final double AVERAGE_CAM_LATENCY = 0; // seconds; TODO: change Later
+    public static final double AVERAGE_CAM_LATENCY_STD_DEV = 0; // seconds; TODO: change Later
+    public static final double MAX_VISION_DISTANCE_SIMULATION = 6;
 }

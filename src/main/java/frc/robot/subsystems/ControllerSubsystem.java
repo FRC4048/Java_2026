@@ -1,5 +1,8 @@
 package frc.robot.subsystems;
 
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj.DriverStation;
+import frc.robot.utils.math.TurretCalculations;
 import org.dyn4j.UnitConversion;
 import org.littletonrobotics.junction.Logger;
 
@@ -24,6 +27,7 @@ public class ControllerSubsystem extends SubsystemBase {
 
     private static final String MANUAL_POSE_X_KEY = "controller/ManualPoseX";
     private static final String MANUAL_POSE_Y_KEY = "controller/ManualPoseY";
+    private static final String MANUAL_POSE_R_KEY = "controller/ManualPoseRotation";
     private static final String USING_MANUAL_POSE_KEY = "controller/UsingManualPose";
     private static final String CURRENT_SHOOT_STATE_KEY = "controller/CurrentShootState";
     private static final String DISTANCE_METERS_KEY = "controller/CalculatedDistanceMeters";
@@ -64,6 +68,7 @@ public class ControllerSubsystem extends SubsystemBase {
 
         SmartDashboard.putNumber(MANUAL_POSE_X_KEY, 0.0);
         SmartDashboard.putNumber(MANUAL_POSE_Y_KEY, 0.0);
+        SmartDashboard.putNumber(MANUAL_POSE_R_KEY, 0.0);
     }
 
     @Override
@@ -107,13 +112,17 @@ public class ControllerSubsystem extends SubsystemBase {
     }
 
     private boolean shouldUseManualPose() {
-        return (Constants.currentMode == Constants.Mode.SIM) || Constants.TESTBED;
+        // This can be confusing in case you're on the robot and have disabled the drivetrain
+        // Uncomment to control manually
+        return false;
     }
 
     private Pose2d getManualPose() {
         double x = SmartDashboard.getNumber(MANUAL_POSE_X_KEY, 0.0);
         double y = SmartDashboard.getNumber(MANUAL_POSE_Y_KEY, 0.0);
-        return new Pose2d(x, y, Rotation2d.kZero);
+        double r = SmartDashboard.getNumber(MANUAL_POSE_R_KEY, 0.0);
+        Logger.recordOutput("Manual Pose", new Pose2d(new Translation2d(x,y), new Rotation2d(r)));
+        return new Pose2d(x, y, new Rotation2d(r));
     }
 
     private void updateStopDelayState(ShootState currentState) {
@@ -184,17 +193,16 @@ public class ControllerSubsystem extends SubsystemBase {
     private double calculateShooterVelocity(double computedDistanceMeters, PoseControlProfile profile) {
         if (profile == HUB_PROFILE) {
             double distance = UnitConversion.METER_TO_FOOT * computedDistanceMeters;
-			return 
+			return Math.floor(
 				8.46 * distance * distance
 			  - 237 * distance
-			  - 1_380;
+			  - 1_380);
 		}
         return profile.defaultShooterVelocityRpm;
     }
 
     private double calculateTurretAngleDegrees(Pose2d robotPose, PoseControlProfile profile) {
-        // TODO: Replace with distance turret angle calculation.
-        return profile.defaultTurretAngleDegrees;
+        return Math.floor(Math.toDegrees(TurretCalculations.calculateTurretAngle(robotPose.getX(), robotPose.getY(), robotPose.getRotation().getRadians(), DriverStation.getAlliance().get()== DriverStation.Alliance.Blue)));
     }
 
     //Getters for all the subsystems to set posistion.

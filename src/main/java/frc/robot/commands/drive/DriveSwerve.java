@@ -10,43 +10,42 @@ import frc.robot.constants.enums.DriveDirection;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import frc.robot.utils.logging.commands.LoggableCommand;
 
-
 public class DriveSwerve extends LoggableCommand {
 
   private final SwerveSubsystem drivebase;
   private final double time;
-  private final  DriveDirection dir;
+  private final DriveDirection dir;
+  private final double speed;
   private Timer timer;
-  public DriveSwerve(SwerveSubsystem drivebase, DriveDirection dir, double time) {
+
+  public DriveSwerve(SwerveSubsystem drivebase, DriveDirection dir, double time, double speed) {
     timer = new Timer();
     this.time = time;
+    this.speed = speed;
     this.dir = dir;
     this.drivebase = drivebase;
     addRequirements(drivebase);
   }
-
 
   @Override
   public void initialize() {
     timer.restart();
   }
 
- 
   @Override
   public void execute() {
-    switch (dir){
-      case BACKWARD ->  drivebase.drive(new Translation2d(0.2,0),0, false);
-      case FORWARD ->  drivebase.drive(new Translation2d(-0.2,0),0, false);
-      case LEFT ->  drivebase.drive(new Translation2d(0,-0.2),0, false);
-      case RIGHT ->  drivebase.drive(new Translation2d(0,0.2),0, false);
+    switch (dir) {
+      case BACKWARD -> drivebase.drive(new Translation2d(speed, 0), 0, false);
+      case FORWARD -> drivebase.drive(new Translation2d(-speed, 0), 0, false);
+      case LEFT -> drivebase.drive(new Translation2d(0, -speed), 0, false);
+      case RIGHT -> drivebase.drive(new Translation2d(0, speed), 0, false);
     }
   }
 
   @Override
   public void end(boolean interrupted) {
-   drivebase.drive(new Translation2d(),0, false);
+    drivebase.drive(new Translation2d(), 0, false);
   }
-
 
   @Override
   public boolean isFinished() {

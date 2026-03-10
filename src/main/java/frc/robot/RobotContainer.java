@@ -356,16 +356,16 @@ public class RobotContainer {
             // TODO: These commands do not REQUIRE the subsystem therefore cannot be used in// production
                                 SmartDashboard.putData(
                                         "Drive/Forward",
-                                        new DriveSwerve(drivebase, DriveDirection.FORWARD, 0.5));
+                                        new DriveSwerve(drivebase, DriveDirection.FORWARD, 0.5, 0.2));
                                 SmartDashboard.putData(
                                         "Drive/Backward",
-                                        new DriveSwerve(drivebase, DriveDirection.BACKWARD, 0.5));
+                                        new DriveSwerve(drivebase, DriveDirection.BACKWARD, 0.5, 0.2));
                                 SmartDashboard.putData(
                                         "Drive/Left",
-                                        new DriveSwerve(drivebase, DriveDirection.LEFT, 0.5));
+                                        new DriveSwerve(drivebase, DriveDirection.LEFT, 0.5, 0.2));
                                 SmartDashboard.putData(
                                         "Drive/Right",
-                                        new DriveSwerve(drivebase, DriveDirection.RIGHT, 0.5));
+                                        new DriveSwerve(drivebase, DriveDirection.RIGHT, 0.5, 0.2));
                         SmartDashboard.putData(
                                         "Intake/Spin Forward",
                                         new InstantCommand(() -> intakeSubsystem.setSpeed(1.0)));

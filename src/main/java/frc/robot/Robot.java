@@ -4,17 +4,6 @@
 
 package frc.robot;
 
-import java.util.Optional;
-import java.util.concurrent.atomic.AtomicReference;
-
-import frc.robot.constants.GameConstants;
-import frc.robot.utils.diag.Diagnostics;
-import org.littletonrobotics.junction.LogFileUtil;
-import org.littletonrobotics.junction.LoggedRobot;
-import org.littletonrobotics.junction.Logger;
-import org.littletonrobotics.junction.networktables.NT4Publisher;
-import org.littletonrobotics.junction.wpilog.WPILOGReader;
-import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.UsbCamera;
@@ -150,6 +139,10 @@ public class Robot extends LoggedRobot {
                 // Puts data on the elastic dashboard
                 SmartDashboard.putString("Alliance Color", Robot.allianceColorString());
                 SmartDashboard.putBoolean("Hub Active?", hubActive());
+                if (Constants.currentMode == Constants.Mode.SIM) {
+                    Logger.recordOutput("SimPose", robotContainer.getDriveBase().getSimulationPose().get());
+                    Logger.recordOutput("OdomPose", robotContainer.getDriveBase().getOdom());
+                }
             }
         }
         SmartDashboard.putString("Selected Action",

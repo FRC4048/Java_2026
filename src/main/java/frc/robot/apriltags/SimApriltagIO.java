@@ -40,7 +40,7 @@ public class SimApriltagIO extends TCPApriltagIo {
                     double cosIncidenceAngle = (-adjPose.getX() * Math.cos(adjPose.getRotation().getZ()) - adjPose.getY() * Math.sin(adjPose.getRotation().getZ())) / (adjPose.getTranslation().getNorm());
                     double distance = tag.getTranslation().getDistance(cameraPos.getTranslation());
                     if (cosIncidenceAngle!=0 && distance / cosIncidenceAngle < Constants.MAX_VISION_DISTANCE_SIMULATION) {
-                        VisionMeasurement measurement = new VisionMeasurement(new Pose2d(), tag.getTagInfo(), distance, 0);
+                        VisionMeasurement measurement = new VisionMeasurement(new Pose2d(), distance, 0);
                         Vector<N3> stdDevs = truster.calculateTrust(measurement);
                         double readingX = pose.getX() + random.nextGaussian() * stdDevs.get(0);
                         double readingY = pose.getY() + random.nextGaussian() * stdDevs.get(1);

@@ -115,7 +115,6 @@ public class Robot extends LoggedRobot {
         }
 
         Logger.recordOutput("shootingState", robotContainer.getShootingState().getShootState().toString());
-        SmartDashboard.putString("DeploymentState", robotContainer.getDeployer().getDeploymentState().toString());
         if (Constants.currentMode.equals(Constants.Mode.SIM)) {
             robotContainer.getRobotVisualizer().logMechanism();
         }

@@ -28,7 +28,6 @@ public class ToggleDeployment extends LoggableCommand {
 
   @Override
   public void execute() {
-    System.out.println("INTAKE DEPLOYING IN "+subsystem.getDeploymentState().toString());
     switch (subsystem.getDeploymentState()) {
       case UP -> subsystem.setSpeed(Constants.INITIAL_INTAKE_RETRACTION_SPEED);
       case DOWN -> subsystem.setSpeed(Constants.INITIAL_INTAKE_DEPLOYMENT_SPEED);
@@ -43,7 +42,7 @@ public class ToggleDeployment extends LoggableCommand {
 
   @Override
   public boolean isFinished() {
-    boolean limitSwitch = subsystem.getDeploymentState() == DeploymentState.UP ? subsystem.getFwrLimitSwitchState() : subsystem.getRevLimitSwitchState();
+    boolean limitSwitch = subsystem.getDeploymentState() == DeploymentState.UP ? subsystem.getFwdLimitSwitchState() : subsystem.getRevLimitSwitchState();
     return timer.hasElapsed(Constants.INTAKE_DEPLOYER_BURNOUT_TIMER) || limitSwitch || subsystem.getDeploymentState() == DeploymentState.STOPPED;
   }
 }

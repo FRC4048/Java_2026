@@ -110,7 +110,7 @@ public class IntakeDeployerSubsystem extends SubsystemBase {
       deploymentState = DeploymentState.UP;
     } 
   }
-  public boolean getFwrLimitSwitchState(){
+  public boolean getFwdLimitSwitchState(){
     return io.isFwdSwitchPressed();
   }
   public boolean getRevLimitSwitchState(){

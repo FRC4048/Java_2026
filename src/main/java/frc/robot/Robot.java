@@ -116,7 +116,6 @@ public class Robot extends LoggedRobot {
         }
 
         Logger.recordOutput("shootingState", robotContainer.getShootingState().getShootState().toString());
-        Logger.recordOutput("totalTimeouts", TimeoutLogger.getTotalTimeouts());
         
         if (Constants.currentMode.equals(Constants.Mode.SIM)) {
             robotContainer.getRobotVisualizer().logMechanism();
@@ -154,6 +153,7 @@ public class Robot extends LoggedRobot {
     @Override
     public void disabledInit() {
         mode.set(RobotMode.DISABLED);
+        Logger.recordOutput("totalTimeouts", TimeoutLogger.getTotalTimeouts());
     }
 
     @Override

@@ -166,9 +166,10 @@ public class Robot extends LoggedRobot {
         // schedule the autonomous command (example)
         mode.set(RobotMode.AUTONOMOUS);
 
-        // Hub is always active during autonomous.
-        hubActive = true;
-    }
+    // Hub is always active during autonomous.
+    hubActive = true;
+    robotContainer.getDriveBase().resetOdometry(robotContainer.getAutoChooser().getFieldLocation().getLocation());
+  }
 
   /** This function is called periodically during autonomous. */
     @Override
@@ -288,7 +289,7 @@ public class Robot extends LoggedRobot {
     }
 
     public FieldLocation location() {
-        return robotContainer.getAutoChooser().getLocation();
+        return robotContainer.getAutoChooser().getFieldLocation();
     }
 
     public Pose2d getStartingLocation() {

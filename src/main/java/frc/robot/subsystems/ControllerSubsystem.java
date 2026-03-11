@@ -157,7 +157,7 @@ public class ControllerSubsystem extends SubsystemBase {
     }
 
     private void useShotTargets(ShotTargets shotTargets) {
-        boolean driverEnabled = driverActivatedShootingEnabled();
+        boolean driverEnabled = isActivatedShootingEnabled();
         activeTargets = new ShotTargets(
                 shotTargets.anglerAngleDegrees,
                 shotTargets.shooterVelocityRpm,
@@ -230,11 +230,11 @@ public class ControllerSubsystem extends SubsystemBase {
         return activeTargets.hopperSpin;
     }
 
-    public void setDriverActivatedShooting(boolean set) {
+    public void setActivatedShooting(boolean set) {
         driverActivatedShooting = set;
     }
 
-    public boolean driverActivatedShootingEnabled() {
+    public boolean isActivatedShootingEnabled() {
         return driverActivatedShooting;
     }
 
@@ -281,5 +281,8 @@ public class ControllerSubsystem extends SubsystemBase {
             this.defaultShooterVelocityRpm = defaultShooterVelocityRpm;
             this.defaultTurretAngleDegrees = defaultTurretAngleDegrees;
         }
+    }
+
+    public class setActivatedShooting {
     }
 }

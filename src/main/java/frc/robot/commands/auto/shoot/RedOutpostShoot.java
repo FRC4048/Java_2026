@@ -2,6 +2,7 @@ package frc.robot.commands.auto.shoot;
 
 import choreo.auto.AutoFactory;
 import frc.robot.commands.ShootButton;
+import frc.robot.commands.ToggleShooting;
 import frc.robot.commands.angler.RunAnglerToReverseLimit;
 import frc.robot.commands.shooter.SetShootingState;
 import frc.robot.commands.turret.SetTurretAngle;
@@ -31,7 +32,7 @@ public class RedOutpostShoot extends LoggableSequentialCommandGroup{
                 new SetShootingState(shootstate, ShootState.FIXED_2), //or some other shoot state
                 LoggableCommandWrapper.wrap(auto.resetOdometry("RedOutpostShoot")),
                 LoggableCommandWrapper.wrap(auto.trajectoryCmd("RedOutpostShoot")),
-                new ShootButton(controller)
+                new ToggleShooting(controller, 3)
         );
     }
 }

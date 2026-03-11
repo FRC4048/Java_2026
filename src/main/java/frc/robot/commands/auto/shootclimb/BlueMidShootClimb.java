@@ -2,6 +2,7 @@ package frc.robot.commands.auto.shootclimb;
 
 import choreo.auto.AutoFactory;
 import frc.robot.commands.ShootButton;
+import frc.robot.commands.ToggleShooting;
 import frc.robot.commands.angler.RunAnglerToReverseLimit;
 import frc.robot.commands.climber.ClimberDown;
 import frc.robot.commands.climber.ClimberUp;
@@ -36,7 +37,7 @@ public class BlueMidShootClimb extends LoggableSequentialCommandGroup{
                 new SetShootingState(shootstate, ShootState.FIXED_2), //or some other shoot state
                 LoggableCommandWrapper.wrap(auto.resetOdometry("BlueMidShoot")),
                 LoggableCommandWrapper.wrap(auto.trajectoryCmd("BlueMidShoot")),
-                new ShootButton(controller),
+                new ToggleShooting(controller, 3),
                 new LoggableWaitCommand(3),
                 LoggableCommandWrapper.wrap(auto.resetOdometry("BlueMidClimb")),
                 new LoggableParallelCommandGroup(

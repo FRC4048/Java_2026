@@ -24,6 +24,7 @@ import frc.robot.commands.feeder.DefaultSpinFeeder;
 import frc.robot.commands.hopper.DefaultSpinHopper;
 import frc.robot.commands.hopper.SpinHopper;
 import frc.robot.commands.drive.DriveDirectionTime;
+import frc.robot.commands.drive.DriveSwerve;
 import frc.robot.commands.feeder.SpinFeeder;
 import frc.robot.commands.drive.FakeVision;
 import frc.robot.commands.intake.SpinIntake;
@@ -51,6 +52,7 @@ import frc.robot.commands.turret.SetTurretAngle;
 import frc.robot.commands.shooter.SpinShooter;
 import frc.robot.constants.Constants;
 import frc.robot.constants.enums.DeploymentState;
+import frc.robot.constants.enums.DriveDirection;
 import frc.robot.constants.enums.ShootingState;
 import frc.robot.constants.enums.ShootingState.ShootState;
 import frc.robot.subsystems.AnglerSubsystem;
@@ -336,7 +338,7 @@ public class RobotContainer {
                 anglerSubsystem.setDefaultCommand(new DefaultAnglerControl(anglerSubsystem, controllerSubsystem));
                 shooterSubsystem.setDefaultCommand(new DefaultShooterControl(shooterSubsystem, controllerSubsystem));
                 turretSubsystem.setDefaultCommand(new DefaultTurretControl(turretSubsystem, controllerSubsystem));
-               hopperSubsystem.setDefaultCommand(new DefaultSpinHopper(hopperSubsystem, controllerSubsystem));
+                hopperSubsystem.setDefaultCommand(new DefaultSpinHopper(hopperSubsystem, controllerSubsystem));
                 feederSubsystem.setDefaultCommand(new DefaultSpinFeeder(feederSubsystem, controllerSubsystem));
             }
 
@@ -354,6 +356,7 @@ public class RobotContainer {
         }
 
         public void putShuffleboardCommands() {
+
                 if (Constants.DEBUG) {
 
                         /*
@@ -373,6 +376,18 @@ public class RobotContainer {
 
 
             // TODO: These commands do not REQUIRE the subsystem therefore cannot be used in// production
+                                SmartDashboard.putData(
+                                        "Drive/Forward",
+                                        new DriveSwerve(drivebase, DriveDirection.FORWARD, 0.5, 0.2));
+                                SmartDashboard.putData(
+                                        "Drive/Backward",
+                                        new DriveSwerve(drivebase, DriveDirection.BACKWARD, 0.5, 0.2));
+                                SmartDashboard.putData(
+                                        "Drive/Left",
+                                        new DriveSwerve(drivebase, DriveDirection.LEFT, 0.5, 0.2));
+                                SmartDashboard.putData(
+                                        "Drive/Right",
+                                        new DriveSwerve(drivebase, DriveDirection.RIGHT, 0.5, 0.2));
                         SmartDashboard.putData(
                                         "Intake/Spin Forward",
                                         new InstantCommand(() -> intakeSubsystem.setSpeed(1.0)));
@@ -432,16 +447,28 @@ public class RobotContainer {
                                         new RunAnglerToReverseLimit(anglerSubsystem));
 
             SmartDashboard.putData(
-                    "turret/Turret Go 45",
+                    "turret/TurretTest/Turret Go 45",
                     new SetTurretAngle(turretSubsystem, 45));
 
             SmartDashboard.putData(
-                    "turret/Turret Go 0",
+                    "turret/TurretTest/Turret Go 0",
                     new SetTurretAngle(turretSubsystem, 0));
 
             SmartDashboard.putData(
-                    "turret/Turret Go 75",
-                    new SetTurretAngle(turretSubsystem, 75));
+                    "turret/TurretTest/Turret Go -45",
+                    new SetTurretAngle(turretSubsystem, -45));
+                    SmartDashboard.putData(
+                    "turret/TurretTest/Turret Go 40",
+                    new SetTurretAngle(turretSubsystem, 40));
+                SmartDashboard.putData(
+                    "turret/TurretTest/Turret Go -40",
+                    new SetTurretAngle(turretSubsystem, -40));
+                SmartDashboard.putData(
+                    "turret/TurretTest/Turret Go 35",
+                    new SetTurretAngle(turretSubsystem, 35));
+                SmartDashboard.putData(
+                    "turret/TurretTest/Turret Go -35",
+                    new SetTurretAngle(turretSubsystem, -35));
 
             SmartDashboard.putData(
                     "turret/Run Turret to Rev Limit",

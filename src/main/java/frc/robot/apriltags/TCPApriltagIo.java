@@ -7,32 +7,35 @@ import frc.robot.utils.logging.io.BaseIoImpl;
 import java.util.Queue;
 import org.littletonrobotics.junction.Logger;
 
-public class TCPApriltagIo extends BaseIoImpl<ApriltagInputs> implements ApriltagIO{
-    private final TCPApriltagServer server;
+public class TCPApriltagIo extends BaseIoImpl<ApriltagInputs> implements ApriltagIO {
+    // Tweo servers (one for each PI)
+    private final TCPApriltagServer server1;
+    private final TCPApriltagServer server2;
 
     public TCPApriltagIo(String name, ApriltagInputs inputs) {
         super(name, inputs);
-        server = new TCPApriltagServer(Constants.TCP_SERVER_PORT);
-        server.start();
+        server1 = new TCPApriltagServer(Constants.TCP_SERVER_PORT1);
+        server2 = new TCPApriltagServer(Constants.TCP_SERVER_PORT2);
+        server1.start();
+        server2.start();
     }
 
-    protected TCPApriltagIo(String name, ApriltagInputs inputs, TCPApriltagServer server) {
-        super(name, inputs);
-        this.server = server;
-        this.server.start();
-    }
     @Override
     public void updateInputs(ApriltagInputs inputs) {
-        Queue<ApriltagReading> queue = server.flush();
+        Queue<ApriltagReading> queue = server1.flush();
+        queue.addAll(server2.flush());
+
         int queueSize = queue.size();
         Logger.recordOutput("VisionMeasurementsThisTick", queueSize);
         inputs.posX = new double[queueSize];
         inputs.posY = new double[queueSize];
         inputs.poseYaw = new double[queueSize];
         inputs.distanceToTag = new double[queueSize];
+        inputs.cameraToTagAngle = new double[queueSize];
         inputs.apriltagNumber = new int[queueSize];
         inputs.serverTime = new double[queueSize];
         inputs.timestamp = new double[queueSize];
+        inputs.stdDev = new double[queueSize];
         inputs.visionPoseArray = new Pose2d[queueSize];
         inputs.apriltagPoseArray = new Translation3d[queueSize];
 
@@ -42,8 +45,10 @@ public class TCPApriltagIo extends BaseIoImpl<ApriltagInputs> implements Aprilta
             inputs.posY[i] = measurement.posY();
             inputs.poseYaw[i] = measurement.poseYaw();
             inputs.distanceToTag[i] = measurement.distanceToTag();
+            inputs.cameraToTagAngle[i] = measurement.cameraToTagAngle();
             inputs.apriltagNumber[i] = measurement.apriltagNumber();
             inputs.timestamp[i] = measurement.measurementTime();
+            inputs.stdDev[i] = measurement.stdDev();
             inputs.serverTime[i] = measurement.measurementTime()+measurement.latency();
 
             Apriltag apriltag = Apriltag.of(measurement.apriltagNumber());
@@ -56,10 +61,10 @@ public class TCPApriltagIo extends BaseIoImpl<ApriltagInputs> implements Aprilta
                             Rotation2d.fromDegrees(measurement.poseYaw()));
         }
     }
+
     // This is used to inject april tag readings manually and will pretty much only be used for simulation.
     @Override
     public void addReading(ApriltagReading reading) {
-        server.addReading(reading);
+        server1.addReading(reading);
     }
-
 }

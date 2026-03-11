@@ -2,6 +2,7 @@ package frc.robot.commands.lightStrip;
 
 import frc.robot.constants.enums.ShootingState;
 import frc.robot.constants.enums.Trench;
+import frc.robot.constants.enums.ShootingState.ShootState;
 import frc.robot.subsystems.LightStripSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import frc.robot.utils.BlinkinPattern;
@@ -41,7 +42,9 @@ public class SetLed extends LoggableCommand{
             x > Trench.BLUE_BOTTOM_LOWER.getX() && x < Trench.BLUE_BOTTOM_HIGHER.getX() && y > Trench.BLUE_BOTTOM_LOWER.getY() && y < Trench.BLUE_BOTTOM_HIGHER.getY() ||
             x > Trench.BLUE_TOP_LOWER.getX() && x < Trench.BLUE_TOP_HIGHER.getX() && y > Trench.BLUE_TOP_LOWER.getY() && y < Trench.BLUE_TOP_HIGHER.getY()) {
 
-                lightStrip.setPattern(BlinkinPattern.STROBE_RED);
+                if (shootingState.getShootState() != ShootState.STOPPED) { // Light strip only blinks if the shooting state is not stopped
+                    lightStrip.setPattern(BlinkinPattern.STROBE_RED);
+                }
 
         } else {
 

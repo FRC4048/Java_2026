@@ -2,6 +2,8 @@ package frc.robot.constants.enums;
 
 public enum Trench {
 
+        // These are not exact trench boundaries. These trench zones
+        // include some space around the trench boundaries.
         RED_BOTTOM_LOWER(10,0),
         RED_BOTTOM_HIGHER(14,1.5),
         RED_TOP_LOWER(10,6.5),

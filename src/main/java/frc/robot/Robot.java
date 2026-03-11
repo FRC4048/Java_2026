@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.autochooser.FieldLocation;
 import frc.robot.constants.Constants;
 import frc.robot.utils.diag.Diagnostics;
+import frc.robot.utils.logging.TimeoutLogger;
 import frc.robot.utils.logging.commands.CommandLogger;
 import org.littletonrobotics.junction.LogFileUtil;
 import org.littletonrobotics.junction.LoggedRobot;
@@ -115,7 +116,7 @@ public class Robot extends LoggedRobot {
         }
 
         Logger.recordOutput("shootingState", robotContainer.getShootingState().getShootState().toString());
-
+        
         if (Constants.currentMode.equals(Constants.Mode.SIM)) {
             robotContainer.getRobotVisualizer().logMechanism();
         }
@@ -154,6 +155,7 @@ public class Robot extends LoggedRobot {
     @Override
     public void disabledInit() {
         mode.set(RobotMode.DISABLED);
+        Logger.recordOutput("Timeouts/totalTimeouts", TimeoutLogger.getTotalTimeouts());
     }
 
     @Override

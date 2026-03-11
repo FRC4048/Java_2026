@@ -1,7 +1,6 @@
 package frc.robot.commands.auto.shootclimb;
 
 import choreo.auto.AutoFactory;
-import frc.robot.commands.ShootButton;
 import frc.robot.commands.ToggleShooting;
 import frc.robot.commands.angler.RunAnglerToReverseLimit;
 import frc.robot.commands.climber.ClimberDown;

@@ -153,7 +153,7 @@ public class Robot extends LoggedRobot {
     @Override
     public void disabledInit() {
         mode.set(RobotMode.DISABLED);
-        Logger.recordOutput("totalTimeouts", TimeoutLogger.getTotalTimeouts());
+        Logger.recordOutput("Timeouts/totalTimeouts", TimeoutLogger.getTotalTimeouts());
     }
 
     @Override

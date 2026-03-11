@@ -1,6 +1,8 @@
 package frc.robot.utils.math;
 
+import frc.robot.constants.Constants;
 import frc.robot.constants.GameConstants;
+import frc.robot.constants.enums.ShootingState;
 
 public class TurretCalculations {
 
@@ -26,7 +28,7 @@ public class TurretCalculations {
     // all positions are in meters
     // robotRotation is in radians
     // Returns - turret angle in radians
-    public static double calculateTurretAngle(double robotPosX, double robotPosY, double robotRotation, boolean isBlueAlliance) {
+    public static double calculateTurretAngle(double robotPosX, double robotPosY, double robotRotation, boolean isBlueAlliance, ShootingState shootingState) {
         
         // Get turret offset from robot center
         double turretOffsetX = GameConstants.X_DISTANCE_BETWEEN_ROBOT_AND_TURRET;
@@ -40,39 +42,79 @@ public class TurretCalculations {
         double turretPosX = robotPosX + rotatedOffsetX;
         double turretPosY = robotPosY + rotatedOffsetY;
 
-        double hubPosX;
-        double hubPosY;
+        double targetPosX;
+        double targetPosY;
 
-        if (isBlueAlliance) {
-            // hub position determined by which alliance robot is on
-            hubPosX = GameConstants.BLUE_HUB_X_POSITION;
-            hubPosY = GameConstants.BLUE_HUB_Y_POSITION;
-        } else {
-            hubPosX = GameConstants.RED_HUB_X_POSITION;
-            hubPosY = GameConstants.RED_HUB_Y_POSITION;
+        switch (shootingState.getShootState()) {
+
+            case SHOOTING_HUB: // target position is our hub
+
+                if (isBlueAlliance) {
+                    // hub position determined by which alliance robot is on
+                    targetPosX = GameConstants.BLUE_HUB_X_POSITION;
+                    targetPosY = GameConstants.BLUE_HUB_Y_POSITION;
+                } else {
+                    targetPosX = GameConstants.RED_HUB_X_POSITION;
+                    targetPosY = GameConstants.RED_HUB_Y_POSITION;
+                }
+
+                break;
+            
+            case SHUTTLING: // target position is in our alliance zone on whichever side of the hub we are closer to
+                
+                if (isBlueAlliance) {
+                    targetPosX = GameConstants.BLUE_SHUTTLING_TARGET_X_POSITION;
+                } else {
+                    targetPosX = GameConstants.RED_SHUTTLING_TARGET_X_POSITION;
+                }
+
+                if (robotPosX > Constants.FIELD_WIDTH / 2) {
+                    targetPosY = GameConstants.SHUTTLING_TARGET_HIGHER_Y_POSITION;
+                } else {
+                    targetPosY = GameConstants.SHUTTLING_TARGET_HIGHER_Y_POSITION;
+                }
+
+                break;
+            
+            default:
+
+                targetPosX = 4.048; // These values are so we know that we are
+                targetPosY = 4.048; // not shooting into the hub or shuttling
+                break;
+
+        }   
+
+        
+        if (!(targetPosX == 4.048 && targetPosY == 4.048)) {
+
+            /*
+            * This finds the unadjusted pan angle (assuming there is no robot rotation) using
+            * trigonometry. We take the arctangent of the y-distance beween the robot and the hub
+            * and the x-distance between the robot and the hub, giving us the unadjusted pan
+            * angle. The function atan2 ensures the sign of the angle is correct based on the signs
+            * of the input numbers.
+            * 
+            */
+            double panAngleUnadjusted = Math.atan2(targetPosY - turretPosY, targetPosX - turretPosX);
+
+            /*
+            * Adjusts the pan angle to account for the robot's current rotation. We subtract the
+            * angle of the robot's rotation from the unadjusted angle of the turret to find the 
+            * pan angle, which is the proper angle of the turret adjusted for the robot's rotation
+            * and the fact that the turret 0 angle in in the back of the robot.
+            */
+            double panAngle = panAngleUnadjusted - (robotRotation + Math.PI);
+
+            // normalize angle between -PI and PI
+            double normalizedPanAngle = panAngle - 2 * Math.PI * Math.floor((panAngle + Math.PI) / (2 * Math.PI));
+            return normalizedPanAngle;
+
+        } else { // if we're not shooting into the hub or shuttling, make the turret face forward
+
+            return Math.PI / 2;
+
         }
 
-        /*
-         * This finds the unadjusted pan angle (assuming there is no robot rotation) using
-         * trigonometry. We take the arctangent of the y-distance beween the robot and the hub
-         * and the x-distance between the robot and the hub, giving us the unadjusted pan
-         * angle. The function atan2 ensures the sign of the angle is correct based on the signs
-         * of the input numbers.
-         * 
-         */
-        double panAngleUnadjusted = Math.atan2(hubPosY - turretPosY, hubPosX - turretPosX);
-
-        /*
-         * Adjusts the pan angle to account for the robot's current rotation. We subtract the
-         * angle of the robot's rotation from the unadjusted angle of the turret to find the 
-         * pan angle, which is the proper angle of the turret adjusted for the robot's rotation
-         * and the fact that the turret 0 angle in in the back of the robot.
-         */
-        double panAngle = panAngleUnadjusted - (robotRotation + Math.PI);
-
-        // normalize angle between -PI and PI
-        double normalizedPanAngle = panAngle - 2 * Math.PI * Math.floor((panAngle + Math.PI) / (2 * Math.PI));
-        return normalizedPanAngle;
     }
 
 }

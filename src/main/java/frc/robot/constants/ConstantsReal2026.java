@@ -10,8 +10,6 @@ public class ConstantsReal2026 extends GameConstants {
     public static final int ANGLER_MOTOR_ID = 52;
 
     // other CAN-ID's
-    public static final int ROLLER_MOTOR_ID = 99; //remove
-    public static final int TILT_MOTOR_ID = 98; //remove
     public static final int TURRET_MOTOR_ID = 19;
     public static final int FEEDER_MOTOR_ID = 10;
     public static final int HOPPER_MOTOR_ID = 3;

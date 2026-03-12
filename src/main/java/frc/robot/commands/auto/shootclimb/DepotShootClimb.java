@@ -26,7 +26,7 @@ public class DepotShootClimb extends LoggableSequentialCommandGroup{
         super(  
                 new ResetMechanisms(shootstate, turret, angler),
                 LoggableCommandWrapper.wrap(auto.resetOdometry("DepotShoot")),
-                LoggableCommandWrapper.wrap(auto.trajectoryCmd("DepotShoot")),
+                LoggableCommandWrapper.wrap(auto.trajectoryCmd("DepotShoot").withTimeout(3)),
                 new ToggleShooting(controller, 10),
                 new SetShootingState(shootstate, ShootState.STOPPED),
                 new ClimbSequence(climber, drivetrain)

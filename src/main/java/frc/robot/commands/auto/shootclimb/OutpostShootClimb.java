@@ -26,7 +26,7 @@ public class OutpostShootClimb extends LoggableSequentialCommandGroup{
         super(  
                 new ResetMechanisms(shootstate, turret, angler),
                 LoggableCommandWrapper.wrap(auto.resetOdometry("OutpostShoot")),
-                LoggableCommandWrapper.wrap(auto.trajectoryCmd("OutpostShoot")),
+                LoggableCommandWrapper.wrap(auto.trajectoryCmd("OutpostShoot").withTimeout(3)),
                 new ToggleShooting(controller, 10),
                 new SetShootingState(shootstate, ShootState.STOPPED),
                 new ClimbSequence(climber, drivetrain)

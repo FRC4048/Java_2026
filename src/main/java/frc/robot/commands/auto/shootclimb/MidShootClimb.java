@@ -26,7 +26,7 @@ public class MidShootClimb extends LoggableSequentialCommandGroup{
         super(  
                 new ResetMechanisms(shootstate, turret, angler),
                 LoggableCommandWrapper.wrap(auto.resetOdometry("MidShoot")),
-                LoggableCommandWrapper.wrap(auto.trajectoryCmd("MidShoot")),
+                LoggableCommandWrapper.wrap(auto.trajectoryCmd("MidShoot").withTimeout(3)),
                 new ToggleShooting(controller, 10),
                 new SetShootingState(shootstate, ShootState.STOPPED),
                 new ClimbSequence(climber, drivetrain)

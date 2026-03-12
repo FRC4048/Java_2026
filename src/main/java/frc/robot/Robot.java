@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.autochooser.FieldLocation;
 import frc.robot.constants.Constants;
 import frc.robot.utils.diag.Diagnostics;
+import frc.robot.utils.logging.TimeoutLogger;
 import frc.robot.utils.logging.commands.CommandLogger;
 import org.littletonrobotics.junction.LogFileUtil;
 import org.littletonrobotics.junction.LoggedRobot;
@@ -132,10 +133,12 @@ public class Robot extends LoggedRobot {
             SmartDashboard.putNumber("driverXbox.getLeftY()", driverXbox.getLeftY());
             SmartDashboard.putNumber("driverXbox::getRightX", driverXbox.getRightX());
             if (!Constants.TESTBED) {
-              Logger.recordOutput("MyPose", robotContainer.getDriveBase().getPose());
-              // Puts data on the elastic dashboard
-              SmartDashboard.putString("Alliance Color", Robot.allianceColorString());
-              SmartDashboard.putBoolean("Hub Active?", hubActive());
+                Logger.recordOutput("MyPose", robotContainer.getDriveBase().getPose());
+                    SmartDashboard.putNumber("Robot X", robotContainer.getDriveBase().getPose().getX());
+            SmartDashboard.putNumber("Robot Y", robotContainer.getDriveBase().getPose().getY());
+        // Puts data on the elastic dashboard
+                SmartDashboard.putString("Alliance Color", Robot.allianceColorString());
+                SmartDashboard.putBoolean("Hub Active?", hubActive());
             }
 
             // Puts data on the elastic dashboard
@@ -150,6 +153,7 @@ public class Robot extends LoggedRobot {
     @Override
     public void disabledInit() {
         mode.set(RobotMode.DISABLED);
+        Logger.recordOutput("Timeouts/totalTimeouts", TimeoutLogger.getTotalTimeouts());
     }
 
     @Override
@@ -164,9 +168,10 @@ public class Robot extends LoggedRobot {
         // schedule the autonomous command (example)
         mode.set(RobotMode.AUTONOMOUS);
 
-        // Hub is always active during autonomous.
-        hubActive = true;
-    }
+    // Hub is always active during autonomous.
+    hubActive = true;
+    robotContainer.getDriveBase().resetOdometry(robotContainer.getAutoChooser().getFieldLocation().getLocation());
+  }
 
   /** This function is called periodically during autonomous. */
     @Override
@@ -286,7 +291,7 @@ public class Robot extends LoggedRobot {
     }
 
     public FieldLocation location() {
-        return robotContainer.getAutoChooser().getLocation();
+        return robotContainer.getAutoChooser().getFieldLocation();
     }
 
     public Pose2d getStartingLocation() {

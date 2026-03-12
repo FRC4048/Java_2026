@@ -545,7 +545,7 @@ public class RobotContainer {
             SmartDashboard.putData("Drive Command", driveDirectionTime);
             SmartDashboard.putData("Fake vision near trench", new FakeVision(drivebase, 4, 1));
             SmartDashboard.putData("Fake vision away from trench", new FakeVision(drivebase, 1, 1));
-            SmartDashboard.putData("AddApriltagReading", new AddApriltagReading(apriltagSubsystem, new ApriltagReading(0, 0, 0, 0, 0, 0, 0)));
+            SmartDashboard.putData("AddApriltagReading", new AddApriltagReading(apriltagSubsystem, new ApriltagReading(0, 0, 0, 0, 0, 0, 0, 0, 0)));
             SmartDashboard.putData("AddGarbageReading", new AddGarbageReading(apriltagSubsystem));
             SmartDashboard.putData("AddTunedApriltagReading", new AddTunableApriltagReading(apriltagSubsystem));
         

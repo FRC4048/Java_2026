@@ -196,9 +196,9 @@ public class ControllerSubsystem extends SubsystemBase {
     }
 
     private double calculateAnglerAngleDegrees(double computedDistanceMeters, PoseControlProfile profile) {
-        if (profile == BLUE_HUB_PROFILE) {
+        if ((profile == BLUE_HUB_PROFILE) || (profile == RED_HUB_PROFILE)) {
             double distance = UnitConversion.METER_TO_FOOT * computedDistanceMeters;
-			return 
+			return
 				0.169 * distance * distance
 			  - 1.73 * distance
 	          + 20.4;
@@ -207,7 +207,7 @@ public class ControllerSubsystem extends SubsystemBase {
     }
 
     private double calculateShooterVelocity(double computedDistanceMeters, PoseControlProfile profile) {
-        if (profile == BLUE_HUB_PROFILE) {
+        if ((profile == BLUE_HUB_PROFILE) || (profile == RED_HUB_PROFILE)) {
             double distance = UnitConversion.METER_TO_FOOT * computedDistanceMeters;
 			return Math.floor(
 				8.46 * distance * distance

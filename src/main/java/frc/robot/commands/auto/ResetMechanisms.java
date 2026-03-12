@@ -17,7 +17,6 @@ public class ResetMechanisms extends LoggableSequentialCommandGroup{
                     new SetTurretAngle(turret, 0),  
                     new RunAnglerToReverseLimit(angler)
                 ),
-                new SetShootingState(shootstate, ShootState.FIXED_2)
         );
     }
 }

@@ -107,18 +107,18 @@ public class AutoChooser {
             new DoNothingCommand());
 
         commandMap.put(new AutoEvent(AutoAction.SHOOT, FieldLocation.DEPOT_SIDE),
-            new DepotShoot(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, controller)); //shoot depot blue
+            new DepotShoot(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, controller)); 
         commandMap.put(new AutoEvent(AutoAction.SHOOT, FieldLocation.MID),
-            new MidShoot(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, controller)); //shoot mid blue
+            new MidShoot(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, controller));
         commandMap.put(new AutoEvent(AutoAction.SHOOT, FieldLocation.OUTPOST_SIDE),
-            new OutpostShoot(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, controller)); //shoot outpost blue
+            new OutpostShoot(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, controller));
             
         commandMap.put(new AutoEvent(AutoAction.SHOOT_AND_CLIMB, FieldLocation.DEPOT_SIDE),
-            new DepotShootClimb(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, climber, controller)); //shoot and climb depot blue
+            new DepotShootClimb(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, controller, climber)); 
         commandMap.put(new AutoEvent(AutoAction.SHOOT_AND_CLIMB, FieldLocation.MID),
-            new MidShootClimb(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, climber, controller)); //shoot and climb mid blue
+            new MidShootClimb(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, controller, climber)); 
         commandMap.put(new AutoEvent(AutoAction.SHOOT_AND_CLIMB, FieldLocation.OUTPOST_SIDE),
-            new OutpostShootClimb(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, climber, controller)); //shoot and climb outpost blue
+            new OutpostShootClimb(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, controller, climber));
     }
 
     /** Put command mappings here.

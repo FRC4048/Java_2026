@@ -68,10 +68,10 @@ public class TurretCalculations {
                     targetPosX = GameConstants.RED_SHUTTLING_TARGET_X_POSITION;
                 }
 
-                if (robotPosX > Constants.FIELD_WIDTH / 2) {
+                if (robotPosY > Constants.FIELD_WIDTH / 2) {
                     targetPosY = GameConstants.SHUTTLING_TARGET_HIGHER_Y_POSITION;
                 } else {
-                    targetPosY = GameConstants.SHUTTLING_TARGET_HIGHER_Y_POSITION;
+                    targetPosY = GameConstants.SHUTTLING_TARGET_LOWER_Y_POSITION;
                 }
 
                 break;

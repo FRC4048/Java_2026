@@ -25,11 +25,13 @@ public class SimApriltagIO extends TCPApriltagIo {
     private final Random random = new Random();
     private final VisionTruster truster;
     private final SwerveSubsystem swerveSubsystem;
-    public SimApriltagIO(String name, ApriltagInputs inputs, SimTCPServer server, VisionTruster truster, SwerveSubsystem swerveSubsystem) {
-        super(name, inputs, server);
+
+    public SimApriltagIO(String name, ApriltagInputs inputs, VisionTruster truster, SwerveSubsystem swerveSubsystem) {
+        super(name, inputs);
         this.truster = truster;
         this.swerveSubsystem = swerveSubsystem;
     }
+
     public void simReadings() {
         if (swerveSubsystem.getSimulationPose().isPresent()) {
             Pose2d pose = swerveSubsystem.getSimulationPose().get();
@@ -56,6 +58,7 @@ public class SimApriltagIO extends TCPApriltagIo {
             }
         }
     }
+
     @Override
     public void periodic() {
         super.periodic();

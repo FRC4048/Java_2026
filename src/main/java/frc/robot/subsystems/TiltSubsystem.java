@@ -22,8 +22,6 @@ import frc.robot.utils.simulation.ArmParameters;
 import frc.robot.utils.simulation.ArmSimulator;
 import frc.robot.utils.simulation.RobotVisualizer;
 
-// The Tilt subsystem extends and retracts the Algae-Go-Bye-Bye mechanism.
-
 public class TiltSubsystem extends SubsystemBase {
     public static final String LOGGING_NAME = "TiltSubsystem";
     private final SparkMaxIo io;

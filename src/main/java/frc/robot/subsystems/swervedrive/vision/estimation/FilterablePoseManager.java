@@ -77,8 +77,6 @@ public class FilterablePoseManager extends PoseManager {
         }
       }
     }
-//    Logger.recordOutput("Apriltag/acceptedMeasurementsPose", validMeasurementsPose.toArray(Pose2d[]::new));
-//    Logger.recordOutput("Apriltag/rejectedMeasurementsPose", invalidMeasurementsPose.toArray(Pose2d[]::new));
     Logger.recordOutput("Apriltag/numberAccepted", validMeasurementsPose.size());
     Logger.recordOutput("Apriltag/numberRejected", invalidMeasurementsPose.size());
   }

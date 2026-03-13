@@ -27,6 +27,7 @@ import frc.robot.constants.Constants;
 
 import frc.robot.constants.GameConstants;
 import frc.robot.utils.logging.io.gyro.ThreadedGyro;
+import frc.robot.utils.simulation.RawOdometry;
 import org.littletonrobotics.junction.Logger;
 import swervelib.SwerveController;
 import swervelib.SwerveDrive;
@@ -56,10 +57,7 @@ public class SwerveSubsystem extends SubsystemBase {
      */
     private final SwerveDrive swerveDrive;
     private Vector<N3> variance = VecBuilder.fill(0.1,0.1,0.1);
-    private SwerveDriveOdometry rawOdometry;
-    private final ConcurrentLinkedDeque<PoseErrorRecord> poseError = new ConcurrentLinkedDeque<>();
-    private record PoseErrorRecord(double timestamp, double error) {
-    }
+    private final RawOdometry rawOdometry;
     /**
      * Initialize {@link SwerveDrive} with the directory provided.
      * The SwerveIMU (which can be null) is the instance of the SwerveIMU to use. If non-null,
@@ -94,12 +92,10 @@ public class SwerveSubsystem extends SubsystemBase {
         swerveDrive.setModuleEncoderAutoSynchronize(Constants.SET_MODULE_ENCODER_AUTO_SYNCHRONIZE,
                 Constants.SET_MODULE_ENCODER_AUTO_SYNCHRONIZE_DEADBAND); // Enable if you want to resynchronize your absolute encoders and motor encoders periodically when they are not moving.
         // swerveDrive.pushOffsetsToEncoders(); // Set the absolute encoder to be used over the internal encoder and push the offsets onto it. Throws warning if not possible
-        if (Constants.currentMode==Constants.simMode) {
-            rawOdometry = new SwerveDriveOdometry(
-                swerveDrive.kinematics,
-                swerveDrive.getOdometryHeading(),
-                swerveDrive.getModulePositions(),
-                startingPose);
+        if (Constants.currentMode== GameConstants.Mode.SIM) {
+            rawOdometry = new RawOdometry(swerveDrive,startingPose);
+        } else {
+            rawOdometry = null;
         }
         
     }
@@ -116,28 +112,23 @@ public class SwerveSubsystem extends SubsystemBase {
                 Constants.MAX_SPEED,
                 new Pose2d(new Translation2d(Meter.of(2), Meter.of(0)),
                         Rotation2d.fromDegrees(0)));
-
+        if (Constants.currentMode== GameConstants.Mode.SIM) {
+            rawOdometry = new RawOdometry(swerveDrive,new Pose2d(new Translation2d(Meter.of(2), Meter.of(0)),
+                    Rotation2d.fromDegrees(0)));
+        } else {
+            rawOdometry = null;
+        }
     }
 
     @Override
     public void periodic() {
         //add vision pose here
         //addVisionMeasurement(new Pose2d(new Translation2d(16, 2), new Rotation2d()));
-        if (Constants.currentMode == GameConstants.Mode.SIM) {
-            double currentTime = Logger.getTimestamp() / 1000000.0;
-            double oneSecondAgo = currentTime - 1.0;
-            poseError.removeIf(record -> record.timestamp < oneSecondAgo);
-            poseError.add(new PoseErrorRecord(currentTime, getError()));
-            Logger.recordOutput("AveragePoseError", getAverageError());
-            rawOdometry.update(
-                swerveDrive.getOdometryHeading(),
-                swerveDrive.getModulePositions()
-        );
-        }
     }
 
     @Override
     public void simulationPeriodic() {
+        rawOdometry.periodic();
     }
 
     /**
@@ -314,12 +305,8 @@ public class SwerveSubsystem extends SubsystemBase {
     // might be broken
     public void resetOdometry(Pose2d initialHolonomicPose) {
         swerveDrive.resetOdometry(initialHolonomicPose);
-        if (Constants.currentMode==Constants.simMode) {
-            SwerveModulePosition[] modules = new SwerveModulePosition[4];
-            for (int i=0; i<4; i++) {
-                modules[i] = new SwerveModulePosition();
-            }
-            rawOdometry.resetPosition(initialHolonomicPose.getRotation(), modules, initialHolonomicPose);
+        if (Constants.currentMode==GameConstants.Mode.SIM) {
+            rawOdometry.resetOdom(initialHolonomicPose);
         }
     }
 
@@ -335,7 +322,7 @@ public class SwerveSubsystem extends SubsystemBase {
         return getPose().getTranslation().getDistance((getSimulationPose().get().getTranslation()));
     }
     public double getAverageError(){
-        return poseError.stream().mapToDouble(record -> record.error).average().orElse(0);
+        return rawOdometry.getAverageError();
     }
 
     public Optional<Pose2d> getSimulationPose() {
@@ -343,11 +330,10 @@ public class SwerveSubsystem extends SubsystemBase {
     }
     // Todo: fix to only get odomtry
     public Pose2d getOdom() {
-        if (Constants.currentMode==Constants.simMode) {
-            return rawOdometry.getPoseMeters();
-        } else {
-            return getPose();
-        }
+        return getPose();
+    }
+    public Pose2d getSimulationRawOdomPose() {
+        return rawOdometry.getOdom();
     }
 
     /**

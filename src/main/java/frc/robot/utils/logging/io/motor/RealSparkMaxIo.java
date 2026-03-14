@@ -46,7 +46,11 @@ public class RealSparkMaxIo extends BaseIoImpl<MotorLoggableInputs> implements S
     public boolean isRevSwitchPressed() {
         return getInputs().getRevLimit();
     }
-
+    
+    public double get() {
+        return motor.get();
+    }
+    
     @Override
     protected void updateInputs(MotorLoggableInputs inputs) {
         inputs.fromHardware(motor);

@@ -591,4 +591,8 @@ public class RobotContainer {
         public IntakeDeployerSubsystem getDeployer(){
                 return intakeDeployer;
         }
+
+    public ShooterSubsystem getShooterSubsystem(){
+        return shooterSubsystem;
+    }
 }

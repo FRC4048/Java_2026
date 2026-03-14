@@ -21,6 +21,11 @@ public class MockSparkMaxIo extends BaseIoImpl<MotorLoggableInputs> implements S
     }
 
     @Override
+    public double get() {
+        return 0; // example
+    }
+
+    @Override
     public void setVoltage(double voltage) {
     }
 

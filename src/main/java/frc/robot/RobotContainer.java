@@ -167,7 +167,7 @@ public class RobotContainer {
                                 drivebase = !Constants.TESTBED ? new SwerveSubsystem(
                                                 new File(Filesystem.getDeployDirectory(), "YAGSL/" + Constants.SWERVE_JSON_DIRECTORY), swerveIMU) : null;
                             apriltagSubsystem = !Constants.TESTBED ? new ApriltagSubsystem(ApriltagSubsystem.createRealIo(), drivebase, truster) : null;
-                            controllerSubsystem = !Constants.TESTBED ? new ControllerSubsystem(drivebase, this) : null;
+                            controllerSubsystem = !Constants.TESTBED ? new ControllerSubsystem(drivebase, this, driveJoystick) : null;
                                  lightStripSubsystem = new LightStripSubsystem(drivebase, shootState);
             }
                         case REPLAY -> {
@@ -186,7 +186,7 @@ public class RobotContainer {
                 // create the drive subsystem with null gyro (use default json)
                 drivebase = !Constants.TESTBED ? new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "YAGSL/" + Constants.SWERVE_JSON_DIRECTORY), null) : null;
                 apriltagSubsystem = !Constants.TESTBED ? new ApriltagSubsystem(ApriltagSubsystem.createMockIo(), drivebase, truster) : null;
-                controllerSubsystem = !Constants.TESTBED ? new ControllerSubsystem(drivebase, this) : null;
+                controllerSubsystem = !Constants.TESTBED ? new ControllerSubsystem(drivebase, this, driveJoystick) : null;
                                 lightStripSubsystem = new LightStripSubsystem(drivebase, shootState);
 
             }
@@ -207,7 +207,7 @@ public class RobotContainer {
                                
                                                 // create the drive subsystem with null gyro (use default json)
                 drivebase = !Constants.TESTBED ? new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "YAGSL/" + Constants.SWERVE_JSON_DIRECTORY), null) : null;
-                controllerSubsystem = !Constants.TESTBED ? new ControllerSubsystem(drivebase, this) : null;
+                controllerSubsystem = !Constants.TESTBED ? new ControllerSubsystem(drivebase, this, driveJoystick) : null;
                 apriltagSubsystem = !Constants.TESTBED ? new ApriltagSubsystem(ApriltagSubsystem.createSimIo(truster,drivebase), drivebase, truster) : null;
                                 lightStripSubsystem = new LightStripSubsystem(drivebase, shootState);
         
@@ -337,7 +337,7 @@ public class RobotContainer {
             if (controllerSubsystem != null) {
                 anglerSubsystem.setDefaultCommand(new DefaultAnglerControl(anglerSubsystem, controllerSubsystem));
                 shooterSubsystem.setDefaultCommand(new DefaultShooterControl(shooterSubsystem, controllerSubsystem));
-                turretSubsystem.setDefaultCommand(new DefaultTurretControl(turretSubsystem, controllerSubsystem));
+                //turretSubsystem.setDefaultCommand(new DefaultTurretControl(turretSubsystem, controllerSubsystem));
                 hopperSubsystem.setDefaultCommand(new DefaultSpinHopper(hopperSubsystem, controllerSubsystem));
                 feederSubsystem.setDefaultCommand(new DefaultSpinFeeder(feederSubsystem, controllerSubsystem));
             }

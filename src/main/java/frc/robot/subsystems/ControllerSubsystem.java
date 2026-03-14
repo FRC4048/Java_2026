@@ -1,18 +1,25 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.interpolation.TimeInterpolatableBuffer;
 import edu.wpi.first.wpilibj.DriverStation;
 import frc.robot.Robot;
 import frc.robot.utils.math.TurretCalculations;
+import swervelib.math.SwerveMath;
+
+import java.util.ArrayList;
+
 import org.dyn4j.UnitConversion;
 import org.littletonrobotics.junction.Logger;
 
 import frc.robot.RobotContainer;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import frc.robot.constants.Constants;
 import frc.robot.constants.enums.ShootingState.ShootState;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
@@ -20,10 +27,14 @@ import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 public class ControllerSubsystem extends SubsystemBase {
 
     private static final double STOP_DELAY_SECONDS = 0.5;
+    private CommandJoystick driverJoystick;
+    private ArrayList<Double[]> inputLog;
 
     // Placeholder target poses until real field target values are finalized
-    private static final Pose2d BLUE_HUB_TARGET_POSE = new Pose2d(Constants.BLUE_HUB_X_POSITION, Constants.BLUE_HUB_Y_POSITION, Rotation2d.kZero);
-    private static final Pose2d RED_HUB_TARGET_POSE = new Pose2d(Constants.RED_HUB_X_POSITION, Constants.RED_HUB_Y_POSITION, Rotation2d.kZero);
+    private static final Pose2d BLUE_HUB_TARGET_POSE = new Pose2d(Constants.BLUE_HUB_X_POSITION,
+            Constants.BLUE_HUB_Y_POSITION, Rotation2d.kZero);
+    private static final Pose2d RED_HUB_TARGET_POSE = new Pose2d(Constants.RED_HUB_X_POSITION,
+            Constants.RED_HUB_Y_POSITION, Rotation2d.kZero);
     private static final Pose2d SHUTTLE_TARGET_POSE = new Pose2d(1.0, 7.0, Rotation2d.kZero);
 
     private static final String MANUAL_POSE_X_KEY = "controller/ManualPoseX";
@@ -39,20 +50,18 @@ public class ControllerSubsystem extends SubsystemBase {
     private static final String TARGET_HOPPER_SPEED_KEY = "controller/TargetHopperSpeed";
 
     // Placeholder fixed-state settings.
-    private static final ShotTargets STOPPED_TARGETS =
-            new ShotTargets(Constants.ANGLER_ANGLE_LOW, 0.0, 0.0, 0.0, false, false);
-    private static final ShotTargets FIXED_TARGETS =
-            new ShotTargets(10.0, 120.0, 5.0, 0.0, true, true);
-    private static final ShotTargets FIXED_2_TARGETS =
-            new ShotTargets(22.0, 180.0, -5.0, 0.0, true, true);
+    private static final ShotTargets STOPPED_TARGETS = new ShotTargets(Constants.ANGLER_ANGLE_LOW, 0.0, 0.0, 0.0, false,
+            false);
+    private static final ShotTargets FIXED_TARGETS = new ShotTargets(10.0, 120.0, 5.0, 0.0, true, true);
+    private static final ShotTargets FIXED_2_TARGETS = new ShotTargets(22.0, 180.0, -5.0, 0.0, true, true);
 
     // Placeholder pose-driven profiles.
-    private static final PoseControlProfile BLUE_HUB_PROFILE =
-            new PoseControlProfile(BLUE_HUB_TARGET_POSE, 32.0, 230.0, 14.0);
-    private static final PoseControlProfile RED_HUB_PROFILE =
-            new PoseControlProfile(RED_HUB_TARGET_POSE, 32.0, 230.0, 14.0);
-    private static final PoseControlProfile SHUTTLE_PROFILE =
-            new PoseControlProfile(SHUTTLE_TARGET_POSE, 16.0, 90.0, -14.0);
+    private static final PoseControlProfile BLUE_HUB_PROFILE = new PoseControlProfile(BLUE_HUB_TARGET_POSE, 32.0, 230.0,
+            14.0);
+    private static final PoseControlProfile RED_HUB_PROFILE = new PoseControlProfile(RED_HUB_TARGET_POSE, 32.0, 230.0,
+            14.0);
+    private static final PoseControlProfile SHUTTLE_PROFILE = new PoseControlProfile(SHUTTLE_TARGET_POSE, 16.0, 90.0,
+            -14.0);
 
     private final SwerveSubsystem drivebase;
     private final RobotContainer robotContainer;
@@ -62,12 +71,13 @@ public class ControllerSubsystem extends SubsystemBase {
     private ShotTargets activeTargets;
     private boolean driverActivatedShooting = false;
 
-
-    public ControllerSubsystem(SwerveSubsystem drivebase, RobotContainer robotContainer) {
+    public ControllerSubsystem(SwerveSubsystem drivebase, RobotContainer robotContainer,
+            CommandJoystick driverJoystick) {
         this.drivebase = drivebase;
         this.robotContainer = robotContainer;
         this.previousState = getCurrentShootState();
         this.activeTargets = STOPPED_TARGETS;
+        this.driverJoystick = driverJoystick;
 
         SmartDashboard.putNumber(MANUAL_POSE_X_KEY, 0.0);
         SmartDashboard.putNumber(MANUAL_POSE_Y_KEY, 0.0);
@@ -81,7 +91,7 @@ public class ControllerSubsystem extends SubsystemBase {
 
         updateStopDelayState(currentState);
         updateTargets(currentState, robotPose);
-        if(Constants.DEBUG){
+        if (Constants.DEBUG) {
             SmartDashboard.putString(CURRENT_SHOOT_STATE_KEY, currentState.toString());
             SmartDashboard.putNumber(DISTANCE_METERS_KEY, activeTargets.distanceMeters);
             SmartDashboard.putNumber(TARGET_ANGLER_ANGLE_KEY, activeTargets.anglerAngleDegrees);
@@ -115,7 +125,8 @@ public class ControllerSubsystem extends SubsystemBase {
     }
 
     private boolean shouldUseManualPose() {
-        // This can be confusing in case you're on the robot and have disabled the drivetrain
+        // This can be confusing in case you're on the robot and have disabled the
+        // drivetrain
         // Uncomment to control manually
         return false;
     }
@@ -124,7 +135,7 @@ public class ControllerSubsystem extends SubsystemBase {
         double x = SmartDashboard.getNumber(MANUAL_POSE_X_KEY, 0.0);
         double y = SmartDashboard.getNumber(MANUAL_POSE_Y_KEY, 0.0);
         double r = SmartDashboard.getNumber(MANUAL_POSE_R_KEY, 0.0);
-        Logger.recordOutput("Manual Pose", new Pose2d(new Translation2d(x,y), new Rotation2d(r)));
+        Logger.recordOutput("Manual Pose", new Pose2d(new Translation2d(x, y), new Rotation2d(r)));
         return new Pose2d(x, y, new Rotation2d(r));
     }
 
@@ -158,7 +169,7 @@ public class ControllerSubsystem extends SubsystemBase {
     }
 
     private void updateStoppedTargets() {
-        //This makes the shooter wait half a second before stopping
+        // This makes the shooter wait half a second before stopping
         double shooterVelocity = stopDelayTimer.hasElapsed(STOP_DELAY_SECONDS)
                 ? 0.0
                 : activeTargets.shooterVelocityRpm;
@@ -188,40 +199,59 @@ public class ControllerSubsystem extends SubsystemBase {
         double anglerAngleDegrees = calculateAnglerAngleDegrees(computedDistanceMeters, profile);
         double shooterVelocity = calculateShooterVelocity(computedDistanceMeters, profile);
         double turretAngleDegrees = calculateTurretAngleDegrees(robotPose, profile);
-        return new ShotTargets(anglerAngleDegrees, shooterVelocity, turretAngleDegrees, computedDistanceMeters, true, true);
+        return new ShotTargets(anglerAngleDegrees, shooterVelocity, turretAngleDegrees, computedDistanceMeters, true,
+                true);
     }
 
     private double calculateDistanceMeters(Pose2d robotPose, Pose2d targetPose) {
-        return robotPose.getTranslation().getDistance(targetPose.getTranslation());
+        return robotPosePredicitionCalculation(robotPose).getTranslation().getDistance(targetPose.getTranslation());
     }
 
+    private Pose2d robotPosePredicitionCalculation(Pose2d robotPose) {
+        Translation2d cubedTranslation = SwerveMath
+                .cubeTranslation(new Translation2d(driverJoystick.getY() * (Robot.allianceColor().get().equals(DriverStation.Alliance.Blue)? -1 : 1), driverJoystick.getX() * (Robot.allianceColor().get().equals(DriverStation.Alliance.Blue)? -1 : 1)));
+        Transform2d speedTransform = new Transform2d(
+                cubedTranslation.getX() * UnitConversion.metersToFeet(Constants.MAX_SPEED) * Constants.PREDICTION_TIME,
+                cubedTranslation.getY() * UnitConversion.metersToFeet(Constants.MAX_SPEED) * Constants.PREDICTION_TIME,
+                new Rotation2d());
+        Pose2d robotTransform = new Pose2d(robotPose.getTranslation(), new Rotation2d());
+        Pose2d predictedTransform = robotTransform.transformBy(speedTransform);
+        Pose2d predictedPose = new Pose2d(predictedTransform.getTranslation(), robotPose.getRotation());
+        Logger.recordOutput("Predicted pose", predictedPose);
+        return predictedPose;
+    }
+    private void inputLogger(){
+        Double[] inputs = {driverJoystick.getX(), driverJoystick.getY()};
+        inputLog.add(inputs);
+    }
     private double calculateAnglerAngleDegrees(double computedDistanceMeters, PoseControlProfile profile) {
         if ((profile == BLUE_HUB_PROFILE) || (profile == RED_HUB_PROFILE)) {
-            double distance = UnitConversion.METER_TO_FOOT * computedDistanceMeters;
-			return
-				0.169 * distance * distance
-			  - 1.73 * distance
-	          + 20.4;
-		}
+            double distance = (3.281 * computedDistanceMeters) - 2;
+            SmartDashboard.putNumber("Calculated distance feet", distance);
+            return 0.169 * distance * distance
+                    - 1.73 * distance
+                    + 20.4;
+        }
         return profile.defaultAnglerAngleDegrees;
     }
 
     private double calculateShooterVelocity(double computedDistanceMeters, PoseControlProfile profile) {
         if ((profile == BLUE_HUB_PROFILE) || (profile == RED_HUB_PROFILE)) {
-            double distance = UnitConversion.METER_TO_FOOT * computedDistanceMeters;
-			return Math.floor(
-				8.46 * distance * distance
-			  - 237 * distance
-			  - 1_380);
-		}
+            double distance = (3.281 * computedDistanceMeters) - 2;
+            return 8.46 * distance * distance
+                    - 237 * distance
+                    - 1_380;
+        }
         return profile.defaultShooterVelocityRpm;
     }
 
     private double calculateTurretAngleDegrees(Pose2d robotPose, PoseControlProfile profile) {
-        return Math.floor(Math.toDegrees(TurretCalculations.calculateTurretAngle(robotPose.getX(), robotPose.getY(), robotPose.getRotation().getRadians(), DriverStation.getAlliance().get()== DriverStation.Alliance.Blue)));
+        return Math.floor(Math.toDegrees(TurretCalculations.calculateTurretAngle(robotPose.getX(), robotPose.getY(),
+                robotPose.getRotation().getRadians(),
+                DriverStation.getAlliance().get() == DriverStation.Alliance.Blue)));
     }
 
-    //Getters for all the subsystems to set posistion.
+    // Getters for all the subsystems to set posistion.
     public double getTargetAnglerAngleDegrees() {
         return activeTargets.anglerAngleDegrees;
     }
@@ -254,8 +284,7 @@ public class ControllerSubsystem extends SubsystemBase {
         return driverActivatedShooting;
     }
 
-
-    //Class to save all the fixed targets
+    // Class to save all the fixed targets
     private static final class ShotTargets {
         private final double anglerAngleDegrees;
         private final double shooterVelocityRpm;
@@ -280,7 +309,8 @@ public class ControllerSubsystem extends SubsystemBase {
         }
     }
 
-    //Class to save all the target poses and each subsystem position at that point so we can calculate true values later on
+    // Class to save all the target poses and each subsystem position at that point
+    // so we can calculate true values later on
     private static final class PoseControlProfile {
         private final Pose2d targetPose;
         private final double defaultAnglerAngleDegrees;

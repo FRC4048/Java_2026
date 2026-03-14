@@ -149,7 +149,7 @@ public class GameConstants {
     public static final double RED_HUB_Y_POSITION = 4.0345;
     public static final double X_DISTANCE_BETWEEN_ROBOT_AND_TURRET = .4; // needs value from hardware
     public static final double Y_DISTANCE_BETWEEN_ROBOT_AND_TURRET = .4; // needs value from hardware
-
+    public static final double DISTANCE_BETWEEN_ROBOT_AND_TURRET = Math.sqrt(Math.pow(X_DISTANCE_BETWEEN_ROBOT_AND_TURRET,2)+Math.pow(Y_DISTANCE_BETWEEN_ROBOT_AND_TURRET,2));
     // Shift timings
     public static final int SHIFT_1_START = 130;
     public static final int SHIFT_2_START = 105;
@@ -170,4 +170,5 @@ public class GameConstants {
     public static final double AVERAGE_CAM_LATENCY = 0; // seconds; TODO: change Later
     public static final double AVERAGE_CAM_LATENCY_STD_DEV = 0; // seconds; TODO: change Later
     public static final double MAX_VISION_DISTANCE_SIMULATION = 6;
+
 }

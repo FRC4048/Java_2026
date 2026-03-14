@@ -5,6 +5,7 @@ import frc.robot.commands.ToggleShooting;
 import frc.robot.commands.auto.ResetMechanisms;
 import frc.robot.commands.climber.ClimbSequence;
 import frc.robot.commands.shooter.SetShootingState;
+import frc.robot.commands.turret.SetTurretAngle;
 import frc.robot.constants.enums.ShootingState;
 import frc.robot.constants.enums.ShootingState.ShootState;
 import frc.robot.subsystems.AnglerSubsystem;
@@ -25,8 +26,9 @@ public class DepotShootClimb extends LoggableSequentialCommandGroup{
         ControllerSubsystem controller, ClimberSubsystem climber) {
         super(  
                 new ResetMechanisms(shootstate, turret, angler),
+                new SetTurretAngle(turret, 0),
                 LoggableCommandWrapper.wrap(auto.resetOdometry("DepotShoot")),
-                LoggableCommandWrapper.wrap(auto.trajectoryCmd("DepotShoot").withTimeout(3)),
+                LoggableCommandWrapper.wrap(auto.trajectoryCmd("DepotShoot").withTimeout(1.5)), //1.2 s path
                 new ToggleShooting(controller, 10),
                 new SetShootingState(shootstate, ShootState.STOPPED),
                 new ClimbSequence(climber, drivetrain)

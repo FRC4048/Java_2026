@@ -3,6 +3,7 @@ package frc.robot.commands.auto.shoot;
 import choreo.auto.AutoFactory;
 import frc.robot.commands.ToggleShooting;
 import frc.robot.commands.auto.ResetMechanisms;
+import frc.robot.commands.turret.SetTurretAngle;
 import frc.robot.constants.enums.ShootingState;
 import frc.robot.subsystems.AnglerSubsystem;
 import frc.robot.subsystems.ControllerSubsystem;
@@ -21,8 +22,9 @@ public class MidShoot extends LoggableSequentialCommandGroup{
         ControllerSubsystem controller) {
         super(  
                 new ResetMechanisms(shootstate, turret, angler),
+                new SetTurretAngle(turret, 0),
                 LoggableCommandWrapper.wrap(auto.resetOdometry("MidShoot")),
-                LoggableCommandWrapper.wrap(auto.trajectoryCmd("MidShoot").withTimeout(3)),
+                LoggableCommandWrapper.wrap(auto.trajectoryCmd("MidShoot").withTimeout(1.1)), //0.8 s path
                 new ToggleShooting(controller, 10)
         );
     }

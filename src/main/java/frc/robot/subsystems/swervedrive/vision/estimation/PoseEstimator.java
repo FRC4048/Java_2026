@@ -19,6 +19,7 @@ import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import frc.robot.subsystems.swervedrive.vision.truster.BasicVisionFilter;
 import frc.robot.subsystems.swervedrive.vision.truster.ConstantVisionTruster;
 import frc.robot.subsystems.swervedrive.vision.truster.VisionMeasurement;
+import frc.robot.subsystems.swervedrive.vision.truster.VisionTruster;
 import frc.robot.utils.Apriltag;
 import frc.robot.utils.math.ArrayUtils;
 
@@ -61,7 +62,8 @@ public class PoseEstimator {
       SwerveDriveKinematics kinematics,
       SwerveSubsystem drivebase,
       double initGyroValueDeg,
-      ApriltagSubsystem apriltagSystem) {
+      ApriltagSubsystem apriltagSystem,
+      VisionTruster truster) {
    /*this.frontLeft = frontLeftMotor;
     this.frontRight = frontRightMotor;
     this.backLeft = backLeftMotor;
@@ -89,8 +91,7 @@ public class PoseEstimator {
               public Pose2d getVisionPose(VisionMeasurement measurement) {
                 return measurement.measurement();
               }
-            },
-            new ConstantVisionTruster(visionMeasurementStdDevs2));
+            }, truster);
     SmartDashboard.putData(field);
   }
 
@@ -144,7 +145,12 @@ public class PoseEstimator {
     double serverTime = apriltagSystem.getIO().getInputs().serverTime[index];
     //double timestamp = 0; // latency is not right we are assuming zero
     double timestamp = apriltagSystem.getIO().getInputs().timestamp[index];
-    Pose2d visionPose = new Pose2d(pos[0], pos[1], getEstimatedPose().getRotation());
+    Pose2d visionPose;
+    if (getEstimatedPose()!=null) {
+        visionPose = new Pose2d(pos[0], pos[1], getEstimatedPose().getRotation());
+    } else {
+        visionPose = new Pose2d(pos[0], pos[1], poseManager.getRotation());
+    }
     double distanceFromTag = apriltagSystem.getIO().getInputs().distanceToTag[index];
     return new VisionMeasurement(visionPose, distanceFromTag, timestamp/1000);
   }
@@ -154,7 +160,7 @@ public class PoseEstimator {
    * are sent to the {@link PoseManager} for further processing
    */
   public void updateVision() {
-    updateVision(15, 4, 14, 5, 16, 3);
+    updateVision(99);
   }
 
   public void updateVision(Apriltag focusedTag) {
@@ -202,4 +208,7 @@ public class PoseEstimator {
     poseManager.registerVisionMeasurement(
         new VisionMeasurement(getEstimatedPose(), 0, Logger.getTimestamp() / 1e6));
   }
+    public VisionTruster getVisionTruster() {
+        return poseManager.getVisionTruster();
+    }
 }

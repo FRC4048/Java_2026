@@ -111,10 +111,12 @@ public abstract class TCPServer<T> extends Thread {
             CommandLogger.get().logMessage("TCP Client Connection Status", false);
         }
     }
+
     // This is used to inject april tag readings manually and will pretty much only be used for simulation.
     public void addReading(T reading) {
         readings.add(reading);
     }
+
     public Queue<T> flush() {
         Queue<T> queue = new LinkedList<>();
         readings.drainTo(queue);

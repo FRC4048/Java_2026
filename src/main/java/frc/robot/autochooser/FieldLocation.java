@@ -1,10 +1,11 @@
 package frc.robot.autochooser;
 
-import static edu.wpi.first.wpilibj.DriverStation.Alliance;
-
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -12,15 +13,15 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public enum FieldLocation {
-  ZERO(0, 0, 0, "Zero"),
+  ZERO(0, 0, 0, "ZERO"),
   INVALID(-1, -1, -1, "INVALID"),
-  LEFT(7.150, 7.000, 180, "NON Processor Side"),
-  MIDDLE(7.150, 4.500, 180, "Middle"),
-  RIGHT(7.150, 2.000, 180, "Processor Side");
+  DEPOT_SIDE(3.685, 7.453, 180, "Depot side - Driver Station LEFT"), 
+  MID(3.685, 4.029, 180, "Middle"),
+  OUTPOST_SIDE(3.685, 0.407, 180, "Outpost side - Driver Station RIGHT");
 
-  private static final double RED_X_POS = 2.3876; // meters
-  public static final double HEIGHT_OF_FIELD = 8.05;
-  public static final double LENGTH_OF_FIELD = 17.548225;
+  private static final double RED_X_POS = 9.338; // meters
+  public static final double HEIGHT_OF_FIELD = 8.043;
+  public static final double LENGTH_OF_FIELD = 16.411;
   private final double yPose;
   private final double xPose;
   private final double angle;

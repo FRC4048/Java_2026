@@ -5,12 +5,12 @@ import java.util.HashMap;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import edu.wpi.first.math.geometry.Pose2d;
+
 public enum AutoAction {
   DO_NOTHING("Do Nothing"),
-  TWO_PIECE_HIGH("2 Piece L4"),
-  TWO_PIECE_LOW("2 Piece L2"),
-  ONE_PIECE("1 Piece"),
-  CROSS_THE_LINE("Cross The Line"),
+  SHOOT("Shoot"),
+  SHOOT_AND_CLIMB("Shoot and Climb"),
   INVALID("INVALID");
   private final String name;
   private static final HashMap<String, AutoAction> nameMap =
@@ -25,7 +25,6 @@ public enum AutoAction {
   public String getName() {
     return name;
   }
-
   @Override
   public String toString() {
     return getName();

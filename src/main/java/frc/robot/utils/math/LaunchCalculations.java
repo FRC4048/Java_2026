@@ -82,14 +82,6 @@ public class LaunchCalculations {
         return shooterVelocity;
 
     }
-    public Pose2d adjustTargetPositionForMomentum_Relative (Pose2d target, Vector<N2> relativeRobotVelocities, double timeOfFlight) {
-        Translation2d delta = new Translation2d(relativeRobotVelocities.times(timeOfFlight));
-        return target.transformBy(new Transform2d(delta,new Rotation2d()));
-    }
 
-    public Vector<N2> relativeRobotVelocities(Vector<N2> absoluteRobotVelocities, Pose2d robotPose, Pose2d anchorPoint) {
-        Transform2d transformation = new Transform2d(anchorPoint,robotPose);
-        return new Vector(transformation.toMatrix().times(new Matrix(absoluteRobotVelocities)));
-    }
 
 }

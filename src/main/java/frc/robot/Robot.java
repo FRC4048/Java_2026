@@ -246,7 +246,6 @@ public class Robot extends LoggedRobot {
             hubActive = (allianceColor.get() == autoWinner);
         } else if (timeLeft <= Constants.SHIFT_1_START) {
             hubActive = (allianceColor.get() != autoWinner);
-
     } else hubActive = true; // transition
   }
 

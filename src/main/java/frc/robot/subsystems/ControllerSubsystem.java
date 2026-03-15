@@ -4,7 +4,6 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import frc.robot.Robot;
 import frc.robot.utils.math.TurretCalculations;
-import swervelib.math.SwerveMath;
 
 import java.util.ArrayList;
 
@@ -18,7 +17,6 @@ import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import frc.robot.constants.Constants;
 import frc.robot.constants.enums.ShootingState.ShootState;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
@@ -26,7 +24,6 @@ import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 public class ControllerSubsystem extends SubsystemBase {
 
     private static final double STOP_DELAY_SECONDS = 0.5;
-    private CommandJoystick driverJoystick;
     private ArrayList<Pose2d> lastPoses = new ArrayList<>();
 
     // Placeholder target poses until real field target values are finalized
@@ -70,13 +67,11 @@ public class ControllerSubsystem extends SubsystemBase {
     private ShotTargets activeTargets;
     private boolean driverActivatedShooting = false;
 
-    public ControllerSubsystem(SwerveSubsystem drivebase, RobotContainer robotContainer,
-            CommandJoystick driverJoystick) {
+    public ControllerSubsystem(SwerveSubsystem drivebase, RobotContainer robotContainer) {
         this.drivebase = drivebase;
         this.robotContainer = robotContainer;
         this.previousState = getCurrentShootState();
         this.activeTargets = STOPPED_TARGETS;
-        this.driverJoystick = driverJoystick;
 
         SmartDashboard.putNumber(MANUAL_POSE_X_KEY, 0.0);
         SmartDashboard.putNumber(MANUAL_POSE_Y_KEY, 0.0);
@@ -216,14 +211,8 @@ public class ControllerSubsystem extends SubsystemBase {
         if(lastPoses.size() > 2){
             lastPoses.remove(0);
         }
-        Translation2d cubedTranslation = SwerveMath
-                .cubeTranslation(new Translation2d(driverJoystick.getY() * (Robot.allianceColor().get().equals(DriverStation.Alliance.Blue)? -1 : 1), driverJoystick.getX() * (Robot.allianceColor().get().equals(DriverStation.Alliance.Blue)? -1 : 1)));
-        Transform2d speedTransform = new Transform2d(
-                cubedTranslation.getX() * UnitConversion.metersToFeet(Constants.MAX_SPEED) * Constants.PREDICTION_TIME,
-                cubedTranslation.getY() * UnitConversion.metersToFeet(Constants.MAX_SPEED) * Constants.PREDICTION_TIME,
-                new Rotation2d());
         Pose2d robotTransform = new Pose2d(robotPose.getTranslation(), new Rotation2d());
-        Pose2d predictedTransform = robotTransform.transformBy(speedTransform);
+        Pose2d predictedTransform = robotTransform.transformBy(new Transform2d(new Translation2d(drivebase.getFieldVelocity().vxMetersPerSecond * Constants.PREDICTION_TIME ,drivebase.getFieldVelocity().vyMetersPerSecond * Constants.PREDICTION_TIME), new Rotation2d()));
         Pose2d predictedPose = new Pose2d(predictedTransform.getTranslation(), robotPose.getRotation());
         Logger.recordOutput("Predicted pose", predictedPose);
         lastPoses.add(predictedPose);

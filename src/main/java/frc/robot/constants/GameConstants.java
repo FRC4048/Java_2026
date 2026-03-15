@@ -45,8 +45,6 @@ public class GameConstants {
     public static final int XBOX_CONTROLLER_PORT = 2;
 
     //Speeds
-    public static final double ROLLER_SPEED = 0.25;
-    public static final double TILT_SPEED = -0.5; // Arm motor is inverted - use negative speed
     public static final double INTAKE_SPEED = -0.5;
     public static final double HOPPER_SPEED = 0.35;//Want to increase this later
     public static final double CLIMBER_SPEED_UP = 0.1;
@@ -72,8 +70,6 @@ public class GameConstants {
     public static final double ANGLER_DIAGS_ENCODER = 1;
 
     //Timeouts
-    public static final double SPIN_TIMEOUT = 5;
-    public static final double TILT_TIMEOUT = 5;
     public static final double HOPPER_TIMEOUT = 60;
     public static final double CLIMBER_TIMEOUT = 10;
     public static final double FEEDER_TIMEOUT = 60;
@@ -84,15 +80,9 @@ public class GameConstants {
     public static final double TURRET_TIMEOUT = 5;
 
     //Angles
-    public static final Rotation2d TILT_MIN_ANGLE = Rotation2d.fromDegrees(45);
-    public static final Rotation2d TILT_MAX_ANGLE = Rotation2d.fromDegrees(90);
     public static final Rotation2d ANGLER_MIN_ANGLE = Rotation2d.fromDegrees(45);
     public static final Rotation2d ANGLER_MAX_ANGLE = Rotation2d.fromDegrees(90);
 
-    public static final double TILT_LENGTH = 0.2;
-    public static final double TILT_INERTIA = 0.5;
-    public static final double TILT_GEARING = 45.0;
-    public static final boolean TILT_SIMULATE_GRAVITY = false;
     public static final double ANGLER_LENGTH = 0.2;
     public static final double ANGLER_INERTIA = 0.5;
     public static final double ANGLER_GEARING = 45.0;

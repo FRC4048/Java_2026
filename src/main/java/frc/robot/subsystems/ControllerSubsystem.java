@@ -1,7 +1,6 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.interpolation.TimeInterpolatableBuffer;
 import edu.wpi.first.wpilibj.DriverStation;
 import frc.robot.Robot;
 import frc.robot.utils.math.TurretCalculations;
@@ -28,7 +27,6 @@ public class ControllerSubsystem extends SubsystemBase {
 
     private static final double STOP_DELAY_SECONDS = 0.5;
     private CommandJoystick driverJoystick;
-    private Pose2d predictedPose;
     private ArrayList<Pose2d> lastPoses = new ArrayList<>();
 
     // Placeholder target poses until real field target values are finalized

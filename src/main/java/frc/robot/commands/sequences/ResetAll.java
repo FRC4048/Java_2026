@@ -2,10 +2,10 @@ package frc.robot.commands.sequences;
 
 import frc.robot.commands.angler.StowAngler;
 import frc.robot.commands.climber.ClimberDown;
-import frc.robot.commands.intakeDeployment.InitialDeploymentState;
-import frc.robot.commands.intakeDeployment.SetDeploymentState;
+import frc.robot.commands.intakeDeployment.ToggleDeployment;
 import frc.robot.commands.shooter.SetShootingState;
 import frc.robot.commands.turret.RunTurretToRevLimit;
+import frc.robot.constants.Constants;
 import frc.robot.constants.enums.DeploymentState;
 import frc.robot.constants.enums.ShootingState;
 import frc.robot.constants.enums.ShootingState.ShootState;
@@ -21,18 +21,22 @@ import frc.robot.utils.logging.commands.LoggableParallelCommandGroup;
 import frc.robot.utils.logging.commands.LoggableSequentialCommandGroup;
 
 public class ResetAll extends LoggableSequentialCommandGroup {
-
     public ResetAll(AnglerSubsystem anglerSubsystem, ClimberSubsystem climberSubsystem,
             FeederSubsystem feederSubsystem, HopperSubsystem hopperSubsystem,
             IntakeDeployerSubsystem intakeDeployerSubsystem, IntakeSubsystem intakeSubsystem,
             ShooterSubsystem shooterSubsystem, TurretSubsystem turretSubsystem, ShootingState shootState) {
+                
         super(
-            new SetDeploymentState(intakeDeployerSubsystem, DeploymentState.UP),
+            DeploymentState deploymentState = intakeDeployerSubsystem.getDeploymentState();
+            if(deploymentState == DeploymentState.DOWN)
+                new ToggleDeployment(intakeDeployerSubsystem);
             new LoggableParallelCommandGroup(
-                new InitialDeploymentState(intakeDeployerSubsystem),
-                new StowAngler(anglerSubsystem),
-                new ClimberDown(climberSubsystem),
-                new SetShootingState(shootState, ShootState.STOPPED),
-                new RunTurretToRevLimit(turretSubsystem)));
+                    new StowAngler(anglerSubsystem),
+                    new ClimberDown(climberSubsystem),
+                    new SetShootingState(shootState, ShootState.STOPPED),
+                    new RunTurretToRevLimit(turretSubsystem)
+            )
+        );
     }
 }
+

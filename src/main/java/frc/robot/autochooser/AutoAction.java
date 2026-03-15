@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import edu.wpi.first.math.geometry.Pose2d;
+
 public enum AutoAction {
   DO_NOTHING("Do Nothing"),
   SHOOT("Shoot"),
@@ -23,7 +25,6 @@ public enum AutoAction {
   public String getName() {
     return name;
   }
-
   @Override
   public String toString() {
     return getName();

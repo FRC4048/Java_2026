@@ -10,8 +10,6 @@ public class ConstantsReal2026 extends GameConstants {
     public static final int ANGLER_MOTOR_ID = 52;
 
     // other CAN-ID's
-    public static final int ROLLER_MOTOR_ID = 99; //remove
-    public static final int TILT_MOTOR_ID = 98; //remove
     public static final int TURRET_MOTOR_ID = 19;
     public static final int FEEDER_MOTOR_ID = 10;
     public static final int HOPPER_MOTOR_ID = 3;
@@ -24,6 +22,7 @@ public class ConstantsReal2026 extends GameConstants {
     public static final double INITIAL_ROBOT_HEIGHT = 0;
 
     public static final int INTAKE_DIGITAL_INPUT_CHANNEL = 0;
+    public static final int LIGHT_STRIP_CHANNEL = 1; // Example ID, may change later
     
     public static final double GYRO_DIAGS_ANGLE = 30;
 
@@ -31,7 +30,8 @@ public class ConstantsReal2026 extends GameConstants {
 
     // other
     public static final int SERVER_SOCKET_ATTEMPT_DELAY = 100;
-    public static final int TCP_SERVER_PORT = 5806;
+    public static final int TCP_SERVER_PORT1 = 5806;
+    public static final int TCP_SERVER_PORT2 = 5807;
 
     // other
     public static final boolean TESTBED = false;

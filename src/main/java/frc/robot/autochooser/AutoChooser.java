@@ -177,7 +177,10 @@ public class AutoChooser {
         AutoEvent event = getSelectedEvent();
         return getCommand(event);
     }
-
+    public AutoAction getAction(){
+        return actionChooser.get();
+    }
+    /** @return A human-readable description of the selected command. */
     public String getCommandDescription() {
         AutoEvent event = getSelectedEvent();
         Command command = getCommand(event);
@@ -190,7 +193,7 @@ public class AutoChooser {
         return event.getAction() + " at " + event.getLocation() + " → " + commandDescription + ".";
     }
 
-    public FieldLocation getLocation() {
+    public FieldLocation getFieldLocation() {
         return locationChooser.get();
     }
 

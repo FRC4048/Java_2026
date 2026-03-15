@@ -124,9 +124,10 @@ public class GameConstants {
     public static final double TURRET_FF = 0.0;
     public static final double TURRET_ENCODER_MIN = 0; //Lowest encoder position of Turret
     public static final double TURRET_ENCODER_MAX = 77; //Highest encoder position of Turret
-    public static final double TURRET_HOME_ANGLE = 0.0; //Turret facing forward
-    public static final double TURRET_MIN_ANGLE = -97;
-    public static final double TURRET_MAX_ANGLE = 97;
+    // Turret 0 is physically opposite the intake (robot forward). Angles are in degrees.
+    public static final double TURRET_HOME_ANGLE = 180.0;
+    public static final double TURRET_MIN_ANGLE = 180 - 97;
+    public static final double TURRET_MAX_ANGLE = 180 + 97;
     public static final double TURRET_LIMIT_SPEED = 0.2;
 
     //swerve config

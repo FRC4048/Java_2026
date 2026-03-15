@@ -203,7 +203,13 @@ public class ControllerSubsystem extends SubsystemBase {
 
     private double calculateDistanceMeters(Pose2d robotPose, Pose2d targetPose) {
         double distance = robotPosePredicitionCalculation(robotPose).getTranslation().getDistance(targetPose.getTranslation());
-    return 3.281 * distance > 16 ? 6 : 3.281 * distance < 4.66 ? 1.42 : distance;    
+        if(distance > Constants.MAX_HUB_DISTANCE){
+            return  Constants.MAX_HUB_DISTANCE;
+        }else if(distance < Constants.MIN_HUB_DISTANCE){
+            return Constants.MIN_HUB_DISTANCE;
+        }else{
+            return distance;
+        }
     }
 
     private Pose2d robotPosePredicitionCalculation(Pose2d robotPose) {

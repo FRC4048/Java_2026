@@ -216,11 +216,11 @@ public class ControllerSubsystem extends SubsystemBase {
         ChassisSpeeds targetRelativeSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(drivebase.getFieldVelocity(), target.relativeTo(robotPose).getTranslation().getAngle());
         return target.exp(targetRelativeSpeeds.toTwist2d(timeOfFlight));
     }
-    private double calculateFlightTime(double computedDistanceMeters) {  // TODO: Change later
+    private double calculateFlightTime(double computedDistanceMeters) { // TODO: Change later
         return 0;
     }
 
-    private double equalizeFlightTime(double initialDistanceMeters, ChassisSpeeds robotVelocity) {
+    private double equalizeFlightTime(double initialDistanceMeters, ChassisSpeeds robotVelocity) { // TODO: Change later
         return 0;
     }
     private double calculateShooterVelocity(double computedDistanceMeters, PoseControlProfile profile) {

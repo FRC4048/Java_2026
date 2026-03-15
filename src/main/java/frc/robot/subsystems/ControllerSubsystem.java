@@ -24,8 +24,8 @@ public class ControllerSubsystem extends SubsystemBase {
     private static final double STOP_DELAY_SECONDS = 0.5;
 
     // Placeholder target poses until real field target values are finalized
-    private static final Pose2d BLUE_HUB_TARGET_POSE = new Pose2d(Constants.BLUE_HUB_X_POSITION, Constants.BLUE_HUB_Y_POSITION, Rotation2d.kZero);
-    private static final Pose2d RED_HUB_TARGET_POSE = new Pose2d(Constants.RED_HUB_X_POSITION, Constants.RED_HUB_Y_POSITION, Rotation2d.kZero);
+    private static final Pose2d BLUE_HUB_TARGET_POSE = Constants.BLUE_HUB_POS;
+    private static final Pose2d RED_HUB_TARGET_POSE = Constants.RED_HUB_POS;
     private static final Pose2d SHUTTLE_TARGET_POSE = new Pose2d(1.0, 7.0, Rotation2d.kZero);
     private static final String MANUAL_POSE_X_KEY = "controller/ManualPoseX";
     private static final String MANUAL_POSE_Y_KEY = "controller/ManualPoseY";
@@ -189,8 +189,9 @@ public class ControllerSubsystem extends SubsystemBase {
     }
 
     private ShotTargets calculateTargetsFromPose(PoseControlProfile profile, Pose2d robotPose, ChassisSpeeds robotSpeeds) {
-        profile.targetPose = adjustTargetPositionForMomentum(robotPose,profile.targetPose, robotSpeeds,
+        Twist2d momentumAdjustment = getMomentumAdjustment(robotPose,profile.targetPose, robotSpeeds,
                 equalizeFlightTime(calculateDistanceMeters(robotPose, profile.targetPose), robotSpeeds));
+        profile.targetPose.exp(momentumAdjustment);
         double computedDistanceMeters = calculateDistanceMeters(robotPose, profile.targetPose);
         double anglerAngleDegrees = calculateAnglerAngleDegrees(computedDistanceMeters, profile);
         double shooterVelocity = calculateShooterVelocity(computedDistanceMeters, profile);
@@ -199,7 +200,7 @@ public class ControllerSubsystem extends SubsystemBase {
     }
 
     private double calculateDistanceMeters(Pose2d robotPose, Pose2d targetPose) {
-        return robotPose.getTranslation().getDistance(targetPose.getTranslation());
+        return robotPose.transformBy(Constants.TURRET_OFFSET).getTranslation().getDistance(targetPose.getTranslation());
     }
 
     private double calculateAnglerAngleDegrees(double computedDistanceMeters, PoseControlProfile profile) {
@@ -212,9 +213,10 @@ public class ControllerSubsystem extends SubsystemBase {
 		}
         return profile.defaultAnglerAngleDegrees;
     }
-    public Pose2d adjustTargetPositionForMomentum (Pose2d robotPose, Pose2d target, ChassisSpeeds robotSpeeds, double timeOfFlight) {
+
+    public Twist2d getMomentumAdjustment(Pose2d robotPose, Pose2d target, ChassisSpeeds robotSpeeds, double timeOfFlight) {
         ChassisSpeeds targetRelativeSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(drivebase.getFieldVelocity(), target.relativeTo(robotPose).getTranslation().getAngle());
-        return target.exp(targetRelativeSpeeds.toTwist2d(timeOfFlight));
+        return targetRelativeSpeeds.toTwist2d(timeOfFlight);
     }
     private double calculateFlightTime(double computedDistanceMeters) { // TODO: Change later
         return 0;
@@ -236,7 +238,7 @@ public class ControllerSubsystem extends SubsystemBase {
 
 
     private double calculateTurretAngleDegrees(Pose2d robotPose, PoseControlProfile profile) {
-        return Math.floor(Math.toDegrees(TurretCalculations.calculateTurretAngle(robotPose.getX(), robotPose.getY(), robotPose.getRotation().getRadians(), DriverStation.getAlliance().get()== DriverStation.Alliance.Blue)));
+        return Math.floor(Math.toDegrees(TurretCalculations.calculateTurretAngle(robotPose, profile.targetPose, DriverStation.getAlliance().get()== DriverStation.Alliance.Blue)));
     }
 
     //Getters for all the subsystems to set posistion.

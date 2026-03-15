@@ -5,7 +5,6 @@ import frc.robot.commands.climber.ClimberDown;
 import frc.robot.commands.intakeDeployment.InitialDeploymentState;
 import frc.robot.commands.intakeDeployment.SetDeploymentState;
 import frc.robot.commands.shooter.SetShootingState;
-import frc.robot.commands.shooter.StopShooter;
 import frc.robot.commands.turret.RunTurretToRevLimit;
 import frc.robot.constants.enums.DeploymentState;
 import frc.robot.constants.enums.ShootingState;

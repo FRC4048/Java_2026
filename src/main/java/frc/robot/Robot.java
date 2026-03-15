@@ -255,16 +255,16 @@ public class Robot extends LoggedRobot {
     int timeLeft = (int) DriverStation.getMatchTime();
     if (timeLeft < 0) 
       hubCountdown = 0; // Match has not started.
-    if (0 <= timeLeft && timeLeft < Constants.ENDGAME_START) {
+    if (0 <= timeLeft && timeLeft <= Constants.ENDGAME_START) {
       hubCountdown = timeLeft;
       // Calculates the time between current time and next shift for every shift of the match
-    } else if (Constants.ENDGAME_START <= timeLeft && timeLeft < Constants.SHIFT_4_START) {
+    } else if (Constants.ENDGAME_START < timeLeft && timeLeft <= Constants.SHIFT_4_START) {
       hubCountdown = timeLeft - Constants.ENDGAME_START;
-    } else if (Constants.SHIFT_4_START <= timeLeft && timeLeft < Constants.SHIFT_3_START) {
+    } else if (Constants.SHIFT_4_START < timeLeft && timeLeft <= Constants.SHIFT_3_START) {
       hubCountdown = timeLeft - Constants.SHIFT_4_START;
-    } else if (Constants.SHIFT_3_START <= timeLeft && timeLeft < Constants.SHIFT_2_START) {
+    } else if (Constants.SHIFT_3_START < timeLeft && timeLeft <= Constants.SHIFT_2_START) {
       hubCountdown = timeLeft - Constants.SHIFT_3_START;
-    } else if (Constants.SHIFT_2_START<= timeLeft && timeLeft < Constants.SHIFT_1_START) {
+    } else if (Constants.SHIFT_2_START < timeLeft && timeLeft <= Constants.SHIFT_1_START) {
       hubCountdown = timeLeft - Constants.SHIFT_2_START;
     } else {hubCountdown = timeLeft - Constants.SHIFT_1_START;}
     SmartDashboard.putNumber("Countdown Until Next Hub Shift", hubCountdown);

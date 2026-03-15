@@ -252,25 +252,24 @@ public class Robot extends LoggedRobot {
 
   private void determineHubCountdown(){
     int hubCountdown = 0;
-    // Determine time until next hub shift
+    // Determines time until next hub shift
     int timeLeft = (int) DriverStation.getMatchTime();
     if (timeLeft < 0) 
       hubCountdown = 0; // Match has not started.
     if (0 <= timeLeft && timeLeft < Constants.ENDGAME_START) {
       hubCountdown = timeLeft;
+      // Calculates the time between current time and next shift for every shift of the match
     } else if (Constants.ENDGAME_START <= timeLeft && timeLeft < Constants.SHIFT_4_START) {
       hubCountdown = timeLeft - Constants.ENDGAME_START;
-      // Only the hub of the team that won autonomous is active during shifts 2 and 4.
     } else if (Constants.SHIFT_4_START <= timeLeft && timeLeft < Constants.SHIFT_3_START) {
       hubCountdown = timeLeft - Constants.SHIFT_4_START;
-      // Only the hub of the team that didn't win autonomous is active during shifts 1 and 3.
-
     } else if (Constants.SHIFT_3_START <= timeLeft && timeLeft < Constants.SHIFT_2_START) {
       hubCountdown = timeLeft - Constants.SHIFT_3_START;
     } else if (Constants.SHIFT_2_START<= timeLeft && timeLeft < Constants.SHIFT_1_START) {
       hubCountdown = timeLeft - Constants.SHIFT_2_START;
     } else {hubCountdown = timeLeft - Constants.SHIFT_1_START;}
     SmartDashboard.putNumber("Countdown Until Next Hub Shift", hubCountdown);
+    // Puts the countdown on dashboard so driver and operator can see the time until the next shift
   }
 
     @Override

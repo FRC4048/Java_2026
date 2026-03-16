@@ -82,7 +82,6 @@ public enum Apriltag {
   THIRTY_ONE(0.32, 147.47, 21.75),//Tower, Blue z rotation:0
   THIRTY_TWO(0.32, 164.47, 21.75);//Tower, Blue z rotation:0
   */
-  public record TagPose(Apriltag tag, Pose3d pose) {}
   private final double xMeters;
   private final double yMeters;
   private final double zMeters;
@@ -132,8 +131,5 @@ public enum Apriltag {
 
   public int number() {
     return ordinal()+1;
-  }
-  public TagPose getTagInfo() {
-    return new TagPose(this, pose);
   }
 }

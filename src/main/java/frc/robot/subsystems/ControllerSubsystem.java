@@ -215,12 +215,30 @@ public class ControllerSubsystem extends SubsystemBase {
         return profile.defaultAnglerAngleDegrees;
     }
 
+
+
+    // Twist2d is a change in pose (position and rotation) over time.
+    // the returned value is a field-relative displacement vector (change in position and rotation) over the ball flight time.
+    // this means how much we need to adjust our shot.
     public Twist2d getMomentumAdjustment(Pose2d robotPose, Pose2d target, ChassisSpeeds robotSpeeds, double timeOfFlight) {
+        // calculate the change per second of the turret's position relative to the center due to robot rotation. This
+        // is basically angular speed. Result is in robot coordinate system.
         Translation2d angularVelocityAdjustment = Constants.TURRET_OFFSET.times(robotSpeeds.omegaRadiansPerSecond).getTranslation();
+        
+        // take the robot's current speed (relative to field)
+        // convert the turret's angular velocity from robot-relative to field-relative
+        // since the rotation velocity is perpendicular to the robot x-axis, so we need to rotate it by 90 degrees
+        // which is why we use -Y,X instead of X,Y for the conversion.
+        // add the two to get the effective speed of the turret/projectile.
         ChassisSpeeds adjustSpeeds = (new ChassisSpeeds(robotSpeeds.vxMetersPerSecond, robotSpeeds.vyMetersPerSecond, 0)).plus
                 (ChassisSpeeds.fromRobotRelativeSpeeds(-angularVelocityAdjustment.getY(),angularVelocityAdjustment.getX(),0.0,robotPose.getRotation()));
+        
+        // convert the effective speed to a twist (displacement over time)
+        // positive timeOfFlight tells us how much we move
+        // negative timeOfFlight tells us how much we need to move to compensate for our movement
         return adjustSpeeds.toTwist2d(-timeOfFlight);
     }
+
     private double calculateFlightTime(double computedDistanceMeters) {
         return 0.0633*computedDistanceMeters + 0.647;
     }

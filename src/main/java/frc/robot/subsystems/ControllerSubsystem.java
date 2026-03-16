@@ -190,8 +190,9 @@ public class ControllerSubsystem extends SubsystemBase {
 
     private ShotTargets calculateTargetsFromPose(PoseControlProfile profile, Pose2d robotPose, ChassisSpeeds robotSpeeds) {
         Twist2d momentumAdjustment = getMomentumAdjustment(robotPose,profile.targetPose, robotSpeeds,
-                equalizeFlightTime(calculateDistanceMeters(robotPose, profile.targetPose), robotSpeeds));
-        profile.targetPose.exp(momentumAdjustment);
+                equalizeFlightTime(calculateDistanceMeters(robotPose, profile.targetPose), robotPose, profile.targetPose, robotSpeeds));
+        PoseControlProfile adjustedProfile = new PoseControlProfile(profile.targetPose, profile.defaultAnglerAngleDegrees, profile.defaultShooterVelocityRpm, profile.defaultTurretAngleDegrees);
+        adjustedProfile.targetPose = profile.targetPose.exp(momentumAdjustment);
         double computedDistanceMeters = calculateDistanceMeters(robotPose, profile.targetPose);
         double anglerAngleDegrees = calculateAnglerAngleDegrees(computedDistanceMeters, profile);
         double shooterVelocity = calculateShooterVelocity(computedDistanceMeters, profile);
@@ -215,15 +216,18 @@ public class ControllerSubsystem extends SubsystemBase {
     }
 
     public Twist2d getMomentumAdjustment(Pose2d robotPose, Pose2d target, ChassisSpeeds robotSpeeds, double timeOfFlight) {
-        ChassisSpeeds targetRelativeSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(drivebase.getFieldVelocity(), target.relativeTo(robotPose).getTranslation().getAngle());
-        return targetRelativeSpeeds.toTwist2d(timeOfFlight);
+        Translation2d angularVelocityAdjustment = Constants.TURRET_OFFSET.times(robotSpeeds.omegaRadiansPerSecond).getTranslation();
+        ChassisSpeeds adjustSpeeds = (new ChassisSpeeds(robotSpeeds.vxMetersPerSecond, robotSpeeds.vyMetersPerSecond, 0)).plus
+                (ChassisSpeeds.fromRobotRelativeSpeeds(-angularVelocityAdjustment.getY(),angularVelocityAdjustment.getX(),0.0,robotPose.getRotation()));
+        return adjustSpeeds.toTwist2d(-timeOfFlight);
     }
-    private double calculateFlightTime(double computedDistanceMeters) { // TODO: Change later
-        return 0;
+    private double calculateFlightTime(double computedDistanceMeters) {
+        return 0.0633*computedDistanceMeters + 0.647;
     }
 
-    private double equalizeFlightTime(double initialDistanceMeters, ChassisSpeeds robotVelocity) { // TODO: Change later
-        return 0;
+    private double equalizeFlightTime(double initialDistanceMeters, Pose2d robotPose, Pose2d target, ChassisSpeeds robotSpeeds) {
+        return (633*initialDistanceMeters+6470)/(633*ChassisSpeeds.fromFieldRelativeSpeeds(robotSpeeds, target.relativeTo(robotPose)
+                .getTranslation().getAngle()).vxMetersPerSecond+10000);
     }
     private double calculateShooterVelocity(double computedDistanceMeters, PoseControlProfile profile) {
         if ((profile == BLUE_HUB_PROFILE) || (profile == RED_HUB_PROFILE)) {

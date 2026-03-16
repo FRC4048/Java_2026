@@ -218,9 +218,12 @@ public class ControllerSubsystem extends SubsystemBase {
     }
 
     private double calculateTurretAngleDegrees(Pose2d robotPose, PoseControlProfile profile) {
-        return Math.floor(Math.toDegrees(TurretCalculations.calculateTurretAngle(robotPose.getX(), robotPose.getY(), robotPose.getRotation().getRadians(), DriverStation.getAlliance().get()== DriverStation.Alliance.Blue)));
+        double unroundedDegrees = Math.toDegrees(TurretCalculations.calculateTurretAngle(robotPose.getX(), robotPose.getY(), robotPose.getRotation().getRadians(), DriverStation.getAlliance().get()== DriverStation.Alliance.Blue));
+        return Math.floor((unroundedDegrees+2.5)/5)*5;
     }
-
+    public double roundToN(double num, double n){
+        return Math.floor((num+(n/2))/n)*n;
+    }
     //Getters for all the subsystems to set posistion.
     public double getTargetAnglerAngleDegrees() {
         return activeTargets.anglerAngleDegrees;

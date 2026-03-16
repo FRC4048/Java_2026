@@ -9,6 +9,7 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Robot;
 import frc.robot.constants.Constants;
@@ -65,6 +66,7 @@ public class TurretSubsystem extends SubsystemBase {
                 Constants.TURRET_ENCODER_MIN,
                 Constants.TURRET_MAX_ANGLE,
                 Constants.TURRET_MIN_ANGLE);
+        SmartDashboard.putNumber("targetEncoder",targetRotations);
         if(lastAngle != targetAngle) {
             setPosition(targetRotations);
             lastAngle = targetAngle;

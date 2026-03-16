@@ -1,5 +1,11 @@
 package frc.robot.utils.math;
 
+import org.littletonrobotics.junction.Logger;
+
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import frc.robot.constants.GameConstants;
 
 public class TurretCalculations {
@@ -37,8 +43,11 @@ public class TurretCalculations {
         double rotatedOffsetY = turretOffsetX * Math.sin(robotRotation) + turretOffsetY * Math.cos(robotRotation);
 
         // Calculate actual turret position on field
-        double turretPosX = robotPosX + rotatedOffsetX;
-        double turretPosY = robotPosY + rotatedOffsetY;
+        Pose2d robotPose = new Pose2d(new Translation2d(robotPosX, robotPosY), new Rotation2d());
+        Pose2d offsetPose = robotPose.transformBy(new Transform2d(turretOffsetX, turretOffsetY, new Rotation2d()));
+        Logger.recordOutput("TurretPose", offsetPose);
+        double turretPosX = offsetPose.getX();
+        double turretPosY = offsetPose.getY();
 
         double hubPosX;
         double hubPosY;

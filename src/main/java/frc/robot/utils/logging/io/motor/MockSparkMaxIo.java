@@ -21,7 +21,7 @@ public class MockSparkMaxIo extends BaseIoImpl<MotorLoggableInputs> implements S
     }
 
     @Override
-    public double get() {
+    public double getEncoderVelocity() {
         return 0; // example
     }
 

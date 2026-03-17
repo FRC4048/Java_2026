@@ -8,7 +8,7 @@ import frc.robot.utils.logging.io.BaseIo;
 public interface SparkMaxIo extends BaseIo {
     void set(double speed);
 
-    double get();
+    double getEncoderVelocity();
 
     void setVoltage(double voltage);
 

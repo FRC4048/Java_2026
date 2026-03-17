@@ -110,6 +110,6 @@ public class ShooterSubsystem extends SubsystemBase {
     public record MotorPairIO(RealSparkMaxIo mainMotor, RealSparkMaxIo followerMotor){}
 
     public double getVelocity() {
-        return io.get();
+        return io.getEncoderVelocity();
     }
 }

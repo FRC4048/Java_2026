@@ -45,7 +45,7 @@ public class GameConstants {
     public static final int XBOX_CONTROLLER_PORT = 2;
 
     // Thresholds
-    public static final double SHOOTER_THRESHOLD = -2000;
+    public static final double SHOOTER_THRESHOLD = 1500;
 
     //Speeds
     public static final double ROLLER_SPEED = 0.25;

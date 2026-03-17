@@ -206,10 +206,9 @@ public class ControllerSubsystem extends SubsystemBase {
 
     private double calculateAnglerAngleDegrees(double computedDistanceMeters, PoseControlProfile profile) {
         if ((profile == BLUE_HUB_PROFILE) || (profile == RED_HUB_PROFILE)) {
-            double distance = UnitConversion.METER_TO_FOOT * computedDistanceMeters;
 			return
-				0.169 * distance * distance
-			  - 1.73 * distance
+				1.82 * computedDistanceMeters * computedDistanceMeters
+			  - 5.68 * computedDistanceMeters
 	          + 20.4;
 		}
         return profile.defaultAnglerAngleDegrees;
@@ -245,7 +244,7 @@ public class ControllerSubsystem extends SubsystemBase {
     }
     // Linear regression through 3 static shot distance vs time points.
     private double calculateFlightTime(double computedDistanceMeters) {
-        return 0.0633*computedDistanceMeters + 0.647;
+        return 0.208*computedDistanceMeters + 0.647;
     }
 
     // Since t(x)=mx+b (previous function), we can solve for x
@@ -253,16 +252,15 @@ public class ControllerSubsystem extends SubsystemBase {
     // t + v_robot * t = m * d + b
     // t = (m * d + b) / (v_robot + 1)
     private double equalizeFlightTime(double initialDistanceMeters, Pose2d robotPose, Pose2d target, ChassisSpeeds robotSpeeds) {
-        return (0.0633*initialDistanceMeters+0.647)/(0.0633*ChassisSpeeds.fromFieldRelativeSpeeds(robotSpeeds, target.relativeTo(robotPose)
+        return (0.208*initialDistanceMeters+0.647)/(0.208*ChassisSpeeds.fromFieldRelativeSpeeds(robotSpeeds, target.relativeTo(robotPose)
                 .getTranslation().getAngle()).vxMetersPerSecond+1);
     }
     private double calculateShooterVelocity(double computedDistanceMeters, PoseControlProfile profile) {
         if ((profile == BLUE_HUB_PROFILE) || (profile == RED_HUB_PROFILE)) {
-            double distance = UnitConversion.METER_TO_FOOT * computedDistanceMeters;
-			return Math.floor(
-				8.46 * distance * distance
-			  - 237 * distance
-			  - 1_380);
+			return
+				91 * computedDistanceMeters * computedDistanceMeters
+			  - 776 * computedDistanceMeters
+			  - 1_380;
 		}
         return profile.defaultShooterVelocityRpm;
     }

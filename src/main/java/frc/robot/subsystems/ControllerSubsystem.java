@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.geometry.Twist2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import frc.robot.Robot;
 import frc.robot.utils.math.TurretCalculations;
@@ -208,22 +209,10 @@ public class ControllerSubsystem extends SubsystemBase {
     }
 
     private Pose2d robotPosePredicitionCalculation(Pose2d robotPose) {
-        if(lastPoses.size() > 2){
-            lastPoses.remove(0);
-        }
-        Pose2d robotTransform = new Pose2d(robotPose.getTranslation(), new Rotation2d());
-        Pose2d predictedTransform = robotTransform.transformBy(new Transform2d(new Translation2d(drivebase.getFieldVelocity().vxMetersPerSecond * Constants.PREDICTION_TIME ,drivebase.getFieldVelocity().vyMetersPerSecond * Constants.PREDICTION_TIME), new Rotation2d()));
-        Pose2d predictedPose = new Pose2d(predictedTransform.getTranslation(), robotPose.getRotation());
+        Pose2d predictedPose = robotPose.exp(drivebase.getFieldVelocity().toTwist2d(Constants.PREDICTION_TIME));
         Logger.recordOutput("Predicted pose", predictedPose);
         lastPoses.add(predictedPose);
         return predictedPose;
-    }
-    private double distanceBetweenPreviousPoses(ArrayList<Pose2d> storePoses){
-        
-        if(storePoses.size() > 2){
-        return storePoses.get(1).getTranslation().getDistance(storePoses.get(0).getTranslation());
-        }
-        return 0;
     }
     private double calculateAnglerAngleDegrees(double computedDistanceMeters, PoseControlProfile profile) {
         if ((profile == BLUE_HUB_PROFILE) || (profile == RED_HUB_PROFILE)) {
@@ -237,11 +226,10 @@ public class ControllerSubsystem extends SubsystemBase {
 
     private double calculateShooterVelocity(double computedDistanceMeters, PoseControlProfile profile) {
         if ((profile == BLUE_HUB_PROFILE) || (profile == RED_HUB_PROFILE)) {
-            double distanceBetweenLastPoses = distanceBetweenPreviousPoses(lastPoses) * 100;
             double distance = (3.81 * computedDistanceMeters) - 2;
             return (8.46 * distance * distance
                     - 237 * distance
-                    - 1_380) - (500 * distanceBetweenLastPoses > 0 ? distanceBetweenLastPoses : 0);
+                    - 1_380);
         }
         return profile.defaultShooterVelocityRpm;
     }

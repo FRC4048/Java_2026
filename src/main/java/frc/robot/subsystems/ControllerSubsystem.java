@@ -189,14 +189,14 @@ public class ControllerSubsystem extends SubsystemBase {
     }
 
     private ShotTargets calculateTargetsFromPose(PoseControlProfile profile, Pose2d robotPose, ChassisSpeeds robotSpeeds) {
-        Twist2d momentumAdjustment = getMomentumAdjustment(robotPose,profile.targetPose, robotSpeeds,
+        Twist2d momentumAdjustment = getMomentumAdjustment(robotPose, Constants.ACCOUNT_FOR_ANGULAR_MOMENTUM, robotSpeeds,
                 equalizeFlightTime(calculateDistanceMeters(robotPose, profile.targetPose), robotPose, profile.targetPose, robotSpeeds));
         PoseControlProfile adjustedProfile = new PoseControlProfile(profile.targetPose, profile.defaultAnglerAngleDegrees, profile.defaultShooterVelocityRpm, profile.defaultTurretAngleDegrees);
         adjustedProfile.targetPose = profile.targetPose.exp(momentumAdjustment);
-        double computedDistanceMeters = calculateDistanceMeters(robotPose, profile.targetPose);
-        double anglerAngleDegrees = calculateAnglerAngleDegrees(computedDistanceMeters, profile);
-        double shooterVelocity = calculateShooterVelocity(computedDistanceMeters, profile);
-        double turretAngleDegrees = calculateTurretAngleDegrees(robotPose, profile);
+        double computedDistanceMeters = calculateDistanceMeters(robotPose, adjustedProfile.targetPose);
+        double anglerAngleDegrees = calculateAnglerAngleDegrees(computedDistanceMeters, adjustedProfile);
+        double shooterVelocity = calculateShooterVelocity(computedDistanceMeters, adjustedProfile);
+        double turretAngleDegrees = calculateTurretAngleDegrees(robotPose, adjustedProfile);
         return new ShotTargets(anglerAngleDegrees, shooterVelocity, turretAngleDegrees, computedDistanceMeters, true, true);
     }
 
@@ -220,32 +220,41 @@ public class ControllerSubsystem extends SubsystemBase {
     // Twist2d is a change in pose (position and rotation) over time.
     // the returned value is a field-relative displacement vector (change in position and rotation) over the ball flight time.
     // this means how much we need to adjust our shot.
-    public Twist2d getMomentumAdjustment(Pose2d robotPose, Pose2d target, ChassisSpeeds robotSpeeds, double timeOfFlight) {
+    public Twist2d getMomentumAdjustment(Pose2d robotPose, boolean useAngularMomentumAdjustment, ChassisSpeeds robotSpeeds, double timeOfFlight) {
         // calculate the change per second of the turret's position relative to the center due to robot rotation. This
         // is basically angular speed. Result is in robot coordinate system.
-        Translation2d angularVelocityAdjustment = Constants.TURRET_OFFSET.times(robotSpeeds.omegaRadiansPerSecond).getTranslation();
-        
-        // take the robot's current speed (relative to field)
-        // convert the turret's angular velocity from robot-relative to field-relative
-        // since the rotation velocity is perpendicular to the robot x-axis, so we need to rotate it by 90 degrees
-        // which is why we use -Y,X instead of X,Y for the conversion.
-        // add the two to get the effective speed of the turret/projectile.
-        ChassisSpeeds adjustSpeeds = (new ChassisSpeeds(robotSpeeds.vxMetersPerSecond, robotSpeeds.vyMetersPerSecond, 0)).plus
-                (ChassisSpeeds.fromRobotRelativeSpeeds(-angularVelocityAdjustment.getY(),angularVelocityAdjustment.getX(),0.0,robotPose.getRotation()));
-        
+        ChassisSpeeds adjustSpeeds;
+        if (useAngularMomentumAdjustment) {
+            Translation2d angularVelocityAdjustment = Constants.TURRET_OFFSET.times(robotSpeeds.omegaRadiansPerSecond).getTranslation();
+
+
+            // take the robot's current speed (relative to field)
+            // convert the turret's angular velocity from robot-relative to field-relative
+            // since the rotation velocity is perpendicular to the robot x-axis, so we need to rotate it by 90 degrees
+            // which is why we use -Y,X instead of X,Y for the conversion.
+            // add the two to get the effective speed of the turret/projectile.
+            adjustSpeeds = (new ChassisSpeeds(robotSpeeds.vxMetersPerSecond, robotSpeeds.vyMetersPerSecond, 0)).plus
+                    (ChassisSpeeds.fromRobotRelativeSpeeds(-angularVelocityAdjustment.getY(), angularVelocityAdjustment.getX(), 0.0, robotPose.getRotation()));
+        } else {
+            adjustSpeeds = (new ChassisSpeeds(robotSpeeds.vxMetersPerSecond, robotSpeeds.vyMetersPerSecond, 0));
+        }
         // convert the effective speed to a twist (displacement over time)
         // positive timeOfFlight tells us how much we move
         // negative timeOfFlight tells us how much we need to move to compensate for our movement
         return adjustSpeeds.toTwist2d(-timeOfFlight);
     }
-
+    // Linear regression through 3 static shot distance vs time points.
     private double calculateFlightTime(double computedDistanceMeters) {
         return 0.0633*computedDistanceMeters + 0.647;
     }
 
+    // Since t(x)=mx+b (previous function), we can solve for x
+    // t = m*(d - v_robot * t)+b
+    // t + v_robot * t = m * d + b
+    // t = (m * d + b) / (v_robot + 1)
     private double equalizeFlightTime(double initialDistanceMeters, Pose2d robotPose, Pose2d target, ChassisSpeeds robotSpeeds) {
-        return (633*initialDistanceMeters+6470)/(633*ChassisSpeeds.fromFieldRelativeSpeeds(robotSpeeds, target.relativeTo(robotPose)
-                .getTranslation().getAngle()).vxMetersPerSecond+10000);
+        return (0.0633*initialDistanceMeters+0.647)/(0.0633*ChassisSpeeds.fromFieldRelativeSpeeds(robotSpeeds, target.relativeTo(robotPose)
+                .getTranslation().getAngle()).vxMetersPerSecond+1);
     }
     private double calculateShooterVelocity(double computedDistanceMeters, PoseControlProfile profile) {
         if ((profile == BLUE_HUB_PROFILE) || (profile == RED_HUB_PROFILE)) {

@@ -143,7 +143,8 @@ public class GameConstants {
     public static final double SHOOTER_HEIGHT = 0.5;
     public static final Pose2d BLUE_HUB_POS = new Pose2d(4.6256, 4.0345, new Rotation2d());
     public static final Pose2d RED_HUB_POS = new Pose2d(11.9154, 4.0345, new Rotation2d());
-    public static final Transform2d TURRET_OFFSET = new Transform2d(.4, .4, new Rotation2d());
+    public static final Transform2d TURRET_OFFSET = new Transform2d(.4, .4, new Rotation2d()); //TODO: needs value from hardware
+    public static final boolean ACCOUNT_FOR_ANGULAR_MOMENTUM = false;
     public static final double DISTANCE_BETWEEN_ROBOT_AND_TURRET = TURRET_OFFSET.getTranslation().getNorm();
     // Shift timings
     public static final int SHIFT_1_START = 130;

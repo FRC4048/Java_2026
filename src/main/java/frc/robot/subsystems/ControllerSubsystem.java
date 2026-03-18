@@ -197,8 +197,9 @@ public class ControllerSubsystem extends SubsystemBase {
         adjustedProfile.targetPose = profile.targetPose.exp(momentumAdjustment);
         Logger.recordOutput("adjustedAimPoint", adjustedProfile.targetPose);
         double computedDistanceMeters = calculateDistanceMeters(robotPose, adjustedProfile.targetPose);
-        double anglerAngleDegrees = calculateAnglerAngleDegrees(computedDistanceMeters, adjustedProfile);
-        double shooterVelocity = calculateShooterVelocity(computedDistanceMeters, adjustedProfile);
+        boolean shootHub = profile == BLUE_HUB_PROFILE || profile == RED_HUB_PROFILE;
+        double anglerAngleDegrees = calculateAnglerAngleDegrees(computedDistanceMeters, adjustedProfile, shootHub);
+        double shooterVelocity = calculateShooterVelocity(computedDistanceMeters, adjustedProfile, shootHub);
         double turretAngleDegrees = calculateTurretAngleDegrees(robotPose, adjustedProfile);
         return new ShotTargets(anglerAngleDegrees, shooterVelocity, turretAngleDegrees, computedDistanceMeters, true, true);
     }
@@ -207,8 +208,8 @@ public class ControllerSubsystem extends SubsystemBase {
         return robotPose.transformBy(Constants.TURRET_OFFSET).getTranslation().getDistance(targetPose.getTranslation());
     }
 
-    private double calculateAnglerAngleDegrees(double computedDistanceMeters, PoseControlProfile profile) {
-        if ((profile == BLUE_HUB_PROFILE) || (profile == RED_HUB_PROFILE)) {
+    private double calculateAnglerAngleDegrees(double computedDistanceMeters, PoseControlProfile profile, boolean shootHub) {
+        if (shootHub) {
 			return
 				1.82 * computedDistanceMeters * computedDistanceMeters
 			  - 5.68 * computedDistanceMeters
@@ -260,8 +261,8 @@ public class ControllerSubsystem extends SubsystemBase {
         Logger.recordOutput("speed Approaching Hub", ChassisSpeeds.fromFieldRelativeSpeeds(robotSpeeds, target.getTranslation().minus(robotPose.getTranslation()).getAngle()).vxMetersPerSecond);
         return (0.208*initialDistanceMeters+0.647)/(0.208*ChassisSpeeds.fromFieldRelativeSpeeds(robotSpeeds, target.getTranslation().minus(robotPose.getTranslation()).getAngle()).vxMetersPerSecond+1);
     }
-    private double calculateShooterVelocity(double computedDistanceMeters, PoseControlProfile profile) {
-        if ((profile == BLUE_HUB_PROFILE) || (profile == RED_HUB_PROFILE)) {
+    private double calculateShooterVelocity(double computedDistanceMeters, PoseControlProfile profile, boolean shootHub) {
+        if (shootHub) {
 			return
 				91 * computedDistanceMeters * computedDistanceMeters
 			  - 776 * computedDistanceMeters

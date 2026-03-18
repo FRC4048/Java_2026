@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import org.littletonrobotics.junction.Logger;
+
 import com.revrobotics.PersistMode;
 import com.revrobotics.ResetMode;
 import com.revrobotics.spark.SparkLowLevel;
@@ -32,19 +34,22 @@ public class TurretSubsystem extends SubsystemBase {
     public static final String LOGGING_NAME = "TurretSubsystem";
 
     private final SparkMaxPidMotorIo io;
-    private final TunablePIDManager pidManager;
-    private double lastAngle = 999;
-
+    private TunablePIDManager pidManager;
+    //private final TunablePIDManager shortPIDManager;
+    //private final TunablePIDManager longPIDManager;
+    
     public TurretSubsystem(SparkMaxPidMotorIo io) {
+        //shortPIDManager = new TunablePIDManager(LOGGING_NAME +"Short", io, createShortPidConfig());
+       // longPIDManager = new TunablePIDManager(LOGGING_NAME +"Long", io, createLongPidConfig());
         this.io = io;
-        this.pidManager = new TunablePIDManager(LOGGING_NAME, io, createPidConfig());
+        this.pidManager = new TunablePIDManager(LOGGING_NAME +"Short", io, createShortPidConfig());
         stopMotors();
     }
 
     @Override
     public void periodic() {
-        pidManager.periodic();
         io.periodic();
+        pidManager.periodic();
     }
 
 /**
@@ -65,10 +70,9 @@ public class TurretSubsystem extends SubsystemBase {
                 Constants.TURRET_ENCODER_MIN,
                 Constants.TURRET_MAX_ANGLE,
                 Constants.TURRET_MIN_ANGLE);
-        if(lastAngle != targetAngle) {
+      //  pidManager = Math.abs(targetRotations-io.getEncoder()) > Constants.TURRET_LONG_PID_THRESHOLD ? longPIDManager : shortPIDManager;
+       // pidManager.periodic();
             setPosition(targetRotations);
-            lastAngle = targetAngle;
-        }
     }
 
     //Range translate code with a clamp
@@ -78,7 +82,6 @@ public class TurretSubsystem extends SubsystemBase {
             double encoderLow,
             double angleHigh,
             double angleLow) {
-
         double targetEncoder = (targetAngle-angleLow)/(angleHigh - angleLow)*encoderHigh;
         return MathUtil.clamp(targetEncoder, encoderLow, encoderHigh);
     }
@@ -152,21 +155,34 @@ public class TurretSubsystem extends SubsystemBase {
                 simulator);
     }
 
-    private static SparkMaxPidConfig createPidConfig() {
+    private static SparkMaxPidConfig createLongPidConfig() {
         return new SparkMaxPidConfig(true)
                 .setCurrentLimit(Constants.NEO_CURRENT_LIMIT)
                 .setAllowedError(.1)
                 .setPidf(
-                        Constants.TURRET_P,
-                        Constants.TURRET_I,
-                        Constants.TURRET_D,
-                        Constants.TURRET_FF)
+                        Constants.TURRET_LONG_P,
+                        Constants.TURRET_LONG_I,
+                        Constants.TURRET_LONG_D,
+                        Constants.TURRET_LONG_FF)
+                .setMaxAccel(6000)
+                .setMaxVelocity(3000);
+    }
+
+    private static SparkMaxPidConfig createShortPidConfig() {
+        return new SparkMaxPidConfig(true)
+                .setCurrentLimit(Constants.NEO_CURRENT_LIMIT)
+                .setAllowedError(.1)
+                .setPidf(
+                        Constants.TURRET_SHORT_P,
+                        Constants.TURRET_SHORT_I,
+                        Constants.TURRET_SHORT_D,
+                        Constants.TURRET_SHORT_FF)
                 .setMaxAccel(6000)
                 .setMaxVelocity(3000);
     }
 
     private static SparkMaxPidMotor createMotor() {
-        return new SparkMaxPidMotor(Constants.TURRET_MOTOR_ID, createPidConfig());
+        return new SparkMaxPidMotor(Constants.TURRET_MOTOR_ID, createShortPidConfig());
     }
 
     private static ArmParameters createParams() {

@@ -5,6 +5,8 @@
 package frc.robot.utils.logging.io.pidmotor;
 
 
+import com.revrobotics.RelativeEncoder;
+
 import frc.robot.utils.logging.input.MotorLoggableInputs;
 import frc.robot.utils.logging.io.motor.MockSparkMaxIo;
 
@@ -38,5 +40,9 @@ public class MockSparkMaxPidMotorIo extends MockSparkMaxIo implements SparkMaxPi
 
     @Override
     public void resetEncoderPosition(double positionRotations) {
+    }
+    @Override
+    public double getEncoder(){
+        return 10;
     }
 }

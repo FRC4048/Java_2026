@@ -36,7 +36,7 @@ public class GameConstants {
     public static final boolean ENABLE_LOGGING = true;
 
     //Debugs
-    public static final boolean DEBUG = false;
+    public static final boolean DEBUG = true;
     public static final boolean ARM_DEBUG = true;
 
     //Joystick
@@ -108,16 +108,21 @@ public class GameConstants {
 
 
  // turret (pan angle) PID
-    public static final double TURRET_P = 1;
-    public static final double TURRET_I = 0.000000;
-    public static final double TURRET_D = 0.0;
-    public static final double TURRET_FF = 0.0;
+    public static final double TURRET_LONG_P = 1.75;
+    public static final double TURRET_LONG_I = 0.0000001;
+    public static final double TURRET_LONG_D = 0.0001;
+    public static final double TURRET_LONG_FF = 0.0;
+    public static final double TURRET_SHORT_P = 0;
+    public static final double TURRET_SHORT_I = 0.000000;
+    public static final double TURRET_SHORT_D = 0.0;
+    public static final double TURRET_SHORT_FF = 0.0;
     public static final double TURRET_ENCODER_MIN = 0; //Lowest encoder position of Turret
     public static final double TURRET_ENCODER_MAX = 77; //Highest encoder position of Turret
     public static final double TURRET_HOME_ANGLE = 0.0; //Turret facing forward
     public static final double TURRET_MIN_ANGLE = -97;
     public static final double TURRET_MAX_ANGLE = 97;
     public static final double TURRET_LIMIT_SPEED = 0.2;
+    public static final double TURRET_LONG_PID_THRESHOLD = 300;
 
     //swerve config
     public static final TelemetryVerbosity TELEMENTRY_VERBOSITY = TelemetryVerbosity.HIGH;

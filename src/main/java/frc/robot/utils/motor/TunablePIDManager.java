@@ -35,9 +35,6 @@ public class TunablePIDManager {
     }
 
     public void periodic() {
-        LoggedTunableNumber.ifChanged(
-                hashCode(),
-                () ->
                         io.configurePID(
                                 new SparkMaxPidConfig(initConfig.getUsesMaxMotion())
                                         .setP(kPTunable.get())
@@ -47,14 +44,7 @@ public class TunablePIDManager {
                                         .setFF(kFFTunable.get())
                                         .setMaxVelocity(kMaxVelTunable.get())
                                         .setMaxAccel(kMaxAccTunable.get())
-                                        .setAllowedError(kAllowedErrorTunable.get())),
-                kPTunable,
-                kITunable,
-                kDTunable,
-                kIZoneTunable,
-                kFFTunable,
-                kMaxVelTunable,
-                kMaxAccTunable,
-                kAllowedErrorTunable);
+                                        .setAllowedError(kAllowedErrorTunable.get()));
     }
+    
 }

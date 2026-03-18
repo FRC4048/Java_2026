@@ -58,4 +58,5 @@ public interface SparkMaxPidMotorIo extends SparkMaxIo {
      */
     void setPid(double pidP, double pidI, double pidD, double iZone, double pidFF);
 
+    double getEncoder();
 }

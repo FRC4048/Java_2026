@@ -1,5 +1,6 @@
 package frc.robot.utils.logging.io.pidmotor;
 
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.ResetMode;
 import com.revrobotics.spark.SparkBase;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
@@ -49,4 +50,9 @@ public class RealSparkMaxPidMotorIo extends RealSparkMaxIo implements SparkMaxPi
     public void resetEncoderPosition(double positionRotations) {
         pidMotor.getEncoder().setPosition(positionRotations);
     }
+    @Override
+    public double getEncoder(){
+         return pidMotor.getEncoder().getPosition();
+    }
+
 }

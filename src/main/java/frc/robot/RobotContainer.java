@@ -441,7 +441,13 @@ public class RobotContainer {
             SmartDashboard.putData(
                     "turret/TurretTest/Turret Go 0",
                     new SetTurretAngle(turretSubsystem, 0));
+            SmartDashboard.putData(
+                    "turret/TurretTest/Turret Go -90",
+                    new SetTurretAngle(turretSubsystem, -90));
 
+            SmartDashboard.putData(
+                    "turret/TurretTest/Turret Go 90",
+                    new SetTurretAngle(turretSubsystem, 90));
             SmartDashboard.putData(
                     "turret/TurretTest/Turret Go -45",
                     new SetTurretAngle(turretSubsystem, -45));

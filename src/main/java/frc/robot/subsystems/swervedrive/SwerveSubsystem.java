@@ -13,16 +13,22 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
+import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Config;
 import frc.robot.constants.Constants;
 
+import frc.robot.constants.GameConstants;
 import frc.robot.utils.logging.io.gyro.ThreadedGyro;
+import frc.robot.utils.simulation.RawOdometry;
+import org.littletonrobotics.junction.Logger;
 import swervelib.SwerveController;
 import swervelib.SwerveDrive;
 import swervelib.SwerveDriveTest;
@@ -38,6 +44,8 @@ import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
 import java.io.File;
 import java.util.Arrays;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentLinkedDeque;
+import java.util.Optional;
 import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 
@@ -49,6 +57,7 @@ public class SwerveSubsystem extends SubsystemBase {
      */
     private final SwerveDrive swerveDrive;
     private Vector<N3> variance = VecBuilder.fill(0.1,0.1,0.1);
+    private final RawOdometry rawOdometry;
     /**
      * Initialize {@link SwerveDrive} with the directory provided.
      * The SwerveIMU (which can be null) is the instance of the SwerveIMU to use. If non-null,
@@ -83,7 +92,12 @@ public class SwerveSubsystem extends SubsystemBase {
         swerveDrive.setModuleEncoderAutoSynchronize(Constants.SET_MODULE_ENCODER_AUTO_SYNCHRONIZE,
                 Constants.SET_MODULE_ENCODER_AUTO_SYNCHRONIZE_DEADBAND); // Enable if you want to resynchronize your absolute encoders and motor encoders periodically when they are not moving.
         // swerveDrive.pushOffsetsToEncoders(); // Set the absolute encoder to be used over the internal encoder and push the offsets onto it. Throws warning if not possible
-    
+        if (Constants.currentMode== GameConstants.Mode.SIM) {
+            rawOdometry = new RawOdometry(swerveDrive,startingPose);
+        } else {
+            rawOdometry = null;
+        }
+        
     }
 
     /**
@@ -98,7 +112,12 @@ public class SwerveSubsystem extends SubsystemBase {
                 Constants.MAX_SPEED,
                 new Pose2d(new Translation2d(Meter.of(2), Meter.of(0)),
                         Rotation2d.fromDegrees(0)));
-
+        if (Constants.currentMode== GameConstants.Mode.SIM) {
+            rawOdometry = new RawOdometry(swerveDrive,new Pose2d(new Translation2d(Meter.of(2), Meter.of(0)),
+                    Rotation2d.fromDegrees(0)));
+        } else {
+            rawOdometry = null;
+        }
     }
 
     @Override
@@ -109,6 +128,7 @@ public class SwerveSubsystem extends SubsystemBase {
 
     @Override
     public void simulationPeriodic() {
+        rawOdometry.periodic();
     }
 
     /**
@@ -282,8 +302,12 @@ public class SwerveSubsystem extends SubsystemBase {
      *
      * @param initialHolonomicPose The pose to set the odometry to
      */
+    // might be broken
     public void resetOdometry(Pose2d initialHolonomicPose) {
         swerveDrive.resetOdometry(initialHolonomicPose);
+        if (Constants.currentMode==GameConstants.Mode.SIM) {
+            rawOdometry.resetOdom(initialHolonomicPose);
+        }
     }
 
     /**
@@ -294,13 +318,22 @@ public class SwerveSubsystem extends SubsystemBase {
     public Pose2d getPose() {
         return swerveDrive.getPose();
     }
+    public double getError() {
+        return getPose().getTranslation().getDistance((getSimulationPose().get().getTranslation()));
+    }
+    public double getAverageError(){
+        return rawOdometry.getAverageError();
+    }
 
     public Optional<Pose2d> getSimulationPose() {
         return swerveDrive.getSimulationDriveTrainPose();
     }
     // Todo: fix to only get odomtry
     public Pose2d getOdom() {
-        return swerveDrive.getPose();
+        return getPose();
+    }
+    public Pose2d getSimulationRawOdomPose() {
+        return rawOdometry.getOdom();
     }
 
     /**

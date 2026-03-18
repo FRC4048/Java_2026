@@ -25,7 +25,6 @@ import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 public class ControllerSubsystem extends SubsystemBase {
 
     private static final double STOP_DELAY_SECONDS = 0.5;
-    private ArrayList<Pose2d> lastPoses = new ArrayList<>();
 
     // Placeholder target poses until real field target values are finalized
     private static final Pose2d BLUE_HUB_TARGET_POSE = new Pose2d(Constants.BLUE_HUB_X_POSITION,
@@ -198,22 +197,28 @@ public class ControllerSubsystem extends SubsystemBase {
     }
 
     private double calculateDistanceMeters(Pose2d robotPose, Pose2d targetPose) {
-        double distance = robotPosePredicitionCalculation(robotPose).getTranslation().getDistance(targetPose.getTranslation());
-        if(distance > Constants.MAX_HUB_DISTANCE){
-            return  Constants.MAX_HUB_DISTANCE;
-        }else if(distance < Constants.MIN_HUB_DISTANCE){
+        double distance = robotPosePredicitionCalculation(robotPose).getTranslation()
+                .getDistance(targetPose.getTranslation());
+        if (distance > Constants.MAX_HUB_DISTANCE) {
+            return Constants.MAX_HUB_DISTANCE;
+        } else if (distance < Constants.MIN_HUB_DISTANCE) {
             return Constants.MIN_HUB_DISTANCE;
-        }else{
+        } else {
             return distance;
         }
     }
 
     private Pose2d robotPosePredicitionCalculation(Pose2d robotPose) {
-        Pose2d predictedPose = robotPose.exp(drivebase.getFieldVelocity().toTwist2d(Constants.PREDICTION_TIME));
+        Pose2d robotPoseTransform = new Pose2d(robotPose.getTranslation(), new Rotation2d());
+        Pose2d predictedPose = robotPoseTransform
+                        .plus(new Transform2d(
+                        drivebase.getFieldVelocity().vxMetersPerSecond * Constants.PREDICTION_TIME,
+                        drivebase.getFieldVelocity().vyMetersPerSecond * Constants.PREDICTION_TIME, 
+                        new Rotation2d()));
         Logger.recordOutput("Predicted pose", predictedPose);
-        lastPoses.add(predictedPose);
         return predictedPose;
     }
+
     private double calculateAnglerAngleDegrees(double computedDistanceMeters, PoseControlProfile profile) {
         if ((profile == BLUE_HUB_PROFILE) || (profile == RED_HUB_PROFILE)) {
             double distance = (3.281 * computedDistanceMeters) - 2;
@@ -235,9 +240,11 @@ public class ControllerSubsystem extends SubsystemBase {
     }
 
     private double calculateTurretAngleDegrees(Pose2d robotPose, PoseControlProfile profile) {
-        return Math.floor(Math.toDegrees(TurretCalculations.calculateTurretAngle(robotPose.getX(), robotPose.getY(),
-                robotPose.getRotation().getRadians(),
-                DriverStation.getAlliance().get() == DriverStation.Alliance.Blue)));
+        Pose2d predictedPose = robotPosePredicitionCalculation(robotPose);
+        return Math.floor(
+                Math.toDegrees(TurretCalculations.calculateTurretAngle(predictedPose.getX(), predictedPose.getY(),
+                        robotPose.getRotation().getRadians(),
+                        DriverStation.getAlliance().get() == DriverStation.Alliance.Blue)));
     }
 
     // Getters for all the subsystems to set posistion.

@@ -189,10 +189,13 @@ public class ControllerSubsystem extends SubsystemBase {
     }
 
     private ShotTargets calculateTargetsFromPose(PoseControlProfile profile, Pose2d robotPose, ChassisSpeeds robotSpeeds) {
+        Logger.recordOutput("equalizedTime",equalizeFlightTime(calculateDistanceMeters(robotPose, profile.targetPose), robotPose, profile.targetPose, robotSpeeds));
+        Logger.recordOutput("nonEqualizedTime", calculateFlightTime(calculateDistanceMeters(robotPose, profile.targetPose)));
         Twist2d momentumAdjustment = getMomentumAdjustment(robotPose, Constants.ACCOUNT_FOR_ANGULAR_MOMENTUM, robotSpeeds,
                 equalizeFlightTime(calculateDistanceMeters(robotPose, profile.targetPose), robotPose, profile.targetPose, robotSpeeds));
         PoseControlProfile adjustedProfile = new PoseControlProfile(profile.targetPose, profile.defaultAnglerAngleDegrees, profile.defaultShooterVelocityRpm, profile.defaultTurretAngleDegrees);
         adjustedProfile.targetPose = profile.targetPose.exp(momentumAdjustment);
+        Logger.recordOutput("adjustedAimPoint", adjustedProfile.targetPose);
         double computedDistanceMeters = calculateDistanceMeters(robotPose, adjustedProfile.targetPose);
         double anglerAngleDegrees = calculateAnglerAngleDegrees(computedDistanceMeters, adjustedProfile);
         double shooterVelocity = calculateShooterVelocity(computedDistanceMeters, adjustedProfile);
@@ -252,8 +255,10 @@ public class ControllerSubsystem extends SubsystemBase {
     // t + v_robot * t = m * d + b
     // t = (m * d + b) / (v_robot + 1)
     private double equalizeFlightTime(double initialDistanceMeters, Pose2d robotPose, Pose2d target, ChassisSpeeds robotSpeeds) {
-        return (0.208*initialDistanceMeters+0.647)/(0.208*ChassisSpeeds.fromFieldRelativeSpeeds(robotSpeeds, target.relativeTo(robotPose)
-                .getTranslation().getAngle()).vxMetersPerSecond+1);
+        Logger.recordOutput("robot to target translation", target.getTranslation().minus(robotPose.getTranslation()));
+        Logger.recordOutput("robot to target angle", target.getTranslation().minus(robotPose.getTranslation()).getAngle());
+        Logger.recordOutput("speed Approaching Hub", ChassisSpeeds.fromFieldRelativeSpeeds(robotSpeeds, target.getTranslation().minus(robotPose.getTranslation()).getAngle()).vxMetersPerSecond);
+        return (0.208*initialDistanceMeters+0.647)/(0.208*ChassisSpeeds.fromFieldRelativeSpeeds(robotSpeeds, target.getTranslation().minus(robotPose.getTranslation()).getAngle()).vxMetersPerSecond+1);
     }
     private double calculateShooterVelocity(double computedDistanceMeters, PoseControlProfile profile) {
         if ((profile == BLUE_HUB_PROFILE) || (profile == RED_HUB_PROFILE)) {

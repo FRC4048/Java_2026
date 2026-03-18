@@ -124,6 +124,7 @@ public class SwerveSubsystem extends SubsystemBase {
     public void periodic() {
         //add vision pose here
         //addVisionMeasurement(new Pose2d(new Translation2d(16, 2), new Rotation2d()));
+        Logger.recordOutput("fieldVelocities",getFieldVelocity());
     }
 
     @Override

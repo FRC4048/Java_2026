@@ -73,7 +73,7 @@ public class GameConstants {
     public static final double HOPPER_TIMEOUT = 60;
     public static final double CLIMBER_TIMEOUT = 10;
     public static final double FEEDER_TIMEOUT = 60;
-    public static final double ANGLER_TIMEOUT = 60;
+    public static final double ANGLER_TIMEOUT = 5;
     public static final int SERVER_SOCKET_CONNECTION_TIMEOUT = 2000;
     public static final double SHOOTER_TIMEOUT = 5;
     public static final double INTAKE_DEPLOYER_BURNOUT_TIMER = 5;
@@ -137,8 +137,8 @@ public class GameConstants {
     public static final double BLUE_HUB_Y_POSITION = 4.0345;
     public static final double RED_HUB_X_POSITION = 11.9154;
     public static final double RED_HUB_Y_POSITION = 4.0345;
-    public static final double X_DISTANCE_BETWEEN_ROBOT_AND_TURRET = .4; // needs value from hardware
-    public static final double Y_DISTANCE_BETWEEN_ROBOT_AND_TURRET = .4; // needs value from hardware
+    public static final double X_DISTANCE_BETWEEN_ROBOT_AND_TURRET = .15;
+    public static final double Y_DISTANCE_BETWEEN_ROBOT_AND_TURRET = 0; 
 
     // Shift timings
     public static final int SHIFT_1_START = 130;

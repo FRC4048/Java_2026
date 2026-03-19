@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.AddTunableApriltagReading;
+import frc.robot.commands.ResetAll;
 import frc.robot.commands.ShootButton;
 import frc.robot.commands.AddApriltagReading;
 import frc.robot.commands.AddGarbageReading;
@@ -298,6 +299,8 @@ public class RobotContainer {
                 controller.povRight().onTrue(new SetShootingState(shootState, ShootState.FIXED_2));
                 controller.povDown().onTrue(new SetShootingState(shootState, ShootState.SHOOTING_HUB));
                 controller.povLeft().onTrue(new SetShootingState(shootState, ShootState.SHUTTLING));
+                controller.leftTrigger().onTrue((new ResetAll(anglerSubsystem, climberSubsystem, 
+                        intakeDeployer, intakeSubsystem, shooterSubsystem, turretSubsystem, shootState)));
                 driveJoystick.trigger().whileTrue((new SetShootingState(shootState, ShootState.STOPPED)));
                 if (controllerSubsystem != null) {
                         steerJoystick.trigger().whileTrue(new ShootButton(controllerSubsystem));
@@ -433,6 +436,10 @@ public class RobotContainer {
                         SmartDashboard.putData(
                                         "angler/Home Rev (Reset)",
                                         new RunAnglerToReverseLimit(anglerSubsystem));
+                        SmartDashboard.putData(
+                                        "reset All",
+                                        new ResetAll(anglerSubsystem, climberSubsystem, intakeDeployer, intakeSubsystem, 
+                                                shooterSubsystem, turretSubsystem, shootState));
 
             SmartDashboard.putData(
                     "turret/TurretTest/Turret Go 45",

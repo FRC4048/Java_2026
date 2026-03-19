@@ -112,9 +112,9 @@ public class GameConstants {
     public static final double TURRET_LONG_I = 0.0000001;
     public static final double TURRET_LONG_D = 0.0001;
     public static final double TURRET_LONG_FF = 0.0;
-    public static final double TURRET_SHORT_P = 0;
+    public static final double TURRET_SHORT_P = 0.2;
     public static final double TURRET_SHORT_I = 0.000000;
-    public static final double TURRET_SHORT_D = 0.0;
+    public static final double TURRET_SHORT_D = 0.001;
     public static final double TURRET_SHORT_FF = 0.0;
     public static final double TURRET_ENCODER_MIN = 0; //Lowest encoder position of Turret
     public static final double TURRET_ENCODER_MAX = 77; //Highest encoder position of Turret

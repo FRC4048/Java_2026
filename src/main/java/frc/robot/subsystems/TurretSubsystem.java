@@ -169,7 +169,7 @@ public class TurretSubsystem extends SubsystemBase {
     }
 
     private static SparkMaxPidConfig createShortPidConfig() {
-        return new SparkMaxPidConfig(true)
+        return new SparkMaxPidConfig(false)
                 .setCurrentLimit(Constants.NEO_CURRENT_LIMIT)
                 .setAllowedError(.1)
                 .setPidf(

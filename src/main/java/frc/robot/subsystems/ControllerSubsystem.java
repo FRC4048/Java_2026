@@ -83,7 +83,7 @@ public class ControllerSubsystem extends SubsystemBase {
         Pose2d robotPose = getRobotPose();
         ShootState currentState = getCurrentShootState();
         updateStopDelayState(currentState);
-        updateTargets(currentState, robotPosePredictionCalculation(robotPose));
+        updateTargets(currentState, robotPose);
         if (Constants.DEBUG) {
             SmartDashboard.putString(CURRENT_SHOOT_STATE_KEY, currentState.toString());
             SmartDashboard.putNumber(DISTANCE_METERS_KEY, activeTargets.distanceMeters);
@@ -148,16 +148,16 @@ public class ControllerSubsystem extends SubsystemBase {
                     // No color, do nothing...
                     useShotTargets(FIXED_TARGETS);
                 } else if (Robot.allianceColor().get().equals(DriverStation.Alliance.Blue)) {
-                    useShotTargets(calculateTargetsFromPose(BLUE_HUB_PROFILE, robotPose));
+                    useShotTargets(calculateTargetsFromPose(BLUE_HUB_PROFILE, robotPosePredictionCalculation(BLUE_HUB_PROFILE.targetPose,robotPose)));
                 } else if (Robot.allianceColor().get().equals(DriverStation.Alliance.Red)) {
-                    useShotTargets(calculateTargetsFromPose(RED_HUB_PROFILE, robotPose));
+                    useShotTargets(calculateTargetsFromPose(RED_HUB_PROFILE, robotPosePredictionCalculation(RED_HUB_PROFILE.targetPose,robotPose)));
                 } else {
                     // Unknown color, do nothing...
                     useShotTargets(FIXED_TARGETS);
                 }
             }
 
-            case SHUTTLING -> useShotTargets(calculateTargetsFromPose(SHUTTLE_PROFILE, robotPose));
+            case SHUTTLING -> useShotTargets(calculateTargetsFromPose(SHUTTLE_PROFILE, robotPosePredictionCalculation(SHUTTLE_PROFILE.targetPose,robotPose)));
         }
     }
 
@@ -208,15 +208,20 @@ public class ControllerSubsystem extends SubsystemBase {
         }
     }
 
-    private Pose2d robotPosePredictionCalculation(Pose2d robotPose) {
+    private Pose2d robotPosePredictionCalculation(Pose2d targetPose, Pose2d robotPose) {
+        double flightTime = calculateFlightTime(robotPose.getTranslation()
+                .getDistance(targetPose.getTranslation()));
         Pose2d robotPoseTransform = new Pose2d(robotPose.getTranslation(), new Rotation2d());
         Pose2d predictedPose = robotPoseTransform
                         .plus(new Transform2d(
-                        drivebase.getFieldVelocity().vxMetersPerSecond * Constants.PREDICTION_TIME,
-                        drivebase.getFieldVelocity().vyMetersPerSecond * Constants.PREDICTION_TIME, 
+                        drivebase.getFieldVelocity().vxMetersPerSecond * flightTime,
+                        drivebase.getFieldVelocity().vyMetersPerSecond * flightTime, 
                         new Rotation2d()));
         Logger.recordOutput("Predicted pose", predictedPose);
         return predictedPose;
+    }
+    private double calculateFlightTime(double computedDistanceMeters) {
+        return 0.208*computedDistanceMeters + 0.647;
     }
 
     private double calculateAnglerAngleDegrees(double computedDistanceMeters, PoseControlProfile profile) {

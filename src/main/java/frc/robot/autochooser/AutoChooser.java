@@ -9,9 +9,19 @@ import choreo.auto.AutoFactory;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Robot;
-import frc.robot.commands.auto.shoot.DepotShoot;
-import frc.robot.commands.auto.shoot.MidShoot;
-import frc.robot.commands.auto.shoot.OutpostShoot;
+import frc.robot.commands.auto.DisturbanceInTheFuel;
+import frc.robot.commands.auto.shoot.BlueDepotShoot;
+import frc.robot.commands.auto.shoot.BlueMidShoot;
+import frc.robot.commands.auto.shoot.BlueOutpostShoot;
+import frc.robot.commands.auto.shoot.RedDepotShoot;
+import frc.robot.commands.auto.shoot.RedMidShoot;
+import frc.robot.commands.auto.shoot.RedOutpostShoot;
+import frc.robot.commands.auto.shootpickupclimb.BlueDepotShootPickupClimb;
+import frc.robot.commands.auto.shootpickupclimb.BlueMidShootPickupClimb;
+import frc.robot.commands.auto.shootpickupclimb.BlueOutpostShootPickupClimb;
+import frc.robot.commands.auto.shootpickupclimb.RedDepotShootPickupClimb;
+import frc.robot.commands.auto.shootpickupclimb.RedMidShootPickupClimb;
+import frc.robot.commands.auto.shootpickupclimb.RedOutpostShootPickupClimb;
 import frc.robot.constants.enums.ShootingState;
 import frc.robot.subsystems.AnglerSubsystem;
 import frc.robot.subsystems.ClimberSubsystem;
@@ -103,12 +113,39 @@ public class AutoChooser {
         commandMap.put(new AutoEvent(AutoAction.DO_NOTHING, FieldLocation.OUTPOST_SIDE), 
             new DoNothingCommand());
 
+        //shoot
         commandMap.put(new AutoEvent(AutoAction.SHOOT, FieldLocation.DEPOT_SIDE),
-            new DepotShoot(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, controller)); 
+            new BlueDepotShoot(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, controller)); 
         commandMap.put(new AutoEvent(AutoAction.SHOOT, FieldLocation.MID),
-            new MidShoot(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, controller));
+            new BlueMidShoot(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, controller));
         commandMap.put(new AutoEvent(AutoAction.SHOOT, FieldLocation.OUTPOST_SIDE),
-            new OutpostShoot(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, controller));
+            new BlueOutpostShoot(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, controller));
+
+        commandMap.put(new AutoEvent(AutoAction.SHOOT, FieldLocation.DEPOT_SIDE),
+            new RedDepotShoot(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, controller)); 
+        commandMap.put(new AutoEvent(AutoAction.SHOOT, FieldLocation.MID),
+            new RedMidShoot(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, controller));
+        commandMap.put(new AutoEvent(AutoAction.SHOOT, FieldLocation.OUTPOST_SIDE),
+            new RedOutpostShoot(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, controller));
+
+        //shoot-pickup-climb
+        commandMap.put(new AutoEvent(AutoAction.SHOOT_PICKUP_CLIMB, FieldLocation.DEPOT_SIDE),
+            new BlueDepotShootPickupClimb(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, controller, null, climber)); 
+        commandMap.put(new AutoEvent(AutoAction.SHOOT, FieldLocation.MID),
+            new BlueMidShootPickupClimb(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, controller, null, climber));
+        commandMap.put(new AutoEvent(AutoAction.SHOOT, FieldLocation.OUTPOST_SIDE),
+            new BlueOutpostShootPickupClimb(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, controller, null, climber));
+
+        commandMap.put(new AutoEvent(AutoAction.SHOOT_PICKUP_CLIMB, FieldLocation.DEPOT_SIDE),
+            new RedDepotShootPickupClimb(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, controller, null, climber)); 
+        commandMap.put(new AutoEvent(AutoAction.SHOOT, FieldLocation.MID),
+            new RedMidShootPickupClimb(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, controller, null, climber));
+        commandMap.put(new AutoEvent(AutoAction.SHOOT, FieldLocation.OUTPOST_SIDE),
+            new RedOutpostShootPickupClimb(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, controller, null, climber));
+
+        //disturbance
+        commandMap.put(new AutoEvent(AutoAction.DISTURBANCE, FieldLocation.OUTPOST_SIDE),
+            new DisturbanceInTheFuel(drivetrain, auto, shootstate, turret, angler, controller)); 
     }
 
     /** Put command mappings here.

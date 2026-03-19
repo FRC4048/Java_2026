@@ -15,9 +15,9 @@ import java.util.stream.Collectors;
 public enum FieldLocation {
   ZERO(0, 0, 0, "ZERO"),
   INVALID(-1, -1, -1, "INVALID"),
-  DEPOT_SIDE(3.685, 7.453, 180, "Depot side - Driver Station LEFT"), 
-  MID(3.685, 4.029, 180, "Middle"),
-  OUTPOST_SIDE(3.685, 0.407, 180, "Outpost side - Driver Station RIGHT");
+  DEPOT_SIDE(3.599, 6.57, 180, "Depot side - Driver Station LEFT"), 
+  MID(3.599, 4.029, 180, "Middle"),
+  OUTPOST_SIDE(3.599, 1.43, 180, "Outpost side - Driver Station RIGHT");
 
   private static final double RED_X_POS = 9.338; // meters
   public static final double HEIGHT_OF_FIELD = 8.043;

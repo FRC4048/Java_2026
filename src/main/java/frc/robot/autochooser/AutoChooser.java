@@ -12,9 +12,6 @@ import frc.robot.Robot;
 import frc.robot.commands.auto.shoot.DepotShoot;
 import frc.robot.commands.auto.shoot.MidShoot;
 import frc.robot.commands.auto.shoot.OutpostShoot;
-import frc.robot.commands.auto.shootclimb.DepotShootClimb;
-import frc.robot.commands.auto.shootclimb.MidShootClimb;
-import frc.robot.commands.auto.shootclimb.OutpostShootClimb;
 import frc.robot.constants.enums.ShootingState;
 import frc.robot.subsystems.AnglerSubsystem;
 import frc.robot.subsystems.ClimberSubsystem;
@@ -112,13 +109,6 @@ public class AutoChooser {
             new MidShoot(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, controller));
         commandMap.put(new AutoEvent(AutoAction.SHOOT, FieldLocation.OUTPOST_SIDE),
             new OutpostShoot(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, controller));
-            
-        commandMap.put(new AutoEvent(AutoAction.SHOOT_AND_CLIMB, FieldLocation.DEPOT_SIDE),
-            new DepotShootClimb(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, controller, climber)); 
-        commandMap.put(new AutoEvent(AutoAction.SHOOT_AND_CLIMB, FieldLocation.MID),
-            new MidShootClimb(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, controller, climber)); 
-        commandMap.put(new AutoEvent(AutoAction.SHOOT_AND_CLIMB, FieldLocation.OUTPOST_SIDE),
-            new OutpostShootClimb(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, controller, climber));
     }
 
     /** Put command mappings here.
@@ -137,13 +127,6 @@ public class AutoChooser {
             "shoot from the middle"); 
         descriptionMap.put(new AutoEvent(AutoAction.SHOOT, FieldLocation.OUTPOST_SIDE),
             "shoot from the outpost"); 
-            
-        descriptionMap.put(new AutoEvent(AutoAction.SHOOT_AND_CLIMB, FieldLocation.DEPOT_SIDE),
-            "shoot and climb from the depot");
-        descriptionMap.put(new AutoEvent(AutoAction.SHOOT_AND_CLIMB, FieldLocation.MID),
-            "shoot and climb from the middle"); 
-        descriptionMap.put(new AutoEvent(AutoAction.SHOOT_AND_CLIMB, FieldLocation.OUTPOST_SIDE),
-            "shoot and climb from the outpost"); 
     }
 
     public AutoEvent getSelectedEvent() {

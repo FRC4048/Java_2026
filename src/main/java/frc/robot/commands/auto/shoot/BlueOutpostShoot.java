@@ -1,15 +1,11 @@
-package frc.robot.commands.auto.shootclimb;
+package frc.robot.commands.auto.shoot;
 
 import choreo.auto.AutoFactory;
 import frc.robot.commands.ToggleShooting;
 import frc.robot.commands.auto.ResetMechanisms;
-import frc.robot.commands.climber.ClimbSequence;
-import frc.robot.commands.shooter.SetShootingState;
 import frc.robot.commands.turret.SetTurretAngle;
 import frc.robot.constants.enums.ShootingState;
-import frc.robot.constants.enums.ShootingState.ShootState;
 import frc.robot.subsystems.AnglerSubsystem;
-import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.ControllerSubsystem;
 import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.subsystems.HopperSubsystem;
@@ -19,19 +15,17 @@ import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import frc.robot.utils.logging.commands.LoggableCommandWrapper;
 import frc.robot.utils.logging.commands.LoggableSequentialCommandGroup;
 
-public class DepotShootClimb extends LoggableSequentialCommandGroup{
-    public DepotShootClimb(
+public class BlueOutpostShoot extends LoggableSequentialCommandGroup{
+    public BlueOutpostShoot(
         SwerveSubsystem drivetrain, AutoFactory auto, ShooterSubsystem shooter, ShootingState shootstate, 
         HopperSubsystem hopper, FeederSubsystem feeder, TurretSubsystem turret, AnglerSubsystem angler, 
-        ControllerSubsystem controller, ClimberSubsystem climber) {
+        ControllerSubsystem controller) {
         super(  
                 new ResetMechanisms(shootstate, turret, angler),
                 new SetTurretAngle(turret, 0),
-                LoggableCommandWrapper.wrap(auto.resetOdometry("DepotShoot")),
-                LoggableCommandWrapper.wrap(auto.trajectoryCmd("DepotShoot").withTimeout(1.5)), //1.2 s path
-                new ToggleShooting(controller, 10),
-                new SetShootingState(shootstate, ShootState.STOPPED),
-                new ClimbSequence(climber, drivetrain)
+                LoggableCommandWrapper.wrap(auto.resetOdometry("BlueOutpost_Shoot")),
+                LoggableCommandWrapper.wrap(auto.trajectoryCmd("BlueOutpost_Shoot").withTimeout(1.4)), //1.1 s path
+                new ToggleShooting(controller, 10)
         );
     }
 }

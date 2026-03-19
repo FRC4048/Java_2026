@@ -83,7 +83,7 @@ public class ControllerSubsystem extends SubsystemBase {
         Pose2d robotPose = getRobotPose();
         ShootState currentState = getCurrentShootState();
         updateStopDelayState(currentState);
-        updateTargets(currentState, robotPosePredicitionCalculation(robotPose));
+        updateTargets(currentState, robotPosePredictionCalculation(robotPose));
         if (Constants.DEBUG) {
             SmartDashboard.putString(CURRENT_SHOOT_STATE_KEY, currentState.toString());
             SmartDashboard.putNumber(DISTANCE_METERS_KEY, activeTargets.distanceMeters);
@@ -208,7 +208,7 @@ public class ControllerSubsystem extends SubsystemBase {
         }
     }
 
-    private Pose2d robotPosePredicitionCalculation(Pose2d robotPose) {
+    private Pose2d robotPosePredictionCalculation(Pose2d robotPose) {
         Pose2d robotPoseTransform = new Pose2d(robotPose.getTranslation(), new Rotation2d());
         Pose2d predictedPose = robotPoseTransform
                         .plus(new Transform2d(

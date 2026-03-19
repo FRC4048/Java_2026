@@ -83,7 +83,7 @@ public class ControllerSubsystem extends SubsystemBase {
         Pose2d robotPose = getRobotPose();
         ShootState currentState = getCurrentShootState();
         updateStopDelayState(currentState);
-        updateTargets(currentState, robotPose);
+        updateTargets(currentState, robotPosePredicitionCalculation(robotPose));
         if (Constants.DEBUG) {
             SmartDashboard.putString(CURRENT_SHOOT_STATE_KEY, currentState.toString());
             SmartDashboard.putNumber(DISTANCE_METERS_KEY, activeTargets.distanceMeters);
@@ -197,7 +197,7 @@ public class ControllerSubsystem extends SubsystemBase {
     }
 
     private double calculateDistanceMeters(Pose2d robotPose, Pose2d targetPose) {
-        double distance = robotPosePredicitionCalculation(robotPose).getTranslation()
+        double distance = robotPose.getTranslation()
                 .getDistance(targetPose.getTranslation());
         if (distance > Constants.MAX_HUB_DISTANCE) {
             return Constants.MAX_HUB_DISTANCE;
@@ -240,11 +240,10 @@ public class ControllerSubsystem extends SubsystemBase {
     }
 
     private double calculateTurretAngleDegrees(Pose2d robotPose, PoseControlProfile profile) {
-        Pose2d predictedPose = robotPosePredicitionCalculation(robotPose);
         return Math.floor(
-                Math.toDegrees(TurretCalculations.calculateTurretAngle(predictedPose.getX(), predictedPose.getY(),
+                Math.toDegrees(TurretCalculations.calculateTurretAngle(robotPose.getX(), robotPose.getY(),
                         robotPose.getRotation().getRadians(),
-                        DriverStation.getAlliance().get() == DriverStation.Alliance.Blue)));
+                        Robot.allianceColor().get() == DriverStation.Alliance.Blue)));
     }
 
     // Getters for all the subsystems to set posistion.

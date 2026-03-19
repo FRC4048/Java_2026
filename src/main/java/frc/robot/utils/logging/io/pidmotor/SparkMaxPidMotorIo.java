@@ -1,7 +1,6 @@
 package frc.robot.utils.logging.io.pidmotor;
 
-import com.revrobotics.spark.SparkBase;
-
+import com.revrobotics.spark.ClosedLoopSlot;
 import frc.robot.utils.logging.io.motor.SparkMaxIo;
 
 /**
@@ -18,18 +17,40 @@ public interface SparkMaxPidMotorIo extends SparkMaxIo {
     /**
      * Set PID position.
      * Set the position (in rotations) for the PidMotor to get to.
+     * Defaults to slot 0.
      *
      * @param position the position (in rotations) to drive to
      */
     void setPidPosition(double position);
 
     /**
+     * Set PID position.
+     * Set the position (in rotations) for the PidMotor to get to.
+     * Switch to the given slot.
+     *
+     * @param position       the position (in rotations) to drive to
+     * @param closedLoopSlot the slot to set and switch to
+     */
+    void setPidPosition(double position, ClosedLoopSlot closedLoopSlot);
+
+    /**
      * Set PID velocity.
      * Set the velocity (in RPM) for the PidMotor to get to.
+     * Defaults to slot 0.
      *
      * @param velocity the position (in rotations) to drive to
      */
     void setPidVelocity(double velocity);
+
+    /**
+     * Set PID velocity.
+     * Set the velocity (in RPM) for the PidMotor to get to.
+     * Switch to the given slot.
+     *
+     * @param velocity       the position (in rotations) to drive to
+     * @param closedLoopSlot the slot to set and switch to
+     */
+    void setPidVelocity(double velocity, ClosedLoopSlot closedLoopSlot);
 
     /**
      * Reset the relative encoder position.
@@ -47,15 +68,20 @@ public interface SparkMaxPidMotorIo extends SparkMaxIo {
      */
     void setPid(double pidP, double pidI, double pidD);
 
+    void setPid(double pidP, double pidI, double pidD, ClosedLoopSlot closedLoopSlot);
+
     /**
      * Set new PID values for the PidMotor.
      * This will replace the existing PID values with the nerw ones
-     * @param pidP P value to set
-     * @param pidI I valkue to set
-     * @param pidD D value to set
+     *
+     * @param pidP  P value to set
+     * @param pidI  I valkue to set
+     * @param pidD  D value to set
      * @param iZone the iZone value to set
      * @param pidFF the FF value to set
      */
     void setPid(double pidP, double pidI, double pidD, double iZone, double pidFF);
+
+    void setPid(double pidP, double pidI, double pidD, double iZone, double pidFF, ClosedLoopSlot closedLoopSlot);
 
 }

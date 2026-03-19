@@ -1,11 +1,13 @@
 package frc.robot.utils.logging.io.pidmotor;
 
+import com.revrobotics.spark.ClosedLoopSlot;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
 /**
  * Value container helper class for configuring a PidMotor.
  */
 public class SparkMaxPidConfig {
+    public static final ClosedLoopSlot DEFAULT_SLOT = ClosedLoopSlot.kSlot0;
     public static final double DEFAULT_P = 0.01;
     public static final double DEFAULT_I = 0;
     public static final double DEFAULT_D = 0.0;
@@ -16,6 +18,7 @@ public class SparkMaxPidConfig {
     public static final double ALLOWED_ERROR = 1.0;
     public static final IdleMode DEFAULT_IDLE_MODE = IdleMode.kBrake;
 
+    private ClosedLoopSlot closedLoopSlot;
     private double p = DEFAULT_P;
     private double i = DEFAULT_I;
     private double d = DEFAULT_D;
@@ -32,7 +35,12 @@ public class SparkMaxPidConfig {
     private boolean usesMaxMotion;
 
     public SparkMaxPidConfig(boolean usesMaxMotion) {
+        this(usesMaxMotion, DEFAULT_SLOT);
+    }
+
+    public SparkMaxPidConfig(boolean usesMaxMotion, ClosedLoopSlot closedLoopSlot) {
         this.usesMaxMotion = usesMaxMotion;
+        this.closedLoopSlot = closedLoopSlot;
     }
 
     public double getP() {
@@ -133,6 +141,10 @@ public class SparkMaxPidConfig {
 
     public boolean getUsesMaxMotion() {
         return usesMaxMotion;
+    }
+
+    public ClosedLoopSlot getClosedLoopSlot() {
+        return closedLoopSlot;
     }
 
     public SparkMaxPidConfig setIdleMode(IdleMode mode){

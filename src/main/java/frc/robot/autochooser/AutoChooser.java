@@ -9,6 +9,7 @@ import choreo.auto.AutoFactory;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Robot;
+import frc.robot.commands.auto.DoNothing;
 import frc.robot.commands.auto.shoot.BlueDepotShoot;
 import frc.robot.commands.auto.shoot.BlueMidShoot;
 import frc.robot.commands.auto.shoot.BlueOutpostShoot;
@@ -30,7 +31,6 @@ import frc.robot.subsystems.HopperSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.TurretSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
-import frc.robot.utils.logging.commands.DoNothingCommand;
 
 public class AutoChooser {
 
@@ -106,11 +106,11 @@ public class AutoChooser {
     private void populateCommandMap() {
         //if AutoEvent is not dependent on alliance color don't put a color
         commandMap.put(new AutoEvent(AutoAction.DO_NOTHING, FieldLocation.DEPOT_SIDE),
-            new DoNothingCommand());
+            new DoNothing());
         commandMap.put(new AutoEvent(AutoAction.DO_NOTHING, FieldLocation.MID),
-            new DoNothingCommand());
+            new DoNothing());
         commandMap.put(new AutoEvent(AutoAction.DO_NOTHING, FieldLocation.OUTPOST_SIDE), 
-            new DoNothingCommand());
+            new DoNothing());
 
         commandMap.put(new AutoEvent(AutoAction.SHOOT, FieldLocation.DEPOT_SIDE, Alliance.Blue),
             new BlueDepotShoot(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, controller)); //shoot depot blue

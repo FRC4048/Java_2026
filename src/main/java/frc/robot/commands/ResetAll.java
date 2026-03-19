@@ -2,11 +2,9 @@ package frc.robot.commands;
 
 import frc.robot.commands.angler.StowAngler;
 import frc.robot.commands.climber.ClimberDown;
-import frc.robot.commands.intakeDeployment.ToggleDeployment;
+import frc.robot.commands.intakeDeployment.MoveIntakeDeploymentUp;
 import frc.robot.commands.shooter.SetShootingState;
 import frc.robot.commands.turret.RunTurretToRevLimit;
-import frc.robot.constants.Constants;
-import frc.robot.constants.enums.DeploymentState;
 import frc.robot.constants.enums.ShootingState;
 import frc.robot.constants.enums.ShootingState.ShootState;
 import frc.robot.subsystems.AnglerSubsystem;
@@ -25,12 +23,8 @@ public class ResetAll extends LoggableSequentialCommandGroup {
             FeederSubsystem feederSubsystem, HopperSubsystem hopperSubsystem,
             IntakeDeployerSubsystem intakeDeployerSubsystem, IntakeSubsystem intakeSubsystem,
             ShooterSubsystem shooterSubsystem, TurretSubsystem turretSubsystem, ShootingState shootState) {
-                
         super(
-            DeploymentState deploymentState = intakeDeployerSubsystem.getDeploymentState();
-            if(deploymentState == DeploymentState.DOWN) {
-                new ToggleDeployment(intakeDeployerSubsystem);
-            }
+            new MoveIntakeDeploymentUp(intakeDeployerSubsystem),
             new LoggableParallelCommandGroup(
                     new StowAngler(anglerSubsystem),
                     new ClimberDown(climberSubsystem),

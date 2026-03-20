@@ -51,8 +51,6 @@ public abstract class BasicVisionFilter implements VisionFilter, VisionTransform
       Filter poses
       -------------------------------------------------------
       */
-      Pose2d vision1Pose = getVisionPose(m1);
-      Pose2d vision2Pose = getVisionPose(m2);
       boolean valid1 =
           filterVision(m1,m2);
       resultMap.put(m1, valid1 ? FilterResult.ACCEPTED : FilterResult.REJECTED);

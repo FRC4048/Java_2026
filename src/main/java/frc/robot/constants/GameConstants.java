@@ -36,7 +36,7 @@ public class GameConstants {
     public static final boolean ENABLE_LOGGING = true;
 
     //Debugs
-    public static final boolean DEBUG = false;
+    public static final boolean DEBUG = true;
     public static final boolean ARM_DEBUG = true;
 
     //Joystick
@@ -162,4 +162,5 @@ public class GameConstants {
     public static final double MAX_VISION_DISTANCE_SIMULATION = 6;
     public static final double AVERAGE_PIR_LATENCY = 20; //ms
     public static final double VISION_STD_THRESHOLD = 0.25;
+    public static final double VISION_STD_DEV_CONST = 1.0/148.0; // TODO: Change later
 }

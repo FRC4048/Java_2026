@@ -7,6 +7,7 @@ import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.interpolation.TimeInterpolatableBuffer;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.numbers.N3;
+import frc.robot.constants.Constants;
 import frc.robot.constants.GameConstants;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import frc.robot.subsystems.swervedrive.vision.truster.FilterResult;
@@ -27,6 +28,7 @@ import org.littletonrobotics.junction.Logger;
  */
 public class FilterablePoseManager extends PoseManager {
   private final VisionFilter filter;
+  private List<Pose3d> acceptedTagPoses = new ArrayList<>();
 
   public FilterablePoseManager(
       PoseDeviation PoseDeviation,
@@ -58,6 +60,9 @@ public class FilterablePoseManager extends PoseManager {
   public void processQueue() {
     List<Pose2d> validMeasurementsPose = new ArrayList<>();
     List<Pose2d> invalidMeasurementsPose = new ArrayList<>();
+    if (Constants.currentMode == Constants.Mode.SIM) {
+      acceptedTagPoses = new ArrayList<>();
+    }
     for (Map.Entry<Integer, Queue<VisionMeasurement>> queueEntry : visionMeasurementQueueMap.entrySet()) {
       Queue<VisionMeasurement> visionMeasurementQueue = queueEntry.getValue();
       LinkedHashMap<VisionMeasurement, FilterResult> filteredData =
@@ -72,6 +77,9 @@ public class FilterablePoseManager extends PoseManager {
             setVisionSTD(VecBuilder.fill(v.standardDeviation(), v.standardDeviation(), v.standardDeviation()));
             validMeasurementsPose.add(v.measurement());
             addVisionMeasurement(v);
+            if (Constants.currentMode == Constants.Mode.SIM) {
+              acceptedTagPoses.add(Apriltag.of(v.tagId()).getPose());
+            }
 
           }
           case NOT_PROCESSED -> visionMeasurementQueue.add(v);
@@ -83,6 +91,9 @@ public class FilterablePoseManager extends PoseManager {
     }
     Logger.recordOutput("Apriltag/numberAccepted", validMeasurementsPose.size());
     Logger.recordOutput("Apriltag/numberRejected", invalidMeasurementsPose.size());
+    if (Constants.currentMode == Constants.Mode.SIM) {
+      Logger.recordOutput("Apriltag/acceptedTags", acceptedTagPoses.toArray(Pose3d[]::new));
+    }
   }
 
   public VisionTruster getVisionTruster() {

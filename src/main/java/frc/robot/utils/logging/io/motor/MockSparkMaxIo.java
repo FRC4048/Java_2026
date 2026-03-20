@@ -39,6 +39,11 @@ public class MockSparkMaxIo extends BaseIoImpl<MotorLoggableInputs> implements S
     }
 
     @Override
+    public double getEncoderPosition() {
+        return getInputs().getEncoderPosition();
+    }
+
+    @Override
     protected void updateInputs(MotorLoggableInputs inputs) {
     }
 }

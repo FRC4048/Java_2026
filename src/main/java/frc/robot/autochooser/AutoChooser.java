@@ -106,11 +106,11 @@ public class AutoChooser {
     private void populateCommandMap() {
         //if AutoEvent is not dependent on alliance color don't put a color
         commandMap.put(new AutoEvent(AutoAction.DO_NOTHING, FieldLocation.DEPOT_SIDE),
-            new DoNothing());
+            new DoNothing(turret,angler));
         commandMap.put(new AutoEvent(AutoAction.DO_NOTHING, FieldLocation.MID),
-            new DoNothing());
+            new DoNothing(turret,angler));
         commandMap.put(new AutoEvent(AutoAction.DO_NOTHING, FieldLocation.OUTPOST_SIDE), 
-            new DoNothing());
+            new DoNothing(turret,angler));
 
         commandMap.put(new AutoEvent(AutoAction.SHOOT, FieldLocation.DEPOT_SIDE, Alliance.Blue),
             new BlueDepotShoot(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, controller)); //shoot depot blue

@@ -107,7 +107,6 @@ public class RobotContainer {
         // Instantiate the autochooser.
         private final AutoChooser autoChooser;
         // The robot's subsystems and commands are defined here...
-        // private final TiltSubsystem tiltSubsystem;
         private final CommandXboxController controller =
             new CommandXboxController(Constants.XBOX_CONTROLLER_PORT);
         private final ClimberSubsystem climberSubsystem;
@@ -146,16 +145,11 @@ public class RobotContainer {
                 // Configure the trigger bindings
                 switch (Constants.currentMode) {
                         case REAL -> {
-                                // rollerSubsystem = new RollerSubsystem(RollerSubsystem.createRealIo());
-                                // tiltSubsystem = new TiltSubsystem(TiltSubsystem.createRealIo());
                                 anglerSubsystem = new AnglerSubsystem(AnglerSubsystem.createRealIo());
                                 intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createRealIo());
                                 hopperSubsystem = new HopperSubsystem(HopperSubsystem.createRealIo());
                                 intakeDeployer = new IntakeDeployerSubsystem(IntakeDeployerSubsystem.createRealIo());
                                 turretSubsystem = new TurretSubsystem(TurretSubsystem.createRealIo());
-                               
-
-
                                 climberSubsystem = new ClimberSubsystem(ClimberSubsystem.createRealIo());
                                 feederSubsystem = new FeederSubsystem(FeederSubsystem.createRealIo());
                                 shooterSubsystem = new ShooterSubsystem(ShooterSubsystem.createRealIo());
@@ -163,7 +157,6 @@ public class RobotContainer {
                                 ThreadedGyro threadedGyro = gyroIo.getThreadedGyro();
                                 gyroSubsystem = new GyroSubsystem(gyroIo);
                                 SwerveIMU swerveIMU = new ThreadedGyroSwerveIMU(threadedGyro);
-
                                 drivebase = !Constants.TESTBED ? new SwerveSubsystem(
                                                 new File(Filesystem.getDeployDirectory(), "YAGSL/" + Constants.SWERVE_JSON_DIRECTORY), swerveIMU) : null;
                             apriltagSubsystem = !Constants.TESTBED ? new ApriltagSubsystem(ApriltagSubsystem.createRealIo(), drivebase, truster) : null;
@@ -171,8 +164,6 @@ public class RobotContainer {
                                  lightStripSubsystem = new LightStripSubsystem(drivebase, shootState);
             }
                         case REPLAY -> {
-                                // rollerSubsystem = new RollerSubsystem(RollerSubsystem.createMockIo());
-                                // tiltSubsystem = new TiltSubsystem(TiltSubsystem.createMockIo());
                                 anglerSubsystem = new AnglerSubsystem(AnglerSubsystem.createMockIo());
                                 intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createMockIo());
                                 hopperSubsystem = new HopperSubsystem(HopperSubsystem.createMockIo());
@@ -181,7 +172,7 @@ public class RobotContainer {
                                 turretSubsystem = new TurretSubsystem(TurretSubsystem.createMockIo());
                                 shooterSubsystem = new ShooterSubsystem(ShooterSubsystem.createMockIo());
                                 intakeDeployer = new IntakeDeployerSubsystem(IntakeDeployerSubsystem.createMockIo());
-                                
+
                                 // No GyroSubsystem in REPLAY for now
                 // create the drive subsystem with null gyro (use default json)
                 drivebase = !Constants.TESTBED ? new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "YAGSL/" + Constants.SWERVE_JSON_DIRECTORY), null) : null;
@@ -192,9 +183,6 @@ public class RobotContainer {
             }
             case SIM -> {
                 robotVisualizer = new RobotVisualizer();
-                //rollerSubsystem = new// RollerSubsystem(RollerSubsystem.createSimIo(robotVisualizer));
-                                // tiltSubsystem = new
-                                // TiltSubsystem(TiltSubsystem.createSimIo(robotVisualizer));
                                 anglerSubsystem = new AnglerSubsystem(AnglerSubsystem.createSimIo(robotVisualizer));
                                 intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createSimIo(robotVisualizer));
                                 hopperSubsystem = new HopperSubsystem(HopperSubsystem.createSimIo(robotVisualizer));
@@ -204,13 +192,13 @@ public class RobotContainer {
                                 shooterSubsystem = new ShooterSubsystem(ShooterSubsystem.createSimIo(robotVisualizer));
                                 intakeDeployer = new IntakeDeployerSubsystem(
                                                 IntakeDeployerSubsystem.createSimIo(robotVisualizer));// No GyroSubsystem in REPLAY for now
-                               
+
                                                 // create the drive subsystem with null gyro (use default json)
                 drivebase = !Constants.TESTBED ? new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "YAGSL/" + Constants.SWERVE_JSON_DIRECTORY), null) : null;
                 controllerSubsystem = !Constants.TESTBED ? new ControllerSubsystem(drivebase, this) : null;
                 apriltagSubsystem = !Constants.TESTBED ? new ApriltagSubsystem(ApriltagSubsystem.createSimIo(truster,drivebase), drivebase, truster) : null;
                                 lightStripSubsystem = new LightStripSubsystem(drivebase, shootState);
-        
+
         }
 
                         default -> {
@@ -548,7 +536,7 @@ public class RobotContainer {
             SmartDashboard.putData("AddApriltagReading", new AddApriltagReading(apriltagSubsystem, new ApriltagReading(0, 0, 0, 0, 0, 0, 0, 0, 0)));
             SmartDashboard.putData("AddGarbageReading", new AddGarbageReading(apriltagSubsystem));
             SmartDashboard.putData("AddTunedApriltagReading", new AddTunableApriltagReading(apriltagSubsystem));
-        
+
         }
 
         }

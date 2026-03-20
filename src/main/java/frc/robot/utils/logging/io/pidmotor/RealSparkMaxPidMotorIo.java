@@ -1,10 +1,6 @@
 package frc.robot.utils.logging.io.pidmotor;
 
-import com.revrobotics.ResetMode;
-import com.revrobotics.spark.SparkBase;
-import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
-import com.revrobotics.spark.config.SparkMaxConfig;
-
+import com.revrobotics.spark.ClosedLoopSlot;
 import frc.robot.utils.logging.input.MotorLoggableInputs;
 import frc.robot.utils.logging.io.motor.RealSparkMaxIo;
 
@@ -31,8 +27,18 @@ public class RealSparkMaxPidMotorIo extends RealSparkMaxIo implements SparkMaxPi
     }
 
     @Override
+    public void setPidPosition(double position, ClosedLoopSlot closedLoopSlot) {
+        pidMotor.setPidPosition(position, closedLoopSlot);
+    }
+
+    @Override
     public void setPidVelocity(double velocity) {
         pidMotor.setPidVelocity(velocity);
+    }
+
+    @Override
+    public void setPidVelocity(double velocity, ClosedLoopSlot closedLoopSlot) {
+        pidMotor.setPidVelocity(velocity, closedLoopSlot);
     }
 
     @Override
@@ -41,8 +47,18 @@ public class RealSparkMaxPidMotorIo extends RealSparkMaxIo implements SparkMaxPi
     }
 
     @Override
+    public void setPid(double pidP, double pidI, double pidD, ClosedLoopSlot closedLoopSlot) {
+        pidMotor.setPid(pidP, pidI, pidD, closedLoopSlot);
+    }
+
+    @Override
     public void setPid(double pidP, double pidI, double pidD, double iZone, double pidFF) {
         pidMotor.setPid(pidP, pidI, pidD, iZone, pidFF);
+    }
+
+    @Override
+    public void setPid(double pidP, double pidI, double pidD, double iZone, double pidFF, ClosedLoopSlot closedLoopSlot) {
+        pidMotor.setPid(pidP, pidI, pidD, pidFF, iZone, closedLoopSlot);
     }
 
     @Override

@@ -43,7 +43,7 @@ public class TurretCalculations {
         double rotatedOffsetY = turretOffsetX * Math.sin(robotRotation) + turretOffsetY * Math.cos(robotRotation);
 
         // Calculate actual turret position on field
-        double turretPosX = robotPosX + rotatedOffsetX;
+        double turretPosX = robotPosX - rotatedOffsetX;
         double turretPosY = robotPosY + rotatedOffsetY;
 
         double hubPosX;

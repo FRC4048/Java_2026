@@ -1,31 +1,22 @@
 package frc.robot.subsystems;
 
-import com.revrobotics.PersistMode;
-import com.revrobotics.ResetMode;
-import com.revrobotics.spark.SparkLowLevel;
-import com.revrobotics.spark.SparkMax;
-import com.revrobotics.spark.config.SparkBaseConfig;
-import com.revrobotics.spark.config.SparkMaxConfig;
-
+import com.revrobotics.spark.ClosedLoopSlot;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Robot;
 import frc.robot.constants.Constants;
 import frc.robot.constants.GameConstants;
+import frc.robot.constants.enums.ShootingState;
+import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import frc.robot.utils.diag.DiagSparkMaxEncoder;
 import frc.robot.utils.diag.DiagSparkMaxSwitch;
 import frc.robot.utils.logging.input.MotorLoggableInputs;
-import frc.robot.utils.logging.io.pidmotor.MockSparkMaxPidMotorIo;
-import frc.robot.utils.logging.io.pidmotor.RealSparkMaxPidMotorIo;
-import frc.robot.utils.logging.io.pidmotor.SimSparkMaxPidMotorIo;
-import frc.robot.utils.logging.io.pidmotor.SparkMaxPidConfig;
-import frc.robot.utils.logging.io.pidmotor.SparkMaxPidMotor;
-import frc.robot.utils.logging.io.pidmotor.SparkMaxPidMotorIo;
+import frc.robot.utils.logging.io.pidmotor.*;
+import frc.robot.utils.motor.TunablePIDManager;
 import frc.robot.utils.simulation.ArmParameters;
 import frc.robot.utils.simulation.ArmSimulator;
 import frc.robot.utils.simulation.RobotVisualizer;
-import frc.robot.utils.motor.TunablePIDManager;
 
 public class TurretSubsystem extends SubsystemBase {
 
@@ -37,7 +28,9 @@ public class TurretSubsystem extends SubsystemBase {
 
     public TurretSubsystem(SparkMaxPidMotorIo io) {
         this.io = io;
-        this.pidManager = new TunablePIDManager(LOGGING_NAME, io, createPidConfig());
+        // Create 2 tunable configs in case we want to tune both
+        this.pidManager = new TunablePIDManager(LOGGING_NAME, io, createPidConfig0());
+        createPidConfig1();
         stopMotors();
     }
 
@@ -47,17 +40,23 @@ public class TurretSubsystem extends SubsystemBase {
         io.periodic();
     }
 
-/**
-   * Gets the desired Encoder Position and uses a PID controller to get the motor there
-   */
+    /**
+     * Gets the desired Encoder Position and uses a PID controller to get the motor there
+     */
     public void setPosition(double targetEncoderPosition) {
-        io.setPidPosition(targetEncoderPosition);
-    }   
+        // Decide which slot to use based on distance from target
+
+        if (Math.abs(targetEncoderPosition - io.getEncoderPosition()) >= Constants.TURRET_PID_DISTANCE_THRESHOLD) {
+            io.setPidPosition(targetEncoderPosition, ClosedLoopSlot.kSlot1); // longer encoder distance pid
+        } else {
+            io.setPidPosition(targetEncoderPosition, ClosedLoopSlot.kSlot0); // shorter encoder distance pid
+        }
+    }
 
     /**
-   * Gets the desired Turret Position and uses a PID controller to get the motor there
-   * @param targetAngle Desired angle position of turret in degrees */
-  
+     * Gets the desired Turret Position and uses a PID controller to get the motor there
+     * @param targetAngle Desired angle position of turret in degrees
+     */
     public void setAngle(double targetAngle) {
         double targetRotations = calculateRotationsForAngle(
                 targetAngle,
@@ -65,7 +64,7 @@ public class TurretSubsystem extends SubsystemBase {
                 Constants.TURRET_ENCODER_MIN,
                 Constants.TURRET_MAX_ANGLE,
                 Constants.TURRET_MIN_ANGLE);
-        if(lastAngle != targetAngle) {
+        if (lastAngle != targetAngle) {
             setPosition(targetRotations);
             lastAngle = targetAngle;
         }
@@ -79,7 +78,7 @@ public class TurretSubsystem extends SubsystemBase {
             double angleHigh,
             double angleLow) {
 
-        double targetEncoder = (targetAngle-angleLow)/(angleHigh - angleLow)*encoderHigh;
+        double targetEncoder = (targetAngle - angleLow) / (angleHigh - angleLow) * encoderHigh;
         return MathUtil.clamp(targetEncoder, encoderLow, encoderHigh);
     }
 
@@ -125,19 +124,19 @@ public class TurretSubsystem extends SubsystemBase {
         SparkMaxPidMotor motor = createMotor();
 
         Robot.getDiagnostics()
-        .addDiagnosable(
-            new DiagSparkMaxEncoder(
-                "Turret", "Encoder", GameConstants.TURRET_DIAGS_ENCODER, motor.getNeoMotor()));
+                .addDiagnosable(
+                        new DiagSparkMaxEncoder(
+                                "Turret", "Encoder", GameConstants.TURRET_DIAGS_ENCODER, motor.getNeoMotor()));
 
         Robot.getDiagnostics()
-        .addDiagnosable(
-            new DiagSparkMaxSwitch(
-                "Turret", "ForwardLimit", motor.getNeoMotor(), DiagSparkMaxSwitch.Direction.FORWARD));
+                .addDiagnosable(
+                        new DiagSparkMaxSwitch(
+                                "Turret", "ForwardLimit", motor.getNeoMotor(), DiagSparkMaxSwitch.Direction.FORWARD));
 
         Robot.getDiagnostics()
-        .addDiagnosable(
-            new DiagSparkMaxSwitch(
-                "Turret", "ReverseLimit", motor.getNeoMotor(), DiagSparkMaxSwitch.Direction.REVERSE));
+                .addDiagnosable(
+                        new DiagSparkMaxSwitch(
+                                "Turret", "ReverseLimit", motor.getNeoMotor(), DiagSparkMaxSwitch.Direction.REVERSE));
 
         return new RealSparkMaxPidMotorIo(LOGGING_NAME, motor, MotorLoggableInputs.allMetrics());
     }
@@ -152,21 +151,35 @@ public class TurretSubsystem extends SubsystemBase {
                 simulator);
     }
 
-    private static SparkMaxPidConfig createPidConfig() {
-        return new SparkMaxPidConfig(true)
+    // PID config for slot 0 (close range)
+    private static SparkMaxPidConfig createPidConfig0() {
+        return new SparkMaxPidConfig(false, ClosedLoopSlot.kSlot0)
                 .setCurrentLimit(Constants.NEO_CURRENT_LIMIT)
                 .setAllowedError(.1)
                 .setPidf(
-                        Constants.TURRET_P,
-                        Constants.TURRET_I,
-                        Constants.TURRET_D,
-                        Constants.TURRET_FF)
+                        Constants.TURRET_SHORT_RANGE_P,
+                        Constants.TURRET_SHORT_RANGE_I,
+                        Constants.TURRET_SHORT_RANGE_D,
+                        Constants.TURRET_SHORT_RANGE_FF);
+    }
+
+    // PID config for slot 1 (far range)
+    private static SparkMaxPidConfig createPidConfig1() {
+        return new SparkMaxPidConfig(true, ClosedLoopSlot.kSlot1)
+                .setCurrentLimit(Constants.NEO_CURRENT_LIMIT)
+                .setAllowedError(.1)
+                .setPidf(
+                        Constants.TURRET_LONG_RANGE_P,
+                        Constants.TURRET_LONG_RANGE_I,
+                        Constants.TURRET_LONG_RANGE_D,
+                        Constants.TURRET_LONG_RANGE_FF)
                 .setMaxAccel(6000)
                 .setMaxVelocity(3000);
     }
 
     private static SparkMaxPidMotor createMotor() {
-        return new SparkMaxPidMotor(Constants.TURRET_MOTOR_ID, createPidConfig());
+        // Use 2 configs for the PID
+        return new SparkMaxPidMotor(Constants.TURRET_MOTOR_ID, createPidConfig0(), createPidConfig1());
     }
 
     private static ArmParameters createParams() {

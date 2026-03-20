@@ -45,8 +45,6 @@ public class GameConstants {
     public static final int XBOX_CONTROLLER_PORT = 2;
 
     //Speeds
-    public static final double ROLLER_SPEED = 0.25;
-    public static final double TILT_SPEED = -0.5; // Arm motor is inverted - use negative speed
     public static final double INTAKE_SPEED = -0.5;
     public static final double HOPPER_SPEED = 0.35;//Want to increase this later
     public static final double CLIMBER_SPEED_UP = 0.1;
@@ -72,8 +70,6 @@ public class GameConstants {
     public static final double ANGLER_DIAGS_ENCODER = 1;
 
     //Timeouts
-    public static final double SPIN_TIMEOUT = 5;
-    public static final double TILT_TIMEOUT = 5;
     public static final double HOPPER_TIMEOUT = 60;
     public static final double CLIMBER_TIMEOUT = 10;
     public static final double FEEDER_TIMEOUT = 60;
@@ -84,15 +80,9 @@ public class GameConstants {
     public static final double TURRET_TIMEOUT = 5;
 
     //Angles
-    public static final Rotation2d TILT_MIN_ANGLE = Rotation2d.fromDegrees(45);
-    public static final Rotation2d TILT_MAX_ANGLE = Rotation2d.fromDegrees(90);
     public static final Rotation2d ANGLER_MIN_ANGLE = Rotation2d.fromDegrees(45);
     public static final Rotation2d ANGLER_MAX_ANGLE = Rotation2d.fromDegrees(90);
 
-    public static final double TILT_LENGTH = 0.2;
-    public static final double TILT_INERTIA = 0.5;
-    public static final double TILT_GEARING = 45.0;
-    public static final boolean TILT_SIMULATE_GRAVITY = false;
     public static final double ANGLER_LENGTH = 0.2;
     public static final double ANGLER_INERTIA = 0.5;
     public static final double ANGLER_GEARING = 45.0;
@@ -118,16 +108,23 @@ public class GameConstants {
 
 
  // turret (pan angle) PID
-    public static final double TURRET_P = 1;
-    public static final double TURRET_I = 0.000000;
-    public static final double TURRET_D = 0.0;
-    public static final double TURRET_FF = 0.0;
+    public static final double TURRET_SHORT_RANGE_P = 0.2;
+    public static final double TURRET_SHORT_RANGE_I = 0.000000;
+    public static final double TURRET_SHORT_RANGE_D = 0.001;
+    public static final double TURRET_SHORT_RANGE_FF = 0.0;
+    public static final double TURRET_LONG_RANGE_P = 1;
+    public static final double TURRET_LONG_RANGE_I = 0.000000;
+    public static final double TURRET_LONG_RANGE_D = 0.0;
+    public static final double TURRET_LONG_RANGE_FF = 0.0;
     public static final double TURRET_ENCODER_MIN = 0; //Lowest encoder position of Turret
     public static final double TURRET_ENCODER_MAX = 77; //Highest encoder position of Turret
     public static final double TURRET_HOME_ANGLE = 0.0; //Turret facing forward
-    public static final double TURRET_MIN_ANGLE = -97;
-    public static final double TURRET_MAX_ANGLE = 97;
+    public static final double TURRET_MIN_ANGLE = -92;
+    public static final double TURRET_MAX_ANGLE = 92;
     public static final double TURRET_LIMIT_SPEED = 0.2;
+    public static final double TURRET_PID_DISTANCE_THRESHOLD = 45; /* TODO: Change later
+    Minimum target encoder distance needed to use the longer pid slot*/
+
 
     //swerve config
     public static final TelemetryVerbosity TELEMENTRY_VERBOSITY = TelemetryVerbosity.HIGH;
@@ -147,8 +144,8 @@ public class GameConstants {
     public static final double BLUE_HUB_Y_POSITION = 4.0345;
     public static final double RED_HUB_X_POSITION = 11.9154;
     public static final double RED_HUB_Y_POSITION = 4.0345;
-    public static final double X_DISTANCE_BETWEEN_ROBOT_AND_TURRET = .4; // needs value from hardware
-    public static final double Y_DISTANCE_BETWEEN_ROBOT_AND_TURRET = .4; // needs value from hardware
+    public static final double X_DISTANCE_BETWEEN_ROBOT_AND_TURRET = .05; // needs value from hardware
+    public static final double Y_DISTANCE_BETWEEN_ROBOT_AND_TURRET = .12; // needs value from hardware
 
     // Shift timings
     public static final int SHIFT_1_START = 130;

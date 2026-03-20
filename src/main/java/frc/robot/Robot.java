@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.cscore.VideoSource;
@@ -139,11 +140,11 @@ public class Robot extends LoggedRobot {
         // Puts data on the elastic dashboard
                 SmartDashboard.putString("Alliance Color", Robot.allianceColorString());
                 SmartDashboard.putBoolean("Hub Active?", hubActive());
+                if (Constants.currentMode == Constants.Mode.SIM) {
+                    Logger.recordOutput("SimPose", robotContainer.getDriveBase().getSimulationPose().get());
+                    Logger.recordOutput("OdomPose", robotContainer.getDriveBase().getSimulationPose().get());
+                }
             }
-
-            // Puts data on the elastic dashboard
-            SmartDashboard.putString("Alliance Color", Robot.allianceColorString());
-            SmartDashboard.putBoolean("Hub Active?", hubActive());
         }
         SmartDashboard.putString("Selected Action",
                 robotContainer.getAutoChooser().getCommandDescription());

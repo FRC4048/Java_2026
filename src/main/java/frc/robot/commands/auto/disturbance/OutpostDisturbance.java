@@ -1,7 +1,8 @@
-package frc.robot.commands.auto;
+package frc.robot.commands.auto.disturbance;
 
 import choreo.auto.AutoFactory;
 import frc.robot.commands.ToggleShooting;
+import frc.robot.commands.auto.ResetMechanisms;
 import frc.robot.commands.turret.SetTurretAngle;
 import frc.robot.constants.enums.ShootingState;
 import frc.robot.subsystems.AnglerSubsystem;
@@ -11,8 +12,8 @@ import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import frc.robot.utils.logging.commands.LoggableCommandWrapper;
 import frc.robot.utils.logging.commands.LoggableSequentialCommandGroup;
 
-public class DisturbanceInTheFuel extends LoggableSequentialCommandGroup{
-    public DisturbanceInTheFuel(SwerveSubsystem subsystem, AutoFactory auto, ShootingState shootstate, TurretSubsystem turret,
+public class OutpostDisturbance extends LoggableSequentialCommandGroup{
+    public OutpostDisturbance(SwerveSubsystem subsystem, AutoFactory auto, ShootingState shootstate, TurretSubsystem turret,
     AnglerSubsystem angler, ControllerSubsystem controller) {
         super(
             LoggableCommandWrapper.wrap(auto.resetOdometry("Disturbance")),

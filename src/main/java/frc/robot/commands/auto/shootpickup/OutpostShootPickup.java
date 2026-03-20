@@ -1,4 +1,4 @@
-package frc.robot.commands.auto.shootpickupclimb;
+package frc.robot.commands.auto.shootpickup;
 
 import choreo.auto.AutoFactory;
 import frc.robot.commands.ToggleShooting;
@@ -21,11 +21,11 @@ import frc.robot.utils.logging.commands.LoggableCommandWrapper;
 import frc.robot.utils.logging.commands.LoggableParallelCommandGroup;
 import frc.robot.utils.logging.commands.LoggableSequentialCommandGroup;
 
-public class BlueOutpostShootPickupClimb extends LoggableSequentialCommandGroup{
-    public BlueOutpostShootPickupClimb(
+public class OutpostShootPickup extends LoggableSequentialCommandGroup{
+    public OutpostShootPickup(
         SwerveSubsystem drivetrain, AutoFactory auto, ShooterSubsystem shooter, ShootingState shootstate, 
         HopperSubsystem hopper, FeederSubsystem feeder, TurretSubsystem turret, AnglerSubsystem angler, 
-        ControllerSubsystem controller, IntakeDeployerSubsystem intake, ClimberSubsystem climber) {
+        ControllerSubsystem controller, IntakeDeployerSubsystem intake) {
         super(  
                 //shoot
                 new ResetMechanisms(shootstate, turret, angler),
@@ -42,16 +42,7 @@ public class BlueOutpostShootPickupClimb extends LoggableSequentialCommandGroup{
                     LoggableCommandWrapper.wrap(auto.resetOdometry("BlueOutpost_Pickup"))
                 ),
                 LoggableCommandWrapper.wrap(auto.trajectoryCmd("BlueOutpost_Pickup").withTimeout(1.9)),
-                new ToggleDeployment(intake),
-
-                //climb
-
-                LoggableCommandWrapper.wrap(auto.resetOdometry("BlueOutpost_Climb")),
-                new LoggableParallelCommandGroup(
-                    LoggableCommandWrapper.wrap(auto.trajectoryCmd("BlueOutpost_Climb").withTimeout(1.3)),
-                    new ClimberUp(climber)
-                ),
-                new OutpostClimbSequence(climber, drivetrain)
+                new ToggleDeployment(intake)
         );
     }
 }

@@ -15,17 +15,17 @@ import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import frc.robot.utils.logging.commands.LoggableCommandWrapper;
 import frc.robot.utils.logging.commands.LoggableSequentialCommandGroup;
 
-public class BlueMidShoot extends LoggableSequentialCommandGroup{
-    public BlueMidShoot(
+public class DepotShoot extends LoggableSequentialCommandGroup{
+    public DepotShoot(
         SwerveSubsystem drivetrain, AutoFactory auto, ShooterSubsystem shooter, ShootingState shootstate, 
         HopperSubsystem hopper, FeederSubsystem feeder, TurretSubsystem turret, AnglerSubsystem angler, 
         ControllerSubsystem controller) {
         super(  
                 new ResetMechanisms(shootstate, turret, angler),
                 new SetTurretAngle(turret, 0),
-                LoggableCommandWrapper.wrap(auto.resetOdometry("BlueMid_Shoot")),
-                LoggableCommandWrapper.wrap(auto.trajectoryCmd("BlueMid_Shoot").withTimeout(1.1)), //0.8 s path
-                new ToggleShooting(controller, 10)
+                LoggableCommandWrapper.wrap(auto.resetOdometry("Depot_Shoot")),
+                LoggableCommandWrapper.wrap(auto.trajectoryCmd("Depot_Shoot").withTimeout(2)), //0.9 s path
+                new ToggleShooting(controller, 5)
         );
     }
 }

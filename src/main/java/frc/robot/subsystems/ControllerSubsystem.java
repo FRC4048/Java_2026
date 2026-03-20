@@ -207,6 +207,7 @@ public class ControllerSubsystem extends SubsystemBase {
     }
 
     private double calculateAnglerAngleDegrees(double computedDistanceMeters, PoseControlProfile profile, boolean shootHub) {
+        computedDistanceMeters -=2;
         if (shootHub) {
 			return
 				1.82 * computedDistanceMeters * computedDistanceMeters
@@ -257,6 +258,7 @@ public class ControllerSubsystem extends SubsystemBase {
         return (0.208*initialDistanceMeters+0.647)/(0.208*ChassisSpeeds.fromFieldRelativeSpeeds(robotSpeeds, target.getTranslation().minus(robotPose.getTranslation()).getAngle()).vxMetersPerSecond+1);
     }
     private double calculateShooterVelocity(double computedDistanceMeters, PoseControlProfile profile, boolean shootHub) {
+        computedDistanceMeters-=2;
         if (shootHub) {
 			return
 				91 * computedDistanceMeters * computedDistanceMeters

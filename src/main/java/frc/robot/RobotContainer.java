@@ -4,9 +4,14 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.Filesystem;
-import edu.wpi.first.wpilibj.Filesystem;
+import static frc.robot.subsystems.swervedrive.vision.estimation.PoseEstimator.visionMeasurementStdDevs2;
 
+import java.io.File;
+
+import choreo.auto.AutoFactory;
+import choreo.auto.AutoRoutine;
+import choreo.auto.AutoTrajectory;
+import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -14,42 +19,37 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.commands.AddTunableApriltagReading;
-import frc.robot.commands.ShootButton;
+import frc.robot.apriltags.ApriltagReading;
+import frc.robot.autochooser.AutoChooser;
 import frc.robot.commands.AddApriltagReading;
 import frc.robot.commands.AddGarbageReading;
-import frc.robot.commands.climber.ClimberDown;
-import frc.robot.commands.climber.ClimberUp;
-import frc.robot.commands.feeder.DefaultSpinFeeder;
-import frc.robot.commands.hopper.DefaultSpinHopper;
-import frc.robot.commands.hopper.SpinHopper;
-import frc.robot.commands.drive.DriveDirectionTime;
-import frc.robot.commands.drive.DriveSwerve;
-import frc.robot.commands.feeder.SpinFeeder;
-import frc.robot.commands.drive.FakeVision;
-import frc.robot.commands.intake.SpinIntake;
-import frc.robot.commands.intake.StopIntake;
-import frc.robot.commands.intakeDeployment.ToggleDeployment;
-import frc.robot.commands.intakeDeployment.RunDeployer;
-import frc.robot.commands.intakeDeployment.SetDeploymentState;
-import frc.robot.commands.lightStrip.SetLed;
-import frc.robot.commands.lightStrip.SetLedFromShootingState;
-import frc.robot.commands.parallels.RunHopperAndFeeder;
-import frc.robot.commands.parallels.SetShootingStateAndLight;
-import frc.robot.autochooser.AutoChooser;
-import frc.robot.commands.angler.AimAngler;
+import frc.robot.commands.AddTunableApriltagReading;
+import frc.robot.commands.ShootButton;
 import frc.robot.commands.angler.DefaultAnglerControl;
 import frc.robot.commands.angler.RunAnglerToReverseLimit;
+import frc.robot.commands.climber.ClimberDown;
+import frc.robot.commands.climber.ClimberUp;
+import frc.robot.commands.drive.DriveDirectionTime;
+import frc.robot.commands.drive.DriveSwerve;
+import frc.robot.commands.drive.FakeVision;
+import frc.robot.commands.feeder.DefaultSpinFeeder;
+import frc.robot.commands.feeder.SpinFeeder;
+import frc.robot.commands.hopper.DefaultSpinHopper;
+import frc.robot.commands.hopper.SpinHopper;
+import frc.robot.commands.intake.SpinIntake;
+import frc.robot.commands.intake.StopIntake;
+import frc.robot.commands.intakeDeployment.SetDeploymentState;
+import frc.robot.commands.intakeDeployment.ToggleDeployment;
+import frc.robot.commands.parallels.RunHopperAndFeeder;
 import frc.robot.commands.shooter.DefaultShooterControl;
-import frc.robot.commands.auto.ExampleAuto;
 import frc.robot.commands.shooter.SetShootingState;
+import frc.robot.commands.shooter.SpinShooter;
 import frc.robot.commands.testing.RunDashboardShotTest;
-import frc.robot.commands.turret.TestSetTurretAngle;
 import frc.robot.commands.turret.DefaultTurretControl;
 import frc.robot.commands.turret.RunTurretToFwdLimit;
 import frc.robot.commands.turret.RunTurretToRevLimit;
 import frc.robot.commands.turret.SetTurretAngle;
-import frc.robot.commands.shooter.SpinShooter;
+import frc.robot.commands.turret.TestSetTurretAngle;
 import frc.robot.constants.Constants;
 import frc.robot.constants.enums.DeploymentState;
 import frc.robot.constants.enums.DriveDirection;
@@ -57,16 +57,17 @@ import frc.robot.constants.enums.ShootingState;
 import frc.robot.constants.enums.ShootingState.ShootState;
 import frc.robot.subsystems.AnglerSubsystem;
 import frc.robot.subsystems.ApriltagSubsystem;
+import frc.robot.subsystems.CameraThread;
+import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.ControllerSubsystem;
-import frc.robot.subsystems.HopperSubsystem;
-import frc.robot.subsystems.IntakeDeployerSubsystem;
 import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.subsystems.GyroSubsystem;
+import frc.robot.subsystems.HopperSubsystem;
+import frc.robot.subsystems.IntakeDeployerSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LightStripSubsystem;
-import frc.robot.subsystems.TurretSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
-import frc.robot.subsystems.ClimberSubsystem;
+import frc.robot.subsystems.TurretSubsystem;
 //import frc.robot.subsystems.RollerSubsystem;
 //import frc.robot.subsystems.TiltSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
@@ -76,18 +77,8 @@ import frc.robot.utils.logging.io.gyro.RealGyroIo;
 import frc.robot.utils.logging.io.gyro.ThreadedGyro;
 import frc.robot.utils.logging.io.gyro.ThreadedGyroSwerveIMU;
 import frc.robot.utils.simulation.RobotVisualizer;
-import frc.robot.subsystems.CameraThread;
 import swervelib.SwerveInputStream;
 import swervelib.imu.SwerveIMU;
-import frc.robot.apriltags.ApriltagReading;
-
-import java.io.File;
-
-import choreo.auto.AutoFactory;
-import choreo.auto.AutoRoutine;
-import choreo.auto.AutoTrajectory;
-
-import static frc.robot.subsystems.swervedrive.vision.estimation.PoseEstimator.visionMeasurementStdDevs2;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -311,16 +302,7 @@ public class RobotContainer {
                 // pressed,
                 // cancelling on release.
                 // m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
-                // TODO: Clean this up a little - create command in method and only create the
-                // one actually needed
 
-                // example default command for angler- disabled for now
-                if (false) {
-                        new AimAngler(
-                                        anglerSubsystem,
-                                        () -> drivebase != null ? drivebase.getPose() : null,
-                                        shootState);
-                }
                 intakeSubsystem.setDefaultCommand(new SpinIntake(intakeSubsystem, intakeDeployer));
             if (controllerSubsystem != null) {
                 anglerSubsystem.setDefaultCommand(new DefaultAnglerControl(anglerSubsystem, controllerSubsystem));

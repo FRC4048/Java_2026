@@ -71,7 +71,7 @@ public class GameConstants {
     public static final double HOPPER_TIMEOUT = 60;
     public static final double CLIMBER_TIMEOUT = 10;
     public static final double FEEDER_TIMEOUT = 60;
-    public static final double ANGLER_TIMEOUT = 60;
+    public static final double ANGLER_TIMEOUT = 5;
     public static final int SERVER_SOCKET_CONNECTION_TIMEOUT = 2000;
     public static final double SHOOTER_TIMEOUT = 5;
     public static final double INTAKE_DEPLOYER_BURNOUT_TIMER = 5;

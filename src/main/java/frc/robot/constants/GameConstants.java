@@ -119,8 +119,8 @@ public class GameConstants {
     public static final double TURRET_ENCODER_MIN = 0; //Lowest encoder position of Turret
     public static final double TURRET_ENCODER_MAX = 77; //Highest encoder position of Turret
     public static final double TURRET_HOME_ANGLE = 0.0; //Turret facing forward
-    public static final double TURRET_MIN_ANGLE = -97;
-    public static final double TURRET_MAX_ANGLE = 97;
+    public static final double TURRET_MIN_ANGLE = -92;
+    public static final double TURRET_MAX_ANGLE = 92;
     public static final double TURRET_LIMIT_SPEED = 0.2;
     public static final double TURRET_PID_DISTANCE_THRESHOLD = 45; /* TODO: Change later
     Minimum target encoder distance needed to use the longer pid slot*/
@@ -144,8 +144,8 @@ public class GameConstants {
     public static final double BLUE_HUB_Y_POSITION = 4.0345;
     public static final double RED_HUB_X_POSITION = 11.9154;
     public static final double RED_HUB_Y_POSITION = 4.0345;
-    public static final double X_DISTANCE_BETWEEN_ROBOT_AND_TURRET = .4; // needs value from hardware
-    public static final double Y_DISTANCE_BETWEEN_ROBOT_AND_TURRET = .4; // needs value from hardware
+    public static final double X_DISTANCE_BETWEEN_ROBOT_AND_TURRET = .05; // needs value from hardware
+    public static final double Y_DISTANCE_BETWEEN_ROBOT_AND_TURRET = .12; // needs value from hardware
 
     // Shift timings
     public static final int SHIFT_1_START = 130;

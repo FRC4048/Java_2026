@@ -78,7 +78,6 @@ public class TurretCalculations {
 
         // normalize angle between -PI and PI
         double normalizedPanAngle = panAngle - 2 * Math.PI * Math.floor((panAngle + Math.PI) / (2 * Math.PI));
-        Logger.recordOutput("TurretPose", new Pose2d(new Translation2d(turretPosX,turretPosY), new Rotation2d(normalizedPanAngle)));
         return normalizedPanAngle;
     }
 

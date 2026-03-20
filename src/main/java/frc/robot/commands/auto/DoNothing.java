@@ -1,13 +1,19 @@
 package frc.robot.commands.auto;
 
-import frc.robot.utils.logging.commands.LoggableCommand;
+import frc.robot.commands.angler.RunAnglerToReverseLimit;
+import frc.robot.commands.turret.RunTurretToRevLimit;
+import frc.robot.subsystems.AnglerSubsystem;
+import frc.robot.subsystems.TurretSubsystem;
+import frc.robot.utils.logging.commands.LoggableParallelCommandGroup;
 
-public class DoNothing extends LoggableCommand{
-    public DoNothing() {
-    }
+public class DoNothing extends LoggableParallelCommandGroup{
+    public DoNothing(TurretSubsystem turret, AnglerSubsystem angler) {
+            super(
+                new LoggableParallelCommandGroup(
+                    new RunTurretToRevLimit(turret),
+                    new RunAnglerToReverseLimit(angler)
+                )
 
-    @Override
-    public boolean isFinished() {
-        return true;
+            );
     }
 }

@@ -1,5 +1,6 @@
 package frc.robot.subsystems.swervedrive.vision.estimation;
 
+import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.Vector;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -7,6 +8,7 @@ import edu.wpi.first.math.interpolation.TimeInterpolatableBuffer;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.wpilibj.Timer;
+import frc.robot.constants.Constants;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import frc.robot.subsystems.swervedrive.vision.truster.PoseDeviation;
 import frc.robot.subsystems.swervedrive.vision.truster.VisionMeasurement;
@@ -77,10 +79,20 @@ public class PoseManager {
     public void processQueue() {
         VisionMeasurement m = visionMeasurementQueue.poll();
         while (m != null) {
-            setVisionSTD(visionTruster.calculateTrust(m));
+            setVisionSTD(getVisionSTD(m));
             addVisionMeasurement(m);
             m = visionMeasurementQueue.poll();
         }
+    }
+
+    protected Vector<N3> getVisionSTD(VisionMeasurement measurement) {
+        double rioStdDev = measurement.stdDevFromRio();
+        Logger.recordOutput("Apriltag/UsingRioStdDev", Constants.USE_RIO_APRILTAG_STD_DEV);
+
+        if (Constants.USE_RIO_APRILTAG_STD_DEV) {
+            return VecBuilder.fill(rioStdDev, rioStdDev, rioStdDev);
+        }
+        return visionTruster.calculateTrust(measurement);
     }
 
     protected void addVisionMeasurement(VisionMeasurement measurement) {

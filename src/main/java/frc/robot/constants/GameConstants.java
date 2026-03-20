@@ -112,7 +112,7 @@ public class GameConstants {
     public static final double TURRET_SHORT_RANGE_I = 0.000000;
     public static final double TURRET_SHORT_RANGE_D = 0.001;
     public static final double TURRET_SHORT_RANGE_FF = 0.0;
-    public static final double TURRET_LONG_RANGE_P = 1;
+    public static final double TURRET_LONG_RANGE_P = 1.2;
     public static final double TURRET_LONG_RANGE_I = 0.000000;
     public static final double TURRET_LONG_RANGE_D = 0.0;
     public static final double TURRET_LONG_RANGE_FF = 0.0;
@@ -122,7 +122,7 @@ public class GameConstants {
     public static final double TURRET_MIN_ANGLE = -92;
     public static final double TURRET_MAX_ANGLE = 92;
     public static final double TURRET_LIMIT_SPEED = 0.2;
-    public static final double TURRET_PID_DISTANCE_THRESHOLD = 45; /* TODO: Change later
+    public static final double TURRET_PID_DISTANCE_THRESHOLD = 5; /* TODO: Change later
     Minimum target encoder distance needed to use the longer pid slot*/
 
 

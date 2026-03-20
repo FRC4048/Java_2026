@@ -56,7 +56,9 @@ public class ControllerSubsystem extends SubsystemBase {
             14.0);
     private static final PoseControlProfile RED_HUB_PROFILE = new PoseControlProfile(RED_HUB_TARGET_POSE, 32.0, 230.0,
             14.0);
-    private static final PoseControlProfile SHUTTLE_PROFILE = new PoseControlProfile(SHUTTLE_TARGET_POSE, 16.0, 90.0,
+    private static final PoseControlProfile RED_SHUTTLE_PROFILE = new PoseControlProfile(RED_HUB_TARGET_POSE, 16.0, 90.0,
+            -14.0);
+    private static final PoseControlProfile BLUE_SHUTTLE_PROFILE = new PoseControlProfile(BLUE_HUB_TARGET_POSE, 16.0, 90.0,
             -14.0);
 
     private final SwerveSubsystem drivebase;
@@ -157,7 +159,17 @@ public class ControllerSubsystem extends SubsystemBase {
                 }
             }
 
-            case SHUTTLING -> useShotTargets(calculateTargetsFromPose(SHUTTLE_PROFILE, robotPosePredictionCalculation(SHUTTLE_PROFILE.targetPose,robotPose)));
+            case SHUTTLING -> {
+                if (Robot.allianceColor().isEmpty()) {
+                    useShotTargets(FIXED_TARGETS);
+                } else if (Robot.allianceColor().get().equals(DriverStation.Alliance.Blue)) {
+                    useShotTargets(calculateTargetsFromPose(BLUE_SHUTTLE_PROFILE, robotPosePredictionCalculation(BLUE_SHUTTLE_PROFILE.targetPose,robotPose)));
+                } else if (Robot.allianceColor().get().equals(DriverStation.Alliance.Red)) {
+                    useShotTargets(calculateTargetsFromPose(RED_SHUTTLE_PROFILE, robotPosePredictionCalculation(RED_SHUTTLE_PROFILE.targetPose,robotPose)));
+                } else {
+                    useShotTargets(FIXED_TARGETS);
+                }
+            }
         }
     }
 

@@ -36,7 +36,7 @@ public class GameConstants {
     public static final boolean ENABLE_LOGGING = true;
 
     //Debugs
-    public static final boolean DEBUG = true;
+    public static final boolean DEBUG = false;
     public static final boolean ARM_DEBUG = true;
 
     //Joystick
@@ -88,6 +88,7 @@ public class GameConstants {
     public static final double ANGLER_GEARING = 45.0;
     public static final boolean ANGLER_SIMULATE_GRAVITY = false;
     public static final int NEO_CURRENT_LIMIT = 20;
+    public static final int INTAKE_DEPLOYER_CURRENT_LIMIT = 40;
     public static final double TURRET_LENGTH = 0.4;
     public static final double TURRET_INERTIA = 0.5;
     public static final double TURRET_GEARING = 45.0;

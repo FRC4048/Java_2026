@@ -160,4 +160,6 @@ public class GameConstants {
     public static final double AVERAGE_CAM_LATENCY = 0; // seconds; TODO: change Later
     public static final double AVERAGE_CAM_LATENCY_STD_DEV = 0; // seconds; TODO: change Later
     public static final double MAX_VISION_DISTANCE_SIMULATION = 6;
+    public static final double AVERAGE_PIR_LATENCY = 20; //ms
+    public static final double VISION_STD_THRESHOLD = 0.25;
 }

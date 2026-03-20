@@ -1,5 +1,6 @@
 package frc.robot.subsystems.swervedrive.vision.estimation;
 
+import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.Vector;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -13,6 +14,7 @@ import frc.robot.subsystems.swervedrive.vision.truster.VisionMeasurement;
 import frc.robot.subsystems.swervedrive.vision.truster.VisionTruster;
 import org.littletonrobotics.junction.Logger;
 
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.Optional;
 import java.util.Queue;
@@ -24,7 +26,7 @@ import java.util.Queue;
 public class PoseManager {
     private final TimeInterpolatableBuffer<Pose2d> estimatedPoseBuffer;
     //private final SwerveDrivePoseEstimator poseEstimator;
-    protected final Queue<VisionMeasurement> visionMeasurementQueue = new LinkedList<>();
+    protected final LinkedHashMap<Integer, Queue<VisionMeasurement>> visionMeasurementQueueMap = new LinkedHashMap<>();
     private final SwerveSubsystem drivebase;
     protected final VisionTruster visionTruster;
 
@@ -67,19 +69,21 @@ public class PoseManager {
         if (measurement == null) {
             return;
         }
-        while (visionMeasurementQueue.size() >= 3) {
-            visionMeasurementQueue.poll();
+        while (visionMeasurementQueueMap.computeIfAbsent(measurement.tagId(),k -> new LinkedList<>()).size() >= 3) {
+            visionMeasurementQueueMap.get(measurement.tagId()).poll();
         }
-        visionMeasurementQueue.add(measurement);
+        visionMeasurementQueueMap.get(measurement.tagId()).add(measurement);
     }
 
     // override for filtering
     public void processQueue() {
-        VisionMeasurement m = visionMeasurementQueue.poll();
-        while (m != null) {
-            setVisionSTD(visionTruster.calculateTrust(m));
-            addVisionMeasurement(m);
-            m = visionMeasurementQueue.poll();
+        for (Queue<VisionMeasurement> visionMeasurementQueue : visionMeasurementQueueMap.values()) {
+            VisionMeasurement m = visionMeasurementQueue.poll();
+            while (m != null) {
+                setVisionSTD(VecBuilder.fill(m.standardDeviation(), m.standardDeviation(), m.standardDeviation()));
+                addVisionMeasurement(m);
+                m = visionMeasurementQueue.poll();
+            }
         }
     }
 

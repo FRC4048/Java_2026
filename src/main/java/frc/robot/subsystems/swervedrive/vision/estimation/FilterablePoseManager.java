@@ -1,5 +1,6 @@
 package frc.robot.subsystems.swervedrive.vision.estimation;
 
+import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.Vector;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
@@ -57,23 +58,26 @@ public class FilterablePoseManager extends PoseManager {
   public void processQueue() {
     List<Pose2d> validMeasurementsPose = new ArrayList<>();
     List<Pose2d> invalidMeasurementsPose = new ArrayList<>();
-
-    LinkedHashMap<VisionMeasurement, FilterResult> filteredData =
+    for (Map.Entry<Integer, Queue<VisionMeasurement>> queueEntry : visionMeasurementQueueMap.entrySet()) {
+      Queue<VisionMeasurement> visionMeasurementQueue = queueEntry.getValue();
+      LinkedHashMap<VisionMeasurement, FilterResult> filteredData =
               filter.filter(visionMeasurementQueue);
-    visionMeasurementQueue.clear();
-    for (Map.Entry<VisionMeasurement, FilterResult> filterEntry : filteredData.entrySet()) {
-      VisionMeasurement v = filterEntry.getKey();
-      FilterResult r = filterEntry.getValue();
-      switch (r) {
-        case ACCEPTED -> {
-          setVisionSTD(visionTruster.calculateTrust(v));
-          validMeasurementsPose.add(v.measurement());
-          addVisionMeasurement(v);
+      visionMeasurementQueue.clear();
 
-        }
-        case NOT_PROCESSED -> visionMeasurementQueue.add(v);
-        case REJECTED -> {
-          invalidMeasurementsPose.add(v.measurement());
+      for (Map.Entry<VisionMeasurement, FilterResult> filterEntry : filteredData.entrySet()) {
+        VisionMeasurement v = filterEntry.getKey();
+        FilterResult r = filterEntry.getValue();
+        switch (r) {
+          case ACCEPTED -> {
+            setVisionSTD(VecBuilder.fill(v.standardDeviation(), v.standardDeviation(), v.standardDeviation()));
+            validMeasurementsPose.add(v.measurement());
+            addVisionMeasurement(v);
+
+          }
+          case NOT_PROCESSED -> visionMeasurementQueue.add(v);
+          case REJECTED -> {
+            invalidMeasurementsPose.add(v.measurement());
+          }
         }
       }
     }

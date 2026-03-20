@@ -96,13 +96,19 @@ public class PoseManager {
     }
 
     protected void addVisionMeasurement(VisionMeasurement measurement) {
+        Logger.recordOutput("Apriltag/VisionPoseSentToSwerve", measurement.measurement());
+        Logger.recordOutput("Apriltag/VisionTimestampSentToSwerve", measurement.timeOfMeasurement());
         drivebase.addVisionMeasurement(measurement.measurement(), measurement.timeOfMeasurement());
     }
 
     protected void setVisionSTD(Vector<N3> visionMeasurementStdDevs) {
         Logger.recordOutput(
                 "Apriltag/VisionAppliedCovariance",
-                new double[]{visionMeasurementStdDevs.get(0), visionMeasurementStdDevs.get(1)});
+                new double[]{
+                        visionMeasurementStdDevs.get(0),
+                        visionMeasurementStdDevs.get(1),
+                        visionMeasurementStdDevs.get(2)
+                });
 
         drivebase.setVariance(visionMeasurementStdDevs);
     }

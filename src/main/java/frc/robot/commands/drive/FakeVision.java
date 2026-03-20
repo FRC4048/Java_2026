@@ -14,15 +14,20 @@ import frc.robot.utils.logging.commands.LoggableCommand;
 public class FakeVision extends LoggableCommand {
   /** Creates a new FakeVision. */
   private final SwerveSubsystem drivebase;
-  public FakeVision(SwerveSubsystem drivebase) {
+  private double x;
+  private double y;
+
+  public FakeVision(SwerveSubsystem drivebase, double x, double y) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.drivebase = drivebase;
+    this.x = x;
+    this.y = y;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    drivebase.addVisionMeasurement(new Pose2d(new Translation2d(-10, 2), new Rotation2d()));
+    drivebase.addVisionMeasurement(new Pose2d(new Translation2d(x, y), new Rotation2d()));
   }
 
   // Called every time the scheduler runs while the command is scheduled.

@@ -15,6 +15,7 @@ import frc.robot.commands.auto.shoot.MidShoot;
 import frc.robot.commands.auto.shoot.OutpostShoot;
 import frc.robot.commands.auto.shootpickup.DepotShootPickup;
 import frc.robot.commands.auto.shootpickup.OutpostShootPickup;
+import frc.robot.commands.auto.DoNothing;
 import frc.robot.constants.enums.ShootingState;
 import frc.robot.subsystems.AnglerSubsystem;
 import frc.robot.subsystems.ClimberSubsystem;
@@ -26,7 +27,6 @@ import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.TurretSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
-import frc.robot.utils.logging.commands.DoNothingCommand;
 
 public class AutoChooser {
 
@@ -102,11 +102,11 @@ public class AutoChooser {
     private void populateCommandMap() {
         //if AutoEvent is not dependent on alliance color don't put a color
         commandMap.put(new AutoEvent(AutoAction.DO_NOTHING, FieldLocation.DEPOT_SIDE),
-            new DoNothingCommand());
+            new DoNothing(turret,angler));
         commandMap.put(new AutoEvent(AutoAction.DO_NOTHING, FieldLocation.MID),
-            new DoNothingCommand());
+            new DoNothing(turret,angler));
         commandMap.put(new AutoEvent(AutoAction.DO_NOTHING, FieldLocation.OUTPOST_SIDE), 
-            new DoNothingCommand());
+            new DoNothing(turret,angler));
 
         //shoot
         commandMap.put(new AutoEvent(AutoAction.SHOOT, FieldLocation.DEPOT_SIDE),

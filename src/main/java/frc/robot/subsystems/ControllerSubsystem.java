@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
+import frc.robot.Robot;
 import frc.robot.utils.math.TurretCalculations;
 import org.dyn4j.UnitConversion;
 import org.littletonrobotics.junction.Logger;
@@ -13,7 +14,6 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.constants.Constants;
-import frc.robot.constants.enums.ShootingState;
 import frc.robot.constants.enums.ShootingState.ShootState;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 
@@ -22,7 +22,8 @@ public class ControllerSubsystem extends SubsystemBase {
     private static final double STOP_DELAY_SECONDS = 0.5;
 
     // Placeholder target poses until real field target values are finalized
-    private static final Pose2d HUB_TARGET_POSE = new Pose2d(4.0, 4.0, Rotation2d.kZero);
+    private static final Pose2d BLUE_HUB_TARGET_POSE = new Pose2d(Constants.BLUE_HUB_X_POSITION, Constants.BLUE_HUB_Y_POSITION, Rotation2d.kZero);
+    private static final Pose2d RED_HUB_TARGET_POSE = new Pose2d(Constants.RED_HUB_X_POSITION, Constants.RED_HUB_Y_POSITION, Rotation2d.kZero);
     private static final Pose2d SHUTTLE_TARGET_POSE = new Pose2d(1.0, 7.0, Rotation2d.kZero);
 
     private static final String MANUAL_POSE_X_KEY = "controller/ManualPoseX";
@@ -46,8 +47,10 @@ public class ControllerSubsystem extends SubsystemBase {
             new ShotTargets(22.0, 180.0, -5.0, 0.0, true, true);
 
     // Placeholder pose-driven profiles.
-    private static final PoseControlProfile HUB_PROFILE =
-            new PoseControlProfile(HUB_TARGET_POSE, 32.0, 230.0, 14.0);
+    private static final PoseControlProfile BLUE_HUB_PROFILE =
+            new PoseControlProfile(BLUE_HUB_TARGET_POSE, 32.0, 230.0, 14.0);
+    private static final PoseControlProfile RED_HUB_PROFILE =
+            new PoseControlProfile(RED_HUB_TARGET_POSE, 32.0, 230.0, 14.0);
     private static final PoseControlProfile SHUTTLE_PROFILE =
             new PoseControlProfile(SHUTTLE_TARGET_POSE, 16.0, 90.0, -14.0);
 
@@ -136,7 +139,20 @@ public class ControllerSubsystem extends SubsystemBase {
             case STOPPED -> updateStoppedTargets();
             case FIXED -> useShotTargets(FIXED_TARGETS);
             case FIXED_2 -> useShotTargets(FIXED_2_TARGETS);
-            case SHOOTING_HUB -> useShotTargets(calculateTargetsFromPose(HUB_PROFILE, robotPose));
+            case SHOOTING_HUB -> {
+                if (Robot.allianceColor().isEmpty()) {
+                    // No color, do nothing...
+                    useShotTargets(FIXED_TARGETS);
+                } else if (Robot.allianceColor().get().equals(DriverStation.Alliance.Blue)) {
+                    useShotTargets(calculateTargetsFromPose(BLUE_HUB_PROFILE, robotPose));
+                } else if (Robot.allianceColor().get().equals(DriverStation.Alliance.Red)) {
+                    useShotTargets(calculateTargetsFromPose(RED_HUB_PROFILE, robotPose));
+                } else {
+                    // Unknown color, do nothing...
+                    useShotTargets(FIXED_TARGETS);
+                }
+            }
+
             case SHUTTLING -> useShotTargets(calculateTargetsFromPose(SHUTTLE_PROFILE, robotPose));
         }
     }
@@ -180,9 +196,9 @@ public class ControllerSubsystem extends SubsystemBase {
     }
 
     private double calculateAnglerAngleDegrees(double computedDistanceMeters, PoseControlProfile profile) {
-        if (profile == HUB_PROFILE) {
+        if ((profile == BLUE_HUB_PROFILE) || (profile == RED_HUB_PROFILE)) {
             double distance = UnitConversion.METER_TO_FOOT * computedDistanceMeters;
-			return 
+			return
 				0.169 * distance * distance
 			  - 1.73 * distance
 	          + 20.4;
@@ -191,7 +207,7 @@ public class ControllerSubsystem extends SubsystemBase {
     }
 
     private double calculateShooterVelocity(double computedDistanceMeters, PoseControlProfile profile) {
-        if (profile == HUB_PROFILE) {
+        if ((profile == BLUE_HUB_PROFILE) || (profile == RED_HUB_PROFILE)) {
             double distance = UnitConversion.METER_TO_FOOT * computedDistanceMeters;
 			return Math.floor(
 				8.46 * distance * distance

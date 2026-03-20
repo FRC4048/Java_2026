@@ -145,8 +145,8 @@ public class GameConstants {
     public static final double BLUE_HUB_Y_POSITION = 4.0345;
     public static final double RED_HUB_X_POSITION = 11.9154;
     public static final double RED_HUB_Y_POSITION = 4.0345;
-    public static final double X_DISTANCE_BETWEEN_ROBOT_AND_TURRET = .05; // needs value from hardware
-    public static final double Y_DISTANCE_BETWEEN_ROBOT_AND_TURRET = .12; // needs value from hardware
+    public static final double X_DISTANCE_BETWEEN_ROBOT_AND_TURRET = .05;
+    public static final double Y_DISTANCE_BETWEEN_ROBOT_AND_TURRET = .12;
 
     // Shift timings
     public static final int SHIFT_1_START = 130;

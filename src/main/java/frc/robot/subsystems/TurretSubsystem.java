@@ -46,7 +46,7 @@ public class TurretSubsystem extends SubsystemBase {
     public void setPosition(double targetEncoderPosition) {
         // Decide which slot to use based on distance from target
 
-        if (Math.abs(targetEncoderPosition - lastAngle) >= Constants.TURRET_PID_DISTANCE_THRESHOLD) {
+        if (Math.abs(targetEncoderPosition - io.getEncoderPosition()) >= Constants.TURRET_PID_DISTANCE_THRESHOLD) {
             io.setPidPosition(targetEncoderPosition, ClosedLoopSlot.kSlot1); // longer encoder distance pid
         } else {
             io.setPidPosition(targetEncoderPosition, ClosedLoopSlot.kSlot0); // shorter encoder distance pid

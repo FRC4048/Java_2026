@@ -7,6 +7,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Robot;
 import frc.robot.constants.Constants;
 import frc.robot.constants.GameConstants;
+import frc.robot.constants.enums.ShootingState;
+import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import frc.robot.utils.diag.DiagSparkMaxEncoder;
 import frc.robot.utils.diag.DiagSparkMaxSwitch;
 import frc.robot.utils.logging.input.MotorLoggableInputs;
@@ -28,6 +30,7 @@ public class TurretSubsystem extends SubsystemBase {
         this.io = io;
         // Create 2 tunable configs in case we want to tune both
         this.pidManager = new TunablePIDManager(LOGGING_NAME, io, createPidConfig0());
+        createPidConfig1();
         stopMotors();
     }
 
@@ -42,7 +45,12 @@ public class TurretSubsystem extends SubsystemBase {
      */
     public void setPosition(double targetEncoderPosition) {
         // Decide which slot to use based on distance from target
-        io.setPidPosition(targetEncoderPosition, ClosedLoopSlot.kSlot0);
+
+        if (Math.abs(targetEncoderPosition - lastAngle) >= Constants.TURRET_PID_DISTANCE_THRESHOLD) {
+            io.setPidPosition(targetEncoderPosition, ClosedLoopSlot.kSlot1); // longer encoder distance pid
+        } else {
+            io.setPidPosition(targetEncoderPosition, ClosedLoopSlot.kSlot0); // shorter encoder distance pid
+        }
     }
 
     /**
@@ -145,16 +153,14 @@ public class TurretSubsystem extends SubsystemBase {
 
     // PID config for slot 0 (close range)
     private static SparkMaxPidConfig createPidConfig0() {
-        return new SparkMaxPidConfig(true, ClosedLoopSlot.kSlot0)
+        return new SparkMaxPidConfig(false, ClosedLoopSlot.kSlot0)
                 .setCurrentLimit(Constants.NEO_CURRENT_LIMIT)
                 .setAllowedError(.1)
                 .setPidf(
-                        Constants.TURRET_P,
-                        Constants.TURRET_I,
-                        Constants.TURRET_D,
-                        Constants.TURRET_FF)
-                .setMaxAccel(6000)
-                .setMaxVelocity(3000);
+                        Constants.TURRET_SHORT_RANGE_P,
+                        Constants.TURRET_SHORT_RANGE_I,
+                        Constants.TURRET_SHORT_RANGE_D,
+                        Constants.TURRET_SHORT_RANGE_FF);
     }
 
     // PID config for slot 1 (far range)
@@ -163,10 +169,10 @@ public class TurretSubsystem extends SubsystemBase {
                 .setCurrentLimit(Constants.NEO_CURRENT_LIMIT)
                 .setAllowedError(.1)
                 .setPidf(
-                        Constants.TURRET_P,
-                        Constants.TURRET_I,
-                        Constants.TURRET_D,
-                        Constants.TURRET_FF)
+                        Constants.TURRET_LONG_RANGE_P,
+                        Constants.TURRET_LONG_RANGE_I,
+                        Constants.TURRET_LONG_RANGE_D,
+                        Constants.TURRET_LONG_RANGE_FF)
                 .setMaxAccel(6000)
                 .setMaxVelocity(3000);
     }

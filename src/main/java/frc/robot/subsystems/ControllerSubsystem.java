@@ -212,11 +212,12 @@ public class ControllerSubsystem extends SubsystemBase {
         double flightTime = calculateFlightTime(robotPose.getTranslation()
                 .getDistance(targetPose.getTranslation()));
         Pose2d robotPoseTransform = new Pose2d(robotPose.getTranslation(), new Rotation2d());
-        Pose2d predictedPose = robotPoseTransform
+        Pose2d predictedTransform = robotPoseTransform
                         .plus(new Transform2d(
                         drivebase.getFieldVelocity().vxMetersPerSecond * flightTime,
                         drivebase.getFieldVelocity().vyMetersPerSecond * flightTime, 
                         new Rotation2d()));
+        Pose2d predictedPose = new Pose2d(predictedTransform.getTranslation(), robotPose.getRotation());
         Logger.recordOutput("Predicted pose", predictedPose);
         return predictedPose;
     }

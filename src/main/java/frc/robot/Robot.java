@@ -40,7 +40,6 @@ public class Robot extends LoggedRobot {
     private static final Diagnostics diagnostics = new Diagnostics();
     private final RobotContainer robotContainer;
     private static final AtomicReference<RobotMode> mode = new AtomicReference<>(RobotMode.DISABLED);
-    private double timerTime;
     private String autonomousWinner;
     private boolean hubActive;
     private static Alliance autoWinner;

@@ -66,7 +66,7 @@ public class FilterablePoseManager extends PoseManager {
       FilterResult r = filterEntry.getValue();
       switch (r) {
         case ACCEPTED -> {
-          setVisionSTD(visionTruster.calculateTrust(v));
+          setVisionSTD(getVisionSTD(v));
           validMeasurementsPose.add(v.measurement());
           addVisionMeasurement(v);
 

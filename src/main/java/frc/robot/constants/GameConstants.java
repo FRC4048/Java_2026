@@ -149,6 +149,7 @@ public class GameConstants {
 
     public static final double VISION_CONSISTENCY_THRESHOLD = 0.25; //How close 2 vision measurements have to be (needs to be tuned potentially but seemingly from my testing it also might not be needed)
     public static final boolean ENABLE_VISION = true;
+    public static final boolean USE_CAMERA_APRILTAG_STD_DEV = true;
     public static final double POSE_BUFFER_STORAGE_TIME = 2; //how many past measurements are stored in the buffer (might increase if we need further back)
     public static final String DRIVER_CAM_IP_ADDRESS = "10.40.48.2:1181/?action=stream";
     public static final double FIELD_LENGTH = 16.5; //TODO: Change Later

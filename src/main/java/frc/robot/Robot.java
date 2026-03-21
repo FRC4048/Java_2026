@@ -269,7 +269,7 @@ public class Robot extends LoggedRobot {
     } else if (timeSinceTeleop >= Constants.SHIFT_1_START) {
       hubCountdown = Constants.SHIFT_2_START - timeSinceTeleop;
     } else {hubCountdown = Constants.SHIFT_1_START - timeSinceTeleop;}
-    SmartDashboard.putNumber("Countdown Until Next Hub Shift", hubCountdown);
+    SmartDashboard.putNumber("Next Shift In...", hubCountdown);
     // Puts the countdown on dashboard so driver and operator can see the time until the next shift
   }
 

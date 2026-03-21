@@ -156,9 +156,9 @@ public class ControllerSubsystem extends SubsystemBase {
                     // No color, do nothing...
                     useShotTargets(FIXED_TARGETS);
                 } else if (Robot.allianceColor().get().equals(DriverStation.Alliance.Blue)) {
-                    useShotTargets(calculateTargetsFromPose(state, BLUE_HUB_PROFILE, robotPosePredictionCalculation(BLUE_HUB_PROFILE.targetPose,robotPose, robotSpeeds)));
+                    useShotTargets(calculateTargetsFromPose(state, BLUE_HUB_PROFILE, robotPose, robotSpeeds));
                 } else if (Robot.allianceColor().get().equals(DriverStation.Alliance.Red)) {
-                    useShotTargets(calculateTargetsFromPose(state, RED_HUB_PROFILE, robotPosePredictionCalculation(RED_HUB_PROFILE.targetPose,robotPose, robotSpeeds)));
+                    useShotTargets(calculateTargetsFromPose(state, RED_HUB_PROFILE, robotPose, robotSpeeds));
                 } else {
                     // Unknown color, do nothing...
                     useShotTargets(FIXED_TARGETS);
@@ -171,7 +171,7 @@ public class ControllerSubsystem extends SubsystemBase {
                 } else if (Robot.allianceColor().get().equals(DriverStation.Alliance.Blue)) {
                     useShotTargets(calculateTargetsFromPose(state,BLUE_SHUTTLE_PROFILE, robotPose, robotSpeeds));
                 } else if (Robot.allianceColor().get().equals(DriverStation.Alliance.Red)) {
-                    useShotTargets(calculateTargetsFromPose(state, RED_SHUTTLE_PROFILE, robotPose));
+                    useShotTargets(calculateTargetsFromPose(state, RED_SHUTTLE_PROFILE, robotPose, robotSpeeds));
                 } else {
                     useShotTargets(FIXED_TARGETS);
                 }
@@ -237,8 +237,8 @@ public class ControllerSubsystem extends SubsystemBase {
     }
 
     private double calculateDistanceMeters(Pose2d robotPose, Pose2d targetPose) {
-        return Math.max(Constants.MIN_HUB_DISTANCE,Math.min(Constants.MAX_HUB_DISTANCE,robotPose.getTranslation().getDistance(targetPose.getTranslation())));
-
+        return Math.max(Constants.MIN_HUB_DISTANCE, Math.min(Constants.MAX_HUB_DISTANCE, robotPose.getTranslation().getDistance(targetPose.getTranslation())));
+    }
     private Pose2d robotPosePredictionCalculation(Pose2d targetPose, Pose2d robotPose) {
         double flightTime = calculateFlightTime(calculateDistanceMeters(ShootState.SHOOTING_HUB,robotPose,targetPose));
         Pose2d robotPoseTransform = new Pose2d(robotPose.getTranslation(), new Rotation2d());
@@ -253,25 +253,14 @@ public class ControllerSubsystem extends SubsystemBase {
         }
         return predictedPose;
     }
-    //Flight time derived from testing videos
-    private double calculateFlightTime(double computedDistanceMeters) {
-        return 0.208*computedDistanceMeters + 0.647;
-    }
 
     private double calculateAnglerAngleDegrees(double computedDistanceMeters, PoseControlProfile profile, boolean shootHub) {
-        computedDistanceMeters -=2;
+        computedDistanceMeters -= Constants.COMPUTATED_DISTANCE_OFFSET;
         if (shootHub) {
-			return
-				1.82 * computedDistanceMeters * computedDistanceMeters
-			  - 5.68 * computedDistanceMeters
-	          + 20.4;
-		}
-    private double calculateAnglerAngleDegrees(double computedDistanceMeters, PoseControlProfile profile) {
-        if ((profile == BLUE_HUB_PROFILE) || (profile == RED_HUB_PROFILE)) {
-            double distance = (UnitConversion.METER_TO_FOOT * computedDistanceMeters) - Constants.COMPUTATED_DISTANCE_OFFSET;
-            return 0.169 * distance * distance
-                    - 1.73 * distance
-                    + 20.4;
+            return
+                    1.82 * computedDistanceMeters * computedDistanceMeters
+                            - 5.68 * computedDistanceMeters
+                            + 20.4;
         }
         return profile.defaultAnglerAngleDegrees;
     }
@@ -317,19 +306,12 @@ public class ControllerSubsystem extends SubsystemBase {
         return (0.208*initialDistanceMeters+0.647)/(0.208*ChassisSpeeds.fromFieldRelativeSpeeds(robotSpeeds, target.getTranslation().minus(robotPose.getTranslation()).getAngle()).vxMetersPerSecond+1);
     }
     private double calculateShooterVelocity(double computedDistanceMeters, PoseControlProfile profile, boolean shootHub) {
-        computedDistanceMeters-=2;
+        computedDistanceMeters -= Constants.COMPUTATED_DISTANCE_OFFSET;
         if (shootHub) {
-			return
-				91 * computedDistanceMeters * computedDistanceMeters
-			  - 776 * computedDistanceMeters
-			  - 1_380;
-		}
-    private double calculateShooterVelocity(double computedDistanceMeters, PoseControlProfile profile) {
-        if ((profile == BLUE_HUB_PROFILE) || (profile == RED_HUB_PROFILE)) {
-            double distance = (UnitConversion.METER_TO_FOOT * computedDistanceMeters) - Constants.COMPUTATED_DISTANCE_OFFSET;
-            return (8.46 * distance * distance
-                    - 237 * distance
-                    - 1380);
+            return
+                    91 * computedDistanceMeters * computedDistanceMeters
+                            - 776 * computedDistanceMeters
+                            - 1_380;
         }
         return profile.defaultShooterVelocityRpm;
     }

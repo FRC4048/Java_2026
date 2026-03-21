@@ -141,11 +141,11 @@ public class GameConstants {
     public static final double Y_DISTANCE_BETWEEN_ROBOT_AND_TURRET = .4; // needs value from hardware
 
     // Shift timings
-    public static final int SHIFT_1_START = 130;
-    public static final int SHIFT_2_START = 105;
-    public static final int SHIFT_3_START = 80;
-    public static final int SHIFT_4_START = 55;
-    public static final int ENDGAME_START = 30;
+    public static final int SHIFT_1_START = 10;
+    public static final int SHIFT_2_START = 35;
+    public static final int SHIFT_3_START = 60;
+    public static final int SHIFT_4_START = 85;
+    public static final int ENDGAME_START = 110;
 
     public static final double VISION_CONSISTENCY_THRESHOLD = 0.25; //How close 2 vision measurements have to be (needs to be tuned potentially but seemingly from my testing it also might not be needed)
     public static final boolean ENABLE_VISION = true;

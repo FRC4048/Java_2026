@@ -51,6 +51,10 @@ public class RealSparkMaxIo extends BaseIoImpl<MotorLoggableInputs> implements S
     public double getEncoderPosition() {
         return getInputs().getEncoderPosition();
     }
+    @Override
+    public double getVelocity() {
+        return getInputs().getEncoderVelocity();
+    }
 
     @Override
     protected void updateInputs(MotorLoggableInputs inputs) {

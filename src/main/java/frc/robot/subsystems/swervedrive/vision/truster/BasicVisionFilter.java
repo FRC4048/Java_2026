@@ -74,7 +74,7 @@ public abstract class BasicVisionFilter implements VisionFilter, VisionTransform
         odomPoseAtVis1.get().getTranslation().getDistance(odomPoseAtVis2.get().getTranslation());
     double visionDiff1To2 = m1.measurement().getTranslation().getDistance(m2.measurement().getTranslation());
     double diff = Math.abs(odomDiff1To2 - visionDiff1To2);
-    if (m1.standardDeviation() > Constants.VISION_STD_THRESHOLD) {
+    if (m1.stdDev() > Constants.VISION_STD_THRESHOLD) {
       return false;
     }
     return Math.abs(diff) <= Constants.VISION_CONSISTENCY_THRESHOLD;

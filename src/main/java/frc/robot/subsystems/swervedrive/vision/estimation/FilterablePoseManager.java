@@ -74,7 +74,7 @@ public class FilterablePoseManager extends PoseManager {
         FilterResult r = filterEntry.getValue();
         switch (r) {
           case ACCEPTED -> {
-            setVisionSTD(VecBuilder.fill(v.standardDeviation(), v.standardDeviation(), v.standardDeviation()));
+            setVisionSTD(getVisionSTD(v));
             validMeasurementsPose.add(v.measurement());
             addVisionMeasurement(v);
             if (Constants.currentMode == Constants.Mode.SIM) {

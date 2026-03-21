@@ -48,7 +48,8 @@ public class ControllerSubsystem extends SubsystemBase {
     // Placeholder fixed-state settings.
     private static final ShotTargets STOPPED_TARGETS = new ShotTargets(Constants.ANGLER_ANGLE_LOW, 0.0, 0.0, 0.0, false,
             false);
-    private static final ShotTargets FIXED_TARGETS = new ShotTargets(10.0, 120.0, 5.0, 0.0, true, true);
+    //3.25 meters away
+    private static final ShotTargets FIXED_TARGETS = new ShotTargets(21.16, -2945.21, 0, 3.25, true, true);
     private static final ShotTargets FIXED_2_TARGETS = new ShotTargets(22.0, 180.0, -5.0, 0.0, true, true);
 
     // Placeholder pose-driven profiles.
@@ -220,7 +221,7 @@ public class ControllerSubsystem extends SubsystemBase {
                 return distance;
             }
         }else{
-            return distance;  
+            return distance;
         }
     }
 
@@ -230,7 +231,7 @@ public class ControllerSubsystem extends SubsystemBase {
         Pose2d predictedTransform = robotPoseTransform
                         .plus(new Transform2d(
                         drivebase.getFieldVelocity().vxMetersPerSecond * flightTime,
-                        drivebase.getFieldVelocity().vyMetersPerSecond * flightTime, 
+                        drivebase.getFieldVelocity().vyMetersPerSecond * flightTime,
                         new Rotation2d()));
         Pose2d predictedPose = new Pose2d(predictedTransform.getTranslation(), robotPose.getRotation());
         if(Constants.DEBUG){
@@ -258,7 +259,7 @@ public class ControllerSubsystem extends SubsystemBase {
             double distance = (UnitConversion.METER_TO_FOOT * computedDistanceMeters) - Constants.COMPUTATED_DISTANCE_OFFSET;
             return (8.46 * distance * distance
                     - 237 * distance
-                    - 1_380);
+                    - 1380);
         }
         return profile.defaultShooterVelocityRpm;
     }

@@ -287,7 +287,7 @@ public class RobotContainer {
                 controller.y().onTrue(new ClimberUp(climberSubsystem));
                 controller.x().onTrue(new ClimberDown(climberSubsystem));
                 controller.povUp().onTrue(new SetShootingState(shootState, ShootState.FIXED));
-                controller.povRight().onTrue(new SetShootingState(shootState, ShootState.FIXED_2));
+                controller.povRight().onTrue(new SetShootingState(shootState, ShootState.STOPPED));
                 controller.povDown().onTrue(new SetShootingState(shootState, ShootState.SHOOTING_HUB));
                 controller.povLeft().onTrue(new SetShootingState(shootState, ShootState.SHUTTLING));
                 controller.leftTrigger().onTrue((new ResetAll(anglerSubsystem, climberSubsystem, 
@@ -319,7 +319,7 @@ public class RobotContainer {
                         SwerveInputStream driveAngularVelocity = SwerveInputStream.of(drivebase.getSwerveDrive(),
                                         () -> driveJoystick.getY() * -1,
                                         () -> driveJoystick.getX() * -1)
-                                        .withControllerRotationAxis(steerJoystick::getX)
+                                        .withControllerRotationAxis(() -> {return steerJoystick.getX() * -1;})
                                         .deadband(Constants.DEADBAND)
                                         .scaleTranslation(0.8)
                                         .allianceRelativeControl(true);

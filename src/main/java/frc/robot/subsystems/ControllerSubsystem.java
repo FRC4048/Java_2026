@@ -47,10 +47,10 @@ public class ControllerSubsystem extends SubsystemBase {
 
     // Placeholder fixed-state settings.
     private static final ShotTargets STOPPED_TARGETS = new ShotTargets(Constants.ANGLER_ANGLE_LOW, 0.0, 0.0, 0.0, false,
-            false);
+            false,false);
     //3.25 meters away
-    private static final ShotTargets FIXED_TARGETS = new ShotTargets(21.16, -2945.21, 0, 3.25, true, true);
-    private static final ShotTargets FIXED_2_TARGETS = new ShotTargets(22.0, 180.0, -5.0, 0.0, true, true);
+    private static final ShotTargets FIXED_TARGETS = new ShotTargets(21.16, -2945.21, 0, 3.25, true, true,true);
+    private static final ShotTargets FIXED_2_TARGETS = new ShotTargets(22.0, 180.0, -5.0, 0.0, true, true,true);
 
     // Placeholder pose-driven profiles.
     private static final PoseControlProfile BLUE_HUB_PROFILE = new PoseControlProfile(BLUE_HUB_TARGET_POSE, 32.0, 230.0,
@@ -186,18 +186,19 @@ public class ControllerSubsystem extends SubsystemBase {
                 STOPPED_TARGETS.turretAngleDegrees,
                 STOPPED_TARGETS.distanceMeters,
                 STOPPED_TARGETS.feederSpin,
-                STOPPED_TARGETS.hopperSpin);
+                STOPPED_TARGETS.hopperSpin,
+                STOPPED_TARGETS.intakeDeploy);
     }
 
     private void useShotTargets(ShotTargets shotTargets) {
-        boolean driverEnabled = driverActivatedShootingEnabled();
         activeTargets = new ShotTargets(
                 shotTargets.anglerAngleDegrees,
                 shotTargets.shooterVelocityRpm,
                 shotTargets.turretAngleDegrees,
                 shotTargets.distanceMeters,
-                driverEnabled,
-                driverEnabled);
+                shotTargets.hopperSpin,
+                shotTargets.feederSpin,
+                shotTargets.intakeDeploy);
     }
 
     private ShotTargets calculateTargetsFromPose(ShootState state,PoseControlProfile profile, Pose2d robotPose) {
@@ -206,7 +207,7 @@ public class ControllerSubsystem extends SubsystemBase {
         double shooterVelocity = calculateShooterVelocity(computedDistanceMeters, profile);
         double turretAngleDegrees = calculateTurretAngleDegrees(robotPose, profile);
         return new ShotTargets(anglerAngleDegrees, shooterVelocity, turretAngleDegrees, computedDistanceMeters, true,
-                true);
+                true, true);
     }
 
     private double calculateDistanceMeters(ShootState state,Pose2d robotPose, Pose2d targetPose) {
@@ -296,6 +297,10 @@ public class ControllerSubsystem extends SubsystemBase {
         return activeTargets.hopperSpin;
     }
 
+    public boolean canIntakeDeploy() {
+        return activeTargets.intakeDeploy;
+    }
+
     public void setDriverActivatedShooting(boolean set) {
         driverActivatedShooting = set;
     }
@@ -312,6 +317,7 @@ public class ControllerSubsystem extends SubsystemBase {
         private final double distanceMeters;
         private final boolean feederSpin;
         private final boolean hopperSpin;
+        private final boolean intakeDeploy;
 
         private ShotTargets(
                 double anglerAngleDegrees,
@@ -319,13 +325,14 @@ public class ControllerSubsystem extends SubsystemBase {
                 double turretAngleDegrees,
                 double distanceMeters,
                 boolean feederSpin,
-                boolean hopperSpin) {
+                boolean hopperSpin, boolean intakeDeploy) {
             this.anglerAngleDegrees = anglerAngleDegrees;
             this.shooterVelocityRpm = shooterVelocityRpm;
             this.turretAngleDegrees = turretAngleDegrees;
             this.distanceMeters = distanceMeters;
             this.feederSpin = feederSpin;
             this.hopperSpin = hopperSpin;
+            this.intakeDeploy = intakeDeploy;
         }
     }
 

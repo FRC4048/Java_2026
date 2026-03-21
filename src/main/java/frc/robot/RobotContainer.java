@@ -293,9 +293,7 @@ public class RobotContainer {
                 controller.leftTrigger().onTrue((new ResetAll(anglerSubsystem, climberSubsystem, 
                         intakeDeployer, intakeSubsystem, shooterSubsystem, turretSubsystem, shootState)));
                 driveJoystick.trigger().whileTrue((new SetShootingState(shootState, ShootState.STOPPED)));
-                if (controllerSubsystem != null) {
-                        steerJoystick.trigger().whileTrue(new ShootButton(controllerSubsystem));
-                }
+
 
                 // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
                 // new Trigger(m_exampleSubsystem::exampleCondition)

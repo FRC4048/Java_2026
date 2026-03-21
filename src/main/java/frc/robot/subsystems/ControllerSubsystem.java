@@ -150,9 +150,9 @@ public class ControllerSubsystem extends SubsystemBase {
                     // No color, do nothing...
                     useShotTargets(FIXED_TARGETS);
                 } else if (Robot.allianceColor().get().equals(DriverStation.Alliance.Blue)) {
-                    useShotTargets(calculateTargetsFromPose(BLUE_HUB_PROFILE, robotPosePredictionCalculation(BLUE_HUB_PROFILE.targetPose,robotPose)));
+                    useShotTargets(calculateTargetsFromPose(state, BLUE_HUB_PROFILE, robotPosePredictionCalculation(BLUE_HUB_PROFILE.targetPose,robotPose)));
                 } else if (Robot.allianceColor().get().equals(DriverStation.Alliance.Red)) {
-                    useShotTargets(calculateTargetsFromPose(RED_HUB_PROFILE, robotPosePredictionCalculation(RED_HUB_PROFILE.targetPose,robotPose)));
+                    useShotTargets(calculateTargetsFromPose(state, RED_HUB_PROFILE, robotPosePredictionCalculation(RED_HUB_PROFILE.targetPose,robotPose)));
                 } else {
                     // Unknown color, do nothing...
                     useShotTargets(FIXED_TARGETS);
@@ -163,9 +163,9 @@ public class ControllerSubsystem extends SubsystemBase {
                 if (Robot.allianceColor().isEmpty()) {
                     useShotTargets(FIXED_TARGETS);
                 } else if (Robot.allianceColor().get().equals(DriverStation.Alliance.Blue)) {
-                    useShotTargets(calculateTargetsFromPose(BLUE_SHUTTLE_PROFILE, robotPosePredictionCalculation(BLUE_SHUTTLE_PROFILE.targetPose,robotPose)));
+                    useShotTargets(calculateTargetsFromPose(state,BLUE_SHUTTLE_PROFILE, robotPose));
                 } else if (Robot.allianceColor().get().equals(DriverStation.Alliance.Red)) {
-                    useShotTargets(calculateTargetsFromPose(RED_SHUTTLE_PROFILE, robotPosePredictionCalculation(RED_SHUTTLE_PROFILE.targetPose,robotPose)));
+                    useShotTargets(calculateTargetsFromPose(state, RED_SHUTTLE_PROFILE, robotPose));
                 } else {
                     useShotTargets(FIXED_TARGETS);
                 }
@@ -199,8 +199,8 @@ public class ControllerSubsystem extends SubsystemBase {
                 driverEnabled);
     }
 
-    private ShotTargets calculateTargetsFromPose(PoseControlProfile profile, Pose2d robotPose) {
-        double computedDistanceMeters = calculateDistanceMeters(robotPose, profile.targetPose);
+    private ShotTargets calculateTargetsFromPose(ShootState state,PoseControlProfile profile, Pose2d robotPose) {
+        double computedDistanceMeters = calculateDistanceMeters(state, robotPose, profile.targetPose);
         double anglerAngleDegrees = calculateAnglerAngleDegrees(computedDistanceMeters, profile);
         double shooterVelocity = calculateShooterVelocity(computedDistanceMeters, profile);
         double turretAngleDegrees = calculateTurretAngleDegrees(robotPose, profile);
@@ -208,16 +208,23 @@ public class ControllerSubsystem extends SubsystemBase {
                 true);
     }
 
-    private double calculateDistanceMeters(Pose2d robotPose, Pose2d targetPose) {
+    private double calculateDistanceMeters(ShootState state,Pose2d robotPose, Pose2d targetPose) {
         double distance = robotPose.getTranslation()
                 .getDistance(targetPose.getTranslation());
-        if (distance > Constants.MAX_HUB_DISTANCE) {
-            return Constants.MAX_HUB_DISTANCE;
-        } else if (distance < Constants.MIN_HUB_DISTANCE) {
-            return Constants.MIN_HUB_DISTANCE;
-        } else {
-            return distance;
+        if(state == ShootState.SHOOTING_HUB){
+            if (distance > Constants.MAX_HUB_DISTANCE) {
+                return Constants.MAX_HUB_DISTANCE;
+            } else if (distance < Constants.MIN_HUB_DISTANCE) {
+                return Constants.MIN_HUB_DISTANCE;
+            } else {
+                return distance;
+            }
+        }else{
+            return distance;  
         }
+    }
+    private double calculateDistanceMeters(Pose2d robotPose, Pose2d targetPose) {
+        return calculateDistanceMeters(ShootState.STOPPED,robotPose,targetPose);
     }
 
     private Pose2d robotPosePredictionCalculation(Pose2d targetPose, Pose2d robotPose) {

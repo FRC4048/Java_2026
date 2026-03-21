@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.constants.Constants;
+import frc.robot.constants.enums.DeploymentState;
 import frc.robot.constants.enums.ShootingState.ShootState;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 
@@ -63,6 +64,7 @@ public class ControllerSubsystem extends SubsystemBase {
             -14.0);
 
     private final SwerveSubsystem drivebase;
+    private final IntakeDeployerSubsystem intakeDeployer;
     private final RobotContainer robotContainer;
     private final Timer stopDelayTimer = new Timer();
 
@@ -70,11 +72,12 @@ public class ControllerSubsystem extends SubsystemBase {
     private ShotTargets activeTargets;
     private boolean driverActivatedShooting = false;
 
-    public ControllerSubsystem(SwerveSubsystem drivebase, RobotContainer robotContainer) {
+    public ControllerSubsystem(SwerveSubsystem drivebase, IntakeDeployerSubsystem intakeDeployer, RobotContainer robotContainer) {
         this.drivebase = drivebase;
         this.robotContainer = robotContainer;
         this.previousState = getCurrentShootState();
         this.activeTargets = STOPPED_TARGETS;
+        this.intakeDeployer = intakeDeployer;
 
         SmartDashboard.putNumber(MANUAL_POSE_X_KEY, 0.0);
         SmartDashboard.putNumber(MANUAL_POSE_Y_KEY, 0.0);
@@ -191,6 +194,9 @@ public class ControllerSubsystem extends SubsystemBase {
     }
 
     private void useShotTargets(ShotTargets shotTargets) {
+        if(!shotTargets.intakeDeploy){
+            intakeDeployer.setDeploymentState(DeploymentState.UP);
+        }
         activeTargets = new ShotTargets(
                 shotTargets.anglerAngleDegrees,
                 shotTargets.shooterVelocityRpm,

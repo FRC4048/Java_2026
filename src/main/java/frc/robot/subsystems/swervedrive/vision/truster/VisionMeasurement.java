@@ -11,4 +11,4 @@ import frc.robot.utils.Apriltag;
  * @param timeOfMeasurement time when the pose was measured (seconds)
  */
 public record VisionMeasurement(
-    Pose2d measurement, double distanceFromTag, double stdDevFromRio, double timeOfMeasurement) {}
+    Pose2d measurement, double distanceFromTag, double stdDev, double timeOfMeasurement) {}

@@ -144,7 +144,7 @@ public class PoseEstimator {
   private VisionMeasurement getVisionMeasurement(double[] pos, int index) {
     //double timestamp = 0; // latency is not right we are assuming zero
     double timestamp = apriltagSystem.getIO().getInputs().timestamp[index];
-    double stdDevFromRio = apriltagSystem.getIO().getInputs().stdDev[index];
+    double stdDevFromCamera = apriltagSystem.getIO().getInputs().stdDev[index];
     Pose2d visionPose;
     if (getEstimatedPose()!=null) {
         visionPose = new Pose2d(pos[0], pos[1], getEstimatedPose().getRotation());

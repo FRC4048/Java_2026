@@ -86,11 +86,13 @@ public class PoseManager {
     }
 
     protected Vector<N3> getVisionSTD(VisionMeasurement measurement) {
-        double rioStdDev = measurement.stdDevFromRio();
-        Logger.recordOutput("Apriltag/UsingRioStdDev", Constants.USE_RIO_APRILTAG_STD_DEV);
+        double StdDev = measurement.stdDev();
+        if (Constants.DEBUG) {
+            Logger.recordOutput("Apriltag/UsingRioStdDev", Constants.USE_CAMERA_APRILTAG_STD_DEV);
+        }
 
-        if (Constants.USE_RIO_APRILTAG_STD_DEV) {
-            return VecBuilder.fill(rioStdDev, rioStdDev, rioStdDev);
+        if (Constants.USE_CAMERA_APRILTAG_STD_DEV) {
+            return VecBuilder.fill(StdDev, StdDev, StdDev);
         }
         return visionTruster.calculateTrust(measurement);
     }
@@ -104,7 +106,7 @@ public class PoseManager {
     protected void setVisionSTD(Vector<N3> visionMeasurementStdDevs) {
         Logger.recordOutput(
                 "Apriltag/VisionAppliedCovariance",
-                new double[]{
+                new double[] {
                         visionMeasurementStdDevs.get(0),
                         visionMeasurementStdDevs.get(1),
                         visionMeasurementStdDevs.get(2)

@@ -173,4 +173,8 @@ public class GameConstants {
     public static final double MAX_HUB_DISTANCE = 5.18;
     public static final double MIN_HUB_DISTANCE = 1.42;
     public static final double COMPUTATED_DISTANCE_OFFSET = 2;
+    public static final double RED_SHUTTLING_TARGET_X_POSITION = 13.8;
+    public static final double BLUE_SHUTTLING_TARGET_X_POSITION = 2.8;
+    public static final double SHUTTLING_TARGET_LOWER_Y_POSITION = 1.6;
+    public static final double SHUTTLING_TARGET_HIGHER_Y_POSITION = 6.5;
 }

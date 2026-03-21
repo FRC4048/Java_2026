@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.apriltags.ApriltagReading;
+import frc.robot.commands.ResetAll;
 import frc.robot.autochooser.AutoChooser;
 import frc.robot.commands.AddApriltagReading;
 import frc.robot.commands.AddGarbageReading;
@@ -286,9 +287,11 @@ public class RobotContainer {
                 controller.y().onTrue(new ClimberUp(climberSubsystem));
                 controller.x().onTrue(new ClimberDown(climberSubsystem));
                 controller.povUp().onTrue(new SetShootingState(shootState, ShootState.FIXED));
-                controller.povRight().onTrue(new SetShootingState(shootState, ShootState.FIXED_2));
+                controller.povRight().onTrue(new SetShootingState(shootState, ShootState.STOPPED));
                 controller.povDown().onTrue(new SetShootingState(shootState, ShootState.SHOOTING_HUB));
                 controller.povLeft().onTrue(new SetShootingState(shootState, ShootState.SHUTTLING));
+                controller.leftTrigger().onTrue((new ResetAll(anglerSubsystem, climberSubsystem, 
+                        intakeDeployer, intakeSubsystem, shooterSubsystem, turretSubsystem, shootState)));
                 driveJoystick.trigger().whileTrue((new SetShootingState(shootState, ShootState.STOPPED)));
                 if (controllerSubsystem != null) {
                         steerJoystick.trigger().whileTrue(new ShootButton(controllerSubsystem));
@@ -316,7 +319,7 @@ public class RobotContainer {
                         SwerveInputStream driveAngularVelocity = SwerveInputStream.of(drivebase.getSwerveDrive(),
                                         () -> driveJoystick.getY() * -1,
                                         () -> driveJoystick.getX() * -1)
-                                        .withControllerRotationAxis(steerJoystick::getX)
+                                        .withControllerRotationAxis(() -> {return steerJoystick.getX() * -1;})
                                         .deadband(Constants.DEADBAND)
                                         .scaleTranslation(0.8)
                                         .allianceRelativeControl(true);
@@ -415,6 +418,10 @@ public class RobotContainer {
                         SmartDashboard.putData(
                                         "angler/Home Rev (Reset)",
                                         new RunAnglerToReverseLimit(anglerSubsystem));
+                        SmartDashboard.putData(
+                                        "reset All",
+                                        new ResetAll(anglerSubsystem, climberSubsystem, intakeDeployer, intakeSubsystem, 
+                                                shooterSubsystem, turretSubsystem, shootState));
 
             SmartDashboard.putData(
                     "turret/TurretTest/Turret Go 45",

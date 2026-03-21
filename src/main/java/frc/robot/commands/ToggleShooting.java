@@ -24,7 +24,7 @@ public class ToggleShooting extends LoggableCommand{
     @Override
     public void initialize() {
         controllerSubsystem.setActivatedShooting(true);
-        timer.reset();
+        timer.restart();
     }
 
     @Override

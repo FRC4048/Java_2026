@@ -36,6 +36,7 @@ import frc.robot.commands.feeder.DefaultSpinFeeder;
 import frc.robot.commands.feeder.SpinFeeder;
 import frc.robot.commands.hopper.DefaultSpinHopper;
 import frc.robot.commands.hopper.SpinHopper;
+import frc.robot.commands.intake.ReversalIntake;
 import frc.robot.commands.intake.SpinIntake;
 import frc.robot.commands.intake.StopIntake;
 import frc.robot.commands.intakeDeployment.SetDeploymentState;
@@ -326,7 +327,9 @@ public class RobotContainer {
         }
 
         public void putShuffleboardCommands() {
-
+                        SmartDashboard.putData(
+                                        "Reversal Intake",
+                                        new ReversalIntake(intakeSubsystem));
                 if (Constants.DEBUG) {
 
                         /*
@@ -358,9 +361,6 @@ public class RobotContainer {
                                 SmartDashboard.putData(
                                         "Drive/Right",
                                         new DriveSwerve(drivebase, DriveDirection.RIGHT, 0.5, 0.2));
-                        SmartDashboard.putData(
-                                        "Intake/Spin Forward",
-                                        new InstantCommand(() -> intakeSubsystem.setSpeed(1.0)));
 
                         SmartDashboard.putData(
                                         "Intake/Spin Backward",

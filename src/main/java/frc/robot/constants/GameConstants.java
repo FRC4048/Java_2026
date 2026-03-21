@@ -4,6 +4,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.units.measure.Time;
 import edu.wpi.first.wpilibj.RobotBase;
 import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
 
@@ -56,7 +57,7 @@ public class GameConstants {
     public static final double INTAKE_RETRACTION_SPEED = 0.1;
     public static final double INITIAL_INTAKE_DEPLOYMENT_SPEED = -0.1;
     public static final double INITIAL_INTAKE_RETRACTION_SPEED = 0.5;
-
+    public static final double REVERSAL_INTAKE_SPEED = -0.4;
 
     //Diags
     public static final double HOPPER_DIAGS_ENCODER = 1;
@@ -78,6 +79,7 @@ public class GameConstants {
     public static final double SHOOTER_TIMEOUT = 5;
     public static final double INTAKE_DEPLOYER_BURNOUT_TIMER = 5;
     public static final double TURRET_TIMEOUT = 5;
+    public static final double REVERSAL_INTAKE_TIMEOUT = 0.5;
 
     //Angles
     public static final Rotation2d ANGLER_MIN_ANGLE = Rotation2d.fromDegrees(45);

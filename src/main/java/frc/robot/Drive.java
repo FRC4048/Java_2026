@@ -22,13 +22,15 @@ public class Drive extends SubsystemBase{
     public void followTrajectory(SwerveSample sample) {
         Pose2d pose = subsystem.getPose();
 
-        ChassisSpeeds speeds = new ChassisSpeeds(
+        ChassisSpeeds fieldRelativeSpeeds = new ChassisSpeeds(
             sample.vx + xController.calculate(pose.getX(), sample.x),
             sample.vy + yController.calculate(pose.getX(), sample.y),
             sample.omega + headingController.calculate(pose.getRotation().getRadians(), sample.heading)
             );
 
-            subsystem.drive(speeds);
+        ChassisSpeeds robotRelativeSpeeds =
+                ChassisSpeeds.fromRobotRelativeSpeeds(fieldRelativeSpeeds, pose.getRotation());
+            subsystem.setChassisSpeeds(robotRelativeSpeeds);
 
     }
 }

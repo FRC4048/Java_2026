@@ -223,12 +223,9 @@ public class ControllerSubsystem extends SubsystemBase {
             return distance;  
         }
     }
-    private double calculateDistanceMeters(Pose2d robotPose, Pose2d targetPose) {
-        return calculateDistanceMeters(ShootState.STOPPED,robotPose,targetPose);
-    }
 
     private Pose2d robotPosePredictionCalculation(Pose2d targetPose, Pose2d robotPose) {
-        double flightTime = calculateFlightTime(calculateDistanceMeters(robotPose,targetPose));
+        double flightTime = calculateFlightTime(calculateDistanceMeters(ShootState.SHOOTING_HUB,robotPose,targetPose));
         Pose2d robotPoseTransform = new Pose2d(robotPose.getTranslation(), new Rotation2d());
         Pose2d predictedTransform = robotPoseTransform
                         .plus(new Transform2d(
@@ -236,9 +233,12 @@ public class ControllerSubsystem extends SubsystemBase {
                         drivebase.getFieldVelocity().vyMetersPerSecond * flightTime, 
                         new Rotation2d()));
         Pose2d predictedPose = new Pose2d(predictedTransform.getTranslation(), robotPose.getRotation());
-        Logger.recordOutput("Predicted pose", predictedPose);
+        if(Constants.DEBUG){
+            Logger.recordOutput("Predicted pose", predictedPose);
+        }
         return predictedPose;
     }
+    //Flight time derived from testing videos
     private double calculateFlightTime(double computedDistanceMeters) {
         return 0.208*computedDistanceMeters + 0.647;
     }

@@ -31,8 +31,8 @@ public class DepotShootPickup extends LoggableSequentialCommandGroup{
                 //shoot
                 new ResetMechanisms(shootstate, turret, angler),
                 new SetTurretAngle(turret, 0),
-                LoggableCommandWrapper.wrap(auto.resetOdometry("RedDepot_Shoot")),
-                LoggableCommandWrapper.wrap(auto.trajectoryCmd("RedDepot_Shoot").withTimeout(1.3)),
+                LoggableCommandWrapper.wrap(auto.resetOdometry("Depot_Shoot")),
+                LoggableCommandWrapper.wrap(auto.trajectoryCmd("Depot_Shoot").withTimeout(1.3)),
                 new ToggleShooting(controller, 5),
 
                 //pickup and shoot
@@ -40,9 +40,9 @@ public class DepotShootPickup extends LoggableSequentialCommandGroup{
                     new ToggleDeployment(intake),
                     new SetTurretAngle(turret, 30),
                     new ToggleShooting(controller, 0),
-                    LoggableCommandWrapper.wrap(auto.resetOdometry("RedDepot_Pickup"))
+                    LoggableCommandWrapper.wrap(auto.resetOdometry("Depot_Pickup"))
                 ),
-                LoggableCommandWrapper.wrap(auto.trajectoryCmd("RedDepot_Pickup").withTimeout(1.9)),
+                LoggableCommandWrapper.wrap(auto.trajectoryCmd("Depot_Pickup").withTimeout(1.9)),
                 new ToggleDeployment(intake),
                 new ToggleShooting(controller, 0)
         );

@@ -18,8 +18,6 @@ public class OutpostDisturbance extends LoggableSequentialCommandGroup{
         super(
             LoggableCommandWrapper.wrap(auto.resetOdometry("Disturbance")),
             LoggableCommandWrapper.wrap(auto.trajectoryCmd("Disturbance")),
-            LoggableCommandWrapper.wrap(auto.resetOdometry("BackFromTheDisturbance")),
-            LoggableCommandWrapper.wrap(auto.trajectoryCmd("BackFromTheDisturbance")),
             new ResetMechanisms(shootstate, turret, angler),
             new SetTurretAngle(turret, 0),
             new ToggleShooting(controller, 10)

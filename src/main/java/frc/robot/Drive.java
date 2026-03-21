@@ -24,7 +24,7 @@ public class Drive extends SubsystemBase{
 
         ChassisSpeeds fieldRelativeSpeeds = new ChassisSpeeds(
             sample.vx + xController.calculate(pose.getX(), sample.x),
-            sample.vy + yController.calculate(pose.getX(), sample.y),
+            sample.vy + yController.calculate(pose.getY(), sample.y),
             sample.omega + headingController.calculate(pose.getRotation().getRadians(), sample.heading)
             );
 

@@ -30,8 +30,8 @@ public class OutpostShootPickup extends LoggableSequentialCommandGroup{
                 //shoot
                 new ResetMechanisms(shootstate, turret, angler),
                 new SetTurretAngle(turret, 0),
-                LoggableCommandWrapper.wrap(auto.resetOdometry("BlueOutpost_Shoot")),
-                LoggableCommandWrapper.wrap(auto.trajectoryCmd("BlueOutpost_Shoot").withTimeout(1.3)),
+                LoggableCommandWrapper.wrap(auto.resetOdometry("Outpost_Shoot")),
+                LoggableCommandWrapper.wrap(auto.trajectoryCmd("Outpost_Shoot").withTimeout(1.3)),
                 new ToggleShooting(controller, 5),
 
                 //pickup and shoot
@@ -39,9 +39,10 @@ public class OutpostShootPickup extends LoggableSequentialCommandGroup{
                     new ToggleDeployment(intake),
                     new SetTurretAngle(turret, 40),
                     new ToggleShooting(controller, 0),
-                    LoggableCommandWrapper.wrap(auto.resetOdometry("BlueOutpost_Pickup"))
+                    // Use the first outpost neutral leg as the pickup segment until a dedicated path is added.
+                    LoggableCommandWrapper.wrap(auto.resetOdometry("Outpost_Neutral_1"))
                 ),
-                LoggableCommandWrapper.wrap(auto.trajectoryCmd("BlueOutpost_Pickup").withTimeout(1.9)),
+                LoggableCommandWrapper.wrap(auto.trajectoryCmd("Outpost_Neutral_1").withTimeout(1.9)),
                 new ToggleDeployment(intake)
         );
     }

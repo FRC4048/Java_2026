@@ -221,8 +221,7 @@ public class ControllerSubsystem extends SubsystemBase {
     }
 
     private Pose2d robotPosePredictionCalculation(Pose2d targetPose, Pose2d robotPose) {
-        double flightTime = calculateFlightTime(robotPose.getTranslation()
-                .getDistance(targetPose.getTranslation()));
+        double flightTime = calculateFlightTime(calculateDistanceMeters(robotPose,targetPose));
         Pose2d robotPoseTransform = new Pose2d(robotPose.getTranslation(), new Rotation2d());
         Pose2d predictedTransform = robotPoseTransform
                         .plus(new Transform2d(
@@ -239,7 +238,7 @@ public class ControllerSubsystem extends SubsystemBase {
 
     private double calculateAnglerAngleDegrees(double computedDistanceMeters, PoseControlProfile profile) {
         if ((profile == BLUE_HUB_PROFILE) || (profile == RED_HUB_PROFILE)) {
-            double distance = (3.281 * computedDistanceMeters) - 2;
+            double distance = (UnitConversion.METER_TO_FOOT * computedDistanceMeters) - Constants.COMPUTATED_DISTANCE_OFFSET;
             return 0.169 * distance * distance
                     - 1.73 * distance
                     + 20.4;
@@ -249,7 +248,7 @@ public class ControllerSubsystem extends SubsystemBase {
 
     private double calculateShooterVelocity(double computedDistanceMeters, PoseControlProfile profile) {
         if ((profile == BLUE_HUB_PROFILE) || (profile == RED_HUB_PROFILE)) {
-            double distance = (3.81 * computedDistanceMeters) - 2;
+            double distance = (UnitConversion.METER_TO_FOOT * computedDistanceMeters) - Constants.COMPUTATED_DISTANCE_OFFSET;
             return (8.46 * distance * distance
                     - 237 * distance
                     - 1_380);

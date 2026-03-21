@@ -171,4 +171,5 @@ public class GameConstants {
 
     public static final double MAX_HUB_DISTANCE = 5.18;
     public static final double MIN_HUB_DISTANCE = 1.42;
+    public static final double COMPUTATED_DISTANCE_OFFSET = 2;
 }

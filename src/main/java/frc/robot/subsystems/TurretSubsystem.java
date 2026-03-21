@@ -30,7 +30,6 @@ public class TurretSubsystem extends SubsystemBase {
         this.io = io;
         // Create 2 tunable configs in case we want to tune both
         this.pidManager = new TunablePIDManager(LOGGING_NAME, io, createPidConfig0());
-        createPidConfig1();
         stopMotors();
     }
 

@@ -194,6 +194,7 @@ public class Robot extends LoggedRobot {
         // continue until interrupted by another command, remove
         // this line or comment it out.
         diagnostics.reset();
+        hubTimer.restart();
         mode.set(RobotMode.TELEOP);
         if (autonomousCommand != null) {
             autonomousCommand.cancel();
@@ -201,19 +202,16 @@ public class Robot extends LoggedRobot {
     }
 
   /** This function is called periodically during operator control. */
-  @Override
+    @Override
   public void teleopPeriodic() {
-    // Check who won autonomous.
-    if (autonomousWinner == null) {
-      determineAutonomousWinner();
-      hubTimer.restart();
-    } else {
-      timerTime = hubTimer.get();
-      determineHubActive();
-      determineHubCountdown();
-    }
-
-    }
+      // Check who won autonomous.
+      if (autonomousWinner == null) {
+          determineAutonomousWinner();
+      } else {
+          determineHubActive();
+          determineHubCountdown();
+      }
+  }
 
     private void determineAutonomousWinner() {
         autonomousWinner = DriverStation.getGameSpecificMessage();
@@ -232,7 +230,7 @@ public class Robot extends LoggedRobot {
     private void determineHubActive() {
 
         // Determine whether the hub is active.
-        double timeSinceTeleop = timerTime();
+        double timeSinceTeleop = hubTimer.get();
         if (timeSinceTeleop < 0) return; // Teleop has not started.
 
         if (timeSinceTeleop >= Constants.ENDGAME_START) {
@@ -254,7 +252,7 @@ public class Robot extends LoggedRobot {
   private void determineHubCountdown(){
     int hubCountdown = 0;
     // Determines time until next hub shift
-    int timeSinceTeleop = (int) timerTime();
+    int timeSinceTeleop = (int) hubTimer.get();
     if (timeSinceTeleop < 0) 
       hubCountdown = 0; // Match has not started.
       // Calculates the time between current time and next shift for every shift of the match
@@ -304,10 +302,6 @@ public class Robot extends LoggedRobot {
     // Getters
     public boolean hubActive() {
         return hubActive;
-    }
-
-    public double timerTime(){
-        return timerTime;
     }
 
     public static Optional<Alliance> allianceColor() {

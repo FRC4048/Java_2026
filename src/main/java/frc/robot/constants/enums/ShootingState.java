@@ -25,5 +25,4 @@ public class ShootingState {
     public void setShootState(ShootState newState) {
         shootState = newState;
     }
-
 }

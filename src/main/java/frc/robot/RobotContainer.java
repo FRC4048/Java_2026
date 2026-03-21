@@ -524,6 +524,9 @@ public class RobotContainer {
                         SmartDashboard.putData(
                                         "intakedeployer/Deployment State: STOPPED",
                                         new SetDeploymentState(intakeDeployer, DeploymentState.STOPPED));
+                        SmartDashboard.putString( 
+                                        "Shooting State",
+                                        shootState.getShootState().name());
 
                 }
 

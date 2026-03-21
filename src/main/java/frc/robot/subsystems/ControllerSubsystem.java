@@ -203,7 +203,8 @@ public class ControllerSubsystem extends SubsystemBase {
     }
 
     private double calculateDistanceMeters(Pose2d robotPose, Pose2d targetPose) {
-        return robotPose.transformBy(Constants.TURRET_OFFSET).getTranslation().getDistance(targetPose.getTranslation());
+        return Math.max(Constants.MIN_HUB_DISTANCE,Math.min(Constants.MAX_HUB_DISTANCE,robotPose.getTranslation().getDistance(targetPose.getTranslation())));
+        
     }
 
     private double calculateAnglerAngleDegrees(double computedDistanceMeters, PoseControlProfile profile, boolean shootHub) {

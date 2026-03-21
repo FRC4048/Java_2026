@@ -133,7 +133,7 @@ public class GameConstants {
     public static final double SHOOTER_HEIGHT = 0.5;
     public static final Pose2d BLUE_HUB_POS = new Pose2d(4.6256, 4.0345, new Rotation2d());
     public static final Pose2d RED_HUB_POS = new Pose2d(11.9154, 4.0345, new Rotation2d());
-    public static final Transform2d TURRET_OFFSET = new Transform2d(.15, 0, new Rotation2d()); //TODO: needs value from hardware
+    public static final Transform2d TURRET_OFFSET = new Transform2d(0.05, 0.12, new Rotation2d()); //TODO: needs value from hardware
     public static final boolean ACCOUNT_FOR_ANGULAR_MOMENTUM = true;
     public static final double DISTANCE_BETWEEN_ROBOT_AND_TURRET = TURRET_OFFSET.getTranslation().getNorm();
     // Shift timings
@@ -156,5 +156,7 @@ public class GameConstants {
     public static final double AVERAGE_CAM_LATENCY = 0; // seconds; TODO: change Later
     public static final double AVERAGE_CAM_LATENCY_STD_DEV = 0; // seconds; TODO: change Later
     public static final double MAX_VISION_DISTANCE_SIMULATION = 6;
+    public static final double MAX_HUB_DISTANCE = 5.18;
+    public static final double MIN_HUB_DISTANCE = 1.42;
 
 }

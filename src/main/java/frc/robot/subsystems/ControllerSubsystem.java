@@ -41,8 +41,9 @@ public class ControllerSubsystem extends SubsystemBase {
     // Placeholder fixed-state settings.
     private static final ShotTargets STOPPED_TARGETS =
             new ShotTargets(Constants.ANGLER_ANGLE_LOW, 0.0, 0.0, 0.0, false, false);
+    //3.25 meters away
     private static final ShotTargets FIXED_TARGETS =
-            new ShotTargets(10.0, 120.0, 5.0, 0.0, true, true);
+            new ShotTargets(21.16, -2945.21, 0, 3.25, true, true);
     private static final ShotTargets FIXED_2_TARGETS =
             new ShotTargets(22.0, 180.0, -5.0, 0.0, true, true);
 
@@ -212,7 +213,7 @@ public class ControllerSubsystem extends SubsystemBase {
 			return Math.floor(
 				8.46 * distance * distance
 			  - 237 * distance
-			  - 1_380);
+			  - 1380);
 		}
         return profile.defaultShooterVelocityRpm;
     }

@@ -15,12 +15,14 @@ public class SetLed extends LoggableCommand{
     private ShootingState shootingState;
     private double x;
     private double y;
+    private boolean stalledIntake;
   
-    public SetLed(LightStripSubsystem lightStrip, SwerveSubsystem drivebase, ShootingState shootingState) {
+    public SetLed(LightStripSubsystem lightStrip, SwerveSubsystem drivebase, ShootingState shootingState, boolean stalledIntake) {
 
         this.lightStrip = lightStrip;
         this.drivebase = drivebase;
         this.shootingState = shootingState;
+        this.stalledIntake = stalledIntake;
         addRequirements(lightStrip);
 
     }
@@ -46,6 +48,8 @@ public class SetLed extends LoggableCommand{
                     lightStrip.setPattern(BlinkinPattern.STROBE_RED);
                 }
 
+        } else if (stalledIntake) {
+            lightStrip.setPattern(BlinkinPattern.ORANGE);
         } else {
 
             switch (shootingState.getShootState()) {

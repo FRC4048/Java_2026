@@ -353,4 +353,11 @@ public class ControllerSubsystem extends SubsystemBase {
             this.defaultTurretAngleDegrees = defaultTurretAngleDegrees;
         }
     }
+
+    public boolean isOnOpposingAllianceSide() {
+        return switch (Robot.allianceColor().get()) {
+            case Red -> getRobotPose().getX() < 4.6116;
+            case Blue -> getRobotPose().getX() > 11.9014;
+        };
+    }
 }

@@ -9,6 +9,9 @@ import choreo.auto.AutoFactory;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Robot;
+import frc.robot.commands.auto.neutral.DepotNeutral;
+import frc.robot.commands.auto.neutral.OutpostNeutral;
+import frc.robot.commands.auto.disturbance.DepotDisturbance;
 import frc.robot.commands.auto.disturbance.OutpostDisturbance;
 import frc.robot.commands.auto.shoot.DepotShoot;
 import frc.robot.commands.auto.shoot.MidShoot;
@@ -110,18 +113,35 @@ public class AutoChooser {
 
         //shoot
         commandMap.put(new AutoEvent(AutoAction.SHOOT, FieldLocation.DEPOT_SIDE),
-            new DepotShoot(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler)); 
+            new DepotShoot(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, controller)); 
         commandMap.put(new AutoEvent(AutoAction.SHOOT, FieldLocation.MID),
-            new MidShoot(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler));
+            new MidShoot(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, controller));
         commandMap.put(new AutoEvent(AutoAction.SHOOT, FieldLocation.OUTPOST_SIDE),
-            new OutpostShoot(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler));
+            new OutpostShoot(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, controller));
 
         //shoot-pickup
         commandMap.put(new AutoEvent(AutoAction.SHOOT_PICKUP, FieldLocation.DEPOT_SIDE),
-            new DepotShootPickup(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, intake));
+            new DepotShootPickup(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, controller, intake));
         commandMap.put(new AutoEvent(AutoAction.SHOOT_PICKUP, FieldLocation.OUTPOST_SIDE),
-            new DepotShootPickup(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, intake)); 
-        
+            new OutpostShootPickup(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, controller, intake));
+        commandMap.put(new AutoEvent(AutoAction.SHOOT_PICKUP, FieldLocation.MID),
+            new MidShoot(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, controller));
+
+        //disturbance
+        commandMap.put(new AutoEvent(AutoAction.DISTURBANCE, FieldLocation.DEPOT_SIDE),
+            new DepotDisturbance(drivetrain, auto, shootstate, turret, angler, controller));
+        commandMap.put(new AutoEvent(AutoAction.DISTURBANCE, FieldLocation.OUTPOST_SIDE),
+            new OutpostDisturbance(drivetrain, auto, shootstate, turret, angler, controller));
+        commandMap.put(new AutoEvent(AutoAction.DISTURBANCE, FieldLocation.MID),
+            new DoNothing(turret, angler));
+
+        //neutral zone
+        commandMap.put(new AutoEvent(AutoAction.NEUTRAL_ZONE, FieldLocation.DEPOT_SIDE),
+            new DepotNeutral(drivetrain, auto, shootstate, turret, angler, controller));
+        commandMap.put(new AutoEvent(AutoAction.NEUTRAL_ZONE, FieldLocation.OUTPOST_SIDE),
+            new OutpostNeutral(drivetrain, auto, shootstate, turret, angler, controller));
+        commandMap.put(new AutoEvent(AutoAction.NEUTRAL_ZONE, FieldLocation.MID),
+            new DoNothing(turret, angler));
 
     }
 
@@ -141,6 +161,27 @@ public class AutoChooser {
             "shoot from the middle"); 
         descriptionMap.put(new AutoEvent(AutoAction.SHOOT, FieldLocation.OUTPOST_SIDE),
             "shoot from the outpost"); 
+
+        descriptionMap.put(new AutoEvent(AutoAction.SHOOT_PICKUP, FieldLocation.DEPOT_SIDE),
+            "shoot and pickup from the depot");
+        descriptionMap.put(new AutoEvent(AutoAction.SHOOT_PICKUP, FieldLocation.MID),
+            "mid shoot fallback (no pickup path configured)");
+        descriptionMap.put(new AutoEvent(AutoAction.SHOOT_PICKUP, FieldLocation.OUTPOST_SIDE),
+            "shoot and pickup from the outpost");
+
+        descriptionMap.put(new AutoEvent(AutoAction.DISTURBANCE, FieldLocation.DEPOT_SIDE),
+            "run the depot disturbance route");
+        descriptionMap.put(new AutoEvent(AutoAction.DISTURBANCE, FieldLocation.MID),
+            "not configured for middle (do nothing)");
+        descriptionMap.put(new AutoEvent(AutoAction.DISTURBANCE, FieldLocation.OUTPOST_SIDE),
+            "run the outpost disturbance route");
+
+        descriptionMap.put(new AutoEvent(AutoAction.NEUTRAL_ZONE, FieldLocation.DEPOT_SIDE),
+            "shoot and run depot neutral zone cycle");
+        descriptionMap.put(new AutoEvent(AutoAction.NEUTRAL_ZONE, FieldLocation.MID),
+            "not configured for middle (do nothing)");
+        descriptionMap.put(new AutoEvent(AutoAction.NEUTRAL_ZONE, FieldLocation.OUTPOST_SIDE),
+            "shoot and run outpost neutral zone cycle");
     }
 
     public AutoEvent getSelectedEvent() {

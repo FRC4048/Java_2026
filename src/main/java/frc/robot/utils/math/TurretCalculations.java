@@ -1,5 +1,9 @@
 package frc.robot.utils.math;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.geometry.Twist2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 
 import org.littletonrobotics.junction.Logger;
 
@@ -32,31 +36,11 @@ public class TurretCalculations {
     // all positions are in meters
     // robotRotation is in radians
     // Returns - turret angle in radians
-    public static double calculateTurretAngle(double robotPosX, double robotPosY, double robotRotation, boolean isBlueAlliance) {
-        
-        // Get turret offset from robot center
-        double turretOffsetX = GameConstants.X_DISTANCE_BETWEEN_ROBOT_AND_TURRET;
-        double turretOffsetY = GameConstants.Y_DISTANCE_BETWEEN_ROBOT_AND_TURRET;
+    public static double calculateTurretAngle(Pose2d robotPos,Pose2d adjTargetPose, boolean isBlueAlliance) {
 
-        // Rotate the offset by robot rotation (offset rotates with robot)
-        double rotatedOffsetX = turretOffsetX * Math.cos(robotRotation) - turretOffsetY * Math.sin(robotRotation);
-        double rotatedOffsetY = turretOffsetX * Math.sin(robotRotation) + turretOffsetY * Math.cos(robotRotation);
+        Pose2d turretPos = robotPos.transformBy(GameConstants.TURRET_OFFSET);
 
-        // Calculate actual turret position on field
-        double turretPosX = robotPosX + rotatedOffsetX;
-        double turretPosY = robotPosY + rotatedOffsetY;
-
-        double hubPosX;
-        double hubPosY;
-
-        if (isBlueAlliance) {
-            // hub position determined by which alliance robot is on
-            hubPosX = GameConstants.BLUE_HUB_X_POSITION;
-            hubPosY = GameConstants.BLUE_HUB_Y_POSITION;
-        } else {
-            hubPosX = GameConstants.RED_HUB_X_POSITION;
-            hubPosY = GameConstants.RED_HUB_Y_POSITION;
-        }
+        Pose2d hubPos = adjTargetPose;
 
         /*
          * This finds the unadjusted pan angle (assuming there is no robot rotation) using
@@ -66,7 +50,8 @@ public class TurretCalculations {
          * of the input numbers.
          * 
          */
-        double panAngleUnadjusted = Math.atan2(hubPosY - turretPosY, hubPosX - turretPosX);
+        Translation2d hubRelativeToRobot = hubPos.relativeTo(turretPos).getTranslation();
+        double panAngleUnadjusted = hubRelativeToRobot.getAngle().getRadians();
 
         /*
          * Adjusts the pan angle to account for the robot's current rotation. We subtract the
@@ -74,7 +59,7 @@ public class TurretCalculations {
          * pan angle, which is the proper angle of the turret adjusted for the robot's rotation
          * and the fact that the turret 0 angle in in the back of the robot.
          */
-        double panAngle = panAngleUnadjusted - (robotRotation + Math.PI);
+        double panAngle = panAngleUnadjusted - (robotPos.getRotation().getRadians() + Math.PI);
 
         // normalize angle between -PI and PI
         double normalizedPanAngle = panAngle - 2 * Math.PI * Math.floor((panAngle + Math.PI) / (2 * Math.PI));

@@ -112,18 +112,18 @@ public class ControllerSubsystem extends SubsystemBase {
     }
 
     private Pose2d getRobotPose() {
-        SmartDashboard.putBoolean(USING_MANUAL_POSE_KEY, shouldUseManualPose());
-        Logger.recordOutput(USING_MANUAL_POSE_KEY, shouldUseManualPose());
-        if (shouldUseManualPose()) {
+        boolean useManualPose = shouldUseManualPose();
+        SmartDashboard.putBoolean(USING_MANUAL_POSE_KEY, useManualPose);
+        Logger.recordOutput(USING_MANUAL_POSE_KEY, useManualPose);
+        if (useManualPose) {
             return getManualPose();
         }
         return drivebase.getPose();
     }
 
     private boolean shouldUseManualPose() {
-        // This can be confusing in case you're on the robot and have disabled the
-        // drivetrain
         // Uncomment to control manually
+        // return Constants.TESTBED || drivebase == null;
         return false;
     }
 
@@ -191,13 +191,22 @@ public class ControllerSubsystem extends SubsystemBase {
 
     private void useShotTargets(ShotTargets shotTargets) {
         boolean driverEnabled = driverActivatedShootingEnabled();
+        double shooterVelocityRpm = shotTargets.shooterVelocityRpm;
+        if (isTurretTargetOutOfRange(shotTargets.turretAngleDegrees) && shooterVelocityRpm != 0.0) {
+            shooterVelocityRpm = Constants.TURRET_OUT_OF_RANGE_FLOP_RPM;
+        }
         activeTargets = new ShotTargets(
                 shotTargets.anglerAngleDegrees,
-                shotTargets.shooterVelocityRpm,
+                shooterVelocityRpm,
                 shotTargets.turretAngleDegrees,
                 shotTargets.distanceMeters,
                 driverEnabled,
                 driverEnabled);
+    }
+
+    private boolean isTurretTargetOutOfRange(double turretAngleDegrees) {
+        return turretAngleDegrees < Constants.TURRET_MIN_ANGLE
+                || turretAngleDegrees > Constants.TURRET_MAX_ANGLE;
     }
 
     private ShotTargets calculateTargetsFromPose(ShootState state,PoseControlProfile profile, Pose2d robotPose) {

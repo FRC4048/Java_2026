@@ -381,7 +381,8 @@ public class RobotContainer {
                                         new RunHopperAndFeeder(hopperSubsystem, feederSubsystem));
                         SmartDashboard.putData("RunTurret",
                                         new TestSetTurretAngle(turretSubsystem));
-
+                        SmartDashboard.putData("Run \"ShootButton\"",
+                                        new ShootButton(controllerSubsystem));
                         SmartDashboard.putData(
                                         "test/Run Dashboard Shot Test (30s)",
                                         new RunDashboardShotTest(anglerSubsystem, turretSubsystem, shooterSubsystem));
@@ -568,4 +569,8 @@ public class RobotContainer {
         public IntakeDeployerSubsystem getDeployer(){
                 return intakeDeployer;
         }
+
+    public ShooterSubsystem getShooterSubsystem(){
+        return shooterSubsystem;
+    }
 }

@@ -293,7 +293,9 @@ public class ControllerSubsystem extends SubsystemBase {
     }
 
     public boolean shouldHopperSpin() {
-        return activeTargets.hopperSpin;
+        return activeTargets.hopperSpin
+        && Math.abs(robotContainer.getShooterSubsystem().getVelocity()) > Math.abs(Constants.SHOOTER_THRESHOLD)
+        && Math.abs(activeTargets.shooterVelocityRpm)                   > Math.abs(Constants.SHOOTER_THRESHOLD);
     }
 
     public void setDriverActivatedShooting(boolean set) {

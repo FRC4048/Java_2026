@@ -44,6 +44,9 @@ public class GameConstants {
     public static final int STEER_JOYSTICK_PORT = 1;
     public static final int XBOX_CONTROLLER_PORT = 2;
 
+    // Thresholds
+    public static final double SHOOTER_THRESHOLD = 1500;
+
     //Speeds
     public static final double INTAKE_SPEED = -0.5;
     public static final double HOPPER_SPEED = 0.35;//Want to increase this later

@@ -36,7 +36,7 @@ public class GameConstants {
     public static final boolean ENABLE_LOGGING = true;
 
     //Debugs
-    public static final boolean DEBUG = false;
+    public static final boolean DEBUG = true;
     public static final boolean ARM_DEBUG = true;
 
     //Joystick
@@ -123,8 +123,8 @@ public class GameConstants {
     public static final double TURRET_MIN_ANGLE = -92;
     public static final double TURRET_MAX_ANGLE = 92;
     public static final double TURRET_LIMIT_SPEED = 0.2;
-    public static final double TURRET_OUT_OF_RANGE_FLOP_RPM = 1500.0;
-    public static final double TURRET_PID_DISTANCE_THRESHOLD = 45; /* TODO: Change later
+    public static final double TURRET_OUT_OF_RANGE_FLOP_RPM = -1500;
+    public static final double TURRET_PID_DISTANCE_THRESHOLD = 5; /* TODO: Change later
     Minimum target encoder distance needed to use the longer pid slot*/
 
 

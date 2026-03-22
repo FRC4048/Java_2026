@@ -568,4 +568,7 @@ public class RobotContainer {
         public IntakeDeployerSubsystem getDeployer(){
                 return intakeDeployer;
         }
+        public LightStripSubsystem getLightStrip() {
+                return lightStripSubsystem;
+        }
 }

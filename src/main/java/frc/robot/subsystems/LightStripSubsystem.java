@@ -16,7 +16,7 @@ public class LightStripSubsystem extends SubsystemBase{
 
     public LightStripSubsystem(SwerveSubsystem drivebase, ShootingState shootingState) {
         this.io = new Spark(Constants.LIGHT_STRIP_CHANNEL);
-        setDefaultCommand(new SetLed(this, drivebase, shootingState));
+        setDefaultCommand(new SetLed(this, shootingState));
     }
 
     public void setPattern(BlinkinPattern pattern) {

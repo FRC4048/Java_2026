@@ -29,7 +29,8 @@ public class MidShoot extends LoggableSequentialCommandGroup{
                     new SetShootingState(shootstate, ShootState.SHOOTING_HUB),
                     new DriveSwerve(drivetrain, DriveDirection.BACKWARD, 2, 0.5)
                 ),
-                new AutoShoot(hopper, feeder, 5)
+                new AutoShoot(hopper, feeder, 5),
+                new SetShootingState(shootstate, ShootState.STOPPED)
         );
     }
 }

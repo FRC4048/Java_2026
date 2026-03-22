@@ -1,11 +1,15 @@
 package frc.robot.commands.auto.shootpickup;
 
 import choreo.auto.AutoFactory;
-import frc.robot.commands.ToggleShooting;
 import frc.robot.commands.auto.AutoReset;
+import frc.robot.commands.auto.AutoShoot;
+import frc.robot.commands.drive.DriveSwerve;
 import frc.robot.commands.intakeDeployment.ToggleDeployment;
-import frc.robot.commands.turret.SetTurretAngle;
+import frc.robot.commands.shooter.SetShootingState;
+import frc.robot.commands.turret.RunTurretToRevLimit;
+import frc.robot.constants.enums.DriveDirection;
 import frc.robot.constants.enums.ShootingState;
+import frc.robot.constants.enums.ShootingState.ShootState;
 import frc.robot.subsystems.*;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import frc.robot.utils.logging.commands.LoggableCommandWrapper;
@@ -20,21 +24,23 @@ public class DepotShootPickup extends LoggableSequentialCommandGroup {
         super(
                 //shoot
                 new AutoReset(shootstate, turret, angler),
-                new SetTurretAngle(turret, 0),
-                LoggableCommandWrapper.wrap(auto.resetOdometry("Depot_Shoot")),
-                LoggableCommandWrapper.wrap(auto.trajectoryCmd("Depot_Shoot").withTimeout(1.3)),
-                new ToggleShooting(controller, 5),
+                new RunTurretToRevLimit(turret),
+                new LoggableParallelCommandGroup(
+                    new SetShootingState(shootstate, ShootState.SHOOTING_HUB),
+                    new DriveSwerve(drivetrain, DriveDirection.BACKWARD, 2, 0.5)
+                ),
+                new AutoShoot(hopper, feeder, 5),
+
+                LoggableCommandWrapper.wrap(auto.resetOdometry("Depot_ToDepot")),
+                LoggableCommandWrapper.wrap(auto.trajectoryCmd("Depot_ToDepot").withTimeout(1)), //0.7 s
 
                 //pickup and shoot
+                LoggableCommandWrapper.wrap(auto.resetOdometry("Depot_Pickup")),
                 new LoggableParallelCommandGroup(
-                        new ToggleDeployment(intake),
-                        new SetTurretAngle(turret, 30),
-                        new ToggleShooting(controller, 0),
-                        LoggableCommandWrapper.wrap(auto.resetOdometry("Depot_Pickup"))
-                ),
-                LoggableCommandWrapper.wrap(auto.trajectoryCmd("Depot_Pickup").withTimeout(1.9)),
-                new ToggleDeployment(intake),
-                new ToggleShooting(controller, 0)
+                    LoggableCommandWrapper.wrap(auto.trajectoryCmd("Depot_Pickup").withTimeout(1)), //0.7 s
+                    new AutoShoot(hopper, feeder, 5),
+                    new ToggleDeployment(intake)
+                )
         );
     }
 }

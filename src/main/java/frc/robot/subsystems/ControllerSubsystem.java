@@ -12,12 +12,14 @@ import org.dyn4j.UnitConversion;
 import org.littletonrobotics.junction.Logger;
 
 import frc.robot.RobotContainer;
+import frc.robot.commands.intakeDeployment.ToggleDeployment;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.constants.Constants;
 import frc.robot.constants.enums.DeploymentState;
 import frc.robot.constants.enums.ShootingState.ShootState;
@@ -145,8 +147,8 @@ public class ControllerSubsystem extends SubsystemBase {
     }
 
     private void updateTargets(ShootState state, Pose2d robotPose) {
-        if(!activeTargets.intakeDeploy){
-            intakeDeployer.setDeploymentState(DeploymentState.UP);
+        if(!activeTargets.intakeDeploy && intakeDeployer.getDeploymentState() == DeploymentState.DOWN){
+            new ToggleDeployment(intakeDeployer, this).schedule();
         }
         switch (state) {
             case STOPPED -> updateStoppedTargets();
@@ -165,7 +167,6 @@ public class ControllerSubsystem extends SubsystemBase {
                     useShotTargets(FIXED_TARGETS);
                 }
             }
-
             case SHUTTLING -> {
                 if (Robot.allianceColor().isEmpty()) {
                     useShotTargets(FIXED_TARGETS);

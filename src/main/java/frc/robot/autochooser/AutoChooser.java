@@ -113,19 +113,19 @@ public class AutoChooser {
 
         //shoot
         commandMap.put(new AutoEvent(AutoAction.SHOOT, FieldLocation.DEPOT_SIDE),
-            new DepotShoot(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, controller)); 
+            new DepotShoot(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler));
         commandMap.put(new AutoEvent(AutoAction.SHOOT, FieldLocation.MID),
-            new MidShoot(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, controller));
+            new MidShoot(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler));
         commandMap.put(new AutoEvent(AutoAction.SHOOT, FieldLocation.OUTPOST_SIDE),
-            new OutpostShoot(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, controller));
+            new OutpostShoot(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler));
 
         //shoot-pickup
         commandMap.put(new AutoEvent(AutoAction.SHOOT_PICKUP, FieldLocation.DEPOT_SIDE),
             new DepotShootPickup(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, controller, intake));
         commandMap.put(new AutoEvent(AutoAction.SHOOT_PICKUP, FieldLocation.OUTPOST_SIDE),
-            new OutpostShootPickup(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, controller, intake));
+            new OutpostShootPickup(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, intake));
         commandMap.put(new AutoEvent(AutoAction.SHOOT_PICKUP, FieldLocation.MID),
-            new MidShoot(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, controller));
+            new MidShoot(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler));
 
         //disturbance
         commandMap.put(new AutoEvent(AutoAction.DISTURBANCE, FieldLocation.DEPOT_SIDE),

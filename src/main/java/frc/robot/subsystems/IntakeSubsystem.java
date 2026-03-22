@@ -53,6 +53,8 @@ public class IntakeSubsystem extends SubsystemBase {
         io.periodic();
         if (intaking && abs(io.getVelocity())<Constants.INTAKE_STALL_SPEED) {
             intakeStalled = true;
+        } else {
+            intakeStalled = false;
         }
     }
 

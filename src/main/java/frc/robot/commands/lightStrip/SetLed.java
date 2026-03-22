@@ -7,6 +7,7 @@ import frc.robot.subsystems.LightStripSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import frc.robot.utils.BlinkinPattern;
 import frc.robot.utils.logging.commands.LoggableCommand;
+import org.littletonrobotics.junction.Logger;
 
 import java.util.function.BooleanSupplier;
 
@@ -36,7 +37,7 @@ public class SetLed extends LoggableCommand{
 
     @Override
     public void execute() {
-
+        Logger.recordOutput("IntakeJammed", stalledIntake);
         x = drivebase.getPose().getX();
         y = drivebase.getPose().getY();
 

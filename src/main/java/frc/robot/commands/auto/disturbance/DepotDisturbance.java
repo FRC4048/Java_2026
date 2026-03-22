@@ -2,7 +2,7 @@ package frc.robot.commands.auto.disturbance;
 
 import choreo.auto.AutoFactory;
 import frc.robot.commands.ToggleShooting;
-import frc.robot.commands.auto.ResetMechanisms;
+import frc.robot.commands.auto.AutoReset;
 import frc.robot.commands.turret.SetTurretAngle;
 import frc.robot.constants.enums.ShootingState;
 import frc.robot.subsystems.AnglerSubsystem;

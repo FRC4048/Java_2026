@@ -1,16 +1,16 @@
 package frc.robot.commands.auto.shootpickup;
 
 import choreo.auto.AutoFactory;
-import frc.robot.commands.ToggleShooting;
-import frc.robot.commands.auto.ResetMechanisms;
-import frc.robot.commands.climber.OutpostClimbSequence;
-import frc.robot.commands.climber.ClimberUp;
+import frc.robot.commands.auto.AutoReset;
+import frc.robot.commands.auto.AutoShoot;
+import frc.robot.commands.drive.DriveSwerve;
 import frc.robot.commands.intakeDeployment.ToggleDeployment;
-import frc.robot.commands.turret.SetTurretAngle;
+import frc.robot.commands.shooter.SetShootingState;
+import frc.robot.commands.turret.RunTurretToRevLimit;
+import frc.robot.constants.enums.DriveDirection;
 import frc.robot.constants.enums.ShootingState;
+import frc.robot.constants.enums.ShootingState.ShootState;
 import frc.robot.subsystems.AnglerSubsystem;
-import frc.robot.subsystems.ClimberSubsystem;
-import frc.robot.subsystems.ControllerSubsystem;
 import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.subsystems.HopperSubsystem;
 import frc.robot.subsystems.IntakeDeployerSubsystem;
@@ -20,30 +20,33 @@ import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import frc.robot.utils.logging.commands.LoggableCommandWrapper;
 import frc.robot.utils.logging.commands.LoggableParallelCommandGroup;
 import frc.robot.utils.logging.commands.LoggableSequentialCommandGroup;
+import frc.robot.utils.logging.commands.LoggableWaitCommand;
 
 public class OutpostShootPickup extends LoggableSequentialCommandGroup{
     public OutpostShootPickup(
         SwerveSubsystem drivetrain, AutoFactory auto, ShooterSubsystem shooter, ShootingState shootstate, 
         HopperSubsystem hopper, FeederSubsystem feeder, TurretSubsystem turret, AnglerSubsystem angler, 
-        ControllerSubsystem controller, IntakeDeployerSubsystem intake) {
+        IntakeDeployerSubsystem intake) {
         super(  
-                //shoot
-                new ResetMechanisms(shootstate, turret, angler),
-                new SetTurretAngle(turret, 0),
-                LoggableCommandWrapper.wrap(auto.resetOdometry("Outpost_Shoot")),
-                LoggableCommandWrapper.wrap(auto.trajectoryCmd("Outpost_Shoot").withTimeout(1.3)),
-                new ToggleShooting(controller, 5),
-
-                //pickup and shoot
+                new AutoReset(shootstate, turret, angler),
+                new RunTurretToRevLimit(turret),
                 new LoggableParallelCommandGroup(
-                    new ToggleDeployment(intake),
-                    new SetTurretAngle(turret, 40),
-                    new ToggleShooting(controller, 0),
-                    // Use the first outpost neutral leg as the pickup segment until a dedicated path is added.
-                    LoggableCommandWrapper.wrap(auto.resetOdometry("Outpost_Neutral_1"))
+                    new SetShootingState(shootstate, ShootState.SHOOTING_HUB),
+                    new DriveSwerve(drivetrain, DriveDirection.BACKWARD, 2, 0.5)
                 ),
-                LoggableCommandWrapper.wrap(auto.trajectoryCmd("Outpost_Neutral_1").withTimeout(1.9)),
-                new ToggleDeployment(intake)
+                new AutoShoot(hopper, feeder, 5),
+
+                LoggableCommandWrapper.wrap(auto.resetOdometry("Outpost_ToOutpost")),
+                LoggableCommandWrapper.wrap(auto.trajectoryCmd("Outpost_ToDepot").withTimeout(1.9)),
+
+                new LoggableWaitCommand(2),
+
+                LoggableCommandWrapper.wrap(auto.resetOdometry("Outpost_Pickup")),
+                new LoggableParallelCommandGroup(
+                    LoggableCommandWrapper.wrap(auto.trajectoryCmd("Outpost_Pickup").withTimeout(1.9)),
+                    new ToggleDeployment(intake),
+                    new AutoShoot(hopper, feeder, 5)
+                )
         );
     }
 }

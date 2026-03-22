@@ -8,15 +8,17 @@ import frc.robot.constants.enums.ShootingState;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import frc.robot.utils.BlinkinPattern;
 
+import java.util.function.BooleanSupplier;
+
 public class LightStripSubsystem extends SubsystemBase{
     
     public static final String LOGGING_NAME = "LightStripSubsystem";
     private final Spark io;
     private BlinkinPattern pattern;
 
-    public LightStripSubsystem(SwerveSubsystem drivebase, ShootingState shootingState) {
+    public LightStripSubsystem(SwerveSubsystem drivebase, ShootingState shootingState, BooleanSupplier stalledIntake) {
         this.io = new Spark(Constants.LIGHT_STRIP_CHANNEL);
-        setDefaultCommand(new SetLed(this, drivebase, shootingState, false));
+        setDefaultCommand(new SetLed(this, drivebase, shootingState, stalledIntake));
     }
 
     public void setPattern(BlinkinPattern pattern) {

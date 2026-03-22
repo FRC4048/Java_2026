@@ -8,6 +8,8 @@ import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import frc.robot.utils.BlinkinPattern;
 import frc.robot.utils.logging.commands.LoggableCommand;
 
+import java.util.function.BooleanSupplier;
+
 public class SetLed extends LoggableCommand{
 
     private final LightStripSubsystem lightStrip;
@@ -15,9 +17,9 @@ public class SetLed extends LoggableCommand{
     private ShootingState shootingState;
     private double x;
     private double y;
-    private boolean stalledIntake;
+    private BooleanSupplier stalledIntake;
   
-    public SetLed(LightStripSubsystem lightStrip, SwerveSubsystem drivebase, ShootingState shootingState, boolean stalledIntake) {
+    public SetLed(LightStripSubsystem lightStrip, SwerveSubsystem drivebase, ShootingState shootingState, BooleanSupplier stalledIntake) {
 
         this.lightStrip = lightStrip;
         this.drivebase = drivebase;
@@ -48,7 +50,7 @@ public class SetLed extends LoggableCommand{
                     lightStrip.setPattern(BlinkinPattern.STROBE_RED);
                 }
 
-        } else if (stalledIntake) {
+        } else if (stalledIntake.getAsBoolean()) {
             lightStrip.setPattern(BlinkinPattern.ORANGE);
         } else {
 

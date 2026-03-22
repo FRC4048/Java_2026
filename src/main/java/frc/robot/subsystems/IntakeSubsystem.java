@@ -89,4 +89,7 @@ public class IntakeSubsystem extends SubsystemBase {
                 PersistMode.kPersistParameters);
         return motor;
     }
+    public boolean getIntakeStalled() {
+        return intakeStalled;
+    }
 }

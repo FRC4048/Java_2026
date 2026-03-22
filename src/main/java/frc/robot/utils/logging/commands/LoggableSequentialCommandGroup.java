@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ProxyCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.ToggleShooting;
-import frc.robot.commands.auto.ResetMechanisms;
+import frc.robot.commands.auto.AutoReset;
 import frc.robot.commands.intakeDeployment.ToggleDeployment;
 import frc.robot.commands.turret.SetTurretAngle;
 
@@ -21,7 +21,7 @@ public class LoggableSequentialCommandGroup extends SequentialCommandGroup imple
     addCommands(proxyCommands);
   }
 
-  public LoggableSequentialCommandGroup(ResetMechanisms resetMechanisms, SetTurretAngle setTurretAngle,
+  public LoggableSequentialCommandGroup(AutoReset resetMechanisms, SetTurretAngle setTurretAngle,
         LoggableCommandWrapper wrap, LoggableCommandWrapper wrap2, ToggleShooting toggleShooting,
         LoggableParallelCommandGroup loggableParallelCommandGroup, LoggableCommandWrapper wrap3,
         ToggleDeployment toggleDeployment, ToggleShooting toggleShooting2) {

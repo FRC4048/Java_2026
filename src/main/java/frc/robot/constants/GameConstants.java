@@ -36,7 +36,7 @@ public class GameConstants {
     public static final boolean ENABLE_LOGGING = true;
 
     //Debugs
-    public static final boolean DEBUG = false;
+    public static final boolean DEBUG = true;
     public static final boolean ARM_DEBUG = true;
 
     //Joystick
@@ -117,7 +117,7 @@ public class GameConstants {
     public static final double TURRET_HOME_ANGLE = 0.0; //Turret facing forward
     public static final double TURRET_MIN_ANGLE = -97;
     public static final double TURRET_MAX_ANGLE = 97;
-    public static final double TURRET_LIMIT_SPEED = 0.2;
+    public static final double TURRET_LIMIT_SPEED = 0.1;
 
     //swerve config
     public static final TelemetryVerbosity TELEMENTRY_VERBOSITY = TelemetryVerbosity.HIGH;

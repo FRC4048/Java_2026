@@ -1,33 +1,45 @@
 package frc.robot.commands.auto.neutral;
 
 import choreo.auto.AutoFactory;
-import frc.robot.commands.ToggleShooting;
 import frc.robot.commands.auto.AutoReset;
-import frc.robot.commands.turret.SetTurretAngle;
+import frc.robot.commands.auto.AutoShoot;
+import frc.robot.commands.drive.DriveSwerve;
+import frc.robot.commands.intakeDeployment.ToggleDeployment;
+import frc.robot.commands.shooter.SetShootingState;
+import frc.robot.commands.turret.RunTurretToRevLimit;
+import frc.robot.constants.enums.DriveDirection;
 import frc.robot.constants.enums.ShootingState;
-import frc.robot.subsystems.AnglerSubsystem;
-import frc.robot.subsystems.ControllerSubsystem;
-import frc.robot.subsystems.TurretSubsystem;
+import frc.robot.constants.enums.ShootingState.ShootState;
+import frc.robot.subsystems.*;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import frc.robot.utils.logging.commands.LoggableCommandWrapper;
+import frc.robot.utils.logging.commands.LoggableParallelCommandGroup;
 import frc.robot.utils.logging.commands.LoggableSequentialCommandGroup;
 
 public class DepotNeutral extends LoggableSequentialCommandGroup {
     public DepotNeutral(
-            SwerveSubsystem drivetrain,
-            AutoFactory auto,
-            ShootingState shootstate,
-            TurretSubsystem turret,
-            AnglerSubsystem angler,
-            ControllerSubsystem controller) {
+            SwerveSubsystem drivetrain, AutoFactory auto, ShooterSubsystem shooter, ShootingState shootstate,
+            HopperSubsystem hopper, FeederSubsystem feeder, TurretSubsystem turret, AnglerSubsystem angler,
+            ControllerSubsystem controller, IntakeDeployerSubsystem intake) {
         super(
+                //shoot
                 new AutoReset(shootstate, turret, angler),
-                new SetTurretAngle(turret, 0),
-                LoggableCommandWrapper.wrap(auto.resetOdometry("Depot_Neutral_1")),
-                LoggableCommandWrapper.wrap(auto.trajectoryCmd("Depot_Neutral_1")),
-                new ToggleShooting(controller, 5),
-                LoggableCommandWrapper.wrap(auto.trajectoryCmd("Depot_Neutral_2")),
-                LoggableCommandWrapper.wrap(auto.trajectoryCmd("Depot_Neutral_3")),
-                LoggableCommandWrapper.wrap(auto.trajectoryCmd("Depot_Neutral_4")));
+                new LoggableParallelCommandGroup(
+                    new SetShootingState(shootstate, ShootState.SHOOTING_HUB),
+                    new DriveSwerve(drivetrain, DriveDirection.BACKWARD, 2, 0.5)
+                ),
+                new AutoShoot(hopper, feeder, 5),
+
+                LoggableCommandWrapper.wrap(auto.resetOdometry("Depot_ToDepot")),
+                LoggableCommandWrapper.wrap(auto.trajectoryCmd("Depot_ToDepot").withTimeout(1)), //0.7 s
+
+                //pickup and shoot
+                LoggableCommandWrapper.wrap(auto.resetOdometry("Depot_Pickup")),
+                new LoggableParallelCommandGroup(
+                    LoggableCommandWrapper.wrap(auto.trajectoryCmd("Depot_Pickup").withTimeout(2)), //1.6 s
+                    new AutoShoot(hopper, feeder, 5),
+                    new ToggleDeployment(intake)
+                )
+        );
     }
 }

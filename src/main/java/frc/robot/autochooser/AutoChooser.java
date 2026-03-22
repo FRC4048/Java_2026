@@ -120,7 +120,7 @@ public class AutoChooser {
 
         //shoot-pickup
         commandMap.put(new AutoEvent(AutoAction.SHOOT_PICKUP, FieldLocation.DEPOT_SIDE),
-            new DepotShootPickup(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, controller, intake));
+            new DepotShootPickup(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, intake));
         commandMap.put(new AutoEvent(AutoAction.SHOOT_PICKUP, FieldLocation.OUTPOST_SIDE),
             new OutpostShoot(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler));
         commandMap.put(new AutoEvent(AutoAction.SHOOT_PICKUP, FieldLocation.MID),
@@ -136,7 +136,7 @@ public class AutoChooser {
 
         //neutral zone
         commandMap.put(new AutoEvent(AutoAction.NEUTRAL_ZONE, FieldLocation.DEPOT_SIDE),
-            new DepotNeutral(drivetrain, auto, shootstate, turret, angler, controller));
+            new DepotNeutral(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, controller, intake));
         commandMap.put(new AutoEvent(AutoAction.NEUTRAL_ZONE, FieldLocation.OUTPOST_SIDE),
             new OutpostNeutral(drivetrain, auto, shootstate, turret, angler, controller));
         commandMap.put(new AutoEvent(AutoAction.NEUTRAL_ZONE, FieldLocation.MID),

@@ -20,7 +20,7 @@ public class DepotShootPickup extends LoggableSequentialCommandGroup {
     public DepotShootPickup(
             SwerveSubsystem drivetrain, AutoFactory auto, ShooterSubsystem shooter, ShootingState shootstate,
             HopperSubsystem hopper, FeederSubsystem feeder, TurretSubsystem turret, AnglerSubsystem angler,
-            ControllerSubsystem controller, IntakeDeployerSubsystem intake) {
+            IntakeDeployerSubsystem intake) {
         super(
                 //shoot
                 new AutoReset(shootstate, turret, angler),

@@ -122,7 +122,7 @@ public class GameConstants {
     public static final double TURRET_HOME_ANGLE = 0.0; //Turret facing forward
     public static final double TURRET_MIN_ANGLE = -92;
     public static final double TURRET_MAX_ANGLE = 92;
-    public static final double TURRET_LIMIT_SPEED = 0.2;
+    public static final double TURRET_LIMIT_SPEED = 0.1;
     public static final double TURRET_PID_DISTANCE_THRESHOLD = 45; /* TODO: Change later
     Minimum target encoder distance needed to use the longer pid slot*/
 

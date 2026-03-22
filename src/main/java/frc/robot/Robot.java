@@ -11,6 +11,7 @@ import edu.wpi.first.cscore.VideoSource;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -40,11 +41,10 @@ public class Robot extends LoggedRobot {
     private static final Diagnostics diagnostics = new Diagnostics();
     private final RobotContainer robotContainer;
     private static final AtomicReference<RobotMode> mode = new AtomicReference<>(RobotMode.DISABLED);
-
     private String autonomousWinner;
-
     private boolean hubActive;
     private static Alliance autoWinner;
+    private final Timer hubTimer = new Timer();
 
     private static Optional<DriverStation.Alliance> allianceColor = Optional.empty();
 
@@ -194,6 +194,7 @@ public class Robot extends LoggedRobot {
         // continue until interrupted by another command, remove
         // this line or comment it out.
         diagnostics.reset();
+        hubTimer.restart();
         mode.set(RobotMode.TELEOP);
         if (autonomousCommand != null) {
             autonomousCommand.cancel();
@@ -202,15 +203,15 @@ public class Robot extends LoggedRobot {
 
   /** This function is called periodically during operator control. */
     @Override
-    public void teleopPeriodic() {
-        // Check who won autonomous.
-        if (autonomousWinner == null) {
-            determineAutonomousWinner();
-        } else {
-            determineHubActive();
-        }
-
-    }
+  public void teleopPeriodic() {
+      // Check who won autonomous.
+      if (autonomousWinner == null) {
+          determineAutonomousWinner();
+      } else {
+          determineHubActive();
+          determineHubCountdown();
+      }
+  }
 
     private void determineAutonomousWinner() {
         autonomousWinner = DriverStation.getGameSpecificMessage();
@@ -229,26 +230,46 @@ public class Robot extends LoggedRobot {
     private void determineHubActive() {
 
         // Determine whether the hub is active.
-        double timeLeft = DriverStation.getMatchTime();
-        if (timeLeft < 0) return; // Match has not started.
+        double timeSinceTeleop = hubTimer.get();
+        if (timeSinceTeleop < 0) return; // Teleop has not started.
 
-        if (timeLeft <= Constants.ENDGAME_START) {
+        if (timeSinceTeleop >= Constants.ENDGAME_START) {
             hubActive = true; // Hub is always active during endgame and transition
 
-        } else if (timeLeft <= Constants.SHIFT_4_START) {
+        } else if (timeSinceTeleop >= Constants.SHIFT_4_START) {
             hubActive = (allianceColor.get() == autoWinner);
             // Only the hub of the team that won autonomous is active during shifts 2 and 4.
-        } else if (timeLeft <= Constants.SHIFT_3_START) {
+        } else if (timeSinceTeleop >= Constants.SHIFT_3_START) {
             hubActive = (allianceColor.get() != autoWinner);
             // Only the hub of the team that didn't win autonomous is active during shifts 1 and 3.
-
-        } else if (timeLeft <= Constants.SHIFT_2_START) {
+        } else if (timeSinceTeleop >= Constants.SHIFT_2_START) {
             hubActive = (allianceColor.get() == autoWinner);
-        } else if (timeLeft <= Constants.SHIFT_1_START) {
+        } else if (timeSinceTeleop >= Constants.SHIFT_1_START) {
             hubActive = (allianceColor.get() != autoWinner);
+    } else hubActive = true; // transition
+  }
 
-        } else hubActive = true; // transition
-    }
+  private void determineHubCountdown(){
+    int hubCountdown = 0;
+    // Determines time until next hub shift
+    int timeSinceTeleop = (int) hubTimer.get();
+    if (timeSinceTeleop < 0) 
+      hubCountdown = 0; // Match has not started.
+      // Calculates the time between current time and next shift for every shift of the match
+    if (timeSinceTeleop >= Constants.ENDGAME_START) {
+      hubCountdown = 140 - timeSinceTeleop;
+    } else if (timeSinceTeleop >= Constants.SHIFT_4_START) {
+      hubCountdown = Constants.ENDGAME_START - timeSinceTeleop;
+    } else if (timeSinceTeleop >= Constants.SHIFT_3_START) {
+      hubCountdown = Constants.SHIFT_4_START - timeSinceTeleop;
+    } else if (timeSinceTeleop >= Constants.SHIFT_2_START) {
+      hubCountdown = Constants.SHIFT_3_START - timeSinceTeleop;
+    } else if (timeSinceTeleop >= Constants.SHIFT_1_START) {
+      hubCountdown = Constants.SHIFT_2_START - timeSinceTeleop;
+    } else {hubCountdown = Constants.SHIFT_1_START - timeSinceTeleop;}
+    SmartDashboard.putNumber("Next Shift In...", hubCountdown);
+    // Puts the countdown on dashboard so driver and operator can see the time until the next shift
+  }
 
     @Override
     public void testInit() {

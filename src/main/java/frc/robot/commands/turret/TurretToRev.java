@@ -3,19 +3,16 @@ package frc.robot.commands.turret;
 import edu.wpi.first.wpilibj.Timer;
 import frc.robot.constants.Constants;
 import frc.robot.subsystems.TurretSubsystem;
-import frc.robot.utils.logging.commands.LoggableCommand;
 import frc.robot.utils.logging.TimeoutLogger;
+import frc.robot.utils.logging.commands.LoggableCommand;
 
-/**
- * Runs the turret to the reverse (left) limit switch and resets the encoder to zero.
- */
-public class RunTurretToRevLimit extends LoggableCommand {
+public class TurretToRev extends LoggableCommand{
+    
     private final TimeoutLogger timeoutCounter;
     private final TurretSubsystem turret;
-    private boolean finished = false;
     private final Timer timer = new Timer();
 
-    public RunTurretToRevLimit(TurretSubsystem turret) {
+    public TurretToRev(TurretSubsystem turret) {
         timeoutCounter = new TimeoutLogger(getName());
         this.turret = turret;
         addRequirements(turret);
@@ -36,7 +33,6 @@ public class RunTurretToRevLimit extends LoggableCommand {
         if (timer.hasElapsed(Constants.TURRET_TIMEOUT)) {
             timeoutCounter.increaseTimeoutCount();
         }
-        turret.resetEncoderToZero();
         turret.stopMotors();
     }
 

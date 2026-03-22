@@ -88,6 +88,7 @@ public class GameConstants {
     public static final double ANGLER_GEARING = 45.0;
     public static final boolean ANGLER_SIMULATE_GRAVITY = false;
     public static final int NEO_CURRENT_LIMIT = 20;
+    public static final int INTAKE_DEPLOYER_CURRENT_LIMIT = 40;
     public static final double TURRET_LENGTH = 0.4;
     public static final double TURRET_INERTIA = 0.5;
     public static final double TURRET_GEARING = 45.0;
@@ -108,16 +109,23 @@ public class GameConstants {
 
 
  // turret (pan angle) PID
-    public static final double TURRET_P = 1;
-    public static final double TURRET_I = 0.000000;
-    public static final double TURRET_D = 0.0;
-    public static final double TURRET_FF = 0.0;
+    public static final double TURRET_SHORT_RANGE_P = 0.2;
+    public static final double TURRET_SHORT_RANGE_I = 0.000000;
+    public static final double TURRET_SHORT_RANGE_D = 0.001;
+    public static final double TURRET_SHORT_RANGE_FF = 0.0;
+    public static final double TURRET_LONG_RANGE_P = 1.2;
+    public static final double TURRET_LONG_RANGE_I = 0.000000;
+    public static final double TURRET_LONG_RANGE_D = 0.0;
+    public static final double TURRET_LONG_RANGE_FF = 0.0;
     public static final double TURRET_ENCODER_MIN = 0; //Lowest encoder position of Turret
     public static final double TURRET_ENCODER_MAX = 77; //Highest encoder position of Turret
     public static final double TURRET_HOME_ANGLE = 0.0; //Turret facing forward
-    public static final double TURRET_MIN_ANGLE = -97;
-    public static final double TURRET_MAX_ANGLE = 97;
+    public static final double TURRET_MIN_ANGLE = -92;
+    public static final double TURRET_MAX_ANGLE = 92;
     public static final double TURRET_LIMIT_SPEED = 0.2;
+    public static final double TURRET_PID_DISTANCE_THRESHOLD = 45; /* TODO: Change later
+    Minimum target encoder distance needed to use the longer pid slot*/
+
 
     //swerve config
     public static final TelemetryVerbosity TELEMENTRY_VERBOSITY = TelemetryVerbosity.HIGH;
@@ -137,8 +145,8 @@ public class GameConstants {
     public static final double BLUE_HUB_Y_POSITION = 4.0345;
     public static final double RED_HUB_X_POSITION = 11.9154;
     public static final double RED_HUB_Y_POSITION = 4.0345;
-    public static final double X_DISTANCE_BETWEEN_ROBOT_AND_TURRET = .15;
-    public static final double Y_DISTANCE_BETWEEN_ROBOT_AND_TURRET = 0; 
+    public static final double X_DISTANCE_BETWEEN_ROBOT_AND_TURRET = .05;
+    public static final double Y_DISTANCE_BETWEEN_ROBOT_AND_TURRET = .12;
 
     // Shift timings
     public static final int SHIFT_1_START = 130;
@@ -149,6 +157,7 @@ public class GameConstants {
 
     public static final double VISION_CONSISTENCY_THRESHOLD = 0.25; //How close 2 vision measurements have to be (needs to be tuned potentially but seemingly from my testing it also might not be needed)
     public static final boolean ENABLE_VISION = true;
+    public static final boolean USE_CAMERA_APRILTAG_STD_DEV = true;
     public static final double POSE_BUFFER_STORAGE_TIME = 2; //how many past measurements are stored in the buffer (might increase if we need further back)
     public static final String DRIVER_CAM_IP_ADDRESS = "10.40.48.2:1181/?action=stream";
     public static final double FIELD_LENGTH = 16.5; //TODO: Change Later
@@ -160,4 +169,8 @@ public class GameConstants {
     public static final double AVERAGE_CAM_LATENCY = 0; // seconds; TODO: change Later
     public static final double AVERAGE_CAM_LATENCY_STD_DEV = 0; // seconds; TODO: change Later
     public static final double MAX_VISION_DISTANCE_SIMULATION = 6;
+
+    public static final double MAX_HUB_DISTANCE = 5.18;
+    public static final double MIN_HUB_DISTANCE = 1.42;
+    public static final double COMPUTATED_DISTANCE_OFFSET = 2;
 }

@@ -5,6 +5,7 @@
 package frc.robot.utils.logging.io.pidmotor;
 
 
+import com.revrobotics.spark.ClosedLoopSlot;
 import frc.robot.utils.logging.input.MotorLoggableInputs;
 import frc.robot.utils.logging.io.motor.MockSparkMaxIo;
 
@@ -25,7 +26,15 @@ public class MockSparkMaxPidMotorIo extends MockSparkMaxIo implements SparkMaxPi
     }
 
     @Override
+    public void setPidPosition(double position, ClosedLoopSlot closedLoopSlot) {
+    }
+
+    @Override
     public void setPidVelocity(double velocity) {
+    }
+
+    @Override
+    public void setPidVelocity(double velocity, ClosedLoopSlot closedLoopSlot) {
     }
 
     @Override
@@ -33,7 +42,15 @@ public class MockSparkMaxPidMotorIo extends MockSparkMaxIo implements SparkMaxPi
     }
 
     @Override
+    public void setPid(double pidP, double pidI, double pidD, ClosedLoopSlot closedLoopSlot) {
+    }
+
+    @Override
     public void setPid(double pidP, double pidI, double pidD, double iZone, double pidFF) {
+    }
+
+    @Override
+    public void setPid(double pidP, double pidI, double pidD, double iZone, double pidFF, ClosedLoopSlot closedLoopSlot) {
     }
 
     @Override

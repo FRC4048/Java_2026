@@ -24,7 +24,6 @@ public class DepotShootPickup extends LoggableSequentialCommandGroup {
         super(
                 //shoot
                 new AutoReset(shootstate, turret, angler),
-                new RunTurretToRevLimit(turret),
                 new LoggableParallelCommandGroup(
                     new SetShootingState(shootstate, ShootState.SHOOTING_HUB),
                     new DriveSwerve(drivetrain, DriveDirection.BACKWARD, 2, 0.5)
@@ -37,7 +36,7 @@ public class DepotShootPickup extends LoggableSequentialCommandGroup {
                 //pickup and shoot
                 LoggableCommandWrapper.wrap(auto.resetOdometry("Depot_Pickup")),
                 new LoggableParallelCommandGroup(
-                    LoggableCommandWrapper.wrap(auto.trajectoryCmd("Depot_Pickup").withTimeout(1)), //0.7 s
+                    LoggableCommandWrapper.wrap(auto.trajectoryCmd("Depot_Pickup").withTimeout(2)), //1.6 s
                     new AutoShoot(hopper, feeder, 5),
                     new ToggleDeployment(intake)
                 )

@@ -17,7 +17,6 @@ import frc.robot.commands.auto.shoot.DepotShoot;
 import frc.robot.commands.auto.shoot.MidShoot;
 import frc.robot.commands.auto.shoot.OutpostShoot;
 import frc.robot.commands.auto.shootpickup.DepotShootPickup;
-import frc.robot.commands.auto.shootpickup.OutpostShootPickup;
 import frc.robot.commands.auto.DoNothing;
 import frc.robot.constants.enums.ShootingState;
 import frc.robot.subsystems.AnglerSubsystem;
@@ -123,7 +122,7 @@ public class AutoChooser {
         commandMap.put(new AutoEvent(AutoAction.SHOOT_PICKUP, FieldLocation.DEPOT_SIDE),
             new DepotShootPickup(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, controller, intake));
         commandMap.put(new AutoEvent(AutoAction.SHOOT_PICKUP, FieldLocation.OUTPOST_SIDE),
-            new OutpostShootPickup(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, intake));
+            new OutpostShoot(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler));
         commandMap.put(new AutoEvent(AutoAction.SHOOT_PICKUP, FieldLocation.MID),
             new MidShoot(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler));
 

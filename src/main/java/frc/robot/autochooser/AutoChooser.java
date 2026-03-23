@@ -124,8 +124,6 @@ public class AutoChooser {
             new DepotShootPickup(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, controller, intake));
         commandMap.put(new AutoEvent(AutoAction.SHOOT_PICKUP, FieldLocation.OUTPOST_SIDE),
             new OutpostShootPickup(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, intake));
-        commandMap.put(new AutoEvent(AutoAction.SHOOT_PICKUP, FieldLocation.MID),
-            new MidShoot(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler));
 
         //disturbance
         commandMap.put(new AutoEvent(AutoAction.DISTURBANCE, FieldLocation.DEPOT_SIDE),

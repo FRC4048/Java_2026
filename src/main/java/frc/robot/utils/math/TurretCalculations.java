@@ -6,7 +6,9 @@ import org.littletonrobotics.junction.Logger;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import frc.robot.constants.Constants;
 import frc.robot.constants.GameConstants;
+import frc.robot.constants.enums.ShootingState.ShootState;
 
 public class TurretCalculations {
 
@@ -32,7 +34,7 @@ public class TurretCalculations {
     // all positions are in meters
     // robotRotation is in radians
     // Returns - turret angle in radians
-    public static double calculateTurretAngle(double robotPosX, double robotPosY, double robotRotation, boolean isBlueAlliance) {
+    public static double calculateTurretAngle(ShootState state, double robotPosX, double robotPosY, double robotRotation, boolean isBlueAlliance) {
         
         // Get turret offset from robot center
         double turretOffsetX = GameConstants.X_DISTANCE_BETWEEN_ROBOT_AND_TURRET;
@@ -48,25 +50,30 @@ public class TurretCalculations {
 
         double hubPosX;
         double hubPosY;
-
+    if(state == ShootState.SHOOTING_HUB) {
         if (isBlueAlliance) {
             // hub position determined by which alliance robot is on
-            hubPosX = GameConstants.BLUE_HUB_X_POSITION;
-            hubPosY = GameConstants.BLUE_HUB_Y_POSITION;
+            hubPosX = Constants.BLUE_HUB_X_POSITION;
+            hubPosY = Constants.BLUE_HUB_Y_POSITION;
         } else {
-            hubPosX = GameConstants.RED_HUB_X_POSITION;
-            hubPosY = GameConstants.RED_HUB_Y_POSITION;
+            hubPosX = Constants.RED_HUB_X_POSITION;
+            hubPosY = Constants.RED_HUB_Y_POSITION;
         }
-
-        /*
-         * This finds the unadjusted pan angle (assuming there is no robot rotation) using
-         * trigonometry. We take the arctangent of the y-distance beween the robot and the hub
-         * and the x-distance between the robot and the hub, giving us the unadjusted pan
-         * angle. The function atan2 ensures the sign of the angle is correct based on the signs
-         * of the input numbers.
-         * 
-         */
-        double panAngleUnadjusted = Math.atan2(hubPosY - turretPosY, hubPosX - turretPosX);
+        }else{
+            //Sets the hubPosX to be either on the blue or red side 
+            //Sets the hubPoseY to be lower or upper depending on the Y position of the robot
+            hubPosX = isBlueAlliance ? Constants.BLUE_HUB_X_POSITION : Constants.RED_HUB_X_POSITION;
+            hubPosY = robotPosY > (Constants.FIELD_WIDTH / 2) ? Constants.SHUTTLING_TARGET_HIGHER_Y_POSITION : Constants.SHUTTLING_TARGET_LOWER_Y_POSITION;
+        } 
+            /*
+             * This finds the unadjusted pan angle (assuming there is no robot rotation) using
+             * trigonometry. We take the arctangent of the y-distance beween the robot and the hub
+             * and the x-distance between the robot and the hub, giving us the unadjusted pan
+             * angle. The function atan2 ensures the sign of the angle is correct based on the signs
+             * of the input numbers.
+             * 
+             */
+            double panAngleUnadjusted = Math.atan2(hubPosY - turretPosY, hubPosX - turretPosX);
 
         /*
          * Adjusts the pan angle to account for the robot's current rotation. We subtract the

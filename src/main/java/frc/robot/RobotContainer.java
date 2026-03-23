@@ -153,7 +153,7 @@ public class RobotContainer {
                                                 new File(Filesystem.getDeployDirectory(), "YAGSL/" + Constants.SWERVE_JSON_DIRECTORY), swerveIMU) : null;
                             apriltagSubsystem = !Constants.TESTBED ? new ApriltagSubsystem(ApriltagSubsystem.createRealIo(), drivebase, truster) : null;
                             controllerSubsystem = !Constants.TESTBED ? new ControllerSubsystem(drivebase, this) : null;
-                                 lightStripSubsystem = new LightStripSubsystem(drivebase, shootState);
+                                 lightStripSubsystem = new LightStripSubsystem(drivebase, shootState, intakeSubsystem::getIntakeStalled);
             }
                         case REPLAY -> {
                                 anglerSubsystem = new AnglerSubsystem(AnglerSubsystem.createMockIo());
@@ -170,7 +170,7 @@ public class RobotContainer {
                 drivebase = !Constants.TESTBED ? new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "YAGSL/" + Constants.SWERVE_JSON_DIRECTORY), null) : null;
                 apriltagSubsystem = !Constants.TESTBED ? new ApriltagSubsystem(ApriltagSubsystem.createMockIo(), drivebase, truster) : null;
                 controllerSubsystem = !Constants.TESTBED ? new ControllerSubsystem(drivebase, this) : null;
-                                lightStripSubsystem = new LightStripSubsystem(drivebase, shootState);
+                                lightStripSubsystem = new LightStripSubsystem(drivebase, shootState, intakeSubsystem::getIntakeStalled);
 
             }
             case SIM -> {
@@ -189,7 +189,7 @@ public class RobotContainer {
                 drivebase = !Constants.TESTBED ? new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "YAGSL/" + Constants.SWERVE_JSON_DIRECTORY), null) : null;
                 controllerSubsystem = !Constants.TESTBED ? new ControllerSubsystem(drivebase, this) : null;
                 apriltagSubsystem = !Constants.TESTBED ? new ApriltagSubsystem(ApriltagSubsystem.createSimIo(truster,drivebase), drivebase, truster) : null;
-                                lightStripSubsystem = new LightStripSubsystem(drivebase, shootState);
+                                lightStripSubsystem = new LightStripSubsystem(drivebase, shootState, intakeSubsystem::getIntakeStalled);
 
         }
 

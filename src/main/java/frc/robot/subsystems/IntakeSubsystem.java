@@ -7,6 +7,7 @@ import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Robot;
 import frc.robot.commands.intake.SpinIntake;
@@ -22,11 +23,17 @@ import frc.robot.utils.logging.io.motor.SimSparkMaxIo;
 import frc.robot.utils.logging.io.motor.SparkMaxIo;
 import frc.robot.utils.simulation.MotorSimulator;
 import frc.robot.utils.simulation.RobotVisualizer;
+import org.littletonrobotics.junction.Logger;
+
+import static java.lang.Math.abs;
 
 public class IntakeSubsystem extends SubsystemBase {
 
     public static final String LOGGING_NAME = "IntakeSubsystem";
     private final SparkMaxIo io;
+    private boolean intakeStalled = false;
+    private boolean intaking = false;
+    private Timer stallTimer = new Timer();
 
     public IntakeSubsystem(SparkMaxIo io) {
         this.io = io;
@@ -34,15 +41,23 @@ public class IntakeSubsystem extends SubsystemBase {
 
     public void setSpeed(double speed) {
         io.set(speed);
+        intaking = true;
     }
 
     public void stopMotors() {
         io.stopMotor();
+        intaking = false;
+        intakeStalled = false;
     }
 
     @Override
     public void periodic() {
         io.periodic();
+        if (intaking && abs(io.getVelocity())<Constants.INTAKE_STALL_SPEED && stallTimer.hasElapsed(Constants.INTAKE_STALL_TIME))  {
+            intakeStalled = true;
+        } else {
+            intakeStalled = false;
+        }
     }
 
     public static SparkMaxIo createMockIo() {
@@ -77,5 +92,12 @@ public class IntakeSubsystem extends SubsystemBase {
                 ResetMode.kResetSafeParameters,
                 PersistMode.kPersistParameters);
         return motor;
+    }
+    public boolean getIntakeStalled() {
+        return intakeStalled;
+    }
+    public void startIntaking() {
+        if (!intaking)
+            stallTimer.reset();
     }
 }

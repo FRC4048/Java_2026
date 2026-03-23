@@ -7,6 +7,9 @@ import frc.robot.subsystems.LightStripSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import frc.robot.utils.BlinkinPattern;
 import frc.robot.utils.logging.commands.LoggableCommand;
+import org.littletonrobotics.junction.Logger;
+
+import java.util.function.BooleanSupplier;
 
 public class SetLed extends LoggableCommand{
 
@@ -15,12 +18,14 @@ public class SetLed extends LoggableCommand{
     private ShootingState shootingState;
     private double x;
     private double y;
+    private BooleanSupplier stalledIntake;
   
-    public SetLed(LightStripSubsystem lightStrip, SwerveSubsystem drivebase, ShootingState shootingState) {
+    public SetLed(LightStripSubsystem lightStrip, SwerveSubsystem drivebase, ShootingState shootingState, BooleanSupplier stalledIntake) {
 
         this.lightStrip = lightStrip;
         this.drivebase = drivebase;
         this.shootingState = shootingState;
+        this.stalledIntake = stalledIntake;
         addRequirements(lightStrip);
 
     }
@@ -32,7 +37,7 @@ public class SetLed extends LoggableCommand{
 
     @Override
     public void execute() {
-
+        Logger.recordOutput("IntakeJammed", stalledIntake);
         x = drivebase.getPose().getX();
         y = drivebase.getPose().getY();
 
@@ -46,6 +51,8 @@ public class SetLed extends LoggableCommand{
                     lightStrip.setPattern(BlinkinPattern.STROBE_RED);
                 }
 
+        } else if (stalledIntake.getAsBoolean()) {
+            lightStrip.setPattern(BlinkinPattern.ORANGE);
         } else {
 
             switch (shootingState.getShootState()) {

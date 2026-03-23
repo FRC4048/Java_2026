@@ -16,8 +16,9 @@ public class DepotDisturbance extends LoggableSequentialCommandGroup{
     public DepotDisturbance(SwerveSubsystem subsystem, AutoFactory auto, ShootingState shootstate, TurretSubsystem turret,
     AnglerSubsystem angler, ControllerSubsystem controller) {
         super(
-            LoggableCommandWrapper.wrap(auto.resetOdometry("Disturbance")),
-            LoggableCommandWrapper.wrap(auto.trajectoryCmd("Disturbance"))
+            new AutoReset(shootstate, turret, angler),
+            LoggableCommandWrapper.wrap(auto.resetOdometry("Depot_Disturbance")),
+            LoggableCommandWrapper.wrap(auto.trajectoryCmd("Outpost_Disturbance"))
         );
     }
 }

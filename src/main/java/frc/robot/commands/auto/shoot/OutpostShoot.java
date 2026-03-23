@@ -25,6 +25,7 @@ public class OutpostShoot extends LoggableSequentialCommandGroup{
         super(  
                 new AutoReset(shootstate, turret, angler),
                 new RunTurretToRevLimit(turret),
+                new DriveSwerve(drivetrain, DriveDirection.FORWARD, 0.25, 0.5), //move forward so fuel falls into robot
                 new LoggableParallelCommandGroup(
                     new SetShootingState(shootstate, ShootState.SHOOTING_HUB),
                     new DriveSwerve(drivetrain, DriveDirection.BACKWARD, 2, 0.5)

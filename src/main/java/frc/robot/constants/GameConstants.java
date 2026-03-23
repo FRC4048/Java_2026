@@ -47,6 +47,7 @@ public class GameConstants {
     //Speeds
     public static final double INTAKE_SPEED = -0.5;
     public static final double INTAKE_STALL_SPEED = 0.1;
+    public static final double INTAKE_STALL_TIME = 0.1;
     public static final double HOPPER_SPEED = 0.35;//Want to increase this later
     public static final double CLIMBER_SPEED_UP = 0.1;
     public static final double CLIMBER_SPEED_DOWN = -0.1;

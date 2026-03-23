@@ -7,6 +7,7 @@ import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Robot;
 import frc.robot.commands.intake.SpinIntake;
@@ -32,6 +33,7 @@ public class IntakeSubsystem extends SubsystemBase {
     private final SparkMaxIo io;
     private boolean intakeStalled = false;
     private boolean intaking = false;
+    private Timer stallTimer = new Timer();
 
     public IntakeSubsystem(SparkMaxIo io) {
         this.io = io;
@@ -51,7 +53,7 @@ public class IntakeSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
         io.periodic();
-        if (intaking && abs(io.getVelocity())<Constants.INTAKE_STALL_SPEED) {
+        if (intaking && abs(io.getVelocity())<Constants.INTAKE_STALL_SPEED && stallTimer.hasElapsed(Constants.INTAKE_STALL_TIME))  {
             intakeStalled = true;
         } else {
             intakeStalled = false;
@@ -93,5 +95,9 @@ public class IntakeSubsystem extends SubsystemBase {
     }
     public boolean getIntakeStalled() {
         return intakeStalled;
+    }
+    public void startIntaking() {
+        if (!intaking)
+            stallTimer.reset();
     }
 }

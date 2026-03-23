@@ -348,7 +348,4 @@ public class ControllerSubsystem extends SubsystemBase {
             this.defaultTurretAngleDegrees = defaultTurretAngleDegrees;
         }
     }
-
-    public class setActivatedShooting {
-    }
 }

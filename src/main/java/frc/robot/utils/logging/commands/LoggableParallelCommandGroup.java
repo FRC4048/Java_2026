@@ -21,11 +21,6 @@ public class LoggableParallelCommandGroup extends ParallelCommandGroup implement
     addCommands(proxyCommands);
   }
 
-  public LoggableParallelCommandGroup(ToggleDeployment toggleDeployment, SetTurretAngle setTurretAngle,
-        ToggleShooting toggleShooting, LoggableCommandWrapper wrap) {
-    //TODO Auto-generated constructor stub
-}
-
 @Override
   public String getBasicName() {
     return basicName;

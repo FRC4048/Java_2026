@@ -21,13 +21,6 @@ public class LoggableSequentialCommandGroup extends SequentialCommandGroup imple
     addCommands(proxyCommands);
   }
 
-  public LoggableSequentialCommandGroup(AutoReset resetMechanisms, SetTurretAngle setTurretAngle,
-        LoggableCommandWrapper wrap, LoggableCommandWrapper wrap2, ToggleShooting toggleShooting,
-        LoggableParallelCommandGroup loggableParallelCommandGroup, LoggableCommandWrapper wrap3,
-        ToggleDeployment toggleDeployment, ToggleShooting toggleShooting2) {
-    //TODO Auto-generated constructor stub
-}
-
 @Override
   public String getBasicName() {
     return basicName;

@@ -1,7 +1,6 @@
 package frc.robot.commands.auto.disturbance;
 
 import choreo.auto.AutoFactory;
-import frc.robot.commands.ToggleShooting;
 import frc.robot.commands.auto.AutoReset;
 import frc.robot.commands.turret.SetTurretAngle;
 import frc.robot.constants.enums.ShootingState;
@@ -16,8 +15,8 @@ public class DepotDisturbance extends LoggableSequentialCommandGroup{
     public DepotDisturbance(SwerveSubsystem subsystem, AutoFactory auto, ShootingState shootstate, TurretSubsystem turret,
     AnglerSubsystem angler, ControllerSubsystem controller) {
         super(
-            LoggableCommandWrapper.wrap(auto.resetOdometry("Disturbance")),
-            LoggableCommandWrapper.wrap(auto.trajectoryCmd("Disturbance"))
+            LoggableCommandWrapper.wrap(auto.resetOdometry("Depot_Disturbance")),
+            LoggableCommandWrapper.wrap(auto.trajectoryCmd("Depot_Disturbance"))
         );
     }
 }

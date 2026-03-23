@@ -29,7 +29,6 @@ public class OutpostShootPickup extends LoggableSequentialCommandGroup{
         IntakeDeployerSubsystem intake) {
         super(  
                 new AutoReset(shootstate, turret, angler),
-                new RunTurretToRevLimit(turret),
                 new LoggableParallelCommandGroup(
                     new SetShootingState(shootstate, ShootState.SHOOTING_HUB),
                     new DriveSwerve(drivetrain, DriveDirection.BACKWARD, 2, 0.5)

@@ -9,15 +9,12 @@ import frc.robot.constants.enums.ShootingState.ShootState;
 import frc.robot.subsystems.AnglerSubsystem;
 import frc.robot.subsystems.TurretSubsystem;
 import frc.robot.utils.logging.commands.LoggableParallelCommandGroup;
-import frc.robot.utils.logging.commands.LoggableSequentialCommandGroup;
 
-public class AutoReset extends LoggableSequentialCommandGroup{
+public class AutoReset extends LoggableParallelCommandGroup{
     public AutoReset(ShootingState shootstate, TurretSubsystem turret, AnglerSubsystem angler) {
         super(  
-                new LoggableParallelCommandGroup(
-                    new RunTurretToRevLimit(turret),  
-                    new RunAnglerToReverseLimit(angler)
-                )
+            new RunTurretToRevLimit(turret),  
+            new RunAnglerToReverseLimit(angler)
         );
     }
 }

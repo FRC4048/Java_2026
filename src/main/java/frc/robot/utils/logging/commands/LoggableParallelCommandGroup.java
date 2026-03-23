@@ -3,9 +3,6 @@ package frc.robot.utils.logging.commands;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ProxyCommand;
-import frc.robot.commands.ToggleShooting;
-import frc.robot.commands.intakeDeployment.ToggleDeployment;
-import frc.robot.commands.turret.SetTurretAngle;
 
 public class LoggableParallelCommandGroup extends ParallelCommandGroup implements Loggable {
   private String basicName = getClass().getSimpleName();

@@ -3,10 +3,6 @@ package frc.robot.utils.logging.commands;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ProxyCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.commands.ToggleShooting;
-import frc.robot.commands.auto.AutoReset;
-import frc.robot.commands.intakeDeployment.ToggleDeployment;
-import frc.robot.commands.turret.SetTurretAngle;
 
 public class LoggableSequentialCommandGroup extends SequentialCommandGroup implements Loggable {
   private String basicName = getClass().getSimpleName();

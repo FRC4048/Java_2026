@@ -8,9 +8,7 @@ import frc.robot.utils.logging.commands.LoggableRaceCommandGroup;
 import frc.robot.utils.logging.commands.LoggableWaitCommand;
 
 public class AutoShoot extends LoggableRaceCommandGroup{
-
     public AutoShoot(HopperSubsystem hopperSubsystem, FeederSubsystem feederSubsystem, double time){
-
         super(
             new SpinHopper(hopperSubsystem),
             new SpinFeeder(feederSubsystem),

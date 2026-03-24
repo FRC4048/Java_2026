@@ -24,8 +24,11 @@ public class MidShoot extends LoggableSequentialCommandGroup{
         HopperSubsystem hopper, FeederSubsystem feeder, TurretSubsystem turret, AnglerSubsystem angler) {
         super(  
                 new AutoReset(shootstate, turret, angler),
+<<<<<<< HEAD
                 new RunTurretToRevLimit(turret),
                 new DriveSwerve(drivetrain, DriveDirection.FORWARD, 0.25, 0.5), //move forward so fuel falls into robot
+=======
+>>>>>>> 21a7c1e37d6efea4b8468afeb69c7e1e17245bd2
                 new LoggableParallelCommandGroup(
                     new SetShootingState(shootstate, ShootState.SHOOTING_HUB),
                     new DriveSwerve(drivetrain, DriveDirection.BACKWARD, 2, 0.5)

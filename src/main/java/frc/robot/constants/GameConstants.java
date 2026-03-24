@@ -54,7 +54,7 @@ public class GameConstants {
     public static final double SHOOTER_SPEED = 1500;
     public static final double INTAKE_DEPLOYER_SPEED = -0.075;
     public static final double INTAKE_RETRACTION_SPEED = 0.1;
-    public static final double INITIAL_INTAKE_DEPLOYMENT_SPEED = -0.1;
+    public static final double INITIAL_INTAKE_DEPLOYMENT_SPEED = -0.3;
     public static final double INITIAL_INTAKE_RETRACTION_SPEED = 0.5;
 
 
@@ -76,7 +76,7 @@ public class GameConstants {
     public static final double ANGLER_TIMEOUT = 5;
     public static final int SERVER_SOCKET_CONNECTION_TIMEOUT = 2000;
     public static final double SHOOTER_TIMEOUT = 5;
-    public static final double INTAKE_DEPLOYER_BURNOUT_TIMER = 5;
+    public static final double INTAKE_DEPLOYER_TIMEOUT_TIMER = 5;
     public static final double TURRET_TIMEOUT = 5;
 
     //Angles
@@ -123,7 +123,7 @@ public class GameConstants {
     public static final double TURRET_MIN_ANGLE = -92;
     public static final double TURRET_MAX_ANGLE = 92;
     public static final double TURRET_LIMIT_SPEED = 0.1;
-    public static final double TURRET_PID_DISTANCE_THRESHOLD = 5; 
+    public static final double TURRET_PID_DISTANCE_THRESHOLD = 5;
     //Minimum target encoder distance needed to use the longer pid slot
 
 
@@ -149,11 +149,11 @@ public class GameConstants {
     public static final double Y_DISTANCE_BETWEEN_ROBOT_AND_TURRET = .12;
 
     // Shift timings
-    public static final int SHIFT_1_START = 130;
-    public static final int SHIFT_2_START = 105;
-    public static final int SHIFT_3_START = 80;
-    public static final int SHIFT_4_START = 55;
-    public static final int ENDGAME_START = 30;
+    public static final int SHIFT_1_START = 10;
+    public static final int SHIFT_2_START = 35;
+    public static final int SHIFT_3_START = 60;
+    public static final int SHIFT_4_START = 85;
+    public static final int ENDGAME_START = 110;
 
     public static final double VISION_CONSISTENCY_THRESHOLD = 0.25; //How close 2 vision measurements have to be (needs to be tuned potentially but seemingly from my testing it also might not be needed)
     public static final boolean ENABLE_VISION = true;

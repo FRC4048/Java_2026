@@ -27,6 +27,7 @@ public class LoggableParallelCommandGroup extends ParallelCommandGroup implement
 }
 
 @Override
+@Override
   public String getBasicName() {
     return basicName;
   }

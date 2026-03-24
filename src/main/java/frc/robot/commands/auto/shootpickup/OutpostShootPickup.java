@@ -10,12 +10,7 @@ import frc.robot.commands.turret.RunTurretToRevLimit;
 import frc.robot.constants.enums.DriveDirection;
 import frc.robot.constants.enums.ShootingState;
 import frc.robot.constants.enums.ShootingState.ShootState;
-import frc.robot.subsystems.AnglerSubsystem;
-import frc.robot.subsystems.FeederSubsystem;
-import frc.robot.subsystems.HopperSubsystem;
-import frc.robot.subsystems.IntakeDeployerSubsystem;
-import frc.robot.subsystems.ShooterSubsystem;
-import frc.robot.subsystems.TurretSubsystem;
+import frc.robot.subsystems.*;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import frc.robot.utils.logging.commands.LoggableCommandWrapper;
 import frc.robot.utils.logging.commands.LoggableParallelCommandGroup;
@@ -24,9 +19,9 @@ import frc.robot.utils.logging.commands.LoggableWaitCommand;
 
 public class OutpostShootPickup extends LoggableSequentialCommandGroup{
     public OutpostShootPickup(
-        SwerveSubsystem drivetrain, AutoFactory auto, ShooterSubsystem shooter, ShootingState shootstate, 
-        HopperSubsystem hopper, FeederSubsystem feeder, TurretSubsystem turret, AnglerSubsystem angler, 
-        IntakeDeployerSubsystem intake) {
+            SwerveSubsystem drivetrain, AutoFactory auto, ShooterSubsystem shooter, ShootingState shootstate,
+            HopperSubsystem hopper, FeederSubsystem feeder, TurretSubsystem turret, AnglerSubsystem angler,
+            IntakeDeployerSubsystem intake, ControllerSubsystem controller) {
         super(  
                 new AutoReset(shootstate, turret, angler),
                 new LoggableParallelCommandGroup(
@@ -43,7 +38,7 @@ public class OutpostShootPickup extends LoggableSequentialCommandGroup{
                 LoggableCommandWrapper.wrap(auto.resetOdometry("Outpost_Pickup")),
                 new LoggableParallelCommandGroup(
                     LoggableCommandWrapper.wrap(auto.trajectoryCmd("Outpost_Pickup").withTimeout(1.9)),
-                    new ToggleDeployment(intake),
+                    new ToggleDeployment(intake, controller),
                     new AutoShoot(hopper, feeder, 5)
                 )
         );

@@ -100,8 +100,9 @@ public class AutoChooser {
         }
     }
 
-    /** Put command mappings here.
-     *  @see AutoCommand */
+    /**
+     * Put command mappings here.
+     */
     private void populateCommandMap() {
         //if AutoEvent is not dependent on alliance color don't put a color
         commandMap.put(new AutoEvent(AutoAction.DO_NOTHING, FieldLocation.DEPOT_SIDE),
@@ -123,7 +124,7 @@ public class AutoChooser {
         commandMap.put(new AutoEvent(AutoAction.SHOOT_PICKUP, FieldLocation.DEPOT_SIDE),
             new DepotShootPickup(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, controller, intake));
         commandMap.put(new AutoEvent(AutoAction.SHOOT_PICKUP, FieldLocation.OUTPOST_SIDE),
-            new OutpostShootPickup(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, intake));
+            new OutpostShootPickup(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, intake, controller));
 
         //disturbance
         commandMap.put(new AutoEvent(AutoAction.DISTURBANCE, FieldLocation.DEPOT_SIDE),
@@ -139,8 +140,9 @@ public class AutoChooser {
 
     }
 
-    /** Put command mappings here.
-     *  @see AutoCommand */
+    /**
+     * Put command mappings here.
+     */
     private void populateDescriptionMap() {
         descriptionMap.put(new AutoEvent(AutoAction.DO_NOTHING, FieldLocation.DEPOT_SIDE),
             "do nothing");

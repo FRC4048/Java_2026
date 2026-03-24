@@ -38,7 +38,7 @@ public class DepotShootPickup extends LoggableSequentialCommandGroup {
                 new LoggableParallelCommandGroup(
                     LoggableCommandWrapper.wrap(auto.trajectoryCmd("Depot_Pickup").withTimeout(1)), //0.7 s
                     new AutoShoot(hopper, feeder, 5),
-                    new ToggleDeployment(intake)
+                    new ToggleDeployment(intake, controller)
                 )
         );
     }

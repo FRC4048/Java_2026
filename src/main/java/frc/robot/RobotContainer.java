@@ -39,6 +39,7 @@ import frc.robot.commands.hopper.DefaultSpinHopper;
 import frc.robot.commands.hopper.SpinHopper;
 import frc.robot.commands.intake.SpinIntake;
 import frc.robot.commands.intake.StopIntake;
+import frc.robot.commands.intakeDeployment.RunDeployer;
 import frc.robot.commands.intakeDeployment.SetDeploymentState;
 import frc.robot.commands.intakeDeployment.ToggleDeployment;
 import frc.robot.commands.parallels.RunHopperAndFeeder;
@@ -152,7 +153,7 @@ public class RobotContainer {
                                 drivebase = !Constants.TESTBED ? new SwerveSubsystem(
                                                 new File(Filesystem.getDeployDirectory(), "YAGSL/" + Constants.SWERVE_JSON_DIRECTORY), swerveIMU) : null;
                             apriltagSubsystem = !Constants.TESTBED ? new ApriltagSubsystem(ApriltagSubsystem.createRealIo(), drivebase, truster) : null;
-                            controllerSubsystem = !Constants.TESTBED ? new ControllerSubsystem(drivebase, this) : null;
+                            controllerSubsystem = !Constants.TESTBED ? new ControllerSubsystem(drivebase,intakeDeployer, this) : null;
                                  lightStripSubsystem = new LightStripSubsystem(drivebase, shootState);
             }
                         case REPLAY -> {
@@ -169,7 +170,7 @@ public class RobotContainer {
                 // create the drive subsystem with null gyro (use default json)
                 drivebase = !Constants.TESTBED ? new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "YAGSL/" + Constants.SWERVE_JSON_DIRECTORY), null) : null;
                 apriltagSubsystem = !Constants.TESTBED ? new ApriltagSubsystem(ApriltagSubsystem.createMockIo(), drivebase, truster) : null;
-                controllerSubsystem = !Constants.TESTBED ? new ControllerSubsystem(drivebase, this) : null;
+                controllerSubsystem = !Constants.TESTBED ? new ControllerSubsystem(drivebase, intakeDeployer, this) : null;
                                 lightStripSubsystem = new LightStripSubsystem(drivebase, shootState);
 
             }
@@ -187,7 +188,7 @@ public class RobotContainer {
 
                                                 // create the drive subsystem with null gyro (use default json)
                 drivebase = !Constants.TESTBED ? new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "YAGSL/" + Constants.SWERVE_JSON_DIRECTORY), null) : null;
-                controllerSubsystem = !Constants.TESTBED ? new ControllerSubsystem(drivebase, this) : null;
+                controllerSubsystem = !Constants.TESTBED ? new ControllerSubsystem(drivebase, intakeDeployer, this) : null;
                 apriltagSubsystem = !Constants.TESTBED ? new ApriltagSubsystem(ApriltagSubsystem.createSimIo(truster,drivebase), drivebase, truster) : null;
                                 lightStripSubsystem = new LightStripSubsystem(drivebase, shootState);
 
@@ -282,7 +283,7 @@ public class RobotContainer {
         }
 
         private void configureBindings() {
-                controller.a().onTrue(new ToggleDeployment(intakeDeployer));
+                controller.a().onTrue(new ToggleDeployment(intakeDeployer, controllerSubsystem));
                 controller.b().onTrue(new SetDeploymentState(intakeDeployer, DeploymentState.STOPPED));
                 controller.y().onTrue(new ClimberUp(climberSubsystem));
                 controller.x().onTrue(new ClimberDown(climberSubsystem));
@@ -293,9 +294,7 @@ public class RobotContainer {
                 controller.leftTrigger().onTrue((new ResetAll(anglerSubsystem, climberSubsystem, 
                         intakeDeployer, intakeSubsystem, shooterSubsystem, turretSubsystem, shootState)));
                 driveJoystick.trigger().whileTrue((new SetShootingState(shootState, ShootState.STOPPED)));
-                if (controllerSubsystem != null) {
-                        steerJoystick.trigger().whileTrue(new ShootButton(controllerSubsystem));
-                }
+
 
                 // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
                 // new Trigger(m_exampleSubsystem::exampleCondition)
@@ -308,6 +307,7 @@ public class RobotContainer {
 
                 intakeSubsystem.setDefaultCommand(new SpinIntake(intakeSubsystem, intakeDeployer));
             if (controllerSubsystem != null) {
+                intakeDeployer.setDefaultCommand(new RunDeployer(intakeDeployer));
                 anglerSubsystem.setDefaultCommand(new DefaultAnglerControl(anglerSubsystem, controllerSubsystem));
                 shooterSubsystem.setDefaultCommand(new DefaultShooterControl(shooterSubsystem, controllerSubsystem));
                 turretSubsystem.setDefaultCommand(new DefaultTurretControl(turretSubsystem, controllerSubsystem));
@@ -457,7 +457,7 @@ public class RobotContainer {
 
                         SmartDashboard.putData(
                                         "intakedeployer/InitlizeDeployer",
-                                        new ToggleDeployment(intakeDeployer));
+                                        new ToggleDeployment(intakeDeployer, controllerSubsystem));
                         SmartDashboard.putData(
                                         "Spin Intake",
                                         new SpinIntake(intakeSubsystem, intakeDeployer));

@@ -54,7 +54,7 @@ public class GameConstants {
     public static final double SHOOTER_SPEED = 1500;
     public static final double INTAKE_DEPLOYER_SPEED = -0.075;
     public static final double INTAKE_RETRACTION_SPEED = 0.1;
-    public static final double INITIAL_INTAKE_DEPLOYMENT_SPEED = -0.1;
+    public static final double INITIAL_INTAKE_DEPLOYMENT_SPEED = -0.3;
     public static final double INITIAL_INTAKE_RETRACTION_SPEED = 0.5;
 
 
@@ -76,7 +76,7 @@ public class GameConstants {
     public static final double ANGLER_TIMEOUT = 5;
     public static final int SERVER_SOCKET_CONNECTION_TIMEOUT = 2000;
     public static final double SHOOTER_TIMEOUT = 5;
-    public static final double INTAKE_DEPLOYER_BURNOUT_TIMER = 5;
+    public static final double INTAKE_DEPLOYER_TIMEOUT_TIMER = 5;
     public static final double TURRET_TIMEOUT = 5;
 
     //Angles
@@ -123,7 +123,7 @@ public class GameConstants {
     public static final double TURRET_MIN_ANGLE = -92;
     public static final double TURRET_MAX_ANGLE = 92;
     public static final double TURRET_LIMIT_SPEED = 0.1;
-    public static final double TURRET_PID_DISTANCE_THRESHOLD = 5; 
+    public static final double TURRET_PID_DISTANCE_THRESHOLD = 5;
     //Minimum target encoder distance needed to use the longer pid slot
 
 

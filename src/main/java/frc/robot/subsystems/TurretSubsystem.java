@@ -171,8 +171,8 @@ public class TurretSubsystem extends SubsystemBase {
                         Constants.TURRET_LONG_RANGE_I,
                         Constants.TURRET_LONG_RANGE_D,
                         Constants.TURRET_LONG_RANGE_FF)
-                .setMaxAccel(7000)
-                .setMaxVelocity(5250);
+                .setMaxAccel(5000)
+                .setMaxVelocity(4000);
     }
 
     private static SparkMaxPidMotor createMotor() {

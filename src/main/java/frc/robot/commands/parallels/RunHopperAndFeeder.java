@@ -13,7 +13,6 @@ public class RunHopperAndFeeder extends LoggableParallelCommandGroup{
         super(
             new SpinHopper(hopperSubsystem),
             new SpinFeeder(feederSubsystem)
-
         );
     }
 }

@@ -308,11 +308,11 @@ public class ControllerSubsystem extends SubsystemBase {
         return activeTargets.intakeDeploy;
     }
 
-    public void setDriverActivatedShooting(boolean set) {
+    public void setActivatedShooting(boolean set) {
         driverActivatedShooting = set;
     }
 
-    public boolean driverActivatedShootingEnabled() {
+    public boolean isActivatedShootingEnabled() {
         return driverActivatedShooting;
     }
 

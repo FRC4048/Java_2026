@@ -200,7 +200,7 @@ public class RobotContainer {
                 }
 
                 setUpAutoFactory();
-                autoChooser = new AutoChooser(drivebase, shootState, autoFactory, shooterSubsystem, climberSubsystem, feederSubsystem, hopperSubsystem, turretSubsystem, anglerSubsystem, controllerSubsystem);
+                autoChooser = new AutoChooser(drivebase, shootState, autoFactory, shooterSubsystem, climberSubsystem, feederSubsystem, hopperSubsystem, turretSubsystem, anglerSubsystem, controllerSubsystem, intakeDeployer);
                 configureBindings();
                 putShuffleboardCommands();
         }

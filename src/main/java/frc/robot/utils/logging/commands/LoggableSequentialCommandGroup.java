@@ -17,7 +17,7 @@ public class LoggableSequentialCommandGroup extends SequentialCommandGroup imple
     addCommands(proxyCommands);
   }
 
-  @Override
+@Override
   public String getBasicName() {
     return basicName;
   }

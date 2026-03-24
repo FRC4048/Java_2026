@@ -55,9 +55,9 @@ public class ControllerSubsystem extends SubsystemBase {
             14.0);
     private static final PoseControlProfile RED_HUB_PROFILE = new PoseControlProfile(RED_HUB_TARGET_POSE, 32.0, 230.0,
             14.0);
-    private static final PoseControlProfile RED_SHUTTLE_PROFILE = new PoseControlProfile(RED_HUB_TARGET_POSE, 20.0, 90.0,
+    private static final PoseControlProfile RED_SHUTTLE_PROFILE = new PoseControlProfile(RED_HUB_TARGET_POSE, 45.0, 90.0,
             -14.0);
-    private static final PoseControlProfile BLUE_SHUTTLE_PROFILE = new PoseControlProfile(BLUE_HUB_TARGET_POSE, 20.0, 90.0,
+    private static final PoseControlProfile BLUE_SHUTTLE_PROFILE = new PoseControlProfile(BLUE_HUB_TARGET_POSE, 45.0, 90.0,
             -14.0);
 
     private final SwerveSubsystem drivebase;
@@ -260,9 +260,7 @@ public class ControllerSubsystem extends SubsystemBase {
                     - 1380);
         }else if(state == ShootState.SHUTTLING){
             //Essentially random values needs to be tuned
-            return (-0.31 * distance * distance
-                    -30.7 * distance
-                    - 3838.7);
+            return ((-5 * distance) - 2800);
         }
         return profile.defaultShooterVelocityRpm;
     }

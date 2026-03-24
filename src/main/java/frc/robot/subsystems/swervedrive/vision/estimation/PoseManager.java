@@ -13,6 +13,7 @@ import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import frc.robot.subsystems.swervedrive.vision.truster.PoseDeviation;
 import frc.robot.subsystems.swervedrive.vision.truster.VisionMeasurement;
 import frc.robot.subsystems.swervedrive.vision.truster.VisionTruster;
+import frc.robot.utils.logging.LoggedTunableNumber;
 import org.littletonrobotics.junction.Logger;
 
 import java.util.LinkedList;
@@ -29,6 +30,7 @@ public class PoseManager {
     protected final Queue<VisionMeasurement> visionMeasurementQueue = new LinkedList<>();
     private final SwerveSubsystem drivebase;
     protected final VisionTruster visionTruster;
+    private final LoggedTunableNumber visionSmoother = new LoggedTunableNumber("SmoothVision", 1);
 
     public PoseManager(
             PoseDeviation PoseDeviation,
@@ -92,7 +94,7 @@ public class PoseManager {
         }
 
         if (Constants.USE_CAMERA_APRILTAG_STD_DEV) {
-            return VecBuilder.fill(StdDev, StdDev, StdDev);
+            return VecBuilder.fill(StdDev*visionSmoother.get(), StdDev*visionSmoother.get(), StdDev);
         }
         return visionTruster.calculateTrust(measurement);
     }

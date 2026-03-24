@@ -185,8 +185,8 @@ public class AutoChooser {
         AutoEvent event = getSelectedEvent();
         Command command = getCommand(event);
         String commandDescription;
-        if (command == null) {
-            return "No auto mapped for " + event.getAction() + " at " + event.getLocation();
+        if (command instanceof DoNothing) {
+            return "NO AUTO";
         } else {
             commandDescription = descriptionMap.get(event.withoutColor());
         }
@@ -205,7 +205,8 @@ public class AutoChooser {
             return command;
         } else {
             // fall back to color-agnostic command if we didn't find one
-            return commandMap.get(event.withoutColor());
+            command = commandMap.get(event.withoutColor());
+            return command != null ? command : new DoNothing(turret, angler);
         }
     }
 }

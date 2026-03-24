@@ -5,12 +5,12 @@ import java.util.HashMap;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import edu.wpi.first.math.geometry.Pose2d;
-
 public enum AutoAction {
   DO_NOTHING("Do Nothing"),
   SHOOT("Shoot"),
-  SHOOT_AND_CLIMB("Shoot and Climb"),
+  SHOOT_PICKUP("Shoot and Pickup"),
+  DISTURBANCE("Disturbance"),
+  NEUTRAL_ZONE("Shoot and Neutral Zone Pickup"),
   INVALID("INVALID");
   private final String name;
   private static final HashMap<String, AutoAction> nameMap =

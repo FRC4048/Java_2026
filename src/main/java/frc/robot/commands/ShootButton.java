@@ -13,12 +13,12 @@ public class ShootButton extends LoggableCommand{
 
     @Override
     public void end(boolean interrupted) {
-        controllerSubsystem.setDriverActivatedShooting(false); 
+        controllerSubsystem.setActivatedShooting(false); 
     }
 
     @Override
     public void initialize() {
-        controllerSubsystem.setDriverActivatedShooting(true);
+        controllerSubsystem.setActivatedShooting(true);
     }
 
     @Override

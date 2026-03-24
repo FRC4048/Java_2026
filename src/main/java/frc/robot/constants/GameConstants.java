@@ -54,7 +54,7 @@ public class GameConstants {
     public static final double SHOOTER_SPEED = 1500;
     public static final double INTAKE_DEPLOYER_SPEED = -0.075;
     public static final double INTAKE_RETRACTION_SPEED = 0.1;
-    public static final double INITIAL_INTAKE_DEPLOYMENT_SPEED = -0.1;
+    public static final double INITIAL_INTAKE_DEPLOYMENT_SPEED = -0.3;
     public static final double INITIAL_INTAKE_RETRACTION_SPEED = 0.5;
 
 
@@ -122,9 +122,9 @@ public class GameConstants {
     public static final double TURRET_HOME_ANGLE = 0.0; //Turret facing forward
     public static final double TURRET_MIN_ANGLE = -92;
     public static final double TURRET_MAX_ANGLE = 92;
-    public static final double TURRET_LIMIT_SPEED = 0.2;
-    public static final double TURRET_PID_DISTANCE_THRESHOLD = 5; /* TODO: Change later
-    Minimum target encoder distance needed to use the longer pid slot*/
+    public static final double TURRET_LIMIT_SPEED = 0.1;
+    public static final double TURRET_PID_DISTANCE_THRESHOLD = 5;
+    //Minimum target encoder distance needed to use the longer pid slot
 
 
     //swerve config

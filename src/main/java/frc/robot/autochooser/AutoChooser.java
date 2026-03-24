@@ -184,13 +184,12 @@ public class AutoChooser {
     public String getCommandDescription() {
         AutoEvent event = getSelectedEvent();
         Command command = getCommand(event);
-        String commandDescription;
         if (command instanceof DoNothing) {
             return "NO AUTO";
         } else {
-            commandDescription = descriptionMap.get(event.withoutColor());
+            String commandDescription = descriptionMap.get(event.withoutColor());
+            return event.getAction() + " at " + event.getLocation() + " → " + commandDescription + ".";
         }
-        return event.getAction() + " at " + event.getLocation() + " → " + commandDescription + ".";
     }
 
     public FieldLocation getFieldLocation() {

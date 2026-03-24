@@ -47,7 +47,7 @@ public class ToggleDeployment extends LoggableCommand {
   public boolean isFinished() {
     boolean limitSwitch = subsystem.getDeploymentState() == DeploymentState.UP ? subsystem.getFwdLimitSwitchState()
         : subsystem.getRevLimitSwitchState();
-    return timer.hasElapsed(Constants.INTAKE_DEPLOYER_BURNOUT_TIMER) || limitSwitch
+    return timer.hasElapsed(Constants.INTAKE_DEPLOYER_TIMEOUT_TIMER) || limitSwitch
         || subsystem.getDeploymentState() == DeploymentState.STOPPED;
   }
 }

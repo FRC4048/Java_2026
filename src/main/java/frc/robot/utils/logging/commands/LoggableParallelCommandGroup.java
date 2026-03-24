@@ -18,7 +18,7 @@ public class LoggableParallelCommandGroup extends ParallelCommandGroup implement
     addCommands(proxyCommands);
   }
 
-  @Override
+@Override
   public String getBasicName() {
     return basicName;
   }

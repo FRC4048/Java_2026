@@ -103,11 +103,11 @@ public class AutoChooser {
     private void populateCommandMap() {
         //if AutoEvent is not dependent on alliance color don't put a color
         commandMap.put(new AutoEvent(AutoAction.DO_NOTHING, FieldLocation.DEPOT_SIDE),
-            new DoNothing(turret,angler));
+            new DoNothing(turret,angler, shootstate));
         commandMap.put(new AutoEvent(AutoAction.DO_NOTHING, FieldLocation.MID),
-            new DoNothing(turret,angler));
+            new DoNothing(turret,angler,shootstate));
         commandMap.put(new AutoEvent(AutoAction.DO_NOTHING, FieldLocation.OUTPOST_SIDE), 
-            new DoNothing(turret,angler));
+            new DoNothing(turret,angler,shootstate));
 
         //shoot
         commandMap.put(new AutoEvent(AutoAction.SHOOT, FieldLocation.DEPOT_SIDE),
@@ -181,7 +181,7 @@ public class AutoChooser {
     public Command getSelectedCommand() {
         AutoEvent event = getSelectedEvent();
         Command command = getCommandInternal(event);
-        return command != null ? command : new DoNothing(turret, angler);
+        return command != null ? command : new DoNothing(turret, angler, shootstate);
     }
     public AutoAction getAction(){
         return actionChooser.get();

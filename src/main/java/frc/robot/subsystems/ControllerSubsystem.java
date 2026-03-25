@@ -28,15 +28,13 @@ import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 public class ControllerSubsystem extends SubsystemBase {
 
     private static final double STOP_DELAY_SECONDS = 0.5;
-    private static final double SHOOT_DELAY_SECONDS = 1.5;
+    private static final double SHOOT_DELAY_SECONDS = 0.5;
 
     // Placeholder target poses until real field target values are finalized
     private static final Pose2d BLUE_HUB_TARGET_POSE = new Pose2d(Constants.BLUE_HUB_X_POSITION,
             Constants.BLUE_HUB_Y_POSITION, Rotation2d.kZero);
     private static final Pose2d RED_HUB_TARGET_POSE = new Pose2d(Constants.RED_HUB_X_POSITION,
             Constants.RED_HUB_Y_POSITION, Rotation2d.kZero);
-    private static final Pose2d SHUTTLE_TARGET_POSE = new Pose2d(1.0, 7.0, Rotation2d.kZero);
-
     private static final String MANUAL_POSE_X_KEY = "controller/ManualPoseX";
     private static final String MANUAL_POSE_Y_KEY = "controller/ManualPoseY";
     private static final String MANUAL_POSE_R_KEY = "controller/ManualPoseRotation";
@@ -61,9 +59,9 @@ public class ControllerSubsystem extends SubsystemBase {
             14.0);
     private static final PoseControlProfile RED_HUB_PROFILE = new PoseControlProfile(RED_HUB_TARGET_POSE, 32.0, 230.0,
             14.0);
-    private static final PoseControlProfile RED_SHUTTLE_PROFILE = new PoseControlProfile(RED_HUB_TARGET_POSE, 16.0, 90.0,
+    private static final PoseControlProfile RED_SHUTTLE_PROFILE = new PoseControlProfile(RED_HUB_TARGET_POSE, 45.0, 90.0,
             -14.0);
-    private static final PoseControlProfile BLUE_SHUTTLE_PROFILE = new PoseControlProfile(BLUE_HUB_TARGET_POSE, 16.0, 90.0,
+    private static final PoseControlProfile BLUE_SHUTTLE_PROFILE = new PoseControlProfile(BLUE_HUB_TARGET_POSE, 45.0, 90.0,
             -14.0);
 
     private final SwerveSubsystem drivebase;
@@ -215,7 +213,11 @@ public class ControllerSubsystem extends SubsystemBase {
         if (isTurretTargetOutOfRange(shotTargets.turretAngleDegrees) && shooterVelocityRpm != 0.0) {
             shooterVelocityRpm = Constants.TURRET_OUT_OF_RANGE_FLOP_RPM;
         }
-        activeTargets = new ShotTargets(
+
+        // This makes everything wait until after the shooter has run for half a second before starting
+        if (shootDelayTimer.hasElapsed(SHOOT_DELAY_SECONDS)) {
+
+            activeTargets = new ShotTargets(
                 shotTargets.anglerAngleDegrees,
                 shooterVelocityRpm,
                 shotTargets.turretAngleDegrees,
@@ -228,7 +230,7 @@ public class ControllerSubsystem extends SubsystemBase {
 
             activeTargets = new ShotTargets(
                 activeTargets.anglerAngleDegrees,
-                shotTargets.shooterVelocityRpm, // Shooter starts half a second before everything else
+                shooterVelocityRpm, // Shooter starts half a second before everything else
                 activeTargets.turretAngleDegrees,
                 activeTargets.distanceMeters,
                 false,
@@ -236,6 +238,7 @@ public class ControllerSubsystem extends SubsystemBase {
                 activeTargets.intakeDeploy);
 
         }
+    }
 
     }
 
@@ -246,9 +249,9 @@ public class ControllerSubsystem extends SubsystemBase {
 
     private ShotTargets calculateTargetsFromPose(ShootState state,PoseControlProfile profile, Pose2d robotPose) {
         double computedDistanceMeters = calculateDistanceMeters(state, robotPose, profile.targetPose);
-        double anglerAngleDegrees = calculateAnglerAngleDegrees(computedDistanceMeters, profile);
-        double shooterVelocity = calculateShooterVelocity(computedDistanceMeters, profile);
-        double turretAngleDegrees = calculateTurretAngleDegrees(robotPose, profile);
+        double anglerAngleDegrees = calculateAnglerAngleDegrees(state, computedDistanceMeters, profile);
+        double shooterVelocity = calculateShooterVelocity(state, computedDistanceMeters, profile);
+        double turretAngleDegrees = calculateTurretAngleDegrees(state, robotPose, profile);
         return new ShotTargets(anglerAngleDegrees, shooterVelocity, turretAngleDegrees, computedDistanceMeters, true,
                 true, true);
     }
@@ -288,8 +291,8 @@ public class ControllerSubsystem extends SubsystemBase {
         return 0.208*computedDistanceMeters + 0.647;
     }
 
-    private double calculateAnglerAngleDegrees(double computedDistanceMeters, PoseControlProfile profile) {
-        if ((profile == BLUE_HUB_PROFILE) || (profile == RED_HUB_PROFILE)) {
+    private double calculateAnglerAngleDegrees(ShootState state, double computedDistanceMeters, PoseControlProfile profile) {
+        if (state == ShootState.SHOOTING_HUB) {
             double distance = (UnitConversion.METER_TO_FOOT * computedDistanceMeters) - Constants.COMPUTATED_DISTANCE_OFFSET;
             return 0.169 * distance * distance
                     - 1.73 * distance
@@ -298,21 +301,26 @@ public class ControllerSubsystem extends SubsystemBase {
         return profile.defaultAnglerAngleDegrees;
     }
 
-    private double calculateShooterVelocity(double computedDistanceMeters, PoseControlProfile profile) {
-        if ((profile == BLUE_HUB_PROFILE) || (profile == RED_HUB_PROFILE)) {
-            double distance = (UnitConversion.METER_TO_FOOT * computedDistanceMeters) - Constants.COMPUTATED_DISTANCE_OFFSET;
+    private double calculateShooterVelocity(ShootState state, double computedDistanceMeters, PoseControlProfile profile) {
+        double distance = (UnitConversion.METER_TO_FOOT * computedDistanceMeters) - Constants.COMPUTATED_DISTANCE_OFFSET;
+        if (state == ShootState.SHOOTING_HUB) {
             return (8.46 * distance * distance
                     - 237 * distance
                     - 1380);
+        }else if(state == ShootState.SHUTTLING){
+            return (((-distance*distance) - 5 * distance) - 2800);
         }
         return profile.defaultShooterVelocityRpm;
     }
 
-    private double calculateTurretAngleDegrees(Pose2d robotPose, PoseControlProfile profile) {
-        return Math.floor(
-                Math.toDegrees(TurretCalculations.calculateTurretAngle(robotPose.getX(), robotPose.getY(),
-                        robotPose.getRotation().getRadians(),
-                        Robot.allianceColor().get() == DriverStation.Alliance.Blue)));
+    private double calculateTurretAngleDegrees(ShootState state, Pose2d robotPose, PoseControlProfile profile) {
+        if(state == ShootState.SHOOTING_HUB || state == ShootState.SHUTTLING){
+            return Math.floor(
+                    Math.toDegrees(TurretCalculations.calculateTurretAngle(state,robotPose.getX(), robotPose.getY(),
+                            robotPose.getRotation().getRadians(),
+                            Robot.allianceColor().get() == DriverStation.Alliance.Blue)));
+        }
+            return profile.defaultTurretAngleDegrees;
     }
 
     // Getters for all the subsystems to set posistion.
@@ -321,7 +329,9 @@ public class ControllerSubsystem extends SubsystemBase {
     }
 
     public double getTargetShooterVelocityRpm() {
+        //return activeTargets.shooterVelocityRpm * 0.9; use in squishy mode
         return activeTargets.shooterVelocityRpm;
+
     }
 
     public double getTargetTurretAngleDegrees() {

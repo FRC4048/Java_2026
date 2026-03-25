@@ -27,13 +27,15 @@ public class MidShoot extends LoggableSequentialCommandGroup{
         HopperSubsystem hopper, FeederSubsystem feeder, TurretSubsystem turret, AnglerSubsystem angler,
         ControllerSubsystem controller, IntakeDeployerSubsystem intakeDeployer) {
         super(  
-                new AutoReset(shootstate, turret, angler),
-                new ToggleDeployment(intakeDeployer, controller), //so the fuel falls in - intake is out
+                new LoggableParallelCommandGroup(
+                    new AutoReset(shootstate, turret, angler),
+                    new ToggleDeployment(intakeDeployer, controller) //initial fuel falls in
+                ),
                 new LoggableParallelCommandGroup(
                     new SetShootingState(shootstate, ShootState.SHOOTING_HUB),
                     new DriveSwerve(drivetrain, DriveDirection.BACKWARD, 2, 0.5)
                 ),
-                new AutoShoot(hopper, feeder, 2),
+                new AutoShoot(hopper, feeder, 3),
                 new LoggableParallelCommandGroup(
                     new ToggleDeployment(intakeDeployer, controller),
                     new AutoShoot(hopper, feeder, 2)

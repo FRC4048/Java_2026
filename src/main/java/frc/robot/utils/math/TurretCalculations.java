@@ -73,7 +73,9 @@ public class TurretCalculations {
              * of the input numbers.
              * 
              */
+            if(Constants.DEBUG){
             Logger.recordOutput("Hub pose", new Pose2d(new Translation2d(hubPosX,hubPosY), new Rotation2d()));
+            }
             double panAngleUnadjusted = Math.atan2(hubPosY - turretPosY, hubPosX - turretPosX);
 
         /*

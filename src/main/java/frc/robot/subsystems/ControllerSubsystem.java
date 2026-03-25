@@ -303,8 +303,7 @@ public class ControllerSubsystem extends SubsystemBase {
                     - 237 * distance
                     - 1380);
         }else if(state == ShootState.SHUTTLING){
-            //Essentially random values needs to be tuned
-            return (((-distance*distance) + -5 * distance) - 2800);
+            return (((-distance*distance) - 5 * distance) - 2800);
         }
         return profile.defaultShooterVelocityRpm;
     }

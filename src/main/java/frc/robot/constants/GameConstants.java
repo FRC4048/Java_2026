@@ -100,7 +100,7 @@ public class GameConstants {
     public static final double ANGLER_FF = 0.0;
     public static final double ANGLER_HOME_ROTATIONS = 0.0;
     public static final double ANGLER_ENCODER_LOW = 0; //Lowest encoder position of Angler
-    public static final double ANGLER_ENCODER_HIGH = 100; //Highest encoder position of Angler
+    public static final double ANGLER_ENCODER_HIGH = 250; //Highest encoder position of Angler
     public static final double ANGLER_ANGLE_LOW = 17; //Lowest angle position of Angler
     public static final double ANGLER_ANGLE_HIGH = 45; //Highest angle position of Angler
     public static final double ANGLER_FIXED_ROTATIONS = 0.1; //Fixed encoder position of Angler in Fixed ShootState
@@ -173,5 +173,9 @@ public class GameConstants {
 
     public static final double MAX_HUB_DISTANCE = 5.18;
     public static final double MIN_HUB_DISTANCE = 1.42;
-    public static final double COMPUTATED_DISTANCE_OFFSET = 2;
+    public static final double COMPUTATED_DISTANCE_OFFSET = 0;
+    public static final double RED_SHUTTLING_TARGET_X_POSITION = 13.8;
+    public static final double BLUE_SHUTTLING_TARGET_X_POSITION = 2.8;
+    public static final double SHUTTLING_TARGET_LOWER_Y_POSITION = 2.6;
+    public static final double SHUTTLING_TARGET_HIGHER_Y_POSITION = 5.5;
 }

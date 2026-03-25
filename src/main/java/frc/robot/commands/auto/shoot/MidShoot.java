@@ -20,6 +20,7 @@ import frc.robot.subsystems.TurretSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import frc.robot.utils.logging.commands.LoggableParallelCommandGroup;
 import frc.robot.utils.logging.commands.LoggableSequentialCommandGroup;
+import frc.robot.utils.logging.commands.LoggableWaitCommand;
 
 public class MidShoot extends LoggableSequentialCommandGroup{
     public MidShoot(
@@ -29,17 +30,12 @@ public class MidShoot extends LoggableSequentialCommandGroup{
         super(  
                 new LoggableParallelCommandGroup(
                     new AutoReset(shootstate, turret, angler),
+                    new SetShootingState(shootstate, ShootState.SHOOTING_HUB),
                     new ToggleDeployment(intakeDeployer, controller) //initial fuel falls in
                 ),
-                new LoggableParallelCommandGroup(
-                    new SetShootingState(shootstate, ShootState.SHOOTING_HUB),
-                    new DriveSwerve(drivetrain, DriveDirection.BACKWARD, 2, 0.5)
-                ),
-                new AutoShoot(hopper, feeder, 3),
-                new LoggableParallelCommandGroup(
-                    new ToggleDeployment(intakeDeployer, controller),
-                    new AutoShoot(hopper, feeder, 2)
-                ),
+                new DriveSwerve(drivetrain, DriveDirection.BACKWARD, 2, 0.5),
+                new ToggleDeployment(intakeDeployer, controller),
+                new LoggableWaitCommand(0.7),
                 new SetShootingState(shootstate, ShootState.STOPPED)
         );
     }

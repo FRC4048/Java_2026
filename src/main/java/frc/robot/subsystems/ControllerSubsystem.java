@@ -217,11 +217,6 @@ public class ControllerSubsystem extends SubsystemBase {
                 || turretAngleDegrees > Constants.TURRET_MAX_ANGLE;
     }
 
-    private boolean isTurretTargetOutOfRange(double turretAngleDegrees) {
-        return turretAngleDegrees < Constants.TURRET_MIN_ANGLE
-                || turretAngleDegrees > Constants.TURRET_MAX_ANGLE;
-    }
-
     private ShotTargets calculateTargetsFromPose(ShootState state,PoseControlProfile profile, Pose2d robotPose) {
         double computedDistanceMeters = calculateDistanceMeters(state, robotPose, profile.targetPose);
         double anglerAngleDegrees = calculateAnglerAngleDegrees(computedDistanceMeters, profile);

@@ -226,7 +226,7 @@ public class ControllerSubsystem extends SubsystemBase {
 
             activeTargets = new ShotTargets(
                 activeTargets.anglerAngleDegrees,
-                shotTargets.shooterVelocityRpm, // Shooter starts half a second before everything else
+                shooterVelocityRpm, // Shooter starts half a second before everything else
                 activeTargets.turretAngleDegrees,
                 activeTargets.distanceMeters,
                 false,

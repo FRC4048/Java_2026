@@ -8,9 +8,9 @@
         "layouts": [
           {
             "title": "Shooting State",
-            "x": 512.0,
+            "x": 0.0,
             "y": 384.0,
-            "width": 256.0,
+            "width": 768.0,
             "height": 256.0,
             "type": "List Layout",
             "properties": {
@@ -69,15 +69,15 @@
             }
           },
           {
-            "title": "Active Countdown [PLACEHOLDER]",
-            "x": 0.0,
-            "y": 384.0,
+            "title": "Next Shift In...",
+            "x": 768.0,
+            "y": 0.0,
             "width": 512.0,
-            "height": 256.0,
+            "height": 384.0,
             "type": "Large Text Display",
             "properties": {
-              "topic": "/SmartDashboard/TURRET/Arm Encoder",
-              "period": 0.033,
+              "topic": "/SmartDashboard/Next Shift In...",
+              "period": 0.06,
               "data_type": "double"
             }
           }
@@ -469,49 +469,8 @@
       "grid_layout": {
         "layouts": [
           {
-            "title": "Lifesigns [PLACEHOLDER]",
-            "x": 512.0,
-            "y": 0.0,
-            "width": 256.0,
-            "height": 256.0,
-            "type": "List Layout",
-            "properties": {
-              "label_position": "TOP"
-            },
-            "children": [
-              {
-                "title": "Lifesign 1 [PLACEHOLDER]",
-                "x": 640.0,
-                "y": 128.0,
-                "width": 128.0,
-                "height": 128.0,
-                "type": "Text Display",
-                "properties": {
-                  "topic": "/SmartDashboard/Choreo Alerts/infos",
-                  "period": 0.06,
-                  "data_type": "string[]",
-                  "show_submit_button": false
-                }
-              },
-              {
-                "title": "Lifesign 1 [PLACEHOLDER]",
-                "x": 512.0,
-                "y": 128.0,
-                "width": 128.0,
-                "height": 128.0,
-                "type": "Text Display",
-                "properties": {
-                  "topic": "/SmartDashboard/Choreo Alerts/infos",
-                  "period": 0.06,
-                  "data_type": "string[]",
-                  "show_submit_button": false
-                }
-              }
-            ]
-          },
-          {
             "title": "ROS",
-            "x": 768.0,
+            "x": 512.0,
             "y": 0.0,
             "width": 256.0,
             "height": 256.0,
@@ -594,7 +553,7 @@
           },
           {
             "title": "totalTimeouts",
-            "x": 1024.0,
+            "x": 768.0,
             "y": 0.0,
             "width": 256.0,
             "height": 256.0,

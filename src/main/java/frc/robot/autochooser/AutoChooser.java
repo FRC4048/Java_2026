@@ -183,7 +183,8 @@ public class AutoChooser {
 
     public Command getSelectedCommand() {
         AutoEvent event = getSelectedEvent();
-        return getCommand(event);
+        Command command = getCommandInternal(event);
+        return command != null ? command : new DoNothing(turret, angler);
     }
     public AutoAction getAction(){
         return actionChooser.get();
@@ -191,14 +192,13 @@ public class AutoChooser {
     /** @return A human-readable description of the selected command. */
     public String getCommandDescription() {
         AutoEvent event = getSelectedEvent();
-        Command command = getCommand(event);
-        String commandDescription;
+        Command command = getCommandInternal(event);
         if (command == null) {
-            return "No auto mapped for " + event.getAction() + " at " + event.getLocation();
+            return "NO AUTO";
         } else {
-            commandDescription = descriptionMap.get(event.withoutColor());
+            String commandDescription = descriptionMap.get(event.withoutColor());
+            return event.getAction() + " at " + event.getLocation() + " → " + commandDescription + ".";
         }
-        return event.getAction() + " at " + event.getLocation() + " → " + commandDescription + ".";
     }
 
     public FieldLocation getFieldLocation() {
@@ -206,7 +206,7 @@ public class AutoChooser {
     }
 
 
-    private Command getCommand(AutoEvent event) {
+    private Command getCommandInternal(AutoEvent event) {
         Command command = commandMap.get(event);
         if (command != null) {
             // prioritize color-specific command, if we have one
@@ -216,4 +216,5 @@ public class AutoChooser {
             return commandMap.get(event.withoutColor());
         }
     }
+
 }

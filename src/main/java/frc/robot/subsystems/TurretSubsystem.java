@@ -48,10 +48,10 @@ public class TurretSubsystem extends SubsystemBase {
 
         if (Math.abs(targetEncoderPosition - io.getEncoderPosition()) >= Constants.TURRET_PID_DISTANCE_THRESHOLD) {
             io.setPidPosition(targetEncoderPosition, ClosedLoopSlot.kSlot1); // longer encoder distance pid
-            Logger.recordOutput("Using long PID", 1);
+            Logger.recordOutput(LOGGING_NAME+"/Using long PID", 1);
         } else {
             io.setPidPosition(targetEncoderPosition, ClosedLoopSlot.kSlot0); // shorter encoder distance pid
-            Logger.recordOutput("Using long PID", 0);
+            Logger.recordOutput(LOGGING_NAME+"/Using long PID", 0);
         }
     }
 

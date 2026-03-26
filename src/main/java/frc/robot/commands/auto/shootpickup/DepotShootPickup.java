@@ -23,6 +23,17 @@ public class DepotShootPickup extends LoggableSequentialCommandGroup {
             HopperSubsystem hopper, FeederSubsystem feeder, TurretSubsystem turret, AnglerSubsystem angler,
             ControllerSubsystem controller, IntakeDeployerSubsystem intake) {
         super(
+             new AutoReset(shootstate, turret, angler),
+                new LoggableWaitCommand(2),
+                new LoggableParallelCommandGroup(
+                    new DriveSwerve(drivetrain, DriveDirection.BACKWARD, 2, 0.5),
+                    new SetShootingState(shootstate, ShootState.SHOOTING_HUB)
+                ),
+                new ToggleDeployment(intake, controller), //initial fuel falls in
+                new LoggableWaitCommand(4),
+                new ToggleDeployment(intake, controller),
+                new LoggableWaitCommand(2),
+                new SetShootingState(shootstate, ShootState.STOPPED),
                 //shoot
                 new AutoReset(shootstate, turret, angler),
                 new LoggableParallelCommandGroup(

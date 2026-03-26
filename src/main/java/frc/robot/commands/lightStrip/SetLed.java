@@ -55,10 +55,10 @@ public class SetLed extends LoggableCommand{
                 lightStrip.setPattern(BlinkinPattern.AQUA);
                 break;
             case SHOOTING_HUB:
-                lightStrip.setPattern(BlinkinPattern.GREEN);
+                lightStrip.setPattern(BlinkinPattern.RAINBOW_RAINBOW_PALETTE);
                 break;
             case SHUTTLING:
-                lightStrip.setPattern(BlinkinPattern.RAINBOW_RAINBOW_PALETTE);
+                lightStrip.setPattern(BlinkinPattern.GREEN);
                 break;
             }
 

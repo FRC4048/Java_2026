@@ -12,6 +12,7 @@ import choreo.auto.AutoFactory;
 import choreo.auto.AutoRoutine;
 import choreo.auto.AutoTrajectory;
 import edu.wpi.first.wpilibj.Filesystem;
+import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -102,6 +103,9 @@ public class RobotContainer {
         // The robot's subsystems and commands are defined here...
         private final CommandXboxController controller =
             new CommandXboxController(Constants.XBOX_CONTROLLER_PORT);
+
+        private final PowerDistribution powerDistribution = new PowerDistribution();
+
         private final ClimberSubsystem climberSubsystem;
         private final AnglerSubsystem anglerSubsystem;
         private final IntakeSubsystem intakeSubsystem;
@@ -155,7 +159,8 @@ public class RobotContainer {
                             apriltagSubsystem = !Constants.TESTBED ? new ApriltagSubsystem(ApriltagSubsystem.createRealIo(), drivebase, truster) : null;
                             controllerSubsystem = !Constants.TESTBED ? new ControllerSubsystem(drivebase,intakeDeployer, this) : null;
                                  lightStripSubsystem = new LightStripSubsystem(drivebase, shootState);
-            }
+                                powerDistribution.setSwitchableChannel(true);
+                                }
                         case REPLAY -> {
                                 anglerSubsystem = new AnglerSubsystem(AnglerSubsystem.createMockIo());
                                 intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createMockIo());

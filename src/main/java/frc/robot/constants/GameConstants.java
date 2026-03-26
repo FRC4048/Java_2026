@@ -36,7 +36,7 @@ public class GameConstants {
     public static final boolean ENABLE_LOGGING = true;
 
     //Debugs
-    public static final boolean DEBUG = true;
+    public static final boolean DEBUG = false;
     public static final boolean ARM_DEBUG = true;
 
     //Joystick
@@ -113,7 +113,7 @@ public class GameConstants {
     public static final double TURRET_SHORT_RANGE_I = 0.000000;
     public static final double TURRET_SHORT_RANGE_D = 0.001;
     public static final double TURRET_SHORT_RANGE_FF = 0.0;
-    public static final double TURRET_LONG_RANGE_P = 1.2;
+    public static final double TURRET_LONG_RANGE_P = 1;
     public static final double TURRET_LONG_RANGE_I = 0.000000;
     public static final double TURRET_LONG_RANGE_D = 0.0;
     public static final double TURRET_LONG_RANGE_FF = 0.0;

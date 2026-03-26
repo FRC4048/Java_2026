@@ -28,7 +28,7 @@ import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 public class ControllerSubsystem extends SubsystemBase {
 
     private static final double STOP_DELAY_SECONDS = 0.5;
-    private static final double SHOOT_DELAY_SECONDS = 0.5;
+    private static final double SHOOT_DELAY_SECONDS = 1.5;
 
     // Placeholder target poses until real field target values are finalized
     private static final Pose2d BLUE_HUB_TARGET_POSE = new Pose2d(Constants.BLUE_HUB_X_POSITION,
@@ -205,11 +205,8 @@ public class ControllerSubsystem extends SubsystemBase {
     }
 
     private void useShotTargets(ShotTargets shotTargets) {
-
-        // This makes everything wait until after the shooter has run for half a second before starting
-        if (shootDelayTimer.hasElapsed(SHOOT_DELAY_SECONDS)) {
-
-            double shooterVelocityRpm = shotTargets.shooterVelocityRpm;
+        
+        double shooterVelocityRpm = shotTargets.shooterVelocityRpm;
         if (isTurretTargetOutOfRange(shotTargets.turretAngleDegrees) && shooterVelocityRpm != 0.0) {
             shooterVelocityRpm = Constants.TURRET_OUT_OF_RANGE_FLOP_RPM;
         }
@@ -237,7 +234,6 @@ public class ControllerSubsystem extends SubsystemBase {
                 false,
                 activeTargets.intakeDeploy);
 
-        }
     }
 
     }

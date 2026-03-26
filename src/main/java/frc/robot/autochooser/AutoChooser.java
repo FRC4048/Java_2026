@@ -155,11 +155,11 @@ public class AutoChooser {
             "shoot from the middle"); 
         descriptionMap.put(new AutoEvent(AutoAction.SHOOT, FieldLocation.OUTPOST_SIDE),
             "shoot from the outpost"); 
-
+    /*
         descriptionMap.put(new AutoEvent(AutoAction.SHOOT_PICKUP, FieldLocation.DEPOT_SIDE),
             "shoot and pickup from the depot");
 
-        /*
+
         descriptionMap.put(new AutoEvent(AutoAction.DISTURBANCE, FieldLocation.DEPOT_SIDE),
             "run the depot disturbance route");
         descriptionMap.put(new AutoEvent(AutoAction.DISTURBANCE, FieldLocation.OUTPOST_SIDE),

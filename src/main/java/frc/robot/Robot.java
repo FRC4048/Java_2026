@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.autochooser.FieldLocation;
 import frc.robot.commands.auto.ClearAutonomousCommand;
 import frc.robot.constants.Constants;
+import frc.robot.constants.enums.ShootingState.ShootState;
 import frc.robot.utils.diag.Diagnostics;
 import frc.robot.utils.logging.TimeoutLogger;
 import frc.robot.utils.logging.commands.CommandLogger;
@@ -90,10 +91,11 @@ public class Robot extends LoggedRobot {
         // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
         // autonomous chooser on the dashboard.
         robotContainer = new RobotContainer();
-
+        if(Constants.DEBUG){
         SmartDashboard.putData(
                 "Auto/Clear Autonomous Command",
-                new ClearAutonomousCommand(this::clearAutonomousCommand));
+                new ClearAutonomousCommand(this::clearAutonomousCommand, robotContainer.getShootingState()));
+        }
     }
 
     public static RobotMode getMode() {

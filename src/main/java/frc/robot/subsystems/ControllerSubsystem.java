@@ -59,9 +59,9 @@ public class ControllerSubsystem extends SubsystemBase {
             14.0);
     private static final PoseControlProfile RED_HUB_PROFILE = new PoseControlProfile(RED_HUB_TARGET_POSE, 32.0, 230.0,
             14.0);
-    private static final PoseControlProfile RED_SHUTTLE_PROFILE = new PoseControlProfile(RED_HUB_TARGET_POSE, 45.0, 90.0,
+    private static final PoseControlProfile RED_SHUTTLE_PROFILE = new PoseControlProfile(RED_HUB_TARGET_POSE, 37.0, 90.0,
             -14.0);
-    private static final PoseControlProfile BLUE_SHUTTLE_PROFILE = new PoseControlProfile(BLUE_HUB_TARGET_POSE, 45.0, 90.0,
+    private static final PoseControlProfile BLUE_SHUTTLE_PROFILE = new PoseControlProfile(BLUE_HUB_TARGET_POSE, 37.0, 90.0,
             -14.0);
 
     private final SwerveSubsystem drivebase;

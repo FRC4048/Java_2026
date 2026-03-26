@@ -36,7 +36,7 @@ public class GameConstants {
     public static final boolean ENABLE_LOGGING = true;
 
     //Debugs
-    public static final boolean DEBUG = false;
+    public static final boolean DEBUG = true;
     public static final boolean ARM_DEBUG = true;
 
     //Joystick
@@ -100,12 +100,12 @@ public class GameConstants {
     public static final double ANGLER_FF = 0.0;
     public static final double ANGLER_HOME_ROTATIONS = 0.0;
     public static final double ANGLER_ENCODER_LOW = 0; //Lowest encoder position of Angler
-    public static final double ANGLER_ENCODER_HIGH = 250; //Highest encoder position of Angler
-    public static final double ANGLER_ANGLE_LOW = 17; //Lowest angle position of Angler
-    public static final double ANGLER_ANGLE_HIGH = 45; //Highest angle position of Angler
+    public static final double ANGLER_ENCODER_HIGH = 272; //Highest encoder position of Angler
+    public static final double ANGLER_ANGLE_LOW = 16; //Lowest angle position of Angler
+    public static final double ANGLER_ANGLE_HIGH = 37; //Highest angle position of Angler
     public static final double ANGLER_FIXED_ROTATIONS = 0.1; //Fixed encoder position of Angler in Fixed ShootState
     public static final double ANGLER_FIXED_ANGLE = 10; //Fixed encoder position of Angler in Fixed ShootState
-    public static final double ANGLER_LIMIT_SPEED = 0.2;
+    public static final double ANGLER_LIMIT_SPEED = 0.3;
 
 
  // turret (pan angle) PID

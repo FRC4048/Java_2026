@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.autochooser.FieldLocation;
 import frc.robot.commands.auto.ClearAutonomousCommand;
 import frc.robot.constants.Constants;
+import frc.robot.utils.BlinkinPattern;
 import frc.robot.constants.enums.ShootingState.ShootState;
 import frc.robot.utils.diag.Diagnostics;
 import frc.robot.utils.logging.TimeoutLogger;
@@ -161,6 +162,7 @@ public class Robot extends LoggedRobot {
     public void disabledInit() {
         mode.set(RobotMode.DISABLED);
         Logger.recordOutput("Timeouts/totalTimeouts", TimeoutLogger.getTotalTimeouts());
+        robotContainer.getLightStrip().setPattern(BlinkinPattern.RAINBOW_LAVA_PALETTE);
     }
 
     @Override

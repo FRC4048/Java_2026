@@ -92,7 +92,7 @@ public class PoseManager {
         }
 
         if (Constants.USE_CAMERA_APRILTAG_STD_DEV) {
-            return VecBuilder.fill(StdDev, StdDev, StdDev);
+            return VecBuilder.fill(StdDev, StdDev, 1000);
         }
         return visionTruster.calculateTrust(measurement);
     }

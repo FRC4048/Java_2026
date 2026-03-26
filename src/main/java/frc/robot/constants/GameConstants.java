@@ -54,7 +54,7 @@ public class GameConstants {
     public static final double SHOOTER_SPEED = 1500;
     public static final double INTAKE_DEPLOYER_SPEED = -0.075;
     public static final double INTAKE_RETRACTION_SPEED = 0.1;
-    public static final double INITIAL_INTAKE_DEPLOYMENT_SPEED = -0.1;
+    public static final double INITIAL_INTAKE_DEPLOYMENT_SPEED = -0.3;
     public static final double INITIAL_INTAKE_RETRACTION_SPEED = 0.5;
 
 
@@ -76,7 +76,7 @@ public class GameConstants {
     public static final double ANGLER_TIMEOUT = 5;
     public static final int SERVER_SOCKET_CONNECTION_TIMEOUT = 2000;
     public static final double SHOOTER_TIMEOUT = 5;
-    public static final double INTAKE_DEPLOYER_BURNOUT_TIMER = 5;
+    public static final double INTAKE_DEPLOYER_TIMEOUT_TIMER = 5;
     public static final double TURRET_TIMEOUT = 5;
 
     //Angles
@@ -100,7 +100,7 @@ public class GameConstants {
     public static final double ANGLER_FF = 0.0;
     public static final double ANGLER_HOME_ROTATIONS = 0.0;
     public static final double ANGLER_ENCODER_LOW = 0; //Lowest encoder position of Angler
-    public static final double ANGLER_ENCODER_HIGH = 100; //Highest encoder position of Angler
+    public static final double ANGLER_ENCODER_HIGH = 250; //Highest encoder position of Angler
     public static final double ANGLER_ANGLE_LOW = 17; //Lowest angle position of Angler
     public static final double ANGLER_ANGLE_HIGH = 45; //Highest angle position of Angler
     public static final double ANGLER_FIXED_ROTATIONS = 0.1; //Fixed encoder position of Angler in Fixed ShootState
@@ -122,9 +122,10 @@ public class GameConstants {
     public static final double TURRET_HOME_ANGLE = 0.0; //Turret facing forward
     public static final double TURRET_MIN_ANGLE = -92;
     public static final double TURRET_MAX_ANGLE = 92;
-    public static final double TURRET_LIMIT_SPEED = 0.2;
-    public static final double TURRET_PID_DISTANCE_THRESHOLD = 45; /* TODO: Change later
-    Minimum target encoder distance needed to use the longer pid slot*/
+    public static final double TURRET_LIMIT_SPEED = 0.1;
+    public static final double TURRET_OUT_OF_RANGE_FLOP_RPM = -1500.0;
+    public static final double TURRET_PID_DISTANCE_THRESHOLD = 5;
+    //Minimum target encoder distance needed to use the longer pid slot
 
 
     //swerve config
@@ -149,11 +150,11 @@ public class GameConstants {
     public static final double Y_DISTANCE_BETWEEN_ROBOT_AND_TURRET = .12;
 
     // Shift timings
-    public static final int SHIFT_1_START = 130;
-    public static final int SHIFT_2_START = 105;
-    public static final int SHIFT_3_START = 80;
-    public static final int SHIFT_4_START = 55;
-    public static final int ENDGAME_START = 30;
+    public static final int SHIFT_1_START = 10;
+    public static final int SHIFT_2_START = 35;
+    public static final int SHIFT_3_START = 60;
+    public static final int SHIFT_4_START = 85;
+    public static final int ENDGAME_START = 110;
 
     public static final double VISION_CONSISTENCY_THRESHOLD = 0.25; //How close 2 vision measurements have to be (needs to be tuned potentially but seemingly from my testing it also might not be needed)
     public static final boolean ENABLE_VISION = true;
@@ -172,5 +173,9 @@ public class GameConstants {
 
     public static final double MAX_HUB_DISTANCE = 5.18;
     public static final double MIN_HUB_DISTANCE = 1.42;
-    public static final double COMPUTATED_DISTANCE_OFFSET = 2;
+    public static final double COMPUTATED_DISTANCE_OFFSET = 0;
+    public static final double RED_SHUTTLING_TARGET_X_POSITION = 13.8;
+    public static final double BLUE_SHUTTLING_TARGET_X_POSITION = 2.8;
+    public static final double SHUTTLING_TARGET_LOWER_Y_POSITION = 2.6;
+    public static final double SHUTTLING_TARGET_HIGHER_Y_POSITION = 5.5;
 }

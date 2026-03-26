@@ -35,7 +35,6 @@ public class IntakeDeployerSubsystem extends SubsystemBase {
 
   public IntakeDeployerSubsystem(SparkMaxIo io) {
     this.io = io;
-    setDefaultCommand(new RunDeployer(this));
   }
 
   public void setSpeed(double speed) {
@@ -103,8 +102,8 @@ public class IntakeDeployerSubsystem extends SubsystemBase {
     this.deploymentState = deploymentState;
   }
 
-  public void toggleState() {
-    if (deploymentState == DeploymentState.UP) {
+  public void toggleState(boolean canDeploy) {
+    if (deploymentState == DeploymentState.UP && canDeploy) {
       deploymentState = DeploymentState.DOWN;
     } else {
       deploymentState = DeploymentState.UP;

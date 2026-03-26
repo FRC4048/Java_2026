@@ -13,9 +13,7 @@ import frc.robot.commands.auto.neutral.DepotNeutral;
 import frc.robot.commands.auto.neutral.OutpostNeutral;
 import frc.robot.commands.auto.disturbance.DepotDisturbance;
 import frc.robot.commands.auto.disturbance.OutpostDisturbance;
-import frc.robot.commands.auto.shoot.DepotShoot;
-import frc.robot.commands.auto.shoot.MidShoot;
-import frc.robot.commands.auto.shoot.OutpostShoot;
+import frc.robot.commands.auto.shoot.Shoot;
 import frc.robot.commands.auto.shootpickup.DepotShootPickup;
 import frc.robot.commands.auto.DoNothing;
 import frc.robot.constants.enums.ShootingState;
@@ -105,19 +103,19 @@ public class AutoChooser {
     private void populateCommandMap() {
         //if AutoEvent is not dependent on alliance color don't put a color
         commandMap.put(new AutoEvent(AutoAction.DO_NOTHING, FieldLocation.DEPOT_SIDE),
-            new DoNothing(turret,angler));
+            new DoNothing(turret,angler, shootstate));
         commandMap.put(new AutoEvent(AutoAction.DO_NOTHING, FieldLocation.MID),
-            new DoNothing(turret,angler));
+            new DoNothing(turret,angler,shootstate));
         commandMap.put(new AutoEvent(AutoAction.DO_NOTHING, FieldLocation.OUTPOST_SIDE), 
-            new DoNothing(turret,angler));
+            new DoNothing(turret,angler,shootstate));
 
         //shoot
         commandMap.put(new AutoEvent(AutoAction.SHOOT, FieldLocation.DEPOT_SIDE),
-            new DepotShoot(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, controller, intake));
+            new Shoot(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, controller, intake));
         commandMap.put(new AutoEvent(AutoAction.SHOOT, FieldLocation.MID),
-            new MidShoot(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, controller, intake));
+            new Shoot(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, controller, intake));
         commandMap.put(new AutoEvent(AutoAction.SHOOT, FieldLocation.OUTPOST_SIDE),
-            new OutpostShoot(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, controller, intake));
+            new Shoot(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, controller, intake));
 
         //shoot-pickup
         commandMap.put(new AutoEvent(AutoAction.SHOOT_PICKUP, FieldLocation.DEPOT_SIDE),
@@ -182,7 +180,8 @@ public class AutoChooser {
 
     public Command getSelectedCommand() {
         AutoEvent event = getSelectedEvent();
-        return getCommand(event);
+        Command command = getCommandInternal(event);
+        return command != null ? command : new DoNothing(turret, angler, shootstate);
     }
     public AutoAction getAction(){
         return actionChooser.get();
@@ -190,14 +189,13 @@ public class AutoChooser {
     /** @return A human-readable description of the selected command. */
     public String getCommandDescription() {
         AutoEvent event = getSelectedEvent();
-        Command command = getCommand(event);
-        String commandDescription;
+        Command command = getCommandInternal(event);
         if (command == null) {
-            return "No auto mapped for " + event.getAction() + " at " + event.getLocation();
+            return "NO AUTO";
         } else {
-            commandDescription = descriptionMap.get(event.withoutColor());
+            String commandDescription = descriptionMap.get(event.withoutColor());
+            return event.getAction() + " at " + event.getLocation() + " → " + commandDescription + ".";
         }
-        return event.getAction() + " at " + event.getLocation() + " → " + commandDescription + ".";
     }
 
     public FieldLocation getFieldLocation() {
@@ -205,7 +203,7 @@ public class AutoChooser {
     }
 
 
-    private Command getCommand(AutoEvent event) {
+    private Command getCommandInternal(AutoEvent event) {
         Command command = commandMap.get(event);
         if (command != null) {
             // prioritize color-specific command, if we have one
@@ -215,4 +213,5 @@ public class AutoChooser {
             return commandMap.get(event.withoutColor());
         }
     }
+
 }

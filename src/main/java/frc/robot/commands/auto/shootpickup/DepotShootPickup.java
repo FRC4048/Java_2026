@@ -15,6 +15,7 @@ import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import frc.robot.utils.logging.commands.LoggableCommandWrapper;
 import frc.robot.utils.logging.commands.LoggableParallelCommandGroup;
 import frc.robot.utils.logging.commands.LoggableSequentialCommandGroup;
+import frc.robot.utils.logging.commands.LoggableWaitCommand;
 
 public class DepotShootPickup extends LoggableSequentialCommandGroup {
     public DepotShootPickup(
@@ -22,6 +23,17 @@ public class DepotShootPickup extends LoggableSequentialCommandGroup {
             HopperSubsystem hopper, FeederSubsystem feeder, TurretSubsystem turret, AnglerSubsystem angler,
             ControllerSubsystem controller, IntakeDeployerSubsystem intake) {
         super(
+             new AutoReset(shootstate, turret, angler),
+                new LoggableWaitCommand(2),
+                new LoggableParallelCommandGroup(
+                    new DriveSwerve(drivetrain, DriveDirection.BACKWARD, 2, 0.5),
+                    new SetShootingState(shootstate, ShootState.SHOOTING_HUB)
+                ),
+                new ToggleDeployment(intake, controller), //initial fuel falls in
+                new LoggableWaitCommand(4),
+                new ToggleDeployment(intake, controller),
+                new LoggableWaitCommand(2),
+                new SetShootingState(shootstate, ShootState.STOPPED),
                 //shoot
                 new AutoReset(shootstate, turret, angler),
                 new LoggableParallelCommandGroup(
@@ -29,14 +41,9 @@ public class DepotShootPickup extends LoggableSequentialCommandGroup {
                     LoggableCommandWrapper.wrap(auto.trajectoryCmd("Depot_ToDepot").withTimeout(2)),
                     new SetShootingState(shootstate, ShootState.SHOOTING_HUB)
                 ),
-
-                new AutoShoot(hopper, feeder, 5),
-                //pickup and shoot
-                new LoggableParallelCommandGroup(
-                    new DriveSwerve(drivetrain, DriveDirection.BACKWARD, 5, 0.2),
-                    new AutoShoot(hopper, feeder, 5),
-                    new ToggleDeployment(intake, controller)
-                ),
+                new ToggleDeployment(intake, controller),
+                new DriveSwerve(drivetrain, DriveDirection.BACKWARD, 5, 0.2),
+                new LoggableWaitCommand(3),
                 new ToggleDeployment(intake, controller)
         );
     }

@@ -30,10 +30,8 @@ public class Shoot extends LoggableSequentialCommandGroup{
         super(  
                 new AutoReset(shootstate, turret, angler),
                 new LoggableWaitCommand(2),
-                new LoggableParallelCommandGroup(
-                    new DriveSwerve(drivetrain, DriveDirection.BACKWARD, 2, 0.5),
-                    new SetShootingState(shootstate, ShootState.SHOOTING_HUB)
-                ),
+                new SetShootingState(shootstate, ShootState.SHOOTING_HUB),
+                new DriveSwerve(drivetrain, DriveDirection.BACKWARD, 3, 0.5),
                 new ToggleDeployment(intakeDeployer, controller), //initial fuel falls in
                 new LoggableWaitCommand(4),
                 new ToggleDeployment(intakeDeployer, controller),

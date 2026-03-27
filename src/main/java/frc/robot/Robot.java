@@ -162,11 +162,11 @@ public class Robot extends LoggedRobot {
     public void disabledInit() {
         mode.set(RobotMode.DISABLED);
         Logger.recordOutput("Timeouts/totalTimeouts", TimeoutLogger.getTotalTimeouts());
-        robotContainer.getLightStrip().setPattern(BlinkinPattern.RAINBOW_LAVA_PALETTE);
     }
 
     @Override
     public void disabledPeriodic() {
+        robotContainer.getLightStrip().setPattern(BlinkinPattern.RAINBOW_LAVA_PALETTE);
     }
 
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */

@@ -226,10 +226,10 @@ public class ControllerSubsystem extends SubsystemBase {
         } else {
 
             activeTargets = new ShotTargets(
-                activeTargets.anglerAngleDegrees,
+                shotTargets.anglerAngleDegrees,
                 shooterVelocityRpm, // Shooter starts half a second before everything else
-                activeTargets.turretAngleDegrees,
-                activeTargets.distanceMeters,
+                shotTargets.turretAngleDegrees,
+                shotTargets.distanceMeters,
                 false,
                 false,
                 activeTargets.intakeDeploy);
@@ -302,7 +302,7 @@ public class ControllerSubsystem extends SubsystemBase {
         if (state == ShootState.SHOOTING_HUB) {
             return (8.46 * distance * distance
                     - 237 * distance
-                    - 1380);
+                    - 1380) * 0.9;
         }else if(state == ShootState.SHUTTLING){
             return (((-distance*distance) - 5 * distance) - 2800);
         }

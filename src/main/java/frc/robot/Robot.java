@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.autochooser.FieldLocation;
 import frc.robot.commands.auto.ClearAutonomousCommand;
+import frc.robot.commands.shooter.SetShootingState;
 import frc.robot.constants.Constants;
 import frc.robot.utils.BlinkinPattern;
 import frc.robot.constants.enums.ShootingState.ShootState;
@@ -292,6 +293,7 @@ public class Robot extends LoggedRobot {
         mode.set(RobotMode.TEST);
         // Cancels all running commands at the start of test mode.
         CommandScheduler.getInstance().cancelAll();
+        new SetShootingState(robotContainer.getShootingState(), ShootState.STOPPED);
     }
 
     /** This function is called periodically during test mode. */

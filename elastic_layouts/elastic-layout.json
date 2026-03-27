@@ -8,9 +8,9 @@
         "layouts": [
           {
             "title": "Shooting State",
-            "x": 512.0,
+            "x": 0.0,
             "y": 384.0,
-            "width": 256.0,
+            "width": 768.0,
             "height": 256.0,
             "type": "List Layout",
             "properties": {
@@ -51,21 +51,7 @@
               "show_trajectories": true,
               "field_rotation": 0.0,
               "robot_color": 4294198070,
-              "trajectory_color": 4294967295,
-              "show_robot_outside_widget": true
-            }
-          },
-          {
-            "title": "DriverCam",
-            "x": 768.0,
-            "y": 0.0,
-            "width": 1024.0,
-            "height": 640.0,
-            "type": "Camera Stream",
-            "properties": {
-              "topic": "/CameraPublisher/DriverCam",
-              "period": 0.06,
-              "rotation_turns": 0
+              "trajectory_color": 4294967295
             }
           },
           {
@@ -83,15 +69,15 @@
             }
           },
           {
-            "title": "Active Countdown [PLACEHOLDER]",
-            "x": 0.0,
-            "y": 384.0,
+            "title": "Next Shift In...",
+            "x": 768.0,
+            "y": 0.0,
             "width": 512.0,
-            "height": 256.0,
+            "height": 384.0,
             "type": "Large Text Display",
             "properties": {
-              "topic": "/SmartDashboard/TURRET/Arm Encoder",
-              "period": 0.033,
+              "topic": "/SmartDashboard/Next Shift In...",
+              "period": 0.06,
               "data_type": "double"
             }
           }
@@ -483,7 +469,7 @@
       "grid_layout": {
         "layouts": [
           {
-            "title": "Lifesigns [PLACEHOLDER]",
+            "title": "ROS",
             "x": 512.0,
             "y": 0.0,
             "width": 256.0,
@@ -494,30 +480,30 @@
             },
             "children": [
               {
-                "title": "Lifesign 1 [PLACEHOLDER]",
-                "x": 640.0,
-                "y": 128.0,
+                "title": "lifesigns_SHOOTER",
+                "x": 0.0,
+                "y": 0.0,
                 "width": 128.0,
                 "height": 128.0,
                 "type": "Text Display",
                 "properties": {
-                  "topic": "/SmartDashboard/Choreo Alerts/infos",
+                  "topic": "/ROS/lifesigns_SHOOTER",
                   "period": 0.06,
-                  "data_type": "string[]",
+                  "data_type": "double",
                   "show_submit_button": false
                 }
               },
               {
-                "title": "Lifesign 1 [PLACEHOLDER]",
-                "x": 512.0,
-                "y": 128.0,
+                "title": "lifesigns_SIDES",
+                "x": 0.0,
+                "y": 0.0,
                 "width": 128.0,
                 "height": 128.0,
                 "type": "Text Display",
                 "properties": {
-                  "topic": "/SmartDashboard/Choreo Alerts/infos",
+                  "topic": "/ROS/lifesigns_SIDES",
                   "period": 0.06,
-                  "data_type": "string[]",
+                  "data_type": "double",
                   "show_submit_button": false
                 }
               }
@@ -563,6 +549,19 @@
               "period": 0.06,
               "data_type": "string",
               "show_submit_button": false
+            }
+          },
+          {
+            "title": "totalTimeouts",
+            "x": 768.0,
+            "y": 0.0,
+            "width": 256.0,
+            "height": 256.0,
+            "type": "Large Text Display",
+            "properties": {
+              "topic": "/AdvantageKit/RealOutputs/Timeouts/totalTimeouts",
+              "period": 0.06,
+              "data_type": "int"
             }
           }
         ]

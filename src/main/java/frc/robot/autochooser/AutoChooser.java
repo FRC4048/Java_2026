@@ -11,9 +11,10 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Robot;
 import frc.robot.commands.auto.neutral.DepotNeutral;
 import frc.robot.commands.auto.neutral.OutpostNeutral;
+import frc.robot.commands.auto.shoot.ShootBlue;
+import frc.robot.commands.auto.shoot.ShootRed;
 import frc.robot.commands.auto.disturbance.DepotDisturbance;
 import frc.robot.commands.auto.disturbance.OutpostDisturbance;
-import frc.robot.commands.auto.shoot.Shoot;
 import frc.robot.commands.auto.shootpickup.DepotShootPickup;
 import frc.robot.commands.auto.DoNothing;
 import frc.robot.constants.enums.ShootingState;
@@ -110,12 +111,18 @@ public class AutoChooser {
             new DoNothing(turret,angler,shootstate));
 
         //shoot
-        commandMap.put(new AutoEvent(AutoAction.SHOOT, FieldLocation.DEPOT_SIDE),
-            new Shoot(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, controller, intake));
-        commandMap.put(new AutoEvent(AutoAction.SHOOT, FieldLocation.MID),
-            new Shoot(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, controller, intake));
-        commandMap.put(new AutoEvent(AutoAction.SHOOT, FieldLocation.OUTPOST_SIDE),
-            new Shoot(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, controller, intake));
+        commandMap.put(new AutoEvent(AutoAction.SHOOT_RED, FieldLocation.DEPOT_SIDE),
+            new ShootRed(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, controller, intake));
+        commandMap.put(new AutoEvent(AutoAction.SHOOT_RED, FieldLocation.MID),
+            new ShootRed(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, controller, intake));
+        commandMap.put(new AutoEvent(AutoAction.SHOOT_RED, FieldLocation.OUTPOST_SIDE),
+            new ShootRed(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, controller, intake));
+        commandMap.put(new AutoEvent(AutoAction.SHOOT_BLUE, FieldLocation.DEPOT_SIDE),
+            new ShootBlue(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, controller, intake));
+        commandMap.put(new AutoEvent(AutoAction.SHOOT_BLUE, FieldLocation.MID),
+            new ShootBlue(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, controller, intake));
+        commandMap.put(new AutoEvent(AutoAction.SHOOT_BLUE, FieldLocation.OUTPOST_SIDE),
+            new ShootBlue(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, controller, intake));
 
         /*
         //shoot-pickup
@@ -149,12 +156,19 @@ public class AutoChooser {
         descriptionMap.put(new AutoEvent(AutoAction.DO_NOTHING, FieldLocation.OUTPOST_SIDE), 
             "do nothing");
 
-        descriptionMap.put(new AutoEvent(AutoAction.SHOOT, FieldLocation.DEPOT_SIDE),
-            "shoot from the depot"); 
-        descriptionMap.put(new AutoEvent(AutoAction.SHOOT, FieldLocation.MID),
-            "shoot from the middle"); 
-        descriptionMap.put(new AutoEvent(AutoAction.SHOOT, FieldLocation.OUTPOST_SIDE),
-            "shoot from the outpost"); 
+        descriptionMap.put(new AutoEvent(AutoAction.SHOOT_RED, FieldLocation.DEPOT_SIDE),
+            "shoot red from the depot"); 
+        descriptionMap.put(new AutoEvent(AutoAction.SHOOT_RED, FieldLocation.MID),
+            "shoot red from the middle"); 
+        descriptionMap.put(new AutoEvent(AutoAction.SHOOT_RED, FieldLocation.OUTPOST_SIDE),
+            "shoot red from the outpost"); 
+            
+        descriptionMap.put(new AutoEvent(AutoAction.SHOOT_BLUE, FieldLocation.DEPOT_SIDE),
+            "shoot blue from the depot"); 
+        descriptionMap.put(new AutoEvent(AutoAction.SHOOT_BLUE, FieldLocation.MID),
+            "shoot blue from the middle"); 
+        descriptionMap.put(new AutoEvent(AutoAction.SHOOT_BLUE, FieldLocation.OUTPOST_SIDE),
+            "shoot blue from the outpost"); 
     /*
         descriptionMap.put(new AutoEvent(AutoAction.SHOOT_PICKUP, FieldLocation.DEPOT_SIDE),
             "shoot and pickup from the depot");

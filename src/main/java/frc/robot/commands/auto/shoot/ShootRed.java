@@ -1,6 +1,8 @@
 package frc.robot.commands.auto.shoot;
 
 import choreo.auto.AutoFactory;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import frc.robot.Robot;
 import frc.robot.commands.auto.AutoReset;
 import frc.robot.commands.auto.AutoShoot;
 import frc.robot.commands.drive.DriveSwerve;
@@ -22,8 +24,8 @@ import frc.robot.utils.logging.commands.LoggableParallelCommandGroup;
 import frc.robot.utils.logging.commands.LoggableSequentialCommandGroup;
 import frc.robot.utils.logging.commands.LoggableWaitCommand;
 
-public class Shoot extends LoggableSequentialCommandGroup{
-    public Shoot(
+public class ShootRed extends LoggableSequentialCommandGroup{
+    public ShootRed(
         SwerveSubsystem drivetrain, AutoFactory auto, ShooterSubsystem shooter, ShootingState shootstate, 
         HopperSubsystem hopper, FeederSubsystem feeder, TurretSubsystem turret, AnglerSubsystem angler,
         ControllerSubsystem controller, IntakeDeployerSubsystem intakeDeployer) {

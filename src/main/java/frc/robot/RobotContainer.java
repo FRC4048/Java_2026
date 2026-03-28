@@ -336,7 +336,11 @@ public class RobotContainer {
         }
 
         public void putShuffleboardCommands() {
-
+                        SmartDashboard.putNumber(RunDashboardShotTest.ANGLER_TARGET_POSITION_KEY, 0.0);
+                        SmartDashboard.putNumber(RunDashboardShotTest.SHOOTER_TARGET_RPM_KEY, Constants.SHOOTER_SPEED);
+                 SmartDashboard.putData(
+                                        "test/Run Dashboard Shot Test (30s)",
+                                        new RunDashboardShotTest(anglerSubsystem, shooterSubsystem));
                 if (Constants.DEBUG) {
 
                         /*
@@ -380,19 +384,13 @@ public class RobotContainer {
                                         "Intake/Stop",
                                         new InstantCommand(intakeSubsystem::stopMotors));
 
-                        SmartDashboard.putNumber(RunDashboardShotTest.ANGLER_TARGET_POSITION_KEY, 0.0);
-                        SmartDashboard.putNumber(RunDashboardShotTest.TURRET_TARGET_POSITION_KEY, Constants.TURRET_HOME_ANGLE);
-                        SmartDashboard.putNumber(RunDashboardShotTest.SHOOTER_TARGET_RPM_KEY, Constants.SHOOTER_SPEED);
                         SmartDashboard.putNumber("Target Angle",0);
                         SmartDashboard.putData("RunHoppperAndFeeder",
                                         new RunHopperAndFeeder(hopperSubsystem, feederSubsystem));
                         SmartDashboard.putData("RunTurret",
                                         new TestSetTurretAngle(turretSubsystem));
 
-                        SmartDashboard.putData(
-                                        "test/Run Dashboard Shot Test (30s)",
-                                        new RunDashboardShotTest(anglerSubsystem, turretSubsystem, shooterSubsystem));
-
+                       
                         SmartDashboard.putData(
                                         "angler/Go Home",
                                         new InstantCommand(() -> anglerSubsystem

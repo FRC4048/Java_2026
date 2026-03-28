@@ -38,6 +38,7 @@ import frc.robot.commands.feeder.DefaultSpinFeeder;
 import frc.robot.commands.feeder.SpinFeeder;
 import frc.robot.commands.hopper.DefaultSpinHopper;
 import frc.robot.commands.hopper.SpinHopper;
+import frc.robot.commands.intake.ReverseIntake;
 import frc.robot.commands.intake.SpinIntake;
 import frc.robot.commands.intake.StopIntake;
 import frc.robot.commands.intakeDeployment.RunDeployer;
@@ -298,6 +299,7 @@ public class RobotContainer {
                 controller.povLeft().onTrue(new SetShootingState(shootState, ShootState.SHUTTLING));
                 controller.leftTrigger().onTrue((new ResetAll(anglerSubsystem, climberSubsystem, 
                         intakeDeployer, intakeSubsystem, shooterSubsystem, turretSubsystem, shootState)));
+                controller.rightTrigger().whileTrue(new ReverseIntake(intakeSubsystem));
                 driveJoystick.trigger().whileTrue((new SetShootingState(shootState, ShootState.STOPPED)));
 
 

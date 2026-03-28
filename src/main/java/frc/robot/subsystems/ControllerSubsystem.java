@@ -12,6 +12,7 @@ import org.dyn4j.UnitConversion;
 import org.littletonrobotics.junction.Logger;
 
 import frc.robot.RobotContainer;
+import frc.robot.commands.intakeDeployment.SetDeploymentState;
 import frc.robot.commands.intakeDeployment.ToggleDeployment;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -155,7 +156,7 @@ public class ControllerSubsystem extends SubsystemBase {
 
     private void updateTargets(ShootState state, Pose2d robotPose) {
         if(!activeTargets.intakeDeploy && intakeDeployer.getDeploymentState() == DeploymentState.DOWN){
-            new ToggleDeployment(intakeDeployer, this).schedule();
+            new SetDeploymentState(intakeDeployer, DeploymentState.STOPPED).schedule();
         }
         switch (state) {
             case STOPPED -> updateStoppedTargets();
@@ -302,7 +303,7 @@ public class ControllerSubsystem extends SubsystemBase {
         if (state == ShootState.SHOOTING_HUB) {
             return (8.46 * distance * distance
                     - 237 * distance
-                    - 1380) * 0.9;
+                    - 1380)*0.95;
         }else if(state == ShootState.SHUTTLING){
             return (((-distance*distance) - 5 * distance) - 2800);
         }

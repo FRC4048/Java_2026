@@ -41,6 +41,7 @@ public class ArmSimulator implements Simulator {
     private final SingleJointedArmSim armSim;
     private final double armGearing;
     private final String name;
+    private boolean reverse = true;
 
     /**
      * Constructor.
@@ -55,7 +56,7 @@ public class ArmSimulator implements Simulator {
                         params.armMinAngle.getRadians(),
                         params.armMaxAngle.getRadians(),
                         params.armSimulateGravity,
-                        0);
+                        params.armMinAngle.getRadians());
         this.motor = motor;
         armGearing = params.armGearing;
         this.name = params.name;
@@ -64,9 +65,10 @@ public class ArmSimulator implements Simulator {
         encoderSim = motorSim.getRelativeEncoderSim();
         forwardSwitchSim = motorSim.getForwardLimitSwitchSim();
         reverseSwitchSim = motorSim.getReverseLimitSwitchSim();
-        //encoderSim.setPositionConversionFactor(1.0);
         encoderSim.setPosition(0.0);
         encoderSim.setInverted(false);
+
+        reverse = true;
     }
 
     /**
@@ -77,6 +79,9 @@ public class ArmSimulator implements Simulator {
         // In this method, we update our simulation of what our elevator is doing
         // First, we set our "inputs" (voltages)
         double motorOut = motorSim.getAppliedOutput() * 12.0; // * RoboRioSim.getVInVoltage();
+        if (reverse) {
+            motorOut *= -1.0;
+        }
         armSim.setInput(motorOut);
         // Next, we update it. The standard loop time is 20ms.
         armSim.update(0.020);
@@ -90,11 +95,12 @@ public class ArmSimulator implements Simulator {
         RoboRioSim.setVInVoltage(
                 BatterySim.calculateDefaultBatteryLoadedVoltage(armSim.getCurrentDrawAmps()));
         // Update elevator visualization with position
-        Rotation2d positionRadians = Rotation2d.fromRadians(armSim.getAngleRads());
+        double mechanismPosRads = armSim.getAngleRads();
+        Rotation2d mechanismPosition = Rotation2d.fromRadians(mechanismPosRads);
         forwardSwitchSim.setPressed(armSim.hasHitUpperLimit());
         reverseSwitchSim.setPressed(armSim.hasHitLowerLimit());
         if (ligament != null) {
-            ligament.setAngle(positionRadians);
+            ligament.setAngle(mechanismPosition);
         }
 
         if (Constants.ARM_DEBUG) {
@@ -102,8 +108,7 @@ public class ArmSimulator implements Simulator {
             SmartDashboard.putNumber(
                     name + "/Arm Velocity rads per s", velocityRadsPerSecond.getRadians());
             SmartDashboard.putNumber(name + "/Arm RPM", rpm);
-            SmartDashboard.putNumber(name + "/Arm actual position", armSim.getAngleRads());
-            SmartDashboard.putNumber(name + "/Arm Mechanism angle", armSim.getAngleRads());
+            SmartDashboard.putNumber(name + "/Arm actual position", mechanismPosRads);
             SmartDashboard.putBoolean(name + "/Arm Forward switch", forwardSwitchSim.getPressed());
             SmartDashboard.putBoolean(name + "/Arm Reverse switch", reverseSwitchSim.getPressed());
             SmartDashboard.putNumber(name + "/Arm Encoder", encoderSim.getPosition());

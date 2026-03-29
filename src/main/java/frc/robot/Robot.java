@@ -9,6 +9,10 @@ import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.cscore.VideoSource;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Translation3d;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.Timer;
@@ -130,14 +134,20 @@ public class Robot extends LoggedRobot {
             allianceColor = DriverStation.getAlliance();
         }
 
+        Logger.recordOutput("MyPose", robotContainer.getDriveBase().getPose());
+        Logger.recordOutput("ZeroPose", Pose2d.kZero);
+        Translation3d intakePosition = new Translation3d(0.3, 0, 0.3);
+        double intakeAngle = robotContainer.getRobotVisualizer().getIntakeDeploymentLigament().getAngle();
+        Rotation3d intakeRotation = new Rotation3d(0, Units.degreesToRadians(intakeAngle), 0);
+        Pose3d intake = new Pose3d(intakePosition, intakeRotation);
+        Logger.recordOutput("ZeroedComponents", new Pose3d[] { Pose3d.kZero, intake });
+
         if (Constants.DEBUG) {
             SmartDashboard.putNumber("driverXbox.getLeftY()", driverXbox.getLeftY());
             SmartDashboard.putNumber("driverXbox::getRightX", driverXbox.getRightX());
             if (!Constants.TESTBED) {
-                Logger.recordOutput("MyPose", robotContainer.getDriveBase().getPose());
-                    SmartDashboard.putNumber("Robot X", robotContainer.getDriveBase().getPose().getX());
-            SmartDashboard.putNumber("Robot Y", robotContainer.getDriveBase().getPose().getY());
-        // Puts data on the elastic dashboard
+
+                // Puts data on the elastic dashboard
                 SmartDashboard.putString("Alliance Color", Robot.allianceColorString());
                 SmartDashboard.putBoolean("Hub Active?", hubActive());
                 if (Constants.currentMode == Constants.Mode.SIM) {

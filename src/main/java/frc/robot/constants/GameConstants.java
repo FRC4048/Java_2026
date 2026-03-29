@@ -36,7 +36,7 @@ public class GameConstants {
     public static final boolean ENABLE_LOGGING = true;
 
     //Debugs
-    public static final boolean DEBUG = false;
+    public static final boolean DEBUG = true;
     public static final boolean ARM_DEBUG = true;
 
     //Joystick
@@ -45,9 +45,9 @@ public class GameConstants {
     public static final int XBOX_CONTROLLER_PORT = 2;
 
     //Speeds
-    public static final double INTAKE_SPEED = -0.5;
+    public static final double INTAKE_SPEED = -0.7;
     public static final double INTAKE_REVERSE_SPEED = 0.5;
-    public static final double HOPPER_SPEED = 0.6;
+    public static final double HOPPER_SPEED = 0.75;
     public static final double AUTO_HOPPER_SPEED = 0.2;
     public static final double CLIMBER_SPEED_UP = 0.1;
     public static final double CLIMBER_SPEED_DOWN = -0.1;
@@ -173,7 +173,7 @@ public class GameConstants {
     public static final double AVERAGE_CAM_LATENCY_STD_DEV = 0; // seconds; TODO: change Later
     public static final double MAX_VISION_DISTANCE_SIMULATION = 6;
 
-    public static final double MAX_HUB_DISTANCE = 5.18;
+    public static final double MAX_HUB_DISTANCE = 6;
     public static final double MIN_HUB_DISTANCE = 1.42;
     public static final double COMPUTATED_DISTANCE_OFFSET = 0;
     public static final double RED_SHUTTLING_TARGET_X_POSITION = 13.8;

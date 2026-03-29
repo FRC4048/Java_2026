@@ -301,9 +301,9 @@ public class ControllerSubsystem extends SubsystemBase {
     private double calculateShooterVelocity(ShootState state, double computedDistanceMeters, PoseControlProfile profile) {
         double distance = (UnitConversion.METER_TO_FOOT * computedDistanceMeters) - Constants.COMPUTATED_DISTANCE_OFFSET;
         if (state == ShootState.SHOOTING_HUB) {
-            return (8.46 * distance * distance
-                    - 237 * distance
-                    - 1380)*0.95;
+            return (3.18 * distance * distance
+                    - 132 * distance
+                    - 1771) * 0.95;
         }else if(state == ShootState.SHUTTLING){
             return (((-distance*distance) - 5 * distance) - 2800);
         }

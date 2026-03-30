@@ -296,14 +296,19 @@ public class ControllerSubsystem extends SubsystemBase {
                     + 20.4;
         }
         return profile.defaultAnglerAngleDegrees;
-    }
+    }  
 
     private double calculateShooterVelocity(ShootState state, double computedDistanceMeters, PoseControlProfile profile) {
         double distance = (UnitConversion.METER_TO_FOOT * computedDistanceMeters) - Constants.COMPUTATED_DISTANCE_OFFSET;
         if (state == ShootState.SHOOTING_HUB) {
-            return (3.18 * distance * distance
+            return (8.46 * distance * distance
+                    - 237 * distance
+                    - 1380);
+            /*
+            3.18 * distance * distance
                     - 132 * distance
-                    - 1771) * 0.95;
+                    - 1771
+            */
         }else if(state == ShootState.SHUTTLING){
             return (((-distance*distance) - 5 * distance) - 2800);
         }

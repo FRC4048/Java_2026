@@ -204,13 +204,6 @@ public class Robot extends LoggedRobot {
         }
     }
 
-    private void clearAutonomousCommand() {
-        if (autonomousCommand != null) {
-            autonomousCommand.cancel();
-        }
-        autonomousCommand = null;
-    }
-
   /** This function is called periodically during operator control. */
     @Override
   public void teleopPeriodic() {

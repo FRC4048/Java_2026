@@ -36,7 +36,7 @@ public class GameConstants {
     public static final boolean ENABLE_LOGGING = true;
 
     //Debugs
-    public static final boolean DEBUG = true;
+    public static final boolean DEBUG = false;
     public static final boolean ARM_DEBUG = true;
 
     //Joystick
@@ -51,7 +51,7 @@ public class GameConstants {
     public static final double AUTO_HOPPER_SPEED = 0.2;
     public static final double CLIMBER_SPEED_UP = 0.1;
     public static final double CLIMBER_SPEED_DOWN = -0.1;
-    public static final double FEEDER_SPEED = 1;//Might make veolcity PID
+    public static final double FEEDER_SPEED = 1;
     public static final double MAX_SPEED = Units.feetToMeters(14.5);
     public static final double SHOOTER_SPEED = 1500;
     public static final double INTAKE_DEPLOYER_SPEED = -0.075;

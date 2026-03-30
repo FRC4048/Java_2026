@@ -110,20 +110,22 @@ public class AutoChooser {
         commandMap.put(new AutoEvent(AutoAction.DO_NOTHING, FieldLocation.OUTPOST_SIDE), 
             new DoNothing(turret,angler,shootstate));
 
-        //shoot
-        commandMap.put(new AutoEvent(AutoAction.SHOOT_RED, FieldLocation.DEPOT_SIDE),
+        //shoot red
+        commandMap.put(new AutoEvent(AutoAction.SHOOT, FieldLocation.DEPOT_SIDE, Alliance.Red),
             new ShootRed(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, controller, intake));
-        commandMap.put(new AutoEvent(AutoAction.SHOOT_RED, FieldLocation.MID),
+        commandMap.put(new AutoEvent(AutoAction.SHOOT, FieldLocation.MID, Alliance.Red),
             new ShootRed(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, controller, intake));
-        commandMap.put(new AutoEvent(AutoAction.SHOOT_RED, FieldLocation.OUTPOST_SIDE),
+        commandMap.put(new AutoEvent(AutoAction.SHOOT, FieldLocation.OUTPOST_SIDE, Alliance.Red),
             new ShootRed(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, controller, intake));
-        commandMap.put(new AutoEvent(AutoAction.SHOOT_BLUE, FieldLocation.DEPOT_SIDE),
+        
+        //shoot blue
+        commandMap.put(new AutoEvent(AutoAction.SHOOT, FieldLocation.DEPOT_SIDE, Alliance.Blue),
             new ShootBlue(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, controller, intake));
-        commandMap.put(new AutoEvent(AutoAction.SHOOT_BLUE, FieldLocation.MID),
+        commandMap.put(new AutoEvent(AutoAction.SHOOT, FieldLocation.MID, Alliance.Blue),
             new ShootBlue(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, controller, intake));
-        commandMap.put(new AutoEvent(AutoAction.SHOOT_BLUE, FieldLocation.OUTPOST_SIDE),
+        commandMap.put(new AutoEvent(AutoAction.SHOOT, FieldLocation.OUTPOST_SIDE, Alliance.Blue),
             new ShootBlue(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, controller, intake));
-
+    
         /*
         //shoot-pickup
         commandMap.put(new AutoEvent(AutoAction.SHOOT_PICKUP, FieldLocation.DEPOT_SIDE),
@@ -156,19 +158,12 @@ public class AutoChooser {
         descriptionMap.put(new AutoEvent(AutoAction.DO_NOTHING, FieldLocation.OUTPOST_SIDE), 
             "do nothing");
 
-        descriptionMap.put(new AutoEvent(AutoAction.SHOOT_RED, FieldLocation.DEPOT_SIDE),
-            "shoot red from the depot"); 
-        descriptionMap.put(new AutoEvent(AutoAction.SHOOT_RED, FieldLocation.MID),
-            "shoot red from the middle"); 
-        descriptionMap.put(new AutoEvent(AutoAction.SHOOT_RED, FieldLocation.OUTPOST_SIDE),
-            "shoot red from the outpost"); 
-            
-        descriptionMap.put(new AutoEvent(AutoAction.SHOOT_BLUE, FieldLocation.DEPOT_SIDE),
-            "shoot blue from the depot"); 
-        descriptionMap.put(new AutoEvent(AutoAction.SHOOT_BLUE, FieldLocation.MID),
-            "shoot blue from the middle"); 
-        descriptionMap.put(new AutoEvent(AutoAction.SHOOT_BLUE, FieldLocation.OUTPOST_SIDE),
-            "shoot blue from the outpost"); 
+        descriptionMap.put(new AutoEvent(AutoAction.SHOOT, FieldLocation.DEPOT_SIDE),
+            "shoot from the depot"); 
+        descriptionMap.put(new AutoEvent(AutoAction.SHOOT, FieldLocation.MID),
+            "shoot from the middle"); 
+        descriptionMap.put(new AutoEvent(AutoAction.SHOOT, FieldLocation.OUTPOST_SIDE),
+            "shoot from the outpost"); 
     /*
         descriptionMap.put(new AutoEvent(AutoAction.SHOOT_PICKUP, FieldLocation.DEPOT_SIDE),
             "shoot and pickup from the depot");

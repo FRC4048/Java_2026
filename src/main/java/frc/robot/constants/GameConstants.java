@@ -172,8 +172,8 @@ public class GameConstants {
     public static final double AVERAGE_CAM_LATENCY_STD_DEV = 0; // seconds; TODO: change Later
     public static final double MAX_VISION_DISTANCE_SIMULATION = 6;
 
-    public static final double MAX_HUB_DISTANCE = 6;
-    public static final double MIN_HUB_DISTANCE = 1.42;
+    public static final double MAX_HUB_DISTANCE = 6;// Meters
+    public static final double MIN_HUB_DISTANCE = 1.42;// Meters
     public static final double COMPUTATED_DISTANCE_OFFSET = 0;
     public static final double RED_SHUTTLING_TARGET_X_POSITION = 13.8;
     public static final double BLUE_SHUTTLING_TARGET_X_POSITION = 2.8;

@@ -28,7 +28,7 @@ public class DefaultSpinHopper extends LoggableCommand {
     public void execute() {
         if (controllerSubsystem.shouldHopperSpin()) {
             subsystem.setSpeed(Constants.HOPPER_SPEED);
-        } else {
+        } else{
             subsystem.stopMotors();
         }
     }

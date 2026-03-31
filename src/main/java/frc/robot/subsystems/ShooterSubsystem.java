@@ -10,10 +10,17 @@ import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
+import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.geometry.Translation3d;
+import edu.wpi.first.units.Units;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Robot;
+import frc.robot.RobotContainer;
 import frc.robot.constants.Constants;
 import frc.robot.constants.GameConstants;
+import frc.robot.constants.enums.ShootingState;
+import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import frc.robot.utils.diag.DiagSparkMaxEncoder;
 import frc.robot.utils.logging.input.MotorLoggableInputs;
 import frc.robot.utils.logging.io.motor.RealSparkMaxIo;
@@ -27,6 +34,11 @@ import frc.robot.utils.logging.io.pidmotor.SparkMaxPidMotorIo;
 import frc.robot.utils.motor.TunablePIDManager;
 import frc.robot.utils.simulation.MotorSimulator;
 import frc.robot.utils.simulation.RobotVisualizer;
+import org.littletonrobotics.junction.Logger;
+import swervelib.simulation.ironmaple.simulation.SimulatedArena;
+import swervelib.simulation.ironmaple.simulation.seasonspecific.rebuilt2026.RebuiltFuelOnField;
+import swervelib.simulation.ironmaple.simulation.seasonspecific.rebuilt2026.RebuiltFuelOnFly;
+import swervelib.simulation.ironmaple.utils.FieldMirroringUtils;
 
 public class ShooterSubsystem extends SubsystemBase {
     
@@ -76,6 +88,7 @@ public class ShooterSubsystem extends SubsystemBase {
     public void periodic() {
         pidManager.periodic();
         io.periodic();
+
     }
 
     public static SparkMaxPidMotorIo createMockIo() {

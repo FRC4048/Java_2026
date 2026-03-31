@@ -64,7 +64,7 @@ public class TurretSubsystem extends SubsystemBase {
                 Constants.TURRET_MIN_ANGLE);
         if (lastAngle != targetAngle) {
             setPosition(targetRotations);
-            lastAngle = targetAngle;
+            lastAngle = targetAngle; //TODO: Change This
         }
     }
 
@@ -79,6 +79,10 @@ public class TurretSubsystem extends SubsystemBase {
         double targetEncoder = (targetAngle - angleLow) / (angleHigh - angleLow) * encoderHigh;
         return MathUtil.clamp(targetEncoder, encoderLow, encoderHigh);
     }
+
+    public double getLastAngle() {
+        return lastAngle;
+     }
 
     /**
      * Drive forward at the homing speed. Command should stop when limit is hit.

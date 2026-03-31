@@ -178,4 +178,5 @@ public class GameConstants {
     public static final double BLUE_SHUTTLING_TARGET_X_POSITION = 2.8;
     public static final double SHUTTLING_TARGET_LOWER_Y_POSITION = 2.6;
     public static final double SHUTTLING_TARGET_HIGHER_Y_POSITION = 5.5;
+    public static final double PIECES_PER_SECOND = 0.5;
 }

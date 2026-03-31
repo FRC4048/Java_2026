@@ -1,9 +1,10 @@
 package frc.robot.subsystems;
 
-import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.geometry.Twist2d;
+import edu.wpi.first.math.geometry.*;
+import edu.wpi.first.units.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import frc.robot.Robot;
+import frc.robot.constants.enums.ShootingState;
 import frc.robot.utils.math.TurretCalculations;
 
 import java.util.ArrayList;
@@ -13,9 +14,6 @@ import org.littletonrobotics.junction.Logger;
 
 import frc.robot.RobotContainer;
 import frc.robot.commands.intakeDeployment.ToggleDeployment;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -24,6 +22,11 @@ import frc.robot.constants.Constants;
 import frc.robot.constants.enums.DeploymentState;
 import frc.robot.constants.enums.ShootingState.ShootState;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
+import swervelib.simulation.ironmaple.simulation.SimulatedArena;
+import swervelib.simulation.ironmaple.simulation.seasonspecific.rebuilt2026.RebuiltFuelOnFly;
+import swervelib.simulation.ironmaple.utils.FieldMirroringUtils;
+
+import javax.naming.ldap.Control;
 
 public class ControllerSubsystem extends SubsystemBase {
 
@@ -73,13 +76,16 @@ public class ControllerSubsystem extends SubsystemBase {
     private ShootState previousState;
     private ShotTargets activeTargets;
     private boolean driverActivatedShooting = false;
+    private final TurretSubsystem turret;
+    private double lastShot;
 
-    public ControllerSubsystem(SwerveSubsystem drivebase, IntakeDeployerSubsystem intakeDeployer, RobotContainer robotContainer) {
+    public ControllerSubsystem(SwerveSubsystem drivebase, IntakeDeployerSubsystem intakeDeployer, RobotContainer robotContainer, TurretSubsystem turret) {
         this.drivebase = drivebase;
         this.robotContainer = robotContainer;
         this.previousState = getCurrentShootState();
         this.activeTargets = STOPPED_TARGETS;
         this.intakeDeployer = intakeDeployer;
+        this.turret = turret;
 
         SmartDashboard.putNumber(MANUAL_POSE_X_KEY, 0.0);
         SmartDashboard.putNumber(MANUAL_POSE_Y_KEY, 0.0);
@@ -111,10 +117,38 @@ public class ControllerSubsystem extends SubsystemBase {
             Logger.recordOutput(TARGET_HOPPER_SPEED_KEY, activeTargets.hopperSpin);
         }
         previousState = currentState;
+        Pose3d[] fuelPoses = SimulatedArena.getInstance()
+                .getGamePiecesArrayByType("Fuel");
+        // Publish to telemetry using AdvantageKit
+        Logger.recordOutput("FieldSimulation/FuelPositions", fuelPoses);
+        if (Logger.getTimestamp()-lastShot>1000000/Constants.PIECES_PER_SECOND) {
+            lastShot = Logger.getTimestamp();
+            if (robotContainer.getShootingState().getShootState() != ShootingState.ShootState.STOPPED) {
+                SimulatedArena.getInstance()
+                        .addGamePieceProjectile(new RebuiltFuelOnFly(
+                                drivebase.getSimulationPose().get().getTranslation(),
+                                new Translation2d(), // shooter offet from center
+                                drivebase.getFieldVelocity(),
+                                Rotation2d.fromDegrees(turret.getLastAngle()-180).plus(drivebase.getHeading()),
+                                Units.Meters.of(0.4), // initial height of the ball, in meters
+                                Units.MetersPerSecond.of(calculateShotVelocity(activeTargets.shooterVelocityRpm)), // initial velocity, in m/s
+                                Units.Degrees.of(90-activeTargets.anglerAngleDegrees)) // shooter angle
+                                .enableBecomesGamePieceOnFieldAfterTouchGround()
+                                .withProjectileTrajectoryDisplayCallBack(
+                                        (poses) -> Logger.recordOutput("successfulShotsTrajectory", poses.toArray(Pose3d[]::new)),
+                                        (poses) -> Logger.recordOutput("missedShotsTrajectory", poses.toArray(Pose3d[]::new))));
+            }
+        }
     }
 
     private ShootState getCurrentShootState() {
         return robotContainer.getShootingState().getShootState();
+    }
+    private double calculateShotVelocity(double rpm) {
+        double gearRatio = 0.75; //MotorRotations/WheelRotations
+        double radiusWheel = 0.0508;
+        double efficiencyConstant = 0.775;
+        return -rpm*Math.PI/gearRatio/60*radiusWheel*efficiencyConstant;
     }
 
     private Pose2d getRobotPose() {
@@ -305,6 +339,7 @@ public class ControllerSubsystem extends SubsystemBase {
         }else if(state == ShootState.SHUTTLING){
             return (((-distance*distance) - 5 * distance) - 2800);
         }
+        System.out.println("usingDefault");
         return profile.defaultShooterVelocityRpm;
     }
 

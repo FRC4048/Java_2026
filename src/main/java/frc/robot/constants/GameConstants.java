@@ -1,8 +1,6 @@
 package frc.robot.constants;
 
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Rotation3d;
-import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.geometry.*;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.RobotBase;
 import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
@@ -142,12 +140,11 @@ public class GameConstants {
     public static final double GRAVITY = 9.81;
     public static final double HUB_HEIGHT = 1.83;
     public static final double SHOOTER_HEIGHT = 0.5;
-    public static final double BLUE_HUB_X_POSITION = 4.6256;
-    public static final double BLUE_HUB_Y_POSITION = 4.0345;
-    public static final double RED_HUB_X_POSITION = 11.9154;
-    public static final double RED_HUB_Y_POSITION = 4.0345;
-    public static final double X_DISTANCE_BETWEEN_ROBOT_AND_TURRET = .05;
-    public static final double Y_DISTANCE_BETWEEN_ROBOT_AND_TURRET = .12;
+    public static final Pose2d BLUE_HUB_POS = new Pose2d(4.6256, 4.0345, new Rotation2d());
+    public static final Pose2d RED_HUB_POS = new Pose2d(11.9154, 4.0345, new Rotation2d());
+    public static final Transform2d TURRET_OFFSET = new Transform2d(0.05, 0.12, new Rotation2d()); //TODO: needs value from hardware
+    public static final boolean ACCOUNT_FOR_ANGULAR_MOMENTUM = true;
+    public static final double DISTANCE_BETWEEN_ROBOT_AND_TURRET = TURRET_OFFSET.getTranslation().getNorm();
 
     // Shift timings
     public static final int SHIFT_1_START = 10;
@@ -178,5 +175,5 @@ public class GameConstants {
     public static final double BLUE_SHUTTLING_TARGET_X_POSITION = 2.8;
     public static final double SHUTTLING_TARGET_LOWER_Y_POSITION = 2.6;
     public static final double SHUTTLING_TARGET_HIGHER_Y_POSITION = 5.5;
-    public static final double PIECES_PER_SECOND = 0.5;
+    public static final double PIECES_PER_SECOND = 3;
 }

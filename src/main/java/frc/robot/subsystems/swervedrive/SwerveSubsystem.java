@@ -73,7 +73,6 @@ public class SwerveSubsystem extends SubsystemBase {
      * @param swerveIMU The IMU implementation to provide to the SwerveDrive
      */
     public SwerveSubsystem(File directory, SwerveIMU swerveIMU) {
-        SimulatedArena.getInstance().resetFieldForAuto();
         Pose2d startingPose = new Pose2d(new Translation2d(Meter.of(0),
                 Meter.of(4)),
                 Rotation2d.fromDegrees(0));

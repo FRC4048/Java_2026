@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.math.geometry.*;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.units.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import frc.robot.Robot;
@@ -34,10 +35,8 @@ public class ControllerSubsystem extends SubsystemBase {
     private static final double SHOOT_DELAY_SECONDS = 0.5;
 
     // Placeholder target poses until real field target values are finalized
-    private static final Pose2d BLUE_HUB_TARGET_POSE = new Pose2d(Constants.BLUE_HUB_X_POSITION,
-            Constants.BLUE_HUB_Y_POSITION, Rotation2d.kZero);
-    private static final Pose2d RED_HUB_TARGET_POSE = new Pose2d(Constants.RED_HUB_X_POSITION,
-            Constants.RED_HUB_Y_POSITION, Rotation2d.kZero);
+    private static final Pose2d BLUE_HUB_TARGET_POSE = Constants.BLUE_HUB_POS;
+    private static final Pose2d RED_HUB_TARGET_POSE = Constants.RED_HUB_POS;
     private static final String MANUAL_POSE_X_KEY = "controller/ManualPoseX";
     private static final String MANUAL_POSE_Y_KEY = "controller/ManualPoseY";
     private static final String MANUAL_POSE_R_KEY = "controller/ManualPoseRotation";
@@ -96,9 +95,10 @@ public class ControllerSubsystem extends SubsystemBase {
     public void periodic() {
         Pose2d robotPose = getRobotPose();
         ShootState currentState = getCurrentShootState();
+        ChassisSpeeds robotSpeeds = getRobotSpeeds();
         updateStopDelayState(currentState);
         updateShootDelayState(currentState);
-        updateTargets(currentState, robotPose);
+        updateTargets(currentState, robotPose, robotSpeeds);
         if (Constants.DEBUG) {
             SmartDashboard.putString(CURRENT_SHOOT_STATE_KEY, currentState.toString());
             SmartDashboard.putNumber(DISTANCE_METERS_KEY, activeTargets.distanceMeters);
@@ -117,13 +117,10 @@ public class ControllerSubsystem extends SubsystemBase {
             Logger.recordOutput(TARGET_HOPPER_SPEED_KEY, activeTargets.hopperSpin);
         }
         previousState = currentState;
-        Pose3d[] fuelPoses = SimulatedArena.getInstance()
-                .getGamePiecesArrayByType("Fuel");
-        // Publish to telemetry using AdvantageKit
-        Logger.recordOutput("FieldSimulation/FuelPositions", fuelPoses);
         if (Logger.getTimestamp()-lastShot>1000000/Constants.PIECES_PER_SECOND) {
             lastShot = Logger.getTimestamp();
             if (robotContainer.getShootingState().getShootState() != ShootingState.ShootState.STOPPED) {
+                Translation2d target = (Robot.allianceColor().get().equals(DriverStation.Alliance.Blue)? BLUE_HUB_TARGET_POSE: RED_HUB_TARGET_POSE).getTranslation();
                 SimulatedArena.getInstance()
                         .addGamePieceProjectile(new RebuiltFuelOnFly(
                                 drivebase.getSimulationPose().get().getTranslation(),
@@ -133,10 +130,14 @@ public class ControllerSubsystem extends SubsystemBase {
                                 Units.Meters.of(0.4), // initial height of the ball, in meters
                                 Units.MetersPerSecond.of(calculateShotVelocity(activeTargets.shooterVelocityRpm)), // initial velocity, in m/s
                                 Units.Degrees.of(90-activeTargets.anglerAngleDegrees)) // shooter angle
-                                .enableBecomesGamePieceOnFieldAfterTouchGround()
+                                .withTargetPosition(()-> new Translation3d(target.getX(), target.getY(), 1.82))
+                                        // Set the tolerance: x: ±0.5m, y: ±1.2m, z: ±0.3m (this is the size of the speaker's "mouth")
+                                .withTargetTolerance(new Translation3d(0.4, 0.4, 0.15))
+                                .disableBecomesGamePieceOnFieldAfterTouchGround()
                                 .withProjectileTrajectoryDisplayCallBack(
                                         (poses) -> Logger.recordOutput("successfulShotsTrajectory", poses.toArray(Pose3d[]::new)),
                                         (poses) -> Logger.recordOutput("missedShotsTrajectory", poses.toArray(Pose3d[]::new))));
+
             }
         }
     }
@@ -145,10 +146,13 @@ public class ControllerSubsystem extends SubsystemBase {
         return robotContainer.getShootingState().getShootState();
     }
     private double calculateShotVelocity(double rpm) {
-        double gearRatio = 0.75; //MotorRotations/WheelRotations
-        double radiusWheel = 0.0508;
-        double efficiencyConstant = 0.775;
+        double gearRatio = 1; //MotorRotations/WheelRotations
+        double radiusWheel = 0.123825;
+        double efficiencyConstant = 0.42;
         return -rpm*Math.PI/gearRatio/60*radiusWheel*efficiencyConstant;
+    }
+    private ChassisSpeeds getRobotSpeeds() {
+        return drivebase.getFieldVelocity();
     }
 
     private Pose2d getRobotPose() {
@@ -187,7 +191,7 @@ public class ControllerSubsystem extends SubsystemBase {
         }
     }
 
-    private void updateTargets(ShootState state, Pose2d robotPose) {
+    private void updateTargets(ShootState state, Pose2d robotPose, ChassisSpeeds robotSpeeds) {
         if(!activeTargets.intakeDeploy && intakeDeployer.getDeploymentState() == DeploymentState.DOWN){
             new ToggleDeployment(intakeDeployer, this).schedule();
         }
@@ -200,9 +204,9 @@ public class ControllerSubsystem extends SubsystemBase {
                     // No color, do nothing...
                     useShotTargets(FIXED_TARGETS);
                 } else if (Robot.allianceColor().get().equals(DriverStation.Alliance.Blue)) {
-                    useShotTargets(calculateTargetsFromPose(state, BLUE_HUB_PROFILE, robotPosePredictionCalculation(BLUE_HUB_PROFILE.targetPose,robotPose)));
+                    useShotTargets(calculateTargetsFromPose(state, BLUE_HUB_PROFILE, robotPose, robotSpeeds));
                 } else if (Robot.allianceColor().get().equals(DriverStation.Alliance.Red)) {
-                    useShotTargets(calculateTargetsFromPose(state, RED_HUB_PROFILE, robotPosePredictionCalculation(RED_HUB_PROFILE.targetPose,robotPose)));
+                    useShotTargets(calculateTargetsFromPose(state, RED_HUB_PROFILE, robotPose, robotSpeeds));
                 } else {
                     // Unknown color, do nothing...
                     useShotTargets(FIXED_TARGETS);
@@ -212,9 +216,9 @@ public class ControllerSubsystem extends SubsystemBase {
                 if (Robot.allianceColor().isEmpty()) {
                     useShotTargets(FIXED_TARGETS);
                 } else if (Robot.allianceColor().get().equals(DriverStation.Alliance.Blue)) {
-                    useShotTargets(calculateTargetsFromPose(state,BLUE_SHUTTLE_PROFILE, robotPose));
+                    useShotTargets(calculateTargetsFromPose(state,BLUE_SHUTTLE_PROFILE, robotPose, robotSpeeds));
                 } else if (Robot.allianceColor().get().equals(DriverStation.Alliance.Red)) {
-                    useShotTargets(calculateTargetsFromPose(state, RED_SHUTTLE_PROFILE, robotPose));
+                    useShotTargets(calculateTargetsFromPose(state, RED_SHUTTLE_PROFILE, robotPose, robotSpeeds));
                 } else {
                     useShotTargets(FIXED_TARGETS);
                 }
@@ -276,11 +280,17 @@ public class ControllerSubsystem extends SubsystemBase {
                 || turretAngleDegrees > Constants.TURRET_MAX_ANGLE;
     }
 
-    private ShotTargets calculateTargetsFromPose(ShootState state,PoseControlProfile profile, Pose2d robotPose) {
-        double computedDistanceMeters = calculateDistanceMeters(state, robotPose, profile.targetPose);
-        double anglerAngleDegrees = calculateAnglerAngleDegrees(state, computedDistanceMeters, profile);
-        double shooterVelocity = calculateShooterVelocity(state, computedDistanceMeters, profile);
-        double turretAngleDegrees = calculateTurretAngleDegrees(state, robotPose, profile);
+    private ShotTargets calculateTargetsFromPose(ShootState state,PoseControlProfile profile, Pose2d robotPose, ChassisSpeeds robotSpeeds) {
+        Twist2d momentumAdjustment = getMomentumAdjustment(robotPose, Constants.ACCOUNT_FOR_ANGULAR_MOMENTUM, robotSpeeds,
+                equalizeFlightTime(calculateDistanceMeters(state, robotPose, profile.targetPose), robotPose, profile.targetPose, robotSpeeds));
+        PoseControlProfile adjustedProfile = new PoseControlProfile(profile.targetPose, profile.defaultAnglerAngleDegrees, profile.defaultShooterVelocityRpm, profile.defaultTurretAngleDegrees);
+        adjustedProfile.targetPose = profile.targetPose.exp(momentumAdjustment);
+        Logger.recordOutput("adjustedAimPoint", adjustedProfile.targetPose);
+        double computedDistanceMeters = calculateDistanceMeters(state, robotPose, adjustedProfile.targetPose);
+        boolean shootHub = profile == BLUE_HUB_PROFILE || profile == RED_HUB_PROFILE;
+        double anglerAngleDegrees = calculateAnglerAngleDegrees(state, computedDistanceMeters, adjustedProfile);
+        double shooterVelocity = calculateShooterVelocity(state, computedDistanceMeters, adjustedProfile);
+        double turretAngleDegrees = calculateTurretAngleDegrees(state, robotPose, adjustedProfile);
         return new ShotTargets(anglerAngleDegrees, shooterVelocity, turretAngleDegrees, computedDistanceMeters, true,
                 true, true);
     }
@@ -315,19 +325,23 @@ public class ControllerSubsystem extends SubsystemBase {
         }
         return predictedPose;
     }
-    //Flight time derived from testing videos
+    // Linear regression through 3 static shot distance vs time points.
     private double calculateFlightTime(double computedDistanceMeters) {
         return 0.208*computedDistanceMeters + 0.647;
     }
 
+    // Since t(x)=mx+b (previous function), we can solve for x
+    // t = m*(d - v_robot * t)+b
+    // t + v_robot * t = m * d + b
+    // t = (m * d + b) / (v_robot + 1)
+    private double equalizeFlightTime(double initialDistanceMeters, Pose2d robotPose, Pose2d target, ChassisSpeeds robotSpeeds) {
+        return (0.208*initialDistanceMeters+0.647)/(0.208*ChassisSpeeds.fromFieldRelativeSpeeds(robotSpeeds, target.getTranslation().minus(robotPose.getTranslation()).getAngle()).vxMetersPerSecond+1);
+    }
+
     private double calculateAnglerAngleDegrees(ShootState state, double computedDistanceMeters, PoseControlProfile profile) {
-        if (state == ShootState.SHOOTING_HUB) {
-            double distance = (UnitConversion.METER_TO_FOOT * computedDistanceMeters) - Constants.COMPUTATED_DISTANCE_OFFSET;
-            return 0.169 * distance * distance
-                    - 1.73 * distance
-                    + 20.4;
-        }
-        return profile.defaultAnglerAngleDegrees;
+        double distance = (UnitConversion.METER_TO_FOOT * computedDistanceMeters) - Constants.COMPUTATED_DISTANCE_OFFSET;
+        return 0.169 * distance * distance
+                    - 1.73 * distance +20.4;
     }
 
     private double calculateShooterVelocity(ShootState state, double computedDistanceMeters, PoseControlProfile profile) {
@@ -346,13 +360,35 @@ public class ControllerSubsystem extends SubsystemBase {
     private double calculateTurretAngleDegrees(ShootState state, Pose2d robotPose, PoseControlProfile profile) {
         if(state == ShootState.SHOOTING_HUB || state == ShootState.SHUTTLING){
             return Math.floor(
-                    Math.toDegrees(TurretCalculations.calculateTurretAngle(state,robotPose.getX(), robotPose.getY(),
-                            robotPose.getRotation().getRadians(),
+                    Math.toDegrees(TurretCalculations.calculateTurretAngle(robotPose,profile.targetPose,
                             Robot.allianceColor().get() == DriverStation.Alliance.Blue)));
         }
             return profile.defaultTurretAngleDegrees;
     }
+    public Twist2d getMomentumAdjustment(Pose2d robotPose, boolean useAngularMomentumAdjustment, ChassisSpeeds robotSpeeds, double timeOfFlight) {
+        // calculate the change per second of the turret's position relative to the center due to robot rotation. This
+        // is basically angular speed. Result is in robot coordinate system.
+        ChassisSpeeds adjustSpeeds;
+        if (useAngularMomentumAdjustment) {
+            Translation2d angularVelocityAdjustment = Constants.TURRET_OFFSET.times(robotSpeeds.omegaRadiansPerSecond).getTranslation();
 
+
+            // take the robot's current speed (relative to field)
+            // convert the turret's angular velocity from robot-relative to field-relative
+            // since the rotation velocity is perpendicular to the robot x-axis, so we need to rotate it by 90 degrees
+            // which is why we use -Y,X instead of X,Y for the conversion.
+            // add the two to get the effective speed of the turret/projectile.
+            adjustSpeeds = (new ChassisSpeeds(robotSpeeds.vxMetersPerSecond, robotSpeeds.vyMetersPerSecond, 0)).plus
+                    (ChassisSpeeds.fromRobotRelativeSpeeds(-angularVelocityAdjustment.getY(), angularVelocityAdjustment.getX(), 0.0, robotPose.getRotation()));
+        } else {
+            adjustSpeeds = (new ChassisSpeeds(robotSpeeds.vxMetersPerSecond, robotSpeeds.vyMetersPerSecond, 0));
+        }
+        // convert the effective speed to a twist (displacement over time)
+        // positive timeOfFlight tells us how much we move
+        // negative timeOfFlight tells us how much we need to move to compensate for our movement
+        timeOfFlight = 0;
+        return adjustSpeeds.toTwist2d(-timeOfFlight);
+    }
     // Getters for all the subsystems to set posistion.
     public double getTargetAnglerAngleDegrees() {
         return activeTargets.anglerAngleDegrees;
@@ -422,7 +458,7 @@ public class ControllerSubsystem extends SubsystemBase {
     // Class to save all the target poses and each subsystem position at that point
     // so we can calculate true values later on
     private static final class PoseControlProfile {
-        private final Pose2d targetPose;
+        private Pose2d targetPose;
         private final double defaultAnglerAngleDegrees;
         private final double defaultShooterVelocityRpm;
         private final double defaultTurretAngleDegrees;

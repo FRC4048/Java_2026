@@ -386,7 +386,6 @@ public class ControllerSubsystem extends SubsystemBase {
         // convert the effective speed to a twist (displacement over time)
         // positive timeOfFlight tells us how much we move
         // negative timeOfFlight tells us how much we need to move to compensate for our movement
-        timeOfFlight = 0;
         return adjustSpeeds.toTwist2d(-timeOfFlight);
     }
     // Getters for all the subsystems to set posistion.

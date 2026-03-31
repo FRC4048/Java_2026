@@ -315,7 +315,7 @@ public class RobotContainer {
                 intakeSubsystem.setDefaultCommand(new SpinIntake(intakeSubsystem, intakeDeployer));
             if (controllerSubsystem != null) {
                 intakeDeployer.setDefaultCommand(new RunDeployer(intakeDeployer));
-               // anglerSubsystem.setDefaultCommand(new DefaultAnglerControl(anglerSubsystem, controllerSubsystem));
+                anglerSubsystem.setDefaultCommand(new DefaultAnglerControl(anglerSubsystem, controllerSubsystem));
                 shooterSubsystem.setDefaultCommand(new DefaultShooterControl(shooterSubsystem, controllerSubsystem));
                 turretSubsystem.setDefaultCommand(new DefaultTurretControl(turretSubsystem, controllerSubsystem));
                 hopperSubsystem.setDefaultCommand(new DefaultSpinHopper(hopperSubsystem, controllerSubsystem));

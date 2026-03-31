@@ -89,6 +89,7 @@ public class IntakeDeployerSubsystem extends SubsystemBase {
     params.name = "Intake deployer";
     params.armMinAngle = Rotation2d.fromDegrees(0);
     params.armMaxAngle = Rotation2d.fromDegrees(90);
+    params.reverse = true;
     ArmSimulator arm = new ArmSimulator(motor, params, visualizer.getIntakeDeploymentLigament());
     return new SimSparkMaxIo(LOGGING_NAME, motor, MotorLoggableInputs.allMetrics(), arm);
   }

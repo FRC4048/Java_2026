@@ -8,10 +8,7 @@ package frc.robot;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.cscore.VideoSource;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Pose3d;
-import edu.wpi.first.math.geometry.Rotation3d;
-import edu.wpi.first.math.geometry.Translation3d;
+import edu.wpi.first.math.geometry.*;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
@@ -136,11 +133,23 @@ public class Robot extends LoggedRobot {
 
         Logger.recordOutput("MyPose", robotContainer.getDriveBase().getPose());
         Logger.recordOutput("ZeroPose", Pose2d.kZero);
+
         Translation3d intakePosition = new Translation3d(0.3, 0, 0.3);
         double intakeAngle = robotContainer.getRobotVisualizer().getIntakeDeploymentLigament().getAngle();
         Rotation3d intakeRotation = new Rotation3d(0, Units.degreesToRadians(intakeAngle), 0);
         Pose3d intake = new Pose3d(intakePosition, intakeRotation);
-        Logger.recordOutput("ZeroedComponents", new Pose3d[] { Pose3d.kZero, intake });
+
+        Translation3d hopperPosition = new Translation3d(0, 0, 0);
+        double hopperAngle = robotContainer.getRobotVisualizer().getHopperLigament().getAngle();
+        Rotation3d hopperRotation = new Rotation3d(0, 0, Units.degreesToRadians(hopperAngle));
+        Pose3d hopper = new Pose3d(hopperPosition, hopperRotation);
+
+        Translation3d turretPosition = new Translation3d(0, 0, 0);
+        double turretAngle = robotContainer.getRobotVisualizer().getTurretLigament().getAngle();
+        Rotation3d turretRotation = new Rotation3d(0, 0, Units.degreesToRadians(turretAngle));
+        Pose3d turret = new Pose3d(turretPosition, turretRotation);
+
+        Logger.recordOutput("ZeroedComponents", new Pose3d[] { Pose3d.kZero, intake, hopper, turret });
 
         if (Constants.DEBUG) {
             SmartDashboard.putNumber("driverXbox.getLeftY()", driverXbox.getLeftY());

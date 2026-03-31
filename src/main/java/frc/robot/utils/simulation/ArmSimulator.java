@@ -41,7 +41,8 @@ public class ArmSimulator implements Simulator {
     private final SingleJointedArmSim armSim;
     private final double armGearing;
     private final String name;
-    private boolean reverse = true;
+    private final boolean reverse;
+    private final Rotation2d armMaxAngle;
 
     /**
      * Constructor.
@@ -67,8 +68,8 @@ public class ArmSimulator implements Simulator {
         reverseSwitchSim = motorSim.getReverseLimitSwitchSim();
         encoderSim.setPosition(0.0);
         encoderSim.setInverted(false);
-
-        reverse = true;
+        reverse = params.reverse;
+        armMaxAngle = params.armMaxAngle;
     }
 
     /**
@@ -79,9 +80,6 @@ public class ArmSimulator implements Simulator {
         // In this method, we update our simulation of what our elevator is doing
         // First, we set our "inputs" (voltages)
         double motorOut = motorSim.getAppliedOutput() * 12.0; // * RoboRioSim.getVInVoltage();
-        if (reverse) {
-            motorOut *= -1.0;
-        }
         armSim.setInput(motorOut);
         // Next, we update it. The standard loop time is 20ms.
         armSim.update(0.020);
@@ -95,7 +93,7 @@ public class ArmSimulator implements Simulator {
         RoboRioSim.setVInVoltage(
                 BatterySim.calculateDefaultBatteryLoadedVoltage(armSim.getCurrentDrawAmps()));
         // Update elevator visualization with position
-        double mechanismPosRads = armSim.getAngleRads();
+        double mechanismPosRads = reverse ? armMaxAngle.getRadians() - armSim.getAngleRads() : armSim.getAngleRads();
         Rotation2d mechanismPosition = Rotation2d.fromRadians(mechanismPosRads);
         forwardSwitchSim.setPressed(armSim.hasHitUpperLimit());
         reverseSwitchSim.setPressed(armSim.hasHitLowerLimit());

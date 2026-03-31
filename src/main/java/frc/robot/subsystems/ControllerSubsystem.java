@@ -186,6 +186,15 @@ public class ControllerSubsystem extends SubsystemBase {
                     useShotTargets(FIXED_TARGETS);
                 }
             }
+            case AUTO_AIM ->{ if (Robot.allianceColor().isEmpty()) {
+                    useShotTargets(FIXED_TARGETS);
+                } else if (Robot.allianceColor().get().equals(DriverStation.Alliance.Blue)) {
+                    useShotTargets(calculateTargetsFromPose(state, BLUE_HUB_PROFILE, robotPosePredictionCalculation(BLUE_HUB_PROFILE.targetPose,robotPose)));
+                } else if (Robot.allianceColor().get().equals(DriverStation.Alliance.Red)) {
+                    useShotTargets(calculateTargetsFromPose(state, RED_HUB_PROFILE, robotPosePredictionCalculation(RED_HUB_PROFILE.targetPose,robotPose)));
+                } else {
+                    useShotTargets(FIXED_TARGETS);
+                }}
         }
     }
 
@@ -235,7 +244,7 @@ public class ControllerSubsystem extends SubsystemBase {
                 false,
                 activeTargets.intakeDeploy);
 
-    }
+        }
 
     }
 
@@ -249,8 +258,8 @@ public class ControllerSubsystem extends SubsystemBase {
         double anglerAngleDegrees = calculateAnglerAngleDegrees(state, computedDistanceMeters, profile);
         double shooterVelocity = calculateShooterVelocity(state, computedDistanceMeters, profile);
         double turretAngleDegrees = calculateTurretAngleDegrees(state, robotPose, profile);
-        return new ShotTargets(anglerAngleDegrees, shooterVelocity, turretAngleDegrees, computedDistanceMeters, true,
-                true, true);
+        return new ShotTargets(anglerAngleDegrees, shooterVelocity, turretAngleDegrees, computedDistanceMeters, state != ShootState.AUTO_AIM,
+                state != ShootState.AUTO_AIM, true);
     }
 
     private double calculateDistanceMeters(ShootState state,Pose2d robotPose, Pose2d targetPose) {

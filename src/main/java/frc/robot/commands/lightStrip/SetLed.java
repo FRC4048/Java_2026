@@ -11,12 +11,10 @@ import frc.robot.utils.logging.commands.LoggableCommand;
 public class SetLed extends LoggableCommand{
 
     private final LightStripSubsystem lightStrip;
-    private final SwerveSubsystem drivebase;
     private ShootingState shootingState;
-    private double x;
-    private double y;
+    private SwerveSubsystem drivebase;
   
-    public SetLed(LightStripSubsystem lightStrip, SwerveSubsystem drivebase, ShootingState shootingState) {
+    public SetLed(LightStripSubsystem lightStrip, ShootingState shootingState, SwerveSubsystem drivebase) {
 
         this.lightStrip = lightStrip;
         this.drivebase = drivebase;
@@ -32,9 +30,8 @@ public class SetLed extends LoggableCommand{
 
     @Override
     public void execute() {
-
-        x = drivebase.getPose().getX();
-        y = drivebase.getPose().getY();
+        double x = drivebase.getPose().getX();
+        double y = drivebase.getPose().getY();
 
         // If statement checks if the robot is near the trench
         if (x > Trench.RED_BOTTOM_LOWER.getX() && x < Trench.RED_BOTTOM_HIGHER.getX() && y > Trench.RED_BOTTOM_LOWER.getY() && y < Trench.RED_BOTTOM_HIGHER.getY() ||
@@ -47,16 +44,15 @@ public class SetLed extends LoggableCommand{
                 }
 
         } else {
-
             switch (shootingState.getShootState()) {
             case STOPPED:
-                lightStrip.setPattern(BlinkinPattern.WHITE);
+                lightStrip.setPattern(BlinkinPattern.BLACK);
                 break;
             case FIXED:
-                lightStrip.setPattern(BlinkinPattern.COLOR_WAVES_OCEAN_PALETTE);
+                lightStrip.setPattern(BlinkinPattern.AQUA);
                 break;
             case FIXED_2:
-                lightStrip.setPattern(BlinkinPattern.RED_ORANGE);
+                lightStrip.setPattern(BlinkinPattern.AQUA);
                 break;
             case SHOOTING_HUB:
                 lightStrip.setPattern(BlinkinPattern.RAINBOW_RAINBOW_PALETTE);
@@ -67,7 +63,6 @@ public class SetLed extends LoggableCommand{
             }
 
         }
-
     }
 
     @Override

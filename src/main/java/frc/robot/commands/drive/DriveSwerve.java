@@ -35,10 +35,10 @@ public class DriveSwerve extends LoggableCommand {
   @Override
   public void execute() {
     switch (dir) {
-      case BACKWARD -> drivebase.drive(new Translation2d(speed, 0), 0, false);
-      case FORWARD -> drivebase.drive(new Translation2d(-speed, 0), 0, false);
-      case LEFT -> drivebase.drive(new Translation2d(0, -speed), 0, false);
-      case RIGHT -> drivebase.drive(new Translation2d(0, speed), 0, false);
+      case BACKWARD -> drivebase.drive(new Translation2d(speed, 0), 0, true);
+      case FORWARD -> drivebase.drive(new Translation2d(-speed, 0), 0, true);
+      case LEFT -> drivebase.drive(new Translation2d(0, -speed), 0, true);
+      case RIGHT -> drivebase.drive(new Translation2d(0, speed), 0, true);
     }
   }
 

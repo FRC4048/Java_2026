@@ -17,7 +17,10 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.autochooser.FieldLocation;
+import frc.robot.commands.shooter.SetShootingState;
 import frc.robot.constants.Constants;
+import frc.robot.utils.BlinkinPattern;
+import frc.robot.constants.enums.ShootingState.ShootState;
 import frc.robot.utils.diag.Diagnostics;
 import frc.robot.utils.logging.TimeoutLogger;
 import frc.robot.utils.logging.commands.CommandLogger;
@@ -129,7 +132,7 @@ public class Robot extends LoggedRobot {
         if (DriverStation.isDSAttached() && allianceColor.isEmpty()) {
             allianceColor = DriverStation.getAlliance();
         }
-
+        SmartDashboard.putBoolean("Hub Active?", hubActive());
         if (Constants.DEBUG) {
             SmartDashboard.putNumber("driverXbox.getLeftY()", driverXbox.getLeftY());
             SmartDashboard.putNumber("driverXbox::getRightX", driverXbox.getRightX());
@@ -139,7 +142,6 @@ public class Robot extends LoggedRobot {
             SmartDashboard.putNumber("Robot Y", robotContainer.getDriveBase().getPose().getY());
         // Puts data on the elastic dashboard
                 SmartDashboard.putString("Alliance Color", Robot.allianceColorString());
-                SmartDashboard.putBoolean("Hub Active?", hubActive());
                 if (Constants.currentMode == Constants.Mode.SIM) {
                     Logger.recordOutput("SimPose", robotContainer.getDriveBase().getSimulationPose().get());
                     Logger.recordOutput("OdomPose", robotContainer.getDriveBase().getSimulationPose().get());
@@ -159,6 +161,7 @@ public class Robot extends LoggedRobot {
 
     @Override
     public void disabledPeriodic() {
+        robotContainer.getLightStrip().setPattern(BlinkinPattern.RAINBOW_LAVA_PALETTE);
     }
 
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
@@ -277,6 +280,7 @@ public class Robot extends LoggedRobot {
         mode.set(RobotMode.TEST);
         // Cancels all running commands at the start of test mode.
         CommandScheduler.getInstance().cancelAll();
+        new SetShootingState(robotContainer.getShootingState(), ShootState.STOPPED);
     }
 
     /** This function is called periodically during test mode. */

@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 public enum AutoAction {
   DO_NOTHING("Do Nothing"),
   SHOOT("Shoot"),
+  FAST_SHOOT("Fast Shoot"),
   //SHOOT_PICKUP("Shoot and Pickup"),
   //DISTURBANCE("Disturbance"),
   //NEUTRAL_ZONE("Shoot and Neutral Zone Pickup"),

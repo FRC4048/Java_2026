@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Robot;
 import frc.robot.commands.auto.neutral.DepotNeutral;
 import frc.robot.commands.auto.neutral.OutpostNeutral;
+import frc.robot.commands.auto.newauto.FastDepot;
 import frc.robot.commands.auto.shoot.ShootBlue;
 import frc.robot.commands.auto.shoot.ShootRed;
 import frc.robot.commands.auto.disturbance.DepotDisturbance;
@@ -125,6 +126,10 @@ public class AutoChooser {
             new ShootBlue(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, controller, intake));
         commandMap.put(new AutoEvent(AutoAction.SHOOT, FieldLocation.OUTPOST_SIDE, Alliance.Blue),
             new ShootBlue(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, controller, intake));
+
+        commandMap.put(new AutoEvent(AutoAction.FAST_SHOOT, FieldLocation.FAST_DEPOT),
+            new FastDepot(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, controller, intake));
+        
     
         /*
         //shoot-pickup

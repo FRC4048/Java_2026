@@ -344,6 +344,10 @@ public class RobotContainer {
         }
 
         public void putShuffleboardCommands() {
+                                        SmartDashboard.putData(
+                                        "Shooting State: Auto aim",
+                                        new SetShootingState(shootState, ShootState.AUTO_AIM));
+
                 if (Constants.DEBUG) {
                         SmartDashboard.putNumber(RunDashboardShotTest.ANGLER_TARGET_POSITION_KEY, 0.0);
                         SmartDashboard.putNumber(RunDashboardShotTest.SHOOTER_TARGET_RPM_KEY, Constants.SHOOTER_SPEED);

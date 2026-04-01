@@ -38,6 +38,8 @@ public class ControllerSubsystem extends SubsystemBase {
     // Placeholder target poses until real field target values are finalized
     private static final Pose2d BLUE_HUB_TARGET_POSE = Constants.BLUE_HUB_POS;
     private static final Pose2d RED_HUB_TARGET_POSE = Constants.RED_HUB_POS;
+    private static Pose2d BLUE_SHUTTLING_TARGET = new Pose2d(Constants.BLUE_SHUTTLING_TARGET_X_POSITION, Constants.SHUTTLING_TARGET_LOWER_Y_POSITION, new Rotation2d());
+    private static Pose2d RED_SHUTTLING_TARGET = new Pose2d(Constants.RED_SHUTTLING_TARGET_X_POSITION, Constants.SHUTTLING_TARGET_LOWER_Y_POSITION, new Rotation2d());
     private static final String MANUAL_POSE_X_KEY = "controller/ManualPoseX";
     private static final String MANUAL_POSE_Y_KEY = "controller/ManualPoseY";
     private static final String MANUAL_POSE_R_KEY = "controller/ManualPoseRotation";
@@ -62,9 +64,9 @@ public class ControllerSubsystem extends SubsystemBase {
             14.0);
     private static final PoseControlProfile RED_HUB_PROFILE = new PoseControlProfile(RED_HUB_TARGET_POSE, 32.0, 230.0,
             14.0);
-    private static final PoseControlProfile RED_SHUTTLE_PROFILE = new PoseControlProfile(RED_HUB_TARGET_POSE, 37.0, 90.0,
+    private static PoseControlProfile RED_SHUTTLE_PROFILE = new PoseControlProfile(RED_SHUTTLING_TARGET, 37.0, 90.0,
             -14.0);
-    private static final PoseControlProfile BLUE_SHUTTLE_PROFILE = new PoseControlProfile(BLUE_HUB_TARGET_POSE, 37.0, 90.0,
+    private static PoseControlProfile BLUE_SHUTTLE_PROFILE = new PoseControlProfile(BLUE_SHUTTLING_TARGET, 37.0, 90.0,
             -14.0);
 
     private final SwerveSubsystem drivebase;
@@ -214,6 +216,10 @@ public class ControllerSubsystem extends SubsystemBase {
                 }
             }
             case SHUTTLING -> {
+                BLUE_SHUTTLING_TARGET = new Pose2d(BLUE_SHUTTLING_TARGET.getX(), drivebase.getPose().getY()>Constants.FIELD_WIDTH/2 ? Constants.SHUTTLING_TARGET_HIGHER_Y_POSITION : Constants.SHUTTLING_TARGET_LOWER_Y_POSITION, new Rotation2d());
+                RED_SHUTTLING_TARGET = new Pose2d(RED_SHUTTLING_TARGET.getX(), drivebase.getPose().getY()>Constants.FIELD_WIDTH/2 ? Constants.SHUTTLING_TARGET_HIGHER_Y_POSITION : Constants.SHUTTLING_TARGET_LOWER_Y_POSITION, new Rotation2d());
+                BLUE_SHUTTLE_PROFILE.targetPose = BLUE_SHUTTLING_TARGET;
+                RED_SHUTTLE_PROFILE.targetPose = RED_SHUTTLING_TARGET;
                 if (Robot.allianceColor().isEmpty()) {
                     useShotTargets(FIXED_TARGETS);
                 } else if (Robot.allianceColor().get().equals(DriverStation.Alliance.Blue)) {
@@ -224,6 +230,15 @@ public class ControllerSubsystem extends SubsystemBase {
                     useShotTargets(FIXED_TARGETS);
                 }
             }
+            case AUTO_AIM ->{ if (Robot.allianceColor().isEmpty()) {
+                    useShotTargets(FIXED_TARGETS);
+                } else if (Robot.allianceColor().get().equals(DriverStation.Alliance.Blue)) {
+                    useShotTargets(calculateTargetsFromPose(state, BLUE_HUB_PROFILE, robotPosePredictionCalculation(BLUE_HUB_PROFILE.targetPose,robotPose),robotSpeeds));
+                } else if (Robot.allianceColor().get().equals(DriverStation.Alliance.Red)) {
+                    useShotTargets(calculateTargetsFromPose(state, RED_HUB_PROFILE, robotPosePredictionCalculation(RED_HUB_PROFILE.targetPose,robotPose),robotSpeeds));
+                } else {
+                    useShotTargets(FIXED_TARGETS);
+                }}
         }
     }
 
@@ -273,7 +288,7 @@ public class ControllerSubsystem extends SubsystemBase {
                 false,
                 activeTargets.intakeDeploy);
 
-    }
+        }
 
     }
 
@@ -293,8 +308,8 @@ public class ControllerSubsystem extends SubsystemBase {
         double anglerAngleDegrees = calculateAnglerAngleDegrees(state, computedDistanceMeters, adjustedProfile);
         double shooterVelocity = calculateShooterVelocity(state, computedDistanceMeters, adjustedProfile);
         double turretAngleDegrees = calculateTurretAngleDegrees(state, robotPose, adjustedProfile);
-        return new ShotTargets(anglerAngleDegrees, shooterVelocity, turretAngleDegrees, computedDistanceMeters, true,
-                true, true);
+        return new ShotTargets(anglerAngleDegrees, shooterVelocity, turretAngleDegrees, computedDistanceMeters, state != ShootState.AUTO_AIM,
+                state != ShootState.AUTO_AIM, true);
     }
 
     private double calculateDistanceMeters(ShootState state,Pose2d robotPose, Pose2d targetPose) {

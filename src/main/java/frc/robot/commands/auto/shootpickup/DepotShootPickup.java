@@ -15,6 +15,7 @@ import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import frc.robot.utils.logging.commands.LoggableCommandWrapper;
 import frc.robot.utils.logging.commands.LoggableParallelCommandGroup;
 import frc.robot.utils.logging.commands.LoggableSequentialCommandGroup;
+import frc.robot.utils.logging.commands.LoggableWaitCommand;
 
 public class DepotShootPickup extends LoggableSequentialCommandGroup {
     public DepotShootPickup(
@@ -25,21 +26,14 @@ public class DepotShootPickup extends LoggableSequentialCommandGroup {
                 //shoot
                 new AutoReset(shootstate, turret, angler),
                 new LoggableParallelCommandGroup(
-                    new SetShootingState(shootstate, ShootState.SHOOTING_HUB),
-                    new DriveSwerve(drivetrain, DriveDirection.BACKWARD, 2, 0.5)
+                    LoggableCommandWrapper.wrap(auto.resetOdometry("Depot_ToDepot")),
+                    LoggableCommandWrapper.wrap(auto.trajectoryCmd("Depot_ToDepot").withTimeout(2)),
+                    new SetShootingState(shootstate, ShootState.SHOOTING_HUB)
                 ),
-                new AutoShoot(hopper, feeder, 5),
-
-                LoggableCommandWrapper.wrap(auto.resetOdometry("Depot_ToDepot")),
-                LoggableCommandWrapper.wrap(auto.trajectoryCmd("Depot_ToDepot").withTimeout(1)), //0.7 s
-
-                //pickup and shoot
-                LoggableCommandWrapper.wrap(auto.resetOdometry("Depot_Pickup")),
-                new LoggableParallelCommandGroup(
-                    LoggableCommandWrapper.wrap(auto.trajectoryCmd("Depot_Pickup").withTimeout(1)), //0.7 s
-                    new AutoShoot(hopper, feeder, 5),
-                    new ToggleDeployment(intake, controller)
-                )
+                new ToggleDeployment(intake, controller),
+                new DriveSwerve(drivetrain, DriveDirection.BACKWARD, 5, 0.2),
+                new LoggableWaitCommand(3),
+                new ToggleDeployment(intake, controller)
         );
     }
 }

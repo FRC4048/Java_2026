@@ -13,6 +13,7 @@ import choreo.auto.AutoRoutine;
 import choreo.auto.AutoTrajectory;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.Filesystem;
+import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -38,6 +39,7 @@ import frc.robot.commands.feeder.DefaultSpinFeeder;
 import frc.robot.commands.feeder.SpinFeeder;
 import frc.robot.commands.hopper.DefaultSpinHopper;
 import frc.robot.commands.hopper.SpinHopper;
+import frc.robot.commands.intake.ReverseIntake;
 import frc.robot.commands.intake.SpinIntake;
 import frc.robot.commands.intake.StopIntake;
 import frc.robot.commands.intakeDeployment.RunDeployer;
@@ -106,6 +108,9 @@ public class RobotContainer {
         // The robot's subsystems and commands are defined here...
         private final CommandXboxController controller =
             new CommandXboxController(Constants.XBOX_CONTROLLER_PORT);
+
+        private final PowerDistribution powerDistribution = new PowerDistribution();
+
         private final ClimberSubsystem climberSubsystem;
         private final AnglerSubsystem anglerSubsystem;
         private final IntakeSubsystem intakeSubsystem;
@@ -160,7 +165,8 @@ public class RobotContainer {
                                 apriltagSubsystem = !Constants.TESTBED ? new ApriltagSubsystem(ApriltagSubsystem.createRealIo(), drivebase, truster) : null;
                             controllerSubsystem = !Constants.TESTBED ? new ControllerSubsystem(drivebase,intakeDeployer, this, turretSubsystem) : null;
                                  lightStripSubsystem = new LightStripSubsystem(drivebase, shootState);
-            }
+                                powerDistribution.setSwitchableChannel(true);
+                                }
                         case REPLAY -> {
                                 anglerSubsystem = new AnglerSubsystem(AnglerSubsystem.createMockIo());
                                 intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createMockIo());
@@ -301,6 +307,7 @@ public class RobotContainer {
                 controller.povLeft().onTrue(new SetShootingState(shootState, ShootState.SHUTTLING));
                 controller.leftTrigger().onTrue((new ResetAll(anglerSubsystem, climberSubsystem, 
                         intakeDeployer, intakeSubsystem, shooterSubsystem, turretSubsystem, shootState)));
+                controller.rightTrigger().whileTrue(new ReverseIntake(intakeSubsystem));
                 driveJoystick.trigger().whileTrue((new SetShootingState(shootState, ShootState.STOPPED)));
 
 
@@ -337,9 +344,14 @@ public class RobotContainer {
         }
 
         public void putShuffleboardCommands() {
-
                 if (Constants.DEBUG) {
-
+                        SmartDashboard.putNumber(RunDashboardShotTest.ANGLER_TARGET_POSITION_KEY, 0.0);
+                        SmartDashboard.putNumber(RunDashboardShotTest.SHOOTER_TARGET_RPM_KEY, Constants.SHOOTER_SPEED);
+                 SmartDashboard.putData(
+                                        "test/Run Dashboard Shot Test (30s)",
+                                        new RunDashboardShotTest(anglerSubsystem, shooterSubsystem));
+                SmartDashboard.putData("RunHoppperAndFeeder",
+                                        new RunHopperAndFeeder(hopperSubsystem, feederSubsystem));
                         /*
                          * SmartDashboard.putData(
                          * "Spin Roller",
@@ -381,19 +393,11 @@ public class RobotContainer {
                                         "Intake/Stop",
                                         new InstantCommand(intakeSubsystem::stopMotors));
 
-                        SmartDashboard.putNumber(RunDashboardShotTest.ANGLER_TARGET_POSITION_KEY, 0.0);
-                        SmartDashboard.putNumber(RunDashboardShotTest.TURRET_TARGET_POSITION_KEY, Constants.TURRET_HOME_ANGLE);
-                        SmartDashboard.putNumber(RunDashboardShotTest.SHOOTER_TARGET_RPM_KEY, Constants.SHOOTER_SPEED);
                         SmartDashboard.putNumber("Target Angle",0);
-                        SmartDashboard.putData("RunHoppperAndFeeder",
-                                        new RunHopperAndFeeder(hopperSubsystem, feederSubsystem));
                         SmartDashboard.putData("RunTurret",
                                         new TestSetTurretAngle(turretSubsystem));
 
-                        SmartDashboard.putData(
-                                        "test/Run Dashboard Shot Test (30s)",
-                                        new RunDashboardShotTest(anglerSubsystem, turretSubsystem, shooterSubsystem));
-
+                       
                         SmartDashboard.putData(
                                         "angler/Go Home",
                                         new InstantCommand(() -> anglerSubsystem
@@ -575,5 +579,8 @@ public class RobotContainer {
         }
         public IntakeDeployerSubsystem getDeployer(){
                 return intakeDeployer;
+        }
+        public LightStripSubsystem getLightStrip() {
+                return lightStripSubsystem;
         }
 }

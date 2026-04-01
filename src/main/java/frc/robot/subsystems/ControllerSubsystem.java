@@ -14,6 +14,7 @@ import org.dyn4j.UnitConversion;
 import org.littletonrobotics.junction.Logger;
 
 import frc.robot.RobotContainer;
+import frc.robot.commands.intakeDeployment.SetDeploymentState;
 import frc.robot.commands.intakeDeployment.ToggleDeployment;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -32,7 +33,7 @@ import javax.naming.ldap.Control;
 public class ControllerSubsystem extends SubsystemBase {
 
     private static final double STOP_DELAY_SECONDS = 0.5;
-    private static final double SHOOT_DELAY_SECONDS = 0.5;
+    private static final double SHOOT_DELAY_SECONDS = 1.5;
 
     // Placeholder target poses until real field target values are finalized
     private static final Pose2d BLUE_HUB_TARGET_POSE = Constants.BLUE_HUB_POS;
@@ -61,9 +62,9 @@ public class ControllerSubsystem extends SubsystemBase {
             14.0);
     private static final PoseControlProfile RED_HUB_PROFILE = new PoseControlProfile(RED_HUB_TARGET_POSE, 32.0, 230.0,
             14.0);
-    private static final PoseControlProfile RED_SHUTTLE_PROFILE = new PoseControlProfile(RED_HUB_TARGET_POSE, 45.0, 90.0,
+    private static final PoseControlProfile RED_SHUTTLE_PROFILE = new PoseControlProfile(RED_HUB_TARGET_POSE, 37.0, 90.0,
             -14.0);
-    private static final PoseControlProfile BLUE_SHUTTLE_PROFILE = new PoseControlProfile(BLUE_HUB_TARGET_POSE, 45.0, 90.0,
+    private static final PoseControlProfile BLUE_SHUTTLE_PROFILE = new PoseControlProfile(BLUE_HUB_TARGET_POSE, 37.0, 90.0,
             -14.0);
 
     private final SwerveSubsystem drivebase;
@@ -193,7 +194,7 @@ public class ControllerSubsystem extends SubsystemBase {
 
     private void updateTargets(ShootState state, Pose2d robotPose, ChassisSpeeds robotSpeeds) {
         if(!activeTargets.intakeDeploy && intakeDeployer.getDeploymentState() == DeploymentState.DOWN){
-            new ToggleDeployment(intakeDeployer, this).schedule();
+            new SetDeploymentState(intakeDeployer, DeploymentState.STOPPED).schedule();
         }
         switch (state) {
             case STOPPED -> updateStoppedTargets();
@@ -243,6 +244,7 @@ public class ControllerSubsystem extends SubsystemBase {
     }
 
     private void useShotTargets(ShotTargets shotTargets) {
+
         double shooterVelocityRpm = shotTargets.shooterVelocityRpm;
         if (isTurretTargetOutOfRange(shotTargets.turretAngleDegrees) && shooterVelocityRpm != 0.0) {
             shooterVelocityRpm = Constants.TURRET_OUT_OF_RANGE_FLOP_RPM;
@@ -263,15 +265,15 @@ public class ControllerSubsystem extends SubsystemBase {
         } else {
 
             activeTargets = new ShotTargets(
-                activeTargets.anglerAngleDegrees,
+                shotTargets.anglerAngleDegrees,
                 shooterVelocityRpm, // Shooter starts half a second before everything else
-                activeTargets.turretAngleDegrees,
-                activeTargets.distanceMeters,
+                shotTargets.turretAngleDegrees,
+                shotTargets.distanceMeters,
                 false,
                 false,
                 activeTargets.intakeDeploy);
 
-        }
+    }
 
     }
 

@@ -62,7 +62,7 @@ public class TurretCalculations {
         }else{
             //Sets the hubPosX to be either on the blue or red side 
             //Sets the hubPoseY to be lower or upper depending on the Y position of the robot
-            hubPosX = isBlueAlliance ? Constants.BLUE_HUB_X_POSITION : Constants.RED_HUB_X_POSITION;
+            hubPosX = isBlueAlliance ? Constants.BLUE_SHUTTLING_TARGET_X_POSITION : Constants.RED_SHUTTLING_TARGET_X_POSITION;
             hubPosY = robotPosY > (Constants.FIELD_WIDTH / 2) ? Constants.SHUTTLING_TARGET_HIGHER_Y_POSITION : Constants.SHUTTLING_TARGET_LOWER_Y_POSITION;
         } 
             /*

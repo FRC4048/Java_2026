@@ -11,6 +11,7 @@ import java.io.File;
 import choreo.auto.AutoFactory;
 import choreo.auto.AutoRoutine;
 import choreo.auto.AutoTrajectory;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -31,6 +32,7 @@ import frc.robot.commands.angler.RunAnglerToReverseLimit;
 import frc.robot.commands.climber.ClimberDown;
 import frc.robot.commands.climber.ClimberUp;
 import frc.robot.commands.drive.DriveDirectionTime;
+import frc.robot.commands.drive.TurnToAngle;
 import frc.robot.commands.drive.DriveSwerve;
 import frc.robot.commands.drive.FakeVision;
 import frc.robot.commands.feeder.DefaultSpinFeeder;
@@ -187,7 +189,7 @@ public class RobotContainer {
                                                 IntakeDeployerSubsystem.createSimIo(robotVisualizer));// No GyroSubsystem in REPLAY for now
 
                                                 // create the drive subsystem with null gyro (use default json)
-                drivebase = !Constants.TESTBED ? new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "YAGSL/" + Constants.SWERVE_JSON_DIRECTORY), null) : null;
+                                          drivebase = !Constants.TESTBED ? new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "YAGSL/" + Constants.SWERVE_JSON_DIRECTORY), null) : null;
                 controllerSubsystem = !Constants.TESTBED ? new ControllerSubsystem(drivebase, intakeDeployer, this) : null;
                 apriltagSubsystem = !Constants.TESTBED ? new ApriltagSubsystem(ApriltagSubsystem.createSimIo(truster,drivebase), drivebase, truster) : null;
                                 lightStripSubsystem = new LightStripSubsystem(drivebase, shootState);
@@ -422,6 +424,15 @@ public class RobotContainer {
                                         "reset All",
                                         new ResetAll(anglerSubsystem, climberSubsystem, intakeDeployer, intakeSubsystem, 
                                                 shooterSubsystem, turretSubsystem, shootState));
+                        SmartDashboard.putData(
+                                        "turnToAngle/Swerve Angle to 60 deg",
+                                        new TurnToAngle(drivebase, gyroSubsystem, 60));
+                        SmartDashboard.putData(
+                                        "turnToAngle/Swerve Angle to 0 deg",
+                                        new TurnToAngle(drivebase, gyroSubsystem, 0));
+                        SmartDashboard.putData(
+                                        "turnToAngle/Swerve Angle to -90 deg",
+                                        new TurnToAngle(drivebase, gyroSubsystem, -90));
 
             SmartDashboard.putData(
                     "turret/TurretTest/Turret Go 45",

@@ -101,12 +101,12 @@ public class GameConstants {
     public static final double ANGLER_FF = 0.0;
     public static final double ANGLER_HOME_ROTATIONS = 0.0;
     public static final double ANGLER_ENCODER_LOW = 0; //Lowest encoder position of Angler
-    public static final double ANGLER_ENCODER_HIGH = 272; //Highest encoder position of Angler
-    public static final double ANGLER_ANGLE_LOW = 16; //Lowest angle position of Angler
-    public static final double ANGLER_ANGLE_HIGH = 37; //Highest angle position of Angler
+    public static final double ANGLER_ENCODER_HIGH = 265; //Highest encoder position of Angler
+    public static final double ANGLER_ANGLE_LOW = 17; //Lowest angle position of Angler
+    public static final double ANGLER_ANGLE_HIGH = 38; //Highest angle position of Angler
     public static final double ANGLER_FIXED_ROTATIONS = 0.1; //Fixed encoder position of Angler in Fixed ShootState
     public static final double ANGLER_FIXED_ANGLE = 10; //Fixed encoder position of Angler in Fixed ShootState
-    public static final double ANGLER_LIMIT_SPEED = 0.3;
+    public static final double ANGLER_LIMIT_SPEED = 0.5;
 
 
  // turret (pan angle) PID
@@ -121,8 +121,8 @@ public class GameConstants {
     public static final double TURRET_ENCODER_MIN = 0; //Lowest encoder position of Turret
     public static final double TURRET_ENCODER_MAX = 77; //Highest encoder position of Turret
     public static final double TURRET_HOME_ANGLE = 0.0; //Turret facing forward
-    public static final double TURRET_MIN_ANGLE = -92;
-    public static final double TURRET_MAX_ANGLE = 92;
+    public static final double TURRET_MIN_ANGLE = -96;
+    public static final double TURRET_MAX_ANGLE = 96;
     public static final double TURRET_LIMIT_SPEED = 0.2;
     public static final double TURRET_OUT_OF_RANGE_FLOP_RPM = -1500.0;
     public static final double TURRET_PID_DISTANCE_THRESHOLD = 10;

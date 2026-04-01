@@ -11,6 +11,7 @@ import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import frc.robot.utils.logging.commands.LoggableCommandWrapper;
 import frc.robot.utils.logging.commands.LoggableParallelCommandGroup;
 import frc.robot.utils.logging.commands.LoggableSequentialCommandGroup;
+import frc.robot.utils.logging.commands.LoggableWaitCommand;
 
 public class FastDepot extends LoggableSequentialCommandGroup {
     public FastDepot(
@@ -20,10 +21,11 @@ public class FastDepot extends LoggableSequentialCommandGroup {
         super(  
             new LoggableParallelCommandGroup(
                 LoggableCommandWrapper.wrap(auto.resetOdometry("Depot_Fast")),
-                LoggableCommandWrapper.wrap(auto.trajectoryCmd("Depot_Fast").withTimeout(10)),
+                LoggableCommandWrapper.wrap(auto.trajectoryCmd("Depot_Fast")),
                 new AutoReset(shootstate, turret, angler),
                 new SetShootingState(shootstate, ShootState.AUTO_AIM)
             ),
+            new LoggableWaitCommand(3),
             new AutoShoot(hopper, feeder, 0)
         );
     }

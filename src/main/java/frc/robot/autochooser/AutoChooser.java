@@ -127,7 +127,7 @@ public class AutoChooser {
         commandMap.put(new AutoEvent(AutoAction.SHOOT, FieldLocation.OUTPOST_SIDE, Alliance.Blue),
             new ShootBlue(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, controller, intake));
 
-        commandMap.put(new AutoEvent(AutoAction.FAST_SHOOT, FieldLocation.DEPOT_SIDE, Alliance.Blue),
+        commandMap.put(new AutoEvent(AutoAction.FAST_SHOOT, FieldLocation.FAST_DEPOT),
             new FastDepot(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, controller, intake));
         
     

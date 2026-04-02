@@ -20,11 +20,11 @@ public class FastDepot extends LoggableSequentialCommandGroup {
             ControllerSubsystem controller, IntakeDeployerSubsystem intake) {
         super(  
             new AutoReset(shootstate, turret, angler),
+            new SetShootingState(shootstate, ShootState.AUTO_AIM),
             new LoggableParallelCommandGroup(
                 LoggableCommandWrapper.wrap(auto.resetOdometry("Depot_Fast")),
                 LoggableCommandWrapper.wrap(auto.trajectoryCmd("Depot_Fast"))
             ),
-            new SetShootingState(shootstate, ShootState.AUTO_AIM),
             new LoggableWaitCommand(3),
             new AutoShoot(hopper, feeder, 0)
         );

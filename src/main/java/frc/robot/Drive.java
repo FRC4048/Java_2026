@@ -9,9 +9,9 @@ import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 
 
 public class Drive extends SubsystemBase{
-    private final PIDController xController = new PIDController(0.01, 0.0, 0.0);
-    private final PIDController yController = new PIDController(0.01, 0.0, 0.0);
-    private final PIDController headingController = new PIDController(.001, 0.0, 0.0);
+    private final PIDController xController = new PIDController(0.08, 0.0, 0.0);
+    private final PIDController yController = new PIDController(0.08, 0.0, 0.0);
+    private final PIDController headingController = new PIDController(0.8, 0.0, 0.0);
     private SwerveSubsystem subsystem;
 
     public Drive(SwerveSubsystem subsystem) {

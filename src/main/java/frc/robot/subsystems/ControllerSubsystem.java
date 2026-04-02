@@ -321,7 +321,7 @@ public class ControllerSubsystem extends SubsystemBase {
     }
 
     private double calculateTurretAngleDegrees(ShootState state, Pose2d robotPose, PoseControlProfile profile) {
-        if(state == ShootState.SHOOTING_HUB || state == ShootState.SHUTTLING || state == ShootState.AUTO_AIM){
+        if(state == ShootState.SHOOTING_HUB || state == ShootState.AUTO_AIM){
             return Math.floor(
                     Math.toDegrees(TurretCalculations.calculateTurretAngle(state,robotPose.getX(), robotPose.getY(),
                             robotPose.getRotation().getRadians(),

@@ -48,6 +48,7 @@ public class GameConstants {
     public static final double INTAKE_SPEED = -0.7;
     public static final double INTAKE_REVERSE_SPEED = 0.5;
     public static final double HOPPER_SPEED = 0.75;
+    public static final double HOPPER_REVERSE_SPEED = -0.5;
     public static final double CLIMBER_SPEED_UP = 0.1;
     public static final double CLIMBER_SPEED_DOWN = -0.1;
     public static final double FEEDER_SPEED = 1;

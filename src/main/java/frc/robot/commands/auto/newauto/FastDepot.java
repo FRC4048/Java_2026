@@ -25,7 +25,6 @@ public class FastDepot extends LoggableSequentialCommandGroup {
                 LoggableCommandWrapper.wrap(auto.resetOdometry("Depot_Fast")),
                 LoggableCommandWrapper.wrap(auto.trajectoryCmd("Depot_Fast"))
             ),
-            new LoggableWaitCommand(3),
             new AutoShoot(hopper, feeder, 5)
         );
     }

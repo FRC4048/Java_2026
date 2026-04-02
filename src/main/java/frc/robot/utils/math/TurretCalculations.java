@@ -50,7 +50,7 @@ public class TurretCalculations {
 
         double hubPosX;
         double hubPosY;
-    if(state == ShootState.SHOOTING_HUB) {
+    if(state == ShootState.SHOOTING_HUB || state == ShootState.AUTO_AIM) {
         if (isBlueAlliance) {
             // hub position determined by which alliance robot is on
             hubPosX = Constants.BLUE_HUB_X_POSITION;

@@ -336,6 +336,12 @@ public class RobotContainer {
         }
 
         public void putShuffleboardCommands() {
+                                SmartDashboard.putData(
+                                        "intakedeployer/Deployment State: UP",
+                                        new SetDeploymentState(intakeDeployer, DeploymentState.UP));
+                        SmartDashboard.putData(
+                                        "intakedeployer/Deployment State: DOWN",
+                                        new SetDeploymentState(intakeDeployer, DeploymentState.DOWN));
                                         SmartDashboard.putData(
                                         "Shooting State: Auto aim",
                                         new SetShootingState(shootState, ShootState.AUTO_AIM));
@@ -512,12 +518,6 @@ public class RobotContainer {
                         SmartDashboard.putData(
                                         "Shooting State: Shuttling",
                                         new SetShootingState(shootState, ShootState.SHUTTLING));
-                        SmartDashboard.putData(
-                                        "intakedeployer/Deployment State: UP",
-                                        new SetDeploymentState(intakeDeployer, DeploymentState.UP));
-                        SmartDashboard.putData(
-                                        "intakedeployer/Deployment State: DOWN",
-                                        new SetDeploymentState(intakeDeployer, DeploymentState.DOWN));
                         SmartDashboard.putData(
                                         "intakedeployer/Deployment State: STOPPED",
                                         new SetDeploymentState(intakeDeployer, DeploymentState.STOPPED));

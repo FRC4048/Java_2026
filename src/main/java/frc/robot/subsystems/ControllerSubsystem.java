@@ -265,7 +265,7 @@ public class ControllerSubsystem extends SubsystemBase {
     private double calculateDistanceMeters(ShootState state,Pose2d robotPose, Pose2d targetPose) {
         double distance = robotPose.getTranslation()
                 .getDistance(targetPose.getTranslation());
-        if(state == ShootState.SHOOTING_HUB){
+        if(state == ShootState.SHOOTING_HUB || state == ShootState.AUTO_AIM){
             if (distance > Constants.MAX_HUB_DISTANCE) {
                 return Constants.MAX_HUB_DISTANCE;
             } else if (distance < Constants.MIN_HUB_DISTANCE) {
@@ -298,7 +298,7 @@ public class ControllerSubsystem extends SubsystemBase {
     }
 
     private double calculateAnglerAngleDegrees(ShootState state, double computedDistanceMeters, PoseControlProfile profile) {
-        if (state == ShootState.SHOOTING_HUB) {
+        if (state == ShootState.SHOOTING_HUB || state == ShootState.AUTO_AIM) {
             double distance = (UnitConversion.METER_TO_FOOT * computedDistanceMeters) - Constants.COMPUTATED_DISTANCE_OFFSET;
             return 0.169 * distance * distance
                     - 1.73 * distance
@@ -309,10 +309,11 @@ public class ControllerSubsystem extends SubsystemBase {
 
     private double calculateShooterVelocity(ShootState state, double computedDistanceMeters, PoseControlProfile profile) {
         double distance = (UnitConversion.METER_TO_FOOT * computedDistanceMeters) - Constants.COMPUTATED_DISTANCE_OFFSET;
-        if (state == ShootState.SHOOTING_HUB) {
-            return (8.46 * distance * distance
-                    - 237 * distance
-                    - 1380);
+        if (state == ShootState.SHOOTING_HUB || state == ShootState.AUTO_AIM) {
+            return (-0.583675*distance*distance*distance
+                    +20.18291*distance*distance
+                    -261.37309*distance
+                    -1324.19278);
         }else if(state == ShootState.SHUTTLING){
             return (((-distance*distance) - 5 * distance) - 2800);
         }
@@ -320,7 +321,7 @@ public class ControllerSubsystem extends SubsystemBase {
     }
 
     private double calculateTurretAngleDegrees(ShootState state, Pose2d robotPose, PoseControlProfile profile) {
-        if(state == ShootState.SHOOTING_HUB || state == ShootState.SHUTTLING){
+        if(state == ShootState.SHOOTING_HUB || state == ShootState.SHUTTLING || state == ShootState.AUTO_AIM){
             return Math.floor(
                     Math.toDegrees(TurretCalculations.calculateTurretAngle(state,robotPose.getX(), robotPose.getY(),
                             robotPose.getRotation().getRadians(),

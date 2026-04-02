@@ -120,6 +120,11 @@ public class ControllerSubsystem extends SubsystemBase {
             Logger.recordOutput(TARGET_HOPPER_SPEED_KEY, activeTargets.hopperSpin);
         }
         previousState = currentState;
+//        Logger.recordOutput("FieldSimulation/Fuel",
+//                SimulatedArena.getInstance().getGamePiecesArrayByType("Fuel"));
+        if (SimulatedArena.getInstance().getGamePiecesArrayByType("Fuel").length >58) {
+            SimulatedArena.getInstance().clearGamePieces();
+        }
         if (Logger.getTimestamp()-lastShot>1000000/Constants.PIECES_PER_SECOND) {
             lastShot = Logger.getTimestamp();
             if (robotContainer.getShootingState().getShootState() != ShootingState.ShootState.STOPPED) {
@@ -137,9 +142,11 @@ public class ControllerSubsystem extends SubsystemBase {
                                         // Set the tolerance: x: ±0.5m, y: ±1.2m, z: ±0.3m (this is the size of the speaker's "mouth")
                                 .withTargetTolerance(new Translation3d(0.4, 0.4, 0.15))
                                 .disableBecomesGamePieceOnFieldAfterTouchGround()
+                                .withHitTargetCallBack(()->Logger.recordOutput("flightTime",(Logger.getTimestamp()-lastShot)/1000000))
                                 .withProjectileTrajectoryDisplayCallBack(
-                                        (poses) -> Logger.recordOutput("successfulShotsTrajectory", poses.toArray(Pose3d[]::new)),
-                                        (poses) -> Logger.recordOutput("missedShotsTrajectory", poses.toArray(Pose3d[]::new))));
+                                        (poses) -> {/*Logger.recordOutput("successfulShotsTrajectory", poses.toArray(Pose3d[]::new))*/},
+                                        (poses) -> {/*Logger.recordOutput("missedShotsTrajectory", poses.toArray(Pose3d[]::new));*/
+                                        Logger.recordOutput("missedShotFinal", poses.getLast());}));
 
             }
         }
@@ -233,9 +240,9 @@ public class ControllerSubsystem extends SubsystemBase {
             case AUTO_AIM ->{ if (Robot.allianceColor().isEmpty()) {
                     useShotTargets(FIXED_TARGETS);
                 } else if (Robot.allianceColor().get().equals(DriverStation.Alliance.Blue)) {
-                    useShotTargets(calculateTargetsFromPose(state, BLUE_HUB_PROFILE, robotPosePredictionCalculation(BLUE_HUB_PROFILE.targetPose,robotPose),robotSpeeds));
+                    useShotTargets(calculateTargetsFromPose(state, BLUE_HUB_PROFILE, robotPose, robotSpeeds));
                 } else if (Robot.allianceColor().get().equals(DriverStation.Alliance.Red)) {
-                    useShotTargets(calculateTargetsFromPose(state, RED_HUB_PROFILE, robotPosePredictionCalculation(RED_HUB_PROFILE.targetPose,robotPose),robotSpeeds));
+                    useShotTargets(calculateTargetsFromPose(state, RED_HUB_PROFILE, robotPose, robotSpeeds));
                 } else {
                     useShotTargets(FIXED_TARGETS);
                 }}
@@ -299,7 +306,8 @@ public class ControllerSubsystem extends SubsystemBase {
 
     private ShotTargets calculateTargetsFromPose(ShootState state,PoseControlProfile profile, Pose2d robotPose, ChassisSpeeds robotSpeeds) {
         Twist2d momentumAdjustment = getMomentumAdjustment(robotPose, Constants.ACCOUNT_FOR_ANGULAR_MOMENTUM, robotSpeeds,
-                equalizeFlightTime(calculateDistanceMeters(state, robotPose, profile.targetPose), robotPose, profile.targetPose, robotSpeeds));
+                equalizeFlightTime(calculateDistanceMeters(state, robotPose, profile.targetPose), robotPose, profile.targetPose, robotSpeeds)/2);
+//                calculateFlightTime(calculateDistanceMeters(state, robotPose, profile.targetPose)));
         PoseControlProfile adjustedProfile = new PoseControlProfile(profile.targetPose, profile.defaultAnglerAngleDegrees, profile.defaultShooterVelocityRpm, profile.defaultTurretAngleDegrees);
         adjustedProfile.targetPose = profile.targetPose.exp(momentumAdjustment);
         Logger.recordOutput("adjustedAimPoint", adjustedProfile.targetPose);
@@ -315,7 +323,7 @@ public class ControllerSubsystem extends SubsystemBase {
     private double calculateDistanceMeters(ShootState state,Pose2d robotPose, Pose2d targetPose) {
         double distance = robotPose.getTranslation()
                 .getDistance(targetPose.getTranslation());
-        if(state == ShootState.SHOOTING_HUB){
+        if(state == ShootState.SHOOTING_HUB || state == ShootState.AUTO_AIM){
             if (distance > Constants.MAX_HUB_DISTANCE) {
                 return Constants.MAX_HUB_DISTANCE;
             } else if (distance < Constants.MIN_HUB_DISTANCE) {
@@ -344,7 +352,8 @@ public class ControllerSubsystem extends SubsystemBase {
     }
     // Linear regression through 3 static shot distance vs time points.
     private double calculateFlightTime(double computedDistanceMeters) {
-        return 0.208*computedDistanceMeters + 0.647;
+//        return 0.208*computedDistanceMeters + 0.647;
+        return -0.0778+0.692*computedDistanceMeters-0.0991*computedDistanceMeters*computedDistanceMeters;
     }
 
     // Since t(x)=mx+b (previous function), we can solve for x
@@ -363,19 +372,19 @@ public class ControllerSubsystem extends SubsystemBase {
 
     private double calculateShooterVelocity(ShootState state, double computedDistanceMeters, PoseControlProfile profile) {
         double distance = (UnitConversion.METER_TO_FOOT * computedDistanceMeters) - Constants.COMPUTATED_DISTANCE_OFFSET;
-        if (state == ShootState.SHOOTING_HUB) {
+        if (state == ShootState.SHOOTING_HUB || state == ShootState.AUTO_AIM) {
             return (8.46 * distance * distance
                     - 237 * distance
                     - 1380);
         }else if(state == ShootState.SHUTTLING){
             return (((-distance*distance) - 5 * distance) - 2800);
         }
-        System.out.println("usingDefault");
+        //System.out.println("usingDefault");
         return profile.defaultShooterVelocityRpm;
     }
 
     private double calculateTurretAngleDegrees(ShootState state, Pose2d robotPose, PoseControlProfile profile) {
-        if(state == ShootState.SHOOTING_HUB || state == ShootState.SHUTTLING){
+        if(state == ShootState.SHOOTING_HUB || state == ShootState.AUTO_AIM || state == ShootState.SHUTTLING){
             return Math.floor(
                     Math.toDegrees(TurretCalculations.calculateTurretAngle(robotPose,profile.targetPose,
                             Robot.allianceColor().get() == DriverStation.Alliance.Blue)));

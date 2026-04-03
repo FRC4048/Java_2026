@@ -138,21 +138,33 @@ public class Robot extends LoggedRobot {
         Logger.recordOutput("ZeroPose", Pose2d.kZero);
 
         Translation3d intakePosition = new Translation3d(0.3, 0, 0.3);
-        double intakeAngle = robotContainer.getRobotVisualizer().getIntakeDeploymentLigament().getAngle();
-        Rotation3d intakeRotation = new Rotation3d(0, Units.degreesToRadians(intakeAngle), 0);
+        double intakeAngle = Units.degreesToRadians(robotContainer.getRobotVisualizer().getIntakeDeploymentLigament().getAngle());
+        Rotation3d intakeRotation = new Rotation3d(0, intakeAngle, 0);
         Pose3d intake = new Pose3d(intakePosition, intakeRotation);
 
         Translation3d hopperPosition = new Translation3d(0, 0, 0);
-        double hopperAngle = robotContainer.getRobotVisualizer().getHopperLigament().getAngle();
-        Rotation3d hopperRotation = new Rotation3d(0, 0, Units.degreesToRadians(hopperAngle));
+        double hopperAngle = Units.degreesToRadians(robotContainer.getRobotVisualizer().getHopperLigament().getAngle());
+        Rotation3d hopperRotation = new Rotation3d(0, 0, hopperAngle);
         Pose3d hopper = new Pose3d(hopperPosition, hopperRotation);
 
         Translation3d turretPosition = new Translation3d(0, 0, 0);
-        double turretAngle = robotContainer.getRobotVisualizer().getTurretLigament().getAngle();
-        Rotation3d turretRotation = new Rotation3d(0, 0, Units.degreesToRadians(turretAngle));
+        double turretAngle = Units.degreesToRadians(robotContainer.getRobotVisualizer().getTurretLigament().getAngle());
+        Rotation3d turretRotation = new Rotation3d(0, 0, turretAngle);
         Pose3d turret = new Pose3d(turretPosition, turretRotation);
 
-        Logger.recordOutput("ZeroedComponents", new Pose3d[] { Pose3d.kZero, intake, hopper, turret });
+        Translation3d shooterPosition = new Translation3d(-0.15, 0, 0.55);
+        Translation3d adjustedShooterPosition = shooterPosition.rotateBy(turretRotation);
+        double shooterAngle = Units.degreesToRadians(robotContainer.getRobotVisualizer().getShooterLigament().getAngle());
+        Rotation3d shooterRotation = new Rotation3d(0, shooterAngle, turretAngle);
+        Pose3d shooter = new Pose3d(adjustedShooterPosition, shooterRotation);
+
+        Translation3d anglerPosition = new Translation3d(-0.1, 0, 0.55);
+        Translation3d adjustedAnglerPosition = anglerPosition.rotateBy(turretRotation);
+        double anglerAngle = Units.degreesToRadians(robotContainer.getRobotVisualizer().getAnglerLigament().getAngle());
+        Rotation3d anglerRotation = new Rotation3d(0, anglerAngle, turretAngle);
+        Pose3d angler = new Pose3d(adjustedAnglerPosition, anglerRotation);
+
+        Logger.recordOutput("ZeroedComponents", new Pose3d[] { Pose3d.kZero, intake, hopper, turret, shooter, angler });
 
         SmartDashboard.putBoolean("Hub Active?", hubActive());
         if (Constants.DEBUG) {

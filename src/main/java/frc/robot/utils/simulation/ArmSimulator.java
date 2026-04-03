@@ -66,8 +66,6 @@ public class ArmSimulator implements Simulator {
         encoderSim = motorSim.getRelativeEncoderSim();
         forwardSwitchSim = motorSim.getForwardLimitSwitchSim();
         reverseSwitchSim = motorSim.getReverseLimitSwitchSim();
-        encoderSim.setPosition(0.0);
-        encoderSim.setInverted(false);
         reverse = params.reverse;
         armMaxAngle = params.armMaxAngle;
     }
@@ -103,14 +101,17 @@ public class ArmSimulator implements Simulator {
 
         if (Constants.ARM_DEBUG) {
             SmartDashboard.putNumber(name + "/Arm Motor out voltage", motorOut);
-            SmartDashboard.putNumber(
-                    name + "/Arm Velocity rads per s", velocityRadsPerSecond.getRadians());
+            SmartDashboard.putNumber(name + "/Arm Velocity rads per s", velocityRadsPerSecond.getRadians());
             SmartDashboard.putNumber(name + "/Arm RPM", rpm);
             SmartDashboard.putNumber(name + "/Arm actual position", mechanismPosRads);
             SmartDashboard.putBoolean(name + "/Arm Forward switch", forwardSwitchSim.getPressed());
             SmartDashboard.putBoolean(name + "/Arm Reverse switch", reverseSwitchSim.getPressed());
             SmartDashboard.putNumber(name + "/Arm Encoder", encoderSim.getPosition());
         }
+    }
+
+    public void resetEncoderPosition(double position) {
+        motorSim.setPosition(position);
     }
 
     public void close() {

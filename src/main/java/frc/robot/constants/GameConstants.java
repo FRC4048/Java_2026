@@ -107,7 +107,7 @@ public class GameConstants {
     public static final double ANGLER_ANGLE_HIGH = 38; //Highest angle position of Angler
     public static final double ANGLER_FIXED_ROTATIONS = 0.1; //Fixed encoder position of Angler in Fixed ShootState
     public static final double ANGLER_FIXED_ANGLE = 10; //Fixed encoder position of Angler in Fixed ShootState
-    public static final double ANGLER_LIMIT_SPEED = 0.5;
+    public static final double ANGLER_LIMIT_SPEED = 0.6;
 
 
  // turret (pan angle) PID

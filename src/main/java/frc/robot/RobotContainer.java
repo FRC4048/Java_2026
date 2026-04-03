@@ -37,6 +37,7 @@ import frc.robot.commands.drive.FakeVision;
 import frc.robot.commands.feeder.DefaultSpinFeeder;
 import frc.robot.commands.feeder.SpinFeeder;
 import frc.robot.commands.hopper.DefaultSpinHopper;
+import frc.robot.commands.hopper.ReverseHopper;
 import frc.robot.commands.hopper.SpinHopper;
 import frc.robot.commands.intake.ReverseIntake;
 import frc.robot.commands.intake.SpinIntake;
@@ -297,8 +298,7 @@ public class RobotContainer {
                 controller.povRight().onTrue(new SetShootingState(shootState, ShootState.STOPPED));
                 controller.povDown().onTrue(new SetShootingState(shootState, ShootState.SHOOTING_HUB));
                 controller.povLeft().onTrue(new SetShootingState(shootState, ShootState.SHUTTLING));
-                controller.leftTrigger().onTrue((new ResetAll(anglerSubsystem, climberSubsystem, 
-                        intakeDeployer, intakeSubsystem, shooterSubsystem, turretSubsystem, shootState)));
+                controller.leftTrigger().whileTrue(new ReverseHopper(hopperSubsystem));
                 controller.rightTrigger().whileTrue(new ReverseIntake(intakeSubsystem));
                 driveJoystick.trigger().whileTrue((new SetShootingState(shootState, ShootState.STOPPED)));
 
@@ -466,12 +466,19 @@ public class RobotContainer {
                                         "Spin Intake",
                                         new SpinIntake(intakeSubsystem, intakeDeployer));
                         SmartDashboard.putData(
+                                        "Reverse Intake",
+                                        new ReverseIntake(intakeSubsystem));
+
+                        SmartDashboard.putData(
                                         "Stop Intake",
                                         new StopIntake(intakeSubsystem));
 
                         SmartDashboard.putData(
                                         "Start Hopper",
                                         new SpinHopper(hopperSubsystem));
+                        SmartDashboard.putData(
+                                        "Reverse Hopper",
+                                        new ReverseHopper(hopperSubsystem));
 
                         SmartDashboard.putData(
                                         "Climber Up",
@@ -517,6 +524,10 @@ public class RobotContainer {
                         SmartDashboard.putData(
                                         "intakedeployer/Deployment State: STOPPED",
                                         new SetDeploymentState(intakeDeployer, DeploymentState.STOPPED));
+                        SmartDashboard.putData(
+                                "Reset All",
+                                new ResetAll(anglerSubsystem, climberSubsystem, 
+                        intakeDeployer, intakeSubsystem, shooterSubsystem, turretSubsystem, shootState));
 
                 }
 

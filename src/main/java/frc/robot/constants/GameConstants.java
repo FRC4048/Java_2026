@@ -147,9 +147,9 @@ public class GameConstants {
     public static final double HUB_HEIGHT = 1.83;
     public static final double SHOOTER_HEIGHT = 0.5;
     public static final double BLUE_HUB_X_POSITION = 4.6256;
-    public static final double BLUE_HUB_Y_POSITION = 4.0345;
+    public static final double BLUE_HUB_Y_POSITION = 3.7345;
     public static final double RED_HUB_X_POSITION = 11.9154;
-    public static final double RED_HUB_Y_POSITION = 4.0345;
+    public static final double RED_HUB_Y_POSITION = 4.3345;
     public static final double X_DISTANCE_BETWEEN_ROBOT_AND_TURRET = .05;
     public static final double Y_DISTANCE_BETWEEN_ROBOT_AND_TURRET = .12;
 

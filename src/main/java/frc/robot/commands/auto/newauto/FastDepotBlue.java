@@ -40,7 +40,8 @@ public class FastDepotBlue extends LoggableSequentialCommandGroup {
                     new DriveSwerve(drivetrain, DriveDirection.FORWARD, 7, 0.2),
                     new ToggleDeployment(intake, controller)
                 )
-            )
+            ),
+            new SetShootingState(shootstate, ShootState.SHOOTING_HUB)   
 
         );
     }

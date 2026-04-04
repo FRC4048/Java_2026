@@ -107,6 +107,7 @@ public class Robot extends LoggedRobot {
      */
     @Override
     public void robotPeriodic() {
+        Logger.recordOutput("MyPose", robotContainer.getDriveBase().getPose());
         // Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled
         // commands, running already-scheduled commands, removing finished or interrupted commands,
         // and running subsystem periodic() methods.  This must be called from the robot's periodic
@@ -137,7 +138,6 @@ public class Robot extends LoggedRobot {
             SmartDashboard.putNumber("driverXbox.getLeftY()", driverXbox.getLeftY());
             SmartDashboard.putNumber("driverXbox::getRightX", driverXbox.getRightX());
             if (!Constants.TESTBED) {
-                Logger.recordOutput("MyPose", robotContainer.getDriveBase().getPose());
                     SmartDashboard.putNumber("Robot X", robotContainer.getDriveBase().getPose().getX());
             SmartDashboard.putNumber("Robot Y", robotContainer.getDriveBase().getPose().getY());
         // Puts data on the elastic dashboard

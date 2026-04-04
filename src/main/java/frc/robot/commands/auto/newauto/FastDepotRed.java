@@ -24,12 +24,9 @@ public class FastDepotRed extends LoggableSequentialCommandGroup {
             HopperSubsystem hopper, FeederSubsystem feeder, TurretSubsystem turret, AnglerSubsystem angler,
             ControllerSubsystem controller, IntakeDeployerSubsystem intake) {
         super(  
-
+            new AutoReset(shootstate, turret, angler),
+            new SetShootingState(shootstate, ShootState.AUTO_AIM),
             new LoggableParallelCommandGroup(
-                new LoggableSequentialCommandGroup(
-                new AutoReset(shootstate, turret, angler),
-                new SetShootingState(shootstate, ShootState.AUTO_AIM)
-                ),  
                 LoggableCommandWrapper.wrap(auto.resetOdometry("Depot_Fast")),
                 LoggableCommandWrapper.wrap(auto.trajectoryCmd("Depot_Fast"))
             ),

@@ -42,6 +42,7 @@ import frc.robot.commands.hopper.SpinHopper;
 import frc.robot.commands.intake.ReverseIntake;
 import frc.robot.commands.intake.SpinIntake;
 import frc.robot.commands.intake.StopIntake;
+import frc.robot.commands.intakeDeployment.ForceDeployDown;
 import frc.robot.commands.intakeDeployment.RunDeployer;
 import frc.robot.commands.intakeDeployment.SetDeploymentState;
 import frc.robot.commands.intakeDeployment.ToggleDeployment;
@@ -292,8 +293,7 @@ public class RobotContainer {
         private void configureBindings() {
                 controller.a().onTrue(new ToggleDeployment(intakeDeployer, controllerSubsystem));
                 controller.b().onTrue(new SetDeploymentState(intakeDeployer, DeploymentState.STOPPED));
-                controller.y().onTrue(new ClimberUp(climberSubsystem));
-                controller.x().onTrue(new ClimberDown(climberSubsystem));
+                controller.x().onTrue(new ForceDeployDown(intakeDeployer, shootState));
                 controller.povUp().onTrue(new SetShootingState(shootState, ShootState.FIXED));
                 controller.povRight().onTrue(new SetShootingState(shootState, ShootState.STOPPED));
                 controller.povDown().onTrue(new SetShootingState(shootState, ShootState.SHOOTING_HUB));

@@ -146,7 +146,7 @@ public class ControllerSubsystem extends SubsystemBase {
                                 .withProjectileTrajectoryDisplayCallBack(
                                         (poses) -> {/*Logger.recordOutput("successfulShotsTrajectory", poses.toArray(Pose3d[]::new))*/},
                                         (poses) -> {/*Logger.recordOutput("missedShotsTrajectory", poses.toArray(Pose3d[]::new));*/
-                                        Logger.recordOutput("missedShotFinal", poses.getLast());}));
+                                            if(!poses.isEmpty()) Logger.recordOutput("missedShotFinal", poses.get(poses.size()-1));}));
 
             }
         }

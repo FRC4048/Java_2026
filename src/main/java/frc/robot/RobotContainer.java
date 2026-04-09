@@ -11,6 +11,7 @@ import java.io.File;
 import choreo.auto.AutoFactory;
 import choreo.auto.AutoRoutine;
 import choreo.auto.AutoTrajectory;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -84,6 +85,9 @@ import frc.robot.utils.logging.io.gyro.ThreadedGyroSwerveIMU;
 import frc.robot.utils.simulation.RobotVisualizer;
 import swervelib.SwerveInputStream;
 import swervelib.imu.SwerveIMU;
+import swervelib.simulation.ironmaple.simulation.SimulatedArena;
+import swervelib.simulation.ironmaple.simulation.seasonspecific.rebuilt2026.RebuiltFuelOnField;
+
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -151,15 +155,16 @@ public class RobotContainer {
                                 turretSubsystem = new TurretSubsystem(TurretSubsystem.createRealIo());
                                 climberSubsystem = new ClimberSubsystem(ClimberSubsystem.createRealIo());
                                 feederSubsystem = new FeederSubsystem(FeederSubsystem.createRealIo());
-                                shooterSubsystem = new ShooterSubsystem(ShooterSubsystem.createRealIo());
+
                                 RealGyroIo gyroIo = (RealGyroIo) GyroSubsystem.createRealIo();
                                 ThreadedGyro threadedGyro = gyroIo.getThreadedGyro();
                                 gyroSubsystem = new GyroSubsystem(gyroIo);
                                 SwerveIMU swerveIMU = new ThreadedGyroSwerveIMU(threadedGyro);
                                 drivebase = !Constants.TESTBED ? new SwerveSubsystem(
                                                 new File(Filesystem.getDeployDirectory(), "YAGSL/" + Constants.SWERVE_JSON_DIRECTORY), swerveIMU) : null;
-                            apriltagSubsystem = !Constants.TESTBED ? new ApriltagSubsystem(ApriltagSubsystem.createRealIo(), drivebase, truster) : null;
-                            controllerSubsystem = !Constants.TESTBED ? new ControllerSubsystem(drivebase,intakeDeployer, this) : null;
+                            shooterSubsystem = new ShooterSubsystem(ShooterSubsystem.createRealIo());
+                                apriltagSubsystem = !Constants.TESTBED ? new ApriltagSubsystem(ApriltagSubsystem.createRealIo(), drivebase, truster) : null;
+                            controllerSubsystem = !Constants.TESTBED ? new ControllerSubsystem(drivebase,intakeDeployer, this, turretSubsystem) : null;
                                  lightStripSubsystem = new LightStripSubsystem(drivebase, shootState);
                                 powerDistribution.setSwitchableChannel(true);
                                 }
@@ -170,14 +175,15 @@ public class RobotContainer {
                                 climberSubsystem = new ClimberSubsystem(ClimberSubsystem.createMockIo());
                                 feederSubsystem = new FeederSubsystem(FeederSubsystem.createMockIo());
                                 turretSubsystem = new TurretSubsystem(TurretSubsystem.createMockIo());
-                                shooterSubsystem = new ShooterSubsystem(ShooterSubsystem.createMockIo());
+
                                 intakeDeployer = new IntakeDeployerSubsystem(IntakeDeployerSubsystem.createMockIo());
 
                                 // No GyroSubsystem in REPLAY for now
                 // create the drive subsystem with null gyro (use default json)
                 drivebase = !Constants.TESTBED ? new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "YAGSL/" + Constants.SWERVE_JSON_DIRECTORY), null) : null;
+                            shooterSubsystem = new ShooterSubsystem(ShooterSubsystem.createMockIo());
                 apriltagSubsystem = !Constants.TESTBED ? new ApriltagSubsystem(ApriltagSubsystem.createMockIo(), drivebase, truster) : null;
-                controllerSubsystem = !Constants.TESTBED ? new ControllerSubsystem(drivebase, intakeDeployer, this) : null;
+                controllerSubsystem = !Constants.TESTBED ? new ControllerSubsystem(drivebase, intakeDeployer, this, turretSubsystem) : null;
                                 lightStripSubsystem = new LightStripSubsystem(drivebase, shootState);
 
             }
@@ -189,13 +195,14 @@ public class RobotContainer {
                                 climberSubsystem = new ClimberSubsystem(ClimberSubsystem.createSimIo(robotVisualizer));
                                 feederSubsystem = new FeederSubsystem(FeederSubsystem.createSimIo(robotVisualizer));
                                 turretSubsystem = new TurretSubsystem(TurretSubsystem.createSimIo(robotVisualizer));
-                                shooterSubsystem = new ShooterSubsystem(ShooterSubsystem.createSimIo(robotVisualizer));
+
                                 intakeDeployer = new IntakeDeployerSubsystem(
                                                 IntakeDeployerSubsystem.createSimIo(robotVisualizer));// No GyroSubsystem in REPLAY for now
 
                                                 // create the drive subsystem with null gyro (use default json)
                 drivebase = !Constants.TESTBED ? new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "YAGSL/" + Constants.SWERVE_JSON_DIRECTORY), null) : null;
-                controllerSubsystem = !Constants.TESTBED ? new ControllerSubsystem(drivebase, intakeDeployer, this) : null;
+                shooterSubsystem = new ShooterSubsystem(ShooterSubsystem.createSimIo(robotVisualizer));
+                controllerSubsystem = !Constants.TESTBED ? new ControllerSubsystem(drivebase, intakeDeployer, this, turretSubsystem) : null;
                 apriltagSubsystem = !Constants.TESTBED ? new ApriltagSubsystem(ApriltagSubsystem.createSimIo(truster,drivebase), drivebase, truster) : null;
                                 lightStripSubsystem = new LightStripSubsystem(drivebase, shootState);
 
@@ -210,6 +217,7 @@ public class RobotContainer {
                 autoChooser = new AutoChooser(drivebase, shootState, autoFactory, shooterSubsystem, climberSubsystem, feederSubsystem, hopperSubsystem, turretSubsystem, anglerSubsystem, controllerSubsystem, intakeDeployer);
                 configureBindings();
                 putShuffleboardCommands();
+
         }
 
 
@@ -336,6 +344,10 @@ public class RobotContainer {
         }
 
         public void putShuffleboardCommands() {
+                                        SmartDashboard.putData(
+                                        "Shooting State: Auto aim",
+                                        new SetShootingState(shootState, ShootState.AUTO_AIM));
+
                 if (Constants.DEBUG) {
                         SmartDashboard.putNumber(RunDashboardShotTest.ANGLER_TARGET_POSITION_KEY, 0.0);
                         SmartDashboard.putNumber(RunDashboardShotTest.SHOOTER_TARGET_RPM_KEY, Constants.SHOOTER_SPEED);

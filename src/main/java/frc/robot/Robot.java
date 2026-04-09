@@ -144,7 +144,7 @@ public class Robot extends LoggedRobot {
                 SmartDashboard.putString("Alliance Color", Robot.allianceColorString());
                 if (Constants.currentMode == Constants.Mode.SIM) {
                     Logger.recordOutput("SimPose", robotContainer.getDriveBase().getSimulationPose().get());
-                    Logger.recordOutput("OdomPose", robotContainer.getDriveBase().getSimulationPose().get());
+                    Logger.recordOutput("OdomPose", robotContainer.getDriveBase().getSimulationRawOdomPose());
                 }
             }
         }

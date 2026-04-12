@@ -19,6 +19,7 @@ import frc.robot.commands.auto.disturbance.DepotDisturbance;
 import frc.robot.commands.auto.disturbance.OutpostDisturbance;
 import frc.robot.commands.auto.shootpickup.DepotShootPickup;
 import frc.robot.commands.auto.DoNothing;
+import frc.robot.commands.auto.HalfCircle.HalfCircle;
 import frc.robot.constants.enums.ShootingState;
 import frc.robot.subsystems.AnglerSubsystem;
 import frc.robot.subsystems.ClimberSubsystem;
@@ -129,9 +130,9 @@ public class AutoChooser {
             new ShootBlue(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, controller, intake));
 
         commandMap.put(new AutoEvent(AutoAction.FAST_SHOOT, FieldLocation.FAST_DEPOT, Alliance.Red),
-            new FastDepotRed(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, controller, intake));
+            new HalfCircle(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, controller, intake));
         commandMap.put(new AutoEvent(AutoAction.FAST_SHOOT, FieldLocation.FAST_DEPOT, Alliance.Blue),
-            new FastDepotBlue(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, controller, intake));
+            new HalfCircle(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, controller, intake));
            
     
         /*

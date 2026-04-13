@@ -6,6 +6,8 @@ package frc.robot.commands.drive;
 
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import frc.robot.Robot;
 import frc.robot.constants.enums.DriveDirection;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import frc.robot.utils.logging.commands.LoggableCommand;
@@ -15,7 +17,7 @@ public class DriveSwerve extends LoggableCommand {
   private final SwerveSubsystem drivebase;
   private final double time;
   private final DriveDirection dir;
-  private final double speed;
+  private double speed;
   private Timer timer;
 
   public DriveSwerve(SwerveSubsystem drivebase, DriveDirection dir, double time, double speed) {

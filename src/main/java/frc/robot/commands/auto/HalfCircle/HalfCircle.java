@@ -1,8 +1,14 @@
 package frc.robot.commands.auto.HalfCircle;
 
+import java.util.function.Supplier;
+
 import choreo.auto.AutoFactory;
+import choreo.auto.AutoTrajectory;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.Robot;
 import frc.robot.commands.auto.AutoReset;
 import frc.robot.commands.auto.AutoShoot;
 import frc.robot.commands.drive.DriveSwerve;
@@ -19,10 +25,11 @@ import frc.robot.utils.logging.commands.LoggableSequentialCommandGroup;
 import frc.robot.utils.logging.commands.LoggableWaitCommand;
 
 public class HalfCircle extends LoggableSequentialCommandGroup {
+
     public HalfCircle(
             SwerveSubsystem drivetrain, AutoFactory auto, ShooterSubsystem shooter, ShootingState shootstate,
             HopperSubsystem hopper, FeederSubsystem feeder, TurretSubsystem turret, AnglerSubsystem angler,
-            ControllerSubsystem controller, IntakeDeployerSubsystem intake) {
+            ControllerSubsystem controller, IntakeDeployerSubsystem intake, boolean onRed) {
         super(  
             new AutoReset(shootstate, turret, angler),
             new SetShootingState(shootstate, ShootState.AUTO_AIM),
@@ -35,8 +42,11 @@ public class HalfCircle extends LoggableSequentialCommandGroup {
              new LoggableParallelCommandGroup(
                 LoggableCommandWrapper.wrap(auto.resetOdometry("halfCircleReturn")),
                 LoggableCommandWrapper.wrap(auto.trajectoryCmd("halfCircleReturn"))
+            ),
+            new LoggableParallelCommandGroup(
+                new AutoShoot(hopper, feeder, 5),
+                new DriveSwerve(drivetrain, onRed ? DriveDirection.BACKWARD: DriveDirection.FORWARD , 2, 0.2)
             )
-            
         );
     }
 }

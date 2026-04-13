@@ -31,7 +31,11 @@ public class HalfCircle extends LoggableSequentialCommandGroup {
                 LoggableCommandWrapper.wrap(auto.resetOdometry("halfCircle")),
                 LoggableCommandWrapper.wrap(auto.trajectoryCmd("halfCircle"))
             ),
-            new AutoShoot(hopper, feeder, 1)
+            new AutoShoot(hopper, feeder, 3),
+             new LoggableParallelCommandGroup(
+                LoggableCommandWrapper.wrap(auto.resetOdometry("halfCircleReturn")),
+                LoggableCommandWrapper.wrap(auto.trajectoryCmd("halfCircleReturn"))
+            )
             
         );
     }

@@ -11,7 +11,7 @@ public enum AutoAction {
   FAST_SHOOT("Shoot depot"),
   //SHOOT_PICKUP("Shoot and Pickup"),
   //DISTURBANCE("Disturbance"),
-  //NEUTRAL_ZONE("Shoot and Neutral Zone Pickup"),
+  NEUTRAL_ZONE("Shoot and Neutral Zone Pickup"),
   INVALID("INVALID");
   private final String name;
   private static final HashMap<String, AutoAction> nameMap =

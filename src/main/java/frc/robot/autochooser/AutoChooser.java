@@ -130,14 +130,15 @@ public class AutoChooser {
             new ShootBlue(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, controller, intake));
 
         commandMap.put(new AutoEvent(AutoAction.FAST_SHOOT, FieldLocation.FAST_DEPOT, Alliance.Red),
-            new HalfCircle(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, controller, intake, true));
+            new FastDepotRed(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, controller, intake));
         commandMap.put(new AutoEvent(AutoAction.FAST_SHOOT, FieldLocation.FAST_DEPOT, Alliance.Blue),
+            new FastDepotBlue(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, controller, intake));
+       
+        commandMap.put(new AutoEvent(AutoAction.NEUTRAL_ZONE, FieldLocation.SWIPE_DEPOT, Alliance.Red),
             new HalfCircle(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, controller, intake, true));
-        commandMap.put(new AutoEvent(AutoAction.FAST_SHOOT, FieldLocation.FAST_DEPOT, Alliance.Red),
-            new HalfCircle(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, controller, intake, true));
-        commandMap.put(new AutoEvent(AutoAction.FAST_SHOOT, FieldLocation.FAST_DEPOT, Alliance.Blue),
-            new HalfCircle(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, controller, intake, true));
-           
+        commandMap.put(new AutoEvent(AutoAction.NEUTRAL_ZONE, FieldLocation.SWIPE_DEPOT, Alliance.Blue),
+            new HalfCircle(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, controller, intake, false));
+        
     
         /*
         //shoot-pickup

@@ -31,21 +31,24 @@ public class HalfCircle extends LoggableSequentialCommandGroup {
             HopperSubsystem hopper, FeederSubsystem feeder, TurretSubsystem turret, AnglerSubsystem angler,
             ControllerSubsystem controller, IntakeDeployerSubsystem intake, boolean onRed) {
         super(  
-            new AutoReset(shootstate, turret, angler),
-            new SetShootingState(shootstate, ShootState.AUTO_AIM),
             new ToggleDeployment(intake, controller),
             new LoggableParallelCommandGroup(
+                new LoggableSequentialCommandGroup(
+                    new AutoReset(shootstate, turret, angler),
+                    new SetShootingState(shootstate, ShootState.AUTO_AIM)
+                ),
                 LoggableCommandWrapper.wrap(auto.resetOdometry("halfCircle")),
                 LoggableCommandWrapper.wrap(auto.trajectoryCmd("halfCircle"))
             ),
+            
             new AutoShoot(hopper, feeder, 3),
-             new LoggableParallelCommandGroup(
+            new LoggableParallelCommandGroup(
                 LoggableCommandWrapper.wrap(auto.resetOdometry("halfCircleReturn")),
                 LoggableCommandWrapper.wrap(auto.trajectoryCmd("halfCircleReturn"))
             ),
             new LoggableParallelCommandGroup(
                 new AutoShoot(hopper, feeder, 5),
-                new DriveSwerve(drivetrain, onRed ? DriveDirection.BACKWARD: DriveDirection.FORWARD , 2, 0.2)
+                new DriveSwerve(drivetrain, onRed ? DriveDirection.BACKWARD: DriveDirection.FORWARD , 1.5, 0.4)
             )
         );
     }

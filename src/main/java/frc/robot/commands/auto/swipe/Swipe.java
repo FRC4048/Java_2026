@@ -1,4 +1,4 @@
-package frc.robot.commands.auto.HalfCircle;
+package frc.robot.commands.auto.swipe;
 
 import java.util.function.Supplier;
 
@@ -24,9 +24,9 @@ import frc.robot.utils.logging.commands.LoggableParallelCommandGroup;
 import frc.robot.utils.logging.commands.LoggableSequentialCommandGroup;
 import frc.robot.utils.logging.commands.LoggableWaitCommand;
 
-public class HalfCircle extends LoggableSequentialCommandGroup {
+public class Swipe extends LoggableSequentialCommandGroup {
 
-    public HalfCircle(
+    public Swipe(
             SwerveSubsystem drivetrain, AutoFactory auto, ShooterSubsystem shooter, ShootingState shootstate,
             HopperSubsystem hopper, FeederSubsystem feeder, TurretSubsystem turret, AnglerSubsystem angler,
             ControllerSubsystem controller, IntakeDeployerSubsystem intake, boolean onRed) {
@@ -37,14 +37,14 @@ public class HalfCircle extends LoggableSequentialCommandGroup {
                     new AutoReset(shootstate, turret, angler),
                     new SetShootingState(shootstate, ShootState.AUTO_AIM)
                 ),
-                LoggableCommandWrapper.wrap(auto.resetOdometry("halfCircle")),
-                LoggableCommandWrapper.wrap(auto.trajectoryCmd("halfCircle"))
+                LoggableCommandWrapper.wrap(auto.resetOdometry("swipe")),
+                LoggableCommandWrapper.wrap(auto.trajectoryCmd("swipe"))
             ),
             
             new AutoShoot(hopper, feeder, 3),
             new LoggableParallelCommandGroup(
-                LoggableCommandWrapper.wrap(auto.resetOdometry("halfCircleReturn")),
-                LoggableCommandWrapper.wrap(auto.trajectoryCmd("halfCircleReturn"))
+                LoggableCommandWrapper.wrap(auto.resetOdometry("swipeReturn")),
+                LoggableCommandWrapper.wrap(auto.trajectoryCmd("swipeReturn"))
             ),
             new LoggableParallelCommandGroup(
                 new AutoShoot(hopper, feeder, 5),

@@ -1,5 +1,5 @@
 {
- "name":"halfCircle",
+ "name":"swipe",
  "version":3,
  "snapshot":{
   "waypoints":[
@@ -32,9 +32,9 @@
  "params":{
   "waypoints":[
     {"x":{"exp":"3.6 m", "val":3.6}, "y":{"exp":"7.4 m", "val":7.4}, "heading":{"exp":"0 deg", "val":0.0}, "intervals":15, "split":false, "fixTranslation":true, "fixHeading":true, "overrideIntervals":false},
-    {"x":{"exp":"5.1 m", "val":5.1}, "y":{"exp":"7.3 m", "val":7.3}, "heading":{"exp":"0 deg", "val":0.0}, "intervals":28, "split":false, "fixTranslation":true, "fixHeading":true, "overrideIntervals":false},
-    {"x":{"exp":"7.447751522064209 m", "val":7.447751522064209}, "y":{"exp":"6.6427130699157715 m", "val":6.6427130699157715}, "heading":{"exp":"110 deg", "val":1.9198621771937625}, "intervals":72, "split":false, "fixTranslation":true, "fixHeading":true, "overrideIntervals":false},
-    {"x":{"exp":"7.645211219787598 m", "val":7.645211219787598}, "y":{"exp":"4.84912109375 m", "val":4.84912109375}, "heading":{"exp":"90 deg", "val":1.5707963267948966}, "intervals":21, "split":false, "fixTranslation":true, "fixHeading":true, "overrideIntervals":false},
+    {"x":{"exp":"5.1 m", "val":5.1}, "y":{"exp":"7.3 m", "val":7.3}, "heading":{"exp":"0 deg", "val":0.0}, "intervals":27, "split":false, "fixTranslation":true, "fixHeading":true, "overrideIntervals":false},
+    {"x":{"exp":"7.580554485321045 m", "val":7.580554485321045}, "y":{"exp":"7.326460838317871 m", "val":7.326460838317871}, "heading":{"exp":"90 deg", "val":1.5707963267948966}, "intervals":20, "split":false, "fixTranslation":true, "fixHeading":true, "overrideIntervals":false},
+    {"x":{"exp":"7.6 m", "val":7.6}, "y":{"exp":"4.56 m", "val":4.56}, "heading":{"exp":"90 deg", "val":1.5707963267948966}, "intervals":22, "split":false, "fixTranslation":true, "fixHeading":true, "overrideIntervals":false},
     {"x":{"exp":"6.5 m", "val":6.5}, "y":{"exp":"6 m", "val":6.0}, "heading":{"exp":"45 deg", "val":0.7853981633974483}, "intervals":20, "split":false, "fixTranslation":true, "fixHeading":true, "overrideIntervals":false},
     {"x":{"exp":"6 m", "val":6.0}, "y":{"exp":"7.3 m", "val":7.3}, "heading":{"exp":"0 deg", "val":0.0}, "intervals":12, "split":false, "fixTranslation":true, "fixHeading":true, "overrideIntervals":false},
     {"x":{"exp":"5 m", "val":5.0}, "y":{"exp":"7.3 m", "val":7.3}, "heading":{"exp":"0 deg", "val":0.0}, "intervals":14, "split":false, "fixTranslation":true, "fixHeading":true, "overrideIntervals":false},

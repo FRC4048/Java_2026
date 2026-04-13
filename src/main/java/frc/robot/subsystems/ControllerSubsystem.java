@@ -33,9 +33,9 @@ public class ControllerSubsystem extends SubsystemBase {
 
     // Placeholder target poses until real field target values are finalized
     private static final Pose2d BLUE_HUB_TARGET_POSE = new Pose2d(Constants.BLUE_HUB_X_POSITION,
-            Constants.BLUE_HUB_Y_POSITION, Rotation2d.kZero);
+            Constants.BLUE_HUB_Y_ADJUSTED_POSITION, Rotation2d.kZero);
     private static final Pose2d RED_HUB_TARGET_POSE = new Pose2d(Constants.RED_HUB_X_POSITION,
-            Constants.RED_HUB_Y_POSITION, Rotation2d.kZero);
+            Constants.RED_HUB_Y_ADJUSTED_POSITION, Rotation2d.kZero);
     private static final String MANUAL_POSE_X_KEY = "controller/ManualPoseX";
     private static final String MANUAL_POSE_Y_KEY = "controller/ManualPoseY";
     private static final String MANUAL_POSE_R_KEY = "controller/ManualPoseRotation";
@@ -47,7 +47,7 @@ public class ControllerSubsystem extends SubsystemBase {
     private static final String TARGET_TURRET_ANGLE_KEY = "controller/TargetTurretAngleDegrees";
     private static final String TARGET_FEEDER_SPEED_KEY = "controller/TargetFeederSpeed";
     private static final String TARGET_HOPPER_SPEED_KEY = "controller/TargetHopperSpeed";
-
+    private boolean isadjustedPosition = false;
     // Placeholder fixed-state settings.
     private static final ShotTargets STOPPED_TARGETS = new ShotTargets(Constants.ANGLER_ANGLE_LOW, 0.0, 0.0, 0.0, false,
             false,false);
@@ -325,11 +325,18 @@ public class ControllerSubsystem extends SubsystemBase {
             return Math.floor(
                     Math.toDegrees(TurretCalculations.calculateTurretAngle(state,robotPose.getX(), robotPose.getY(),
                             robotPose.getRotation().getRadians(),
-                            Robot.allianceColor().get() == DriverStation.Alliance.Blue)));
+                            Robot.allianceColor().get() == DriverStation.Alliance.Blue, isadjustedPosition)));
         }
             return profile.defaultTurretAngleDegrees;
     }
 
+    public void toggleAdjustedPosition(){
+        if(isadjustedPosition){
+            isadjustedPosition = false;
+        }else{
+            isadjustedPosition = true;
+        }
+    }
     // Getters for all the subsystems to set posistion.
     public double getTargetAnglerAngleDegrees() {
         return activeTargets.anglerAngleDegrees;

@@ -36,6 +36,7 @@ import frc.robot.commands.drive.DriveSwerve;
 import frc.robot.commands.drive.FakeVision;
 import frc.robot.commands.feeder.DefaultSpinFeeder;
 import frc.robot.commands.feeder.SpinFeeder;
+import frc.robot.commands.hopper.AutoSpinHopper;
 import frc.robot.commands.hopper.DefaultSpinHopper;
 import frc.robot.commands.hopper.ReverseHopper;
 import frc.robot.commands.hopper.SpinHopper;
@@ -56,6 +57,7 @@ import frc.robot.commands.turret.RunTurretToFwdLimit;
 import frc.robot.commands.turret.RunTurretToRevLimit;
 import frc.robot.commands.turret.SetTurretAngle;
 import frc.robot.commands.turret.TestSetTurretAngle;
+import frc.robot.commands.turret.ToggleAdjustedPosition;
 import frc.robot.constants.Constants;
 import frc.robot.constants.enums.DeploymentState;
 import frc.robot.constants.enums.DriveDirection;
@@ -294,6 +296,7 @@ public class RobotContainer {
                 controller.a().onTrue(new ToggleDeployment(intakeDeployer, controllerSubsystem));
                 controller.b().onTrue(new SetDeploymentState(intakeDeployer, DeploymentState.STOPPED));
                 controller.x().onTrue(new ForceDeployDown(intakeDeployer, shootState));
+                controller.y().onTrue(new ToggleAdjustedPosition(controllerSubsystem));
                 controller.povUp().onTrue(new SetShootingState(shootState, ShootState.FIXED));
                 controller.povRight().onTrue(new SetShootingState(shootState, ShootState.STOPPED));
                 controller.povDown().onTrue(new SetShootingState(shootState, ShootState.SHOOTING_HUB));
@@ -345,6 +348,8 @@ public class RobotContainer {
                                         SmartDashboard.putData(
                                         "Shooting State: Auto aim",
                                         new SetShootingState(shootState, ShootState.AUTO_AIM));
+                                        SmartDashboard.putData("AutoRunHopper",
+                                        new AutoSpinHopper(hopperSubsystem));
 
                 if (Constants.DEBUG) {
                         SmartDashboard.putNumber(RunDashboardShotTest.ANGLER_TARGET_POSITION_KEY, 0.0);

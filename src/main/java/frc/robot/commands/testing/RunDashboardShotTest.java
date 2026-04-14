@@ -36,7 +36,7 @@ public class RunDashboardShotTest extends LoggableCommand {
         this.feederSubsystem = feederSubsystem;
         this.anglerSubsystem = anglerSubsystem;
         this.shooterSubsystem = shooterSubsystem;
-        addRequirements(anglerSubsystem, shooterSubsystem);
+        addRequirements(anglerSubsystem, shooterSubsystem, hopperSubsystem, feederSubsystem);
     }
 
     @Override

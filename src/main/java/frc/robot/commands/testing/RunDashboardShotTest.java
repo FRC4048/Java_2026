@@ -4,6 +4,8 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.constants.Constants;
 import frc.robot.subsystems.AnglerSubsystem;
+import frc.robot.subsystems.FeederSubsystem;
+import frc.robot.subsystems.HopperSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.TurretSubsystem;
 import frc.robot.utils.logging.commands.LoggableCommand;
@@ -14,17 +16,24 @@ import frc.robot.utils.logging.commands.LoggableCommand;
  */
 public class RunDashboardShotTest extends LoggableCommand {
 
-    public static final String ANGLER_TARGET_POSITION_KEY = "angler/TargetPosition";
-    public static final String SHOOTER_TARGET_RPM_KEY = "shooter/TargetRPM";
+    public static final String ANGLER_TARGET_POSITION_KEY = "RunDashboardShotTest/angler/TargetPosition";
+    public static final String SHOOTER_TARGET_RPM_KEY = "RunDashboardShotTest/shooter/TargetRPM";
+    public static final String HOPPER_TARGET_SPEED_KEY = "RunDashboardShotTest/hopper/TargetRPM";
     private static final double TEST_DURATION_SECONDS = 30.0;
 
     private final AnglerSubsystem anglerSubsystem;
     private final ShooterSubsystem shooterSubsystem;
+    private final HopperSubsystem hopperSubsystem;
+    private final FeederSubsystem feederSubsystem;
     private final Timer timer = new Timer();
 
     public RunDashboardShotTest(
             AnglerSubsystem anglerSubsystem,
-            ShooterSubsystem shooterSubsystem) {
+            ShooterSubsystem shooterSubsystem,
+            HopperSubsystem hopperSubsystem,
+            FeederSubsystem feederSubsystem) {
+        this.hopperSubsystem = hopperSubsystem;
+        this.feederSubsystem = feederSubsystem;
         this.anglerSubsystem = anglerSubsystem;
         this.shooterSubsystem = shooterSubsystem;
         addRequirements(anglerSubsystem, shooterSubsystem);
@@ -39,9 +48,11 @@ public class RunDashboardShotTest extends LoggableCommand {
     public void execute() {
         double anglerAngle = SmartDashboard.getNumber(ANGLER_TARGET_POSITION_KEY, Constants.ANGLER_ANGLE_LOW);
         double shooterRpm = SmartDashboard.getNumber(SHOOTER_TARGET_RPM_KEY, 0.0);
+        double hopperSpeed = SmartDashboard.getNumber(HOPPER_TARGET_SPEED_KEY, 0.0);
 
         anglerSubsystem.setAngle(anglerAngle);
-
+        hopperSubsystem.setSpeed(hopperSpeed);
+        feederSubsystem.setSpeed(Constants.FEEDER_SPEED);
         shooterSubsystem.setPidVelocity(shooterRpm);
     }
 

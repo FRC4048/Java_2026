@@ -16,10 +16,10 @@ import frc.robot.utils.logging.commands.LoggableCommand;
  */
 public class RunDashboardShotTest extends LoggableCommand {
 
-    public static final String ANGLER_TARGET_POSITION_KEY = "RunDashboardShotTest/angler/TargetPosition";
-    public static final String SHOOTER_TARGET_RPM_KEY = "RunDashboardShotTest/shooter/TargetRPM";
-    public static final String HOPPER_TARGET_SPEED_KEY = "RunDashboardShotTest/hopper/TargetRPM";
-    private static final double TEST_DURATION_SECONDS = 30.0;
+    public static final String ANGLER_TARGET_POSITION_KEY = "RunDashboardShotTest/TargetPosition";
+    public static final String SHOOTER_TARGET_RPM_KEY = "RunDashboardShotTest/TargetRPMShooter";
+    public static final String HOPPER_TARGET_SPEED_KEY = "RunDashboardShotTest/TargetRPMHopper";
+    private static final double TEST_DURATION_SECONDS = 60.0;
 
     private final AnglerSubsystem anglerSubsystem;
     private final ShooterSubsystem shooterSubsystem;

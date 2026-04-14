@@ -35,9 +35,9 @@ public class FastDepotBlue extends LoggableSequentialCommandGroup {
             new LoggableParallelCommandGroup(
                 new AutoShoot(hopper, feeder, 20),
                 new LoggableSequentialCommandGroup(
-                    new DriveSwerve(drivetrain, DriveDirection.FORWARD, 6, 0.2),
-                    new DriveSwerve(drivetrain, DriveDirection.BACKWARD, 0.5, 0.5),
-                    new DriveSwerve(drivetrain, DriveDirection.FORWARD, 7, 0.2),
+                    new DriveSwerve(drivetrain, DriveDirection.FORWARD, 5, 0.3),
+                    new DriveSwerve(drivetrain, DriveDirection.BACKWARD, 0.5, 0.6),
+                    new DriveSwerve(drivetrain, DriveDirection.FORWARD, 6, 0.3),
                     new ToggleDeployment(intake, controller)
                 )
             ),

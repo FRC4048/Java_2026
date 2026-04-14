@@ -34,7 +34,7 @@ public class TurretCalculations {
     // all positions are in meters
     // robotRotation is in radians
     // Returns - turret angle in radians
-    public static double calculateTurretAngle(ShootState state, double robotPosX, double robotPosY, double robotRotation, boolean isBlueAlliance) {
+    public static double calculateTurretAngle(ShootState state, double robotPosX, double robotPosY, double robotRotation, boolean isBlueAlliance, boolean adjustPosition) {
         
         // Get turret offset from robot center
         double turretOffsetX = GameConstants.X_DISTANCE_BETWEEN_ROBOT_AND_TURRET;
@@ -51,13 +51,24 @@ public class TurretCalculations {
         double hubPosX;
         double hubPosY;
     if(state == ShootState.SHOOTING_HUB || state == ShootState.AUTO_AIM) {
-        if (isBlueAlliance) {
+        if(adjustPosition){
+            if (isBlueAlliance) {
+                // hub position determined by which alliance robot is on
+                hubPosX = Constants.BLUE_HUB_X_POSITION;
+                hubPosY = Constants.BLUE_HUB_Y_ADJUSTED_POSITION;
+            } else {
+                hubPosX = Constants.RED_HUB_X_POSITION;
+                hubPosY = Constants.RED_HUB_Y_ADJUSTED_POSITION;
+            }
+        }else{
+            if (isBlueAlliance) {
             // hub position determined by which alliance robot is on
-            hubPosX = Constants.BLUE_HUB_X_POSITION;
-            hubPosY = Constants.BLUE_HUB_Y_POSITION;
-        } else {
-            hubPosX = Constants.RED_HUB_X_POSITION;
-            hubPosY = Constants.RED_HUB_Y_POSITION;
+                hubPosX = Constants.BLUE_HUB_X_POSITION;
+                hubPosY = Constants.BLUE_HUB_Y_POSITION;
+            } else {
+                hubPosX = Constants.RED_HUB_X_POSITION;
+                hubPosY = Constants.RED_HUB_Y_POSITION;
+            }
         }
         }else{
             //Sets the hubPosX to be either on the blue or red side 

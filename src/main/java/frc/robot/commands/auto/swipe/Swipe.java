@@ -4,8 +4,11 @@ import choreo.auto.AutoFactory;
 import frc.robot.commands.auto.AutoReset;
 import frc.robot.commands.auto.AutoShoot;
 import frc.robot.commands.drive.DriveSwerve;
+import frc.robot.commands.intakeDeployment.ForceSetDeployment;
+import frc.robot.commands.intakeDeployment.SetDeploymentState;
 import frc.robot.commands.intakeDeployment.ToggleDeployment;
 import frc.robot.commands.shooter.SetShootingState;
+import frc.robot.constants.enums.DeploymentState;
 import frc.robot.constants.enums.DriveDirection;
 import frc.robot.constants.enums.ShootingState;
 import frc.robot.constants.enums.ShootingState.ShootState;
@@ -22,7 +25,7 @@ public class Swipe extends LoggableSequentialCommandGroup {
             HopperSubsystem hopper, FeederSubsystem feeder, TurretSubsystem turret, AnglerSubsystem angler,
             ControllerSubsystem controller, IntakeDeployerSubsystem intake, boolean onRed) {
         super(  
-            new ToggleDeployment(intake, controller),
+            new ForceSetDeployment(intake, DeploymentState.DOWN),
             new LoggableParallelCommandGroup(
                 new LoggableSequentialCommandGroup(
                     new AutoReset(shootstate, turret, angler),

@@ -357,7 +357,7 @@ public class RobotContainer {
                         SmartDashboard.putNumber(RunDashboardShotTest.HOPPER_TARGET_SPEED_KEY, Constants.HOPPER_SPEED);
                  SmartDashboard.putData(
                                         "test/Run Dashboard Shot Test (30s)",
-                                        new RunDashboardShotTest(anglerSubsystem, shooterSubsystem));
+                                        new RunDashboardShotTest(anglerSubsystem, shooterSubsystem, hopperSubsystem, feederSubsystem));
                 SmartDashboard.putData("RunHoppperAndFeeder",
                                         new RunHopperAndFeeder(hopperSubsystem, feederSubsystem));
                         /*

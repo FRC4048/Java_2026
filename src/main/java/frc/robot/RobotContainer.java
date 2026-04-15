@@ -331,7 +331,7 @@ public class RobotContainer {
                                         () -> driveJoystick.getX() * 0)
                                         .withControllerRotationAxis(() -> {return steerJoystick.getX() * -1;})
                                         .deadband(Constants.DEADBAND)
-                                        .scaleTranslation(0.8)
+                                        .scaleTranslation(1)
                                         .allianceRelativeControl(true);
                         Command driveFieldOrientedAnglularVelocity = drivebase.driveFieldOriented(driveAngularVelocity);
                         drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity);

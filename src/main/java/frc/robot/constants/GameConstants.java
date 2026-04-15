@@ -49,7 +49,7 @@ public class GameConstants {
     public static final double INTAKE_REVERSE_SPEED = 0.5;
     public static final double HOPPER_SPEED = 0.6;
     public static final double HOPPER_AUTO_SPEED = 0.35;
-    public static final double HOPPER_SHUTTLING_SPEED = 0;
+    public static final double HOPPER_SHUTTLING_SPEED = 0.8;
     public static final double HOPPER_REVERSE_SPEED = -0.5;
     public static final double CLIMBER_SPEED_UP = 0.1;
     public static final double CLIMBER_SPEED_DOWN = -0.1;
@@ -147,8 +147,10 @@ public class GameConstants {
     public static final double HUB_HEIGHT = 1.83;
     public static final double SHOOTER_HEIGHT = 0.5;
     public static final double BLUE_HUB_X_POSITION = 4.6256;
+    public static final double BLUE_HUB_Y_ADJUSTED_POSITION = 3.7345;
     public static final double BLUE_HUB_Y_POSITION = 4.0345;
     public static final double RED_HUB_X_POSITION = 11.9154;
+    public static final double RED_HUB_Y_ADJUSTED_POSITION = 4.3345;
     public static final double RED_HUB_Y_POSITION = 4.0345;
     public static final double X_DISTANCE_BETWEEN_ROBOT_AND_TURRET = .05;
     public static final double Y_DISTANCE_BETWEEN_ROBOT_AND_TURRET = .12;

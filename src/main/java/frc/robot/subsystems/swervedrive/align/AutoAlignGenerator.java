@@ -28,38 +28,38 @@ public class AutoAlignGenerator {
 
     // robotPose.getTranslation().getDistance(nodeList.get(i).getTranslation())
     public void generatePath(Pose2d pose) {
-        HashMap<Pose2d, Double> xAcceptedDistanceMap = new HashMap<>();
-        HashMap<Double, Pose2d> xAcceptedDistanceMapInverse = new HashMap<>();
+        ArrayList<Double> xAcceptedDistanceList = new ArrayList<>();
+        ArrayList<Pose2d> xAcceptedPoseList  = new ArrayList<>();;
         Pose2d robotPose = drivebase.getPose();
         for (int i = 0; i <= nodeList.size() - 1; i++) {
             double x = nodeList.get(i).getX();
+            Pose2d activePose = nodeList.get(i);
             if ((x - robotPose.getX()) * (x - pose.getX()) > 0) {
-                if (!xAcceptedDistanceMap.containsValue(Math.round(nodeList.get(i).getX() * 10) / 10.0)) {
-                    xAcceptedDistanceMap.put(nodeList.get(i), Math.round(nodeList.get(i).getX() * 10) / 10.0);
-                    xAcceptedDistanceMapInverse.put(nodeList.get(i).getX(), nodeList.get(i));
+                if (!xAcceptedDistanceList.contains((double)Math.round(x*10)/10)) {
+                    xAcceptedDistanceList.add(x);
+                    xAcceptedPoseList.add(activePose);
                 } else {
-                    if (xAcceptedDistanceMapInverse.get(nodeList.get(i).getX()).getTranslation()
-                            .getDistance(robotPose.getTranslation()) > nodeList.get(i).getTranslation()
-                                    .getDistance(robotPose.getTranslation())) {
-                        xAcceptedDistanceMap.remove(xAcceptedDistanceMapInverse.get(nodeList.get(i).getX()));
-                        xAcceptedDistanceMap.put(nodeList.get(i), Math.round(nodeList.get(i).getX() * 10) / 10.0);
-                        xAcceptedDistanceMapInverse.put(nodeList.get(i).getX(), nodeList.get(i));
+                    if(activePose.getTranslation().getDistance(robotPose.getTranslation()) > xAcceptedPoseList.get(xAcceptedDistanceList.indexOf((double)Math.round(x*10)/10)).getTranslation().getDistance(robotPose.getTranslation())){
+                    int index = xAcceptedDistanceList.indexOf((double)Math.round(x*10)/10);
+                    xAcceptedDistanceList.add(index,(double)Math.round(x*10)/10);
+                    xAcceptedPoseList.add(index,activePose);
                     }
                 }
             }
         }
         ArrayList<Pose2d> path = new ArrayList<>();
-        for (int i = 0; i <= xAcceptedDistanceMap.size() - 1; i++) {
-            if (xAcceptedDistanceMap.containsKey(nodeList.get(i))) {
+        for (int i = 0; i <= xAcceptedPoseList.size() - 1; i++) {
+            Pose2d activePose = nodeList.get(i);
+            if (xAcceptedPoseList.contains(activePose)) {
                 int q =0;
-                while (nodeList.get(i).getTranslation().getDistance(robotPose.getTranslation()) > path.get(q).getTranslation()
+                while (activePose.getTranslation().getDistance(robotPose.getTranslation()) > path.get(q).getTranslation()
                         .getDistance(robotPose.getTranslation())) {
                     q++;
                 }
-                path.add(q,nodeList.get(i));
+                path.add(q,activePose);
             }
         }
-        path.add(path.size() - 1,pose);
+        path.add(pose);
         targetPose = path.get(0);
         alignCommand.schedule();
     }

@@ -217,8 +217,10 @@ public class RobotContainer {
                 setUpAutoFactory();
                 autoChooser = new AutoChooser(drivebase, shootState, autoFactory, shooterSubsystem, climberSubsystem, feederSubsystem, hopperSubsystem, turretSubsystem, anglerSubsystem, controllerSubsystem, intakeDeployer);
                 alignGenerator = new AutoAlignGenerator(drivebase)
-                        .addNode(new Pose2d(new Translation2d(8,4), new Rotation2d()))
-                        .addNode(new Pose2d(new Translation2d(1,4), new Rotation2d()));
+                        .addNode(new Pose2d(new Translation2d(5.6,7.4), new Rotation2d()))
+                        .addNode(new Pose2d(new Translation2d(5.6,0.8), new Rotation2d()))
+                        .addNode(new Pose2d(new Translation2d(3.5,7.4), new Rotation2d()))
+                        .addNode(new Pose2d(new Translation2d(3.5,0.8), new Rotation2d()));
                 configureBindings();
                 putShuffleboardCommands();
         }

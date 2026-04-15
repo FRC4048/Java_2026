@@ -82,7 +82,9 @@ import frc.robot.subsystems.TurretSubsystem;
 //import frc.robot.subsystems.RollerSubsystem;
 //import frc.robot.subsystems.TiltSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
+import frc.robot.subsystems.swervedrive.align.AutoAlign;
 import frc.robot.subsystems.swervedrive.align.AutoAlignGenerator;
+import frc.robot.subsystems.swervedrive.align.Node;
 import frc.robot.subsystems.swervedrive.vision.truster.ConstantVisionTruster;
 import frc.robot.subsystems.swervedrive.vision.truster.VisionTruster;
 import frc.robot.utils.logging.io.gyro.RealGyroIo;
@@ -217,10 +219,11 @@ public class RobotContainer {
                 setUpAutoFactory();
                 autoChooser = new AutoChooser(drivebase, shootState, autoFactory, shooterSubsystem, climberSubsystem, feederSubsystem, hopperSubsystem, turretSubsystem, anglerSubsystem, controllerSubsystem, intakeDeployer);
                 alignGenerator = new AutoAlignGenerator(drivebase)
-                        .addNode(new Pose2d(new Translation2d(5.6,7.4), new Rotation2d()))
-                        .addNode(new Pose2d(new Translation2d(5.6,0.8), new Rotation2d()))
-                        .addNode(new Pose2d(new Translation2d(3.5,7.4), new Rotation2d()))
-                        .addNode(new Pose2d(new Translation2d(3.5,0.8), new Rotation2d()));
+                        .addNode(new Node(new Pose2d(new Translation2d(5.6,7.4), new Rotation2d()), ()->{return drivebase.getPose().getY() > 4;}))
+                        .addNode(new Node(new Pose2d(new Translation2d(5.6,0.8), new Rotation2d()), ()->{return drivebase.getPose().getY() <= 4;}))
+                        .addNode(new Node(new Pose2d(new Translation2d(3.5,7.4), new Rotation2d()), ()->{return drivebase.getPose().getY() > 4;}))
+                        .addNode(new Node(new Pose2d(new Translation2d(3.5,0.8), new Rotation2d()), ()->{return drivebase.getPose().getY() <= 4;}));
+
                 configureBindings();
                 putShuffleboardCommands();
         }
@@ -350,8 +353,7 @@ public class RobotContainer {
         }
 
         public void putShuffleboardCommands() {
-                SmartDashboard.putData("Align to pose", new RunCommand(
-                        () -> alignGenerator.generatePath(new Pose2d(new Translation2d(10,4), new Rotation2d()))).until(()->{return false;}));
+                SmartDashboard.putData("Align to pose", new AutoAlign(new Pose2d(new Translation2d(2,4), new Rotation2d()), drivebase, alignGenerator));
                                 SmartDashboard.putData(
                                         "intakedeployer/Deployment State: UP",
                                         new SetDeploymentState(intakeDeployer, DeploymentState.UP));

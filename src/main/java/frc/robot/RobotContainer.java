@@ -11,6 +11,9 @@ import java.io.File;
 import choreo.auto.AutoFactory;
 import choreo.auto.AutoRoutine;
 import choreo.auto.AutoTrajectory;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -79,6 +82,7 @@ import frc.robot.subsystems.TurretSubsystem;
 //import frc.robot.subsystems.RollerSubsystem;
 //import frc.robot.subsystems.TiltSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
+import frc.robot.subsystems.swervedrive.align.AutoAlignGenerator;
 import frc.robot.subsystems.swervedrive.vision.truster.ConstantVisionTruster;
 import frc.robot.subsystems.swervedrive.vision.truster.VisionTruster;
 import frc.robot.utils.logging.io.gyro.RealGyroIo;
@@ -134,6 +138,7 @@ public class RobotContainer {
         private static AutoRoutine straightRoutine;
         private static AutoTrajectory straightTrajectory;
         private final VisionTruster truster = new ConstantVisionTruster(visionMeasurementStdDevs2);
+        public AutoAlignGenerator alignGenerator;
 
     // Replace with CommandPS4Controller or CommandJoystick if needed
         // new CommandXboxController(OperatorConstants.kDriverControllerPort);private
@@ -211,6 +216,9 @@ public class RobotContainer {
 
                 setUpAutoFactory();
                 autoChooser = new AutoChooser(drivebase, shootState, autoFactory, shooterSubsystem, climberSubsystem, feederSubsystem, hopperSubsystem, turretSubsystem, anglerSubsystem, controllerSubsystem, intakeDeployer);
+                alignGenerator = new AutoAlignGenerator(drivebase)
+                        .addNode(new Pose2d(new Translation2d(8,4), new Rotation2d()))
+                        .addNode(new Pose2d(new Translation2d(1,4), new Rotation2d()));
                 configureBindings();
                 putShuffleboardCommands();
         }
@@ -336,9 +344,12 @@ public class RobotContainer {
                         Command driveFieldOrientedAnglularVelocity = drivebase.driveFieldOriented(driveAngularVelocity);
                         drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity);
                 }
+                
         }
 
         public void putShuffleboardCommands() {
+                SmartDashboard.putData("Align to pose", new RunCommand(
+                        () -> alignGenerator.generatePath(new Pose2d(new Translation2d(10,4), new Rotation2d()))).until(()->{return false;}));
                                 SmartDashboard.putData(
                                         "intakedeployer/Deployment State: UP",
                                         new SetDeploymentState(intakeDeployer, DeploymentState.UP));

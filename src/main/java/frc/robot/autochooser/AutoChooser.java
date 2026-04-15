@@ -134,9 +134,9 @@ public class AutoChooser {
         commandMap.put(new AutoEvent(AutoAction.FAST_SHOOT, FieldLocation.FAST_DEPOT, Alliance.Blue),
             new FastDepotBlue(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, controller, intake));
        
-        commandMap.put(new AutoEvent(AutoAction.NEUTRAL_ZONE, FieldLocation.SWIPE_DEPOT, Alliance.Red),
+        commandMap.put(new AutoEvent(AutoAction.NEUTRAL_ZONE, FieldLocation.SWIPE_AUTO, Alliance.Red),
             new Swipe(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, controller, intake, true));
-        commandMap.put(new AutoEvent(AutoAction.NEUTRAL_ZONE, FieldLocation.SWIPE_DEPOT, Alliance.Blue),
+        commandMap.put(new AutoEvent(AutoAction.NEUTRAL_ZONE, FieldLocation.SWIPE_AUTO, Alliance.Blue),
             new Swipe(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, controller, intake, false));
         
     

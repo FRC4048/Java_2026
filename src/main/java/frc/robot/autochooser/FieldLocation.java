@@ -19,7 +19,7 @@ public enum FieldLocation {
   MID(3.599, 4.029, 180, "Middle"),
   OUTPOST_SIDE(3.599, 0.67, 180, "Outpost side - Driver Station RIGHT"), //robot is 24 cm away from the wall
   FAST_DEPOT(3.596, 5.06, 180, "Depot side - for the fast auto"), //robot's back left corner is next to hopper corner
-  SWIPE_DEPOT(3.6, 7.4, 180, "Swipe depot - for Swipe auto"); //robot's back left corner is next to hopper corner
+  SWIPE_AUTO(4.44, 7.34, 0, "Swipe Auto"); //robot is under trench
 
 
   private static final double RED_X_POS = 9.338; // meters

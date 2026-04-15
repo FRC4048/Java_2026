@@ -31,20 +31,25 @@ public class Swipe extends LoggableSequentialCommandGroup {
             HopperSubsystem hopper, FeederSubsystem feeder, TurretSubsystem turret, AnglerSubsystem angler,
             ControllerSubsystem controller, IntakeDeployerSubsystem intake, boolean onRed) {
         super(  
-            new ToggleDeployment(intake, controller),
+            new LoggableParallelCommandGroup(
+                new ToggleDeployment(intake, controller),
+                new AutoReset(shootstate, turret, angler),
+                new LoggableSequentialCommandGroup(
+                    LoggableCommandWrapper.wrap(auto.resetOdometry("swipe")),
+                    LoggableCommandWrapper.wrap(auto.trajectoryCmd("swipe"))
+                )
+            ),
+            new SetShootingState(shootstate, ShootState.AUTO_AIM),
+            new LoggableParallelCommandGroup(
+                new AutoShoot(hopper, feeder, 3),
+                new ToggleDeployment(intake, controller)
+            ),
             new LoggableParallelCommandGroup(
                 new LoggableSequentialCommandGroup(
-                    new AutoReset(shootstate, turret, angler),
-                    new SetShootingState(shootstate, ShootState.AUTO_AIM)
+                    LoggableCommandWrapper.wrap(auto.resetOdometry("swipeDeeper")),
+                    LoggableCommandWrapper.wrap(auto.trajectoryCmd("swipeDeeper"))
                 ),
-                LoggableCommandWrapper.wrap(auto.resetOdometry("swipe")),
-                LoggableCommandWrapper.wrap(auto.trajectoryCmd("swipe"))
-            ),
-            
-            new AutoShoot(hopper, feeder, 3),
-            new LoggableParallelCommandGroup(
-                LoggableCommandWrapper.wrap(auto.resetOdometry("swipeReturn")),
-                LoggableCommandWrapper.wrap(auto.trajectoryCmd("swipeReturn"))
+                new ToggleDeployment(intake, controller)
             ),
             new LoggableParallelCommandGroup(
                 new AutoShoot(hopper, feeder, 5),

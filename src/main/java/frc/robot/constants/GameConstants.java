@@ -47,7 +47,9 @@ public class GameConstants {
     //Speeds
     public static final double INTAKE_SPEED = -0.7;
     public static final double INTAKE_REVERSE_SPEED = 0.5;
-    public static final double HOPPER_SPEED = 0.75;
+    public static final double HOPPER_SPEED = 0.6;
+    public static final double HOPPER_AUTO_SPEED = 0.35;
+    public static final double HOPPER_SHUTTLING_SPEED = 0.8;
     public static final double HOPPER_REVERSE_SPEED = -0.5;
     public static final double CLIMBER_SPEED_UP = 0.1;
     public static final double CLIMBER_SPEED_DOWN = -0.1;
@@ -102,12 +104,12 @@ public class GameConstants {
     public static final double ANGLER_FF = 0.0;
     public static final double ANGLER_HOME_ROTATIONS = 0.0;
     public static final double ANGLER_ENCODER_LOW = 0; //Lowest encoder position of Angler
-    public static final double ANGLER_ENCODER_HIGH = 272; //Highest encoder position of Angler
-    public static final double ANGLER_ANGLE_LOW = 16; //Lowest angle position of Angler
-    public static final double ANGLER_ANGLE_HIGH = 37; //Highest angle position of Angler
+    public static final double ANGLER_ENCODER_HIGH = 265; //Highest encoder position of Angler
+    public static final double ANGLER_ANGLE_LOW = 17; //Lowest angle position of Angler
+    public static final double ANGLER_ANGLE_HIGH = 38; //Highest angle position of Angler
     public static final double ANGLER_FIXED_ROTATIONS = 0.1; //Fixed encoder position of Angler in Fixed ShootState
     public static final double ANGLER_FIXED_ANGLE = 10; //Fixed encoder position of Angler in Fixed ShootState
-    public static final double ANGLER_LIMIT_SPEED = 0.3;
+    public static final double ANGLER_LIMIT_SPEED = 0.6;
 
 
  // turret (pan angle) PID
@@ -122,8 +124,8 @@ public class GameConstants {
     public static final double TURRET_ENCODER_MIN = 0; //Lowest encoder position of Turret
     public static final double TURRET_ENCODER_MAX = 77; //Highest encoder position of Turret
     public static final double TURRET_HOME_ANGLE = 0.0; //Turret facing forward
-    public static final double TURRET_MIN_ANGLE = -92;
-    public static final double TURRET_MAX_ANGLE = 92;
+    public static final double TURRET_MIN_ANGLE = -96;
+    public static final double TURRET_MAX_ANGLE = 96;
     public static final double TURRET_LIMIT_SPEED = 0.2;
     public static final double TURRET_OUT_OF_RANGE_FLOP_RPM = -1500.0;
     public static final double TURRET_PID_DISTANCE_THRESHOLD = 10;
@@ -145,8 +147,10 @@ public class GameConstants {
     public static final double HUB_HEIGHT = 1.83;
     public static final double SHOOTER_HEIGHT = 0.5;
     public static final double BLUE_HUB_X_POSITION = 4.6256;
+    public static final double BLUE_HUB_Y_ADJUSTED_POSITION = 3.7345;
     public static final double BLUE_HUB_Y_POSITION = 4.0345;
     public static final double RED_HUB_X_POSITION = 11.9154;
+    public static final double RED_HUB_Y_ADJUSTED_POSITION = 4.3345;
     public static final double RED_HUB_Y_POSITION = 4.0345;
     public static final double X_DISTANCE_BETWEEN_ROBOT_AND_TURRET = .05;
     public static final double Y_DISTANCE_BETWEEN_ROBOT_AND_TURRET = .12;

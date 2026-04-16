@@ -9,9 +9,9 @@ import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 
 
 public class Drive extends SubsystemBase{
-    private final PIDController xController = new PIDController(.01, 0.0, 0.0);
-    private final PIDController yController = new PIDController(.01, 0.0, 0.0);
-    private final PIDController headingController = new PIDController(.01, 0.0, 0.0);
+    private final PIDController xController = new PIDController(10, 0.0, 0.0);
+    private final PIDController yController = new PIDController(10, 0.0, 0.0);
+    private final PIDController headingController = new PIDController(5, 0.0, 0.0);
     private SwerveSubsystem subsystem;
 
     public Drive(SwerveSubsystem subsystem) {
@@ -29,7 +29,7 @@ public class Drive extends SubsystemBase{
             );
 
         ChassisSpeeds robotRelativeSpeeds =
-                ChassisSpeeds.fromRobotRelativeSpeeds(fieldRelativeSpeeds, pose.getRotation());
+                ChassisSpeeds.fromFieldRelativeSpeeds(fieldRelativeSpeeds, pose.getRotation());
             subsystem.setChassisSpeeds(robotRelativeSpeeds);
 
     }

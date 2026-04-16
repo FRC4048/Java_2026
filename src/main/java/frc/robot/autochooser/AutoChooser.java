@@ -11,6 +11,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Robot;
 import frc.robot.commands.auto.neutral.DepotNeutral;
 import frc.robot.commands.auto.neutral.OutpostNeutral;
+import frc.robot.commands.auto.newauto.FastDepotRed;
+import frc.robot.commands.auto.newauto.FastDepotBlue;
 import frc.robot.commands.auto.shoot.ShootBlue;
 import frc.robot.commands.auto.shoot.ShootRed;
 import frc.robot.commands.auto.disturbance.DepotDisturbance;
@@ -82,9 +84,9 @@ public class AutoChooser {
             switch (location) {
                 case INVALID -> {} // Skip the invalid case.
                 case ZERO -> { // Default
-                    locationChooser.addDefaultOption(location.toString(), location);
+                    locationChooser.addDefaultOption(location.getShuffleboardName(), location);
                 }
-                default -> {locationChooser.addOption(location.toString(), location);}
+                default -> {locationChooser.addOption(location.getShuffleboardName(), location);}
             };
         }
         for (AutoAction action : AutoAction.values()) {
@@ -125,6 +127,12 @@ public class AutoChooser {
             new ShootBlue(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, controller, intake));
         commandMap.put(new AutoEvent(AutoAction.SHOOT, FieldLocation.OUTPOST_SIDE, Alliance.Blue),
             new ShootBlue(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, controller, intake));
+
+        commandMap.put(new AutoEvent(AutoAction.FAST_SHOOT, FieldLocation.FAST_DEPOT, Alliance.Red),
+            new FastDepotRed(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, controller, intake));
+        commandMap.put(new AutoEvent(AutoAction.FAST_SHOOT, FieldLocation.FAST_DEPOT, Alliance.Blue),
+            new FastDepotBlue(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, controller, intake));
+           
     
         /*
         //shoot-pickup
@@ -164,6 +172,8 @@ public class AutoChooser {
             "shoot from the middle"); 
         descriptionMap.put(new AutoEvent(AutoAction.SHOOT, FieldLocation.OUTPOST_SIDE),
             "shoot from the outpost"); 
+        descriptionMap.put(new AutoEvent(AutoAction.FAST_SHOOT, FieldLocation.FAST_DEPOT),
+            "depot and shoot from the depot"); 
     /*
         descriptionMap.put(new AutoEvent(AutoAction.SHOOT_PICKUP, FieldLocation.DEPOT_SIDE),
             "shoot and pickup from the depot");
@@ -204,7 +214,7 @@ public class AutoChooser {
             return "NO AUTO";
         } else {
             String commandDescription = descriptionMap.get(event.withoutColor());
-            return event.getAction() + " at " + event.getLocation() + " → " + commandDescription + ".";
+            return event.getActionName() + " at " + event.getLocation() + " -> " + commandDescription + ".";
         }
     }
 

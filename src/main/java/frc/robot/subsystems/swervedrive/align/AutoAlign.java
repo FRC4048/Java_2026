@@ -39,8 +39,6 @@ public class AutoAlign extends Command {
     Logger.recordOutput("targetPoseAlign", targetPose);
     double speedX = (robotPose.getX()-targetPose.getX())*-1;
     double speedY = (robotPose.getY()-targetPose.getY())*-1;
-    speedY =  Math.abs(speedY) < 0.1 ? speedY*3 : speedY;
-    speedX =  Math.abs(speedX) < 0.1 ? speedX*3  : speedX;
     if(targetPose.getTranslation().getDistance(drivebase.getPose().getTranslation()) > 0.1){
       drivebase.driveFieldOriented(new ChassisSpeeds(speedX,speedY,0));
     }else{

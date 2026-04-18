@@ -222,7 +222,11 @@ public class RobotContainer {
                         .addNode(new Node(new Pose2d(new Translation2d(5.6,7.4), new Rotation2d()), ()->{return drivebase.getPose().getY() > 4;}))
                         .addNode(new Node(new Pose2d(new Translation2d(5.6,0.8), new Rotation2d()), ()->{return drivebase.getPose().getY() <= 4;}))
                         .addNode(new Node(new Pose2d(new Translation2d(3.5,7.4), new Rotation2d()), ()->{return drivebase.getPose().getY() > 4;}))
-                        .addNode(new Node(new Pose2d(new Translation2d(3.5,0.8), new Rotation2d()), ()->{return drivebase.getPose().getY() <= 4;}));
+                        .addNode(new Node(new Pose2d(new Translation2d(3.5,0.8), new Rotation2d()), ()->{return drivebase.getPose().getY() <= 4;}))
+                        .addNode(new Node(new Pose2d(new Translation2d(10.9,7.4), new Rotation2d()), ()->{return drivebase.getPose().getY() > 4;}))
+                        .addNode(new Node(new Pose2d(new Translation2d(10.9,0.8), new Rotation2d()), ()->{return drivebase.getPose().getY() <= 4;}))
+                        .addNode(new Node(new Pose2d(new Translation2d(13.0,7.4), new Rotation2d()), ()->{return drivebase.getPose().getY() > 4;}))
+                        .addNode(new Node(new Pose2d(new Translation2d(13.0,0.8), new Rotation2d()), ()->{return drivebase.getPose().getY() <= 4;}));
 
                 configureBindings();
                 putShuffleboardCommands();
@@ -353,7 +357,16 @@ public class RobotContainer {
         }
 
         public void putShuffleboardCommands() {
-                SmartDashboard.putData("Align to pose", new AutoAlign(new Pose2d(new Translation2d(2,4), new Rotation2d()), drivebase, alignGenerator));
+                SmartDashboard.putNumber("AlignY", 0.0);
+                SmartDashboard.putNumber("AlignX", 0.0);
+
+                SmartDashboard.putData("Align to pose", new AutoAlign(()->{
+                                return new Pose2d(new Translation2d(
+                                        SmartDashboard.getNumber("AlignX", 0.0),
+                                        SmartDashboard.getNumber("AlignY", 0.0)), 
+                                        new Rotation2d());}, drivebase, alignGenerator));
+                SmartDashboard.putData("Align to deinfed pose", new AutoAlign(new Pose2d(), drivebase, alignGenerator));
+                
                                 SmartDashboard.putData(
                                         "intakedeployer/Deployment State: UP",
                                         new SetDeploymentState(intakeDeployer, DeploymentState.UP));

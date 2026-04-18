@@ -42,12 +42,12 @@ public class AutoAlignGenerator {
         if (xAcceptedPoseList.size() > 0) {
             for (int i = 0; i <= nodeList.size()-1; i++) {
                 Pose2d activePose = nodeList.get(i).pose();
+                int q = 0;
                 if (xAcceptedPoseList.contains(activePose)) {
-                    int q = 0;
                     if (path.size() > 0) {
-                        do{
+                        while (path.size() > q && Math.abs(activePose.getX()-pose.getX()) < Math.abs(path.get(q).getX()-pose.getX())){
                             q++;
-                        }while (path.size() > q && Math.abs(activePose.getX()-pose.getX()) > Math.abs(path.get(i).getX()-pose.getX()));
+                        }
                     }
                     path.add(q, activePose);
                 }

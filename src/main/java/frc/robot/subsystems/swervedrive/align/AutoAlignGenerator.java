@@ -1,9 +1,7 @@
 package frc.robot.subsystems.swervedrive.align;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.function.BooleanSupplier;
-import java.util.function.Supplier;
+
 
 import org.littletonrobotics.junction.Logger;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -24,8 +22,6 @@ public class AutoAlignGenerator {
         Logger.recordOutput("Nodes/Node" + nodeList.size() + "/State", node.isActive());
         return this;
     }
-
-    // robotPose.getTranslation().getDistance(nodeList.get(i).getTranslation())
     public void generatePath(Pose2d pose) {
         ArrayList<Double> xAcceptedDistanceList = new ArrayList<>();
         ArrayList<Pose2d> xAcceptedPoseList = new ArrayList<>();

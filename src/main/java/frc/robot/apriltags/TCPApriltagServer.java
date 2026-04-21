@@ -3,6 +3,7 @@ package frc.robot.apriltags;
 import edu.wpi.first.wpilibj.Timer;
 import java.io.DataInputStream;
 import java.io.IOException;
+import frc.robot.constants.Constants;
 
 public class TCPApriltagServer extends TCPServer<ApriltagReading> {
 
@@ -21,7 +22,7 @@ public class TCPApriltagServer extends TCPServer<ApriltagReading> {
         double poseYaw = -1;
         double distanceToTag = -1;
         double cameraToTagAngle = -1;
-        double timestamp = -1;
+        double latency = -1;
         double stdDev = -1;
         int apriltagNumber = -1;
         double now = 0;
@@ -31,18 +32,18 @@ public class TCPApriltagServer extends TCPServer<ApriltagReading> {
                 && distanceToTag == -1
                 && cameraToTagAngle == -1
                 && apriltagNumber == -1
-                && timestamp == -1
+                && latency == -1
                 && stdDev == -1) {
             posX = stream.readDouble();
             posY = stream.readDouble();
             poseYaw = stream.readDouble();
             distanceToTag = stream.readDouble();
             cameraToTagAngle = stream.readDouble();
-            timestamp = stream.readDouble();
+            latency = stream.readDouble();
             stdDev = stream.readDouble();
             apriltagNumber = stream.readInt();
-            now = Timer.getFPGATimestamp() * 1000;
+            now = Timer.getFPGATimestamp() * 1000-Constants.AVERAGE_PIR_LATENCY-latency;
         }
-        return new ApriltagReading(posX, posY, poseYaw, distanceToTag, cameraToTagAngle, apriltagNumber, timestamp, stdDev, now);
+        return new ApriltagReading(posX, posY, poseYaw, distanceToTag, cameraToTagAngle, apriltagNumber, latency, stdDev, now);
     }
 }

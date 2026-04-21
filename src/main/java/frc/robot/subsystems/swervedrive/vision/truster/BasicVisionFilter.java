@@ -51,10 +51,8 @@ public abstract class BasicVisionFilter implements VisionFilter, VisionTransform
       Filter poses
       -------------------------------------------------------
       */
-      Pose2d vision1Pose = getVisionPose(m1);
-      Pose2d vision2Pose = getVisionPose(m2);
       boolean valid1 =
-          filterVision(vision1Pose, vision2Pose, m1.timeOfMeasurement(), m2.timeOfMeasurement());
+          filterVision(m1,m2);
       resultMap.put(m1, valid1 ? FilterResult.ACCEPTED : FilterResult.REJECTED);
       m1 = measurements.poll();
       m2 = measurements.peek();
@@ -63,19 +61,22 @@ public abstract class BasicVisionFilter implements VisionFilter, VisionTransform
     return resultMap;
   }
 
-  private boolean filterVision(Pose2d m1Pose, Pose2d m2Pose, double m1Time, double m2Time) {
-    Optional<Pose2d> odomPoseAtVis1 = poseBuffer.getSample(m1Time);
-    Optional<Pose2d> odomPoseAtVis2 = poseBuffer.getSample(m2Time);
+  private boolean filterVision(VisionMeasurement m1, VisionMeasurement m2) {
+    Optional<Pose2d> odomPoseAtVis1 = poseBuffer.getSample(m1.timeOfMeasurement());
+    Optional<Pose2d> odomPoseAtVis2 = poseBuffer.getSample(m1.timeOfMeasurement());
     if (odomPoseAtVis1.isEmpty() || odomPoseAtVis2.isEmpty()) {
       return false;
     }
-    if (!inBounds(m1Pose) || !inBounds(m2Pose)) {
+    if (!inBounds(m1.measurement()) || !inBounds(m2.measurement())) {
       return false;
     }
     double odomDiff1To2 =
         odomPoseAtVis1.get().getTranslation().getDistance(odomPoseAtVis2.get().getTranslation());
-    double visionDiff1To2 = m1Pose.getTranslation().getDistance(m2Pose.getTranslation());
+    double visionDiff1To2 = m1.measurement().getTranslation().getDistance(m2.measurement().getTranslation());
     double diff = Math.abs(odomDiff1To2 - visionDiff1To2);
+    if (m1.stdDev() > Constants.VISION_STD_THRESHOLD) {
+      return false;
+    }
     return Math.abs(diff) <= Constants.VISION_CONSISTENCY_THRESHOLD;
   }
   

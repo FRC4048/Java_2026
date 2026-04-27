@@ -30,7 +30,6 @@ public class ConstantsPushbot2026 extends GameConstants {
 
     // other
     public static final int SERVER_SOCKET_ATTEMPT_DELAY = 100;
-    public static final int TCP_SERVER_PORT = 5806;
     
     public static final String SWERVE_JSON_DIRECTORY = "pushbot";
 

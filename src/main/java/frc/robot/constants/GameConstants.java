@@ -47,7 +47,7 @@ public class GameConstants {
     //Speeds
     public static final double INTAKE_SPEED = -0.7;
     public static final double INTAKE_REVERSE_SPEED = 0.5;
-    public static final double HOPPER_SPEED = 0.6;
+    public static final double HOPPER_SPEED = 1;
     public static final double HOPPER_AUTO_SPEED = 0.35;
     public static final double HOPPER_SHUTTLING_SPEED = 0.8;
     public static final double HOPPER_REVERSE_SPEED = -0.5;
@@ -184,4 +184,6 @@ public class GameConstants {
     public static final double BLUE_SHUTTLING_TARGET_X_POSITION = 2.8;
     public static final double SHUTTLING_TARGET_LOWER_Y_POSITION = 2.6;
     public static final double SHUTTLING_TARGET_HIGHER_Y_POSITION = 5.5;
+    public static final int TCP_SERVER_PORT1 = 5806;
+    public static final int TCP_SERVER_PORT2 = 5807;
 }

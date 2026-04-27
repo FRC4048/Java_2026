@@ -66,5 +66,7 @@ public class RunDashboardShotTest extends LoggableCommand {
         timer.stop();
         anglerSubsystem.stopMotors();
         shooterSubsystem.stopMotors();
+        hopperSubsystem.stopMotors();
+        feederSubsystem.stopMotors();
     }
 }

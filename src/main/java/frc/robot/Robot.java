@@ -192,7 +192,7 @@ public class Robot extends LoggedRobot {
 
     @Override
     public void teleopInit() {
-        new SetShootingState(robotContainer.getShootingState(), ShootState.SHOOTING_HUB).schedule();   
+        //new SetShootingState(robotContainer.getShootingState(), ShootState.SHOOTING_HUB).schedule();   
         // This makes sure that the autonomous stops running when
         // teleop starts running. If you want the autonomous to
         // continue until interrupted by another command, remove

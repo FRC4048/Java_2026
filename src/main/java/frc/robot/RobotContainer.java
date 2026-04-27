@@ -315,12 +315,12 @@ public class RobotContainer {
                 // cancelling on release.
                 // m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
 
-                intakeSubsystem.setDefaultCommand(new SpinIntake(intakeSubsystem, intakeDeployer));
+                //intakeSubsystem.setDefaultCommand(new SpinIntake(intakeSubsystem, intakeDeployer));
             if (controllerSubsystem != null) {
-                intakeDeployer.setDefaultCommand(new RunDeployer(intakeDeployer));
-                anglerSubsystem.setDefaultCommand(new DefaultAnglerControl(anglerSubsystem, controllerSubsystem));
+                //intakeDeployer.setDefaultCommand(new RunDeployer(intakeDeployer));
+                //anglerSubsystem.setDefaultCommand(new DefaultAnglerControl(anglerSubsystem, controllerSubsystem));
                 shooterSubsystem.setDefaultCommand(new DefaultShooterControl(shooterSubsystem, controllerSubsystem));
-                turretSubsystem.setDefaultCommand(new DefaultTurretControl(turretSubsystem, controllerSubsystem));
+                //turretSubsystem.setDefaultCommand(new DefaultTurretControl(turretSubsystem, controllerSubsystem));
                 hopperSubsystem.setDefaultCommand(new DefaultSpinHopper(hopperSubsystem, controllerSubsystem, shootState));
                 feederSubsystem.setDefaultCommand(new DefaultSpinFeeder(feederSubsystem, controllerSubsystem));
             }
@@ -328,7 +328,7 @@ public class RobotContainer {
             if (!Constants.TESTBED) {
                         SwerveInputStream driveAngularVelocity = SwerveInputStream.of(drivebase.getSwerveDrive(),
                                         () -> driveJoystick.getY() * -1,
-                                        () -> driveJoystick.getX() * 0)
+                                        () -> driveJoystick.getX() * -1)
                                         .withControllerRotationAxis(() -> {return steerJoystick.getX() * -1;})
                                         .deadband(Constants.DEADBAND)
                                         .scaleTranslation(1)

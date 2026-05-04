@@ -167,19 +167,24 @@ public class Robot extends LoggedRobot {
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
     @Override
     public void autonomousInit() {
+        double start = Timer.getFPGATimestamp();
+
         //m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
         // schedule the autonomous command (example)
         mode.set(RobotMode.AUTONOMOUS);
 
-    // Hub is always active during autonomous.
-    hubActive = true;
-    robotContainer.getDriveBase().resetOdometry(robotContainer.getAutoChooser().getFieldLocation().getLocation());
+        // Hub is always active during autonomous.
+        hubActive = true;
+        robotContainer.getDriveBase().resetOdometry(robotContainer.getAutoChooser().getFieldLocation().getLocation());
+
+        Logger.recordOutput("/RobotTimer/autoInit", Timer.getFPGATimestamp() - start);
   }
 
   /** This function is called periodically during autonomous. */
     @Override
     public void autonomousPeriodic() {
+        double start = Timer.getFPGATimestamp();
 
         // schedule the autonomous command
         if (this.autonomousCommand == null) {
@@ -188,11 +193,15 @@ public class Robot extends LoggedRobot {
                 CommandScheduler.getInstance().schedule(autonomousCommand);
             }
         }
+
+        Logger.recordOutput("/RobotTimer/autoPeriodic", Timer.getFPGATimestamp() - start);
     }
 
     @Override
     public void teleopInit() {
-        new SetShootingState(robotContainer.getShootingState(), ShootState.STOPPED).schedule();   
+        double start = Timer.getFPGATimestamp();
+
+        new SetShootingState(robotContainer.getShootingState(), ShootState.STOPPED).schedule();
         // This makes sure that the autonomous stops running when
         // teleop starts running. If you want the autonomous to
         // continue until interrupted by another command, remove
@@ -203,19 +212,25 @@ public class Robot extends LoggedRobot {
         if (autonomousCommand != null) {
             autonomousCommand.cancel();
         }
+
+        Logger.recordOutput("/RobotTimer/teleInit", Timer.getFPGATimestamp() - start);
     }
 
   /** This function is called periodically during operator control. */
     @Override
   public void teleopPeriodic() {
-      // Check who won autonomous.
+        double start = Timer.getFPGATimestamp();
+
+        // Check who won autonomous.
       if (autonomousWinner == null) {
           determineAutonomousWinner();
       } else {
           determineHubActive();
           determineHubCountdown();
       }
-  }
+
+        Logger.recordOutput("/RobotTimer/telePeriodic", Timer.getFPGATimestamp() - start);
+    }
 
     private void determineAutonomousWinner() {
         autonomousWinner = DriverStation.getGameSpecificMessage();

@@ -155,12 +155,12 @@ public class RobotContainer {
                                 climberSubsystem = new ClimberSubsystem(ClimberSubsystem.createRealIo());
                                 feederSubsystem = new FeederSubsystem(FeederSubsystem.createRealIo());
                                 shooterSubsystem = new ShooterSubsystem(ShooterSubsystem.createRealIo());
-//                                RealGyroIo gyroIo = (RealGyroIo) GyroSubsystem.createRealIo();
-//                                ThreadedGyro threadedGyro = gyroIo.getThreadedGyro();
-//                                gyroSubsystem = new GyroSubsystem(gyroIo);
-//                                SwerveIMU swerveIMU = new ThreadedGyroSwerveIMU(threadedGyro);
+                                RealGyroIo gyroIo = (RealGyroIo) GyroSubsystem.createRealIo();
+                                ThreadedGyro threadedGyro = gyroIo.getThreadedGyro();
+                                gyroSubsystem = new GyroSubsystem(gyroIo);
+                                SwerveIMU swerveIMU = new ThreadedGyroSwerveIMU(threadedGyro);
                                 drivebase = !Constants.TESTBED ? new SwerveSubsystem(
-                                                new File(Filesystem.getDeployDirectory(), "YAGSL/" + Constants.SWERVE_JSON_DIRECTORY), null) : null;
+                                                new File(Filesystem.getDeployDirectory(), "YAGSL/" + Constants.SWERVE_JSON_DIRECTORY), swerveIMU) : null;
                             apriltagSubsystem = !Constants.TESTBED ? new ApriltagSubsystem(ApriltagSubsystem.createRealIo(), drivebase, truster) : null;
                             controllerSubsystem = !Constants.TESTBED ? new ControllerSubsystem(drivebase,intakeDeployer, this) : null;
                                  lightStripSubsystem = new LightStripSubsystem(drivebase, shootState);

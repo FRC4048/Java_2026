@@ -198,6 +198,11 @@ public class Robot extends LoggedRobot {
     }
 
     @Override
+    public void autonomousExit() {
+        this.autonomousCommand = null;
+    }
+
+    @Override
     public void teleopInit() {
         double start = Timer.getFPGATimestamp();
 

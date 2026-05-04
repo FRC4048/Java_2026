@@ -17,8 +17,8 @@ import frc.robot.commands.auto.shoot.ShootBlue;
 import frc.robot.commands.auto.shoot.ShootRed;
 import frc.robot.commands.auto.disturbance.DepotDisturbance;
 import frc.robot.commands.auto.disturbance.OutpostDisturbance;
-import frc.robot.commands.auto.shootpickup.DepotShootPickup;
 import frc.robot.commands.auto.DoNothing;
+import frc.robot.commands.auto.TestAuto;
 import frc.robot.constants.enums.ShootingState;
 import frc.robot.subsystems.AnglerSubsystem;
 import frc.robot.subsystems.ClimberSubsystem;
@@ -134,12 +134,12 @@ public class AutoChooser {
             new FastDepotBlue(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, controller, intake));
            
     
-        /*
-        //shoot-pickup
-        commandMap.put(new AutoEvent(AutoAction.SHOOT_PICKUP, FieldLocation.DEPOT_SIDE),
-            new DepotShootPickup(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, controller, intake));
-
         
+        //shoot-pickup
+        commandMap.put(new AutoEvent(AutoAction.TEST, FieldLocation.TEST),
+            new TestAuto(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, controller, intake));
+
+        /* 
         //disturbance
         commandMap.put(new AutoEvent(AutoAction.DISTURBANCE, FieldLocation.DEPOT_SIDE),
             new DepotDisturbance(drivetrain, auto, shootstate, turret, angler, controller));

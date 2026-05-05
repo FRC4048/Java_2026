@@ -53,6 +53,8 @@ public class Robot extends LoggedRobot {
 
     final CommandXboxController driverXbox = new CommandXboxController(0);
 
+    int autoCount = 0;
+
     /**
      * This function is run when the robot is first started up and should be used for any
      * initialization code.
@@ -169,11 +171,18 @@ public class Robot extends LoggedRobot {
     public void autonomousInit() {
         double start = Timer.getFPGATimestamp();
 
+        double start = Timer.getFPGATimestamp();
+
         //m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
         // schedule the autonomous command (example)
         mode.set(RobotMode.AUTONOMOUS);
 
+        // Hub is always active during autonomous.
+        hubActive = true;
+        robotContainer.getDriveBase().resetOdometry(robotContainer.getAutoChooser().getFieldLocation().getLocation());
+
+        Logger.recordOutput("/RobotTimer/autoInit", Timer.getFPGATimestamp() - start);
         // Hub is always active during autonomous.
         hubActive = true;
         robotContainer.getDriveBase().resetOdometry(robotContainer.getAutoChooser().getFieldLocation().getLocation());
@@ -185,12 +194,14 @@ public class Robot extends LoggedRobot {
     @Override
     public void autonomousPeriodic() {
         double start = Timer.getFPGATimestamp();
+        double start = Timer.getFPGATimestamp();
 
         // schedule the autonomous command
         if (this.autonomousCommand == null) {
             autonomousCommand = robotContainer.getAutonomousCommand();
             if (autonomousCommand != null) {
                 CommandScheduler.getInstance().schedule(autonomousCommand);
+                Logger.recordOutput("/RobotTimer/autoCount", ++autoCount);
             }
         }
 
@@ -198,7 +209,15 @@ public class Robot extends LoggedRobot {
     }
 
     @Override
+    public void autonomousExit() {
+        this.autonomousCommand = null;
+    }
+
+    @Override
     public void teleopInit() {
+        double start = Timer.getFPGATimestamp();
+
+        new SetShootingState(robotContainer.getShootingState(), ShootState.STOPPED).schedule();
         double start = Timer.getFPGATimestamp();
 
         new SetShootingState(robotContainer.getShootingState(), ShootState.STOPPED).schedule();
@@ -214,11 +233,16 @@ public class Robot extends LoggedRobot {
         }
 
         Logger.recordOutput("/RobotTimer/teleInit", Timer.getFPGATimestamp() - start);
+
+        Logger.recordOutput("/RobotTimer/teleInit", Timer.getFPGATimestamp() - start);
     }
 
   /** This function is called periodically during operator control. */
     @Override
   public void teleopPeriodic() {
+        double start = Timer.getFPGATimestamp();
+
+        // Check who won autonomous.
         double start = Timer.getFPGATimestamp();
 
         // Check who won autonomous.
@@ -228,6 +252,9 @@ public class Robot extends LoggedRobot {
           determineHubActive();
           determineHubCountdown();
       }
+
+        Logger.recordOutput("/RobotTimer/telePeriodic", Timer.getFPGATimestamp() - start);
+    }
 
         Logger.recordOutput("/RobotTimer/telePeriodic", Timer.getFPGATimestamp() - start);
     }

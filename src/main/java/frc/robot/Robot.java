@@ -53,6 +53,8 @@ public class Robot extends LoggedRobot {
 
     final CommandXboxController driverXbox = new CommandXboxController(0);
 
+    int autoCount = 0;
+
     /**
      * This function is run when the robot is first started up and should be used for any
      * initialization code.
@@ -191,6 +193,7 @@ public class Robot extends LoggedRobot {
             autonomousCommand = robotContainer.getAutonomousCommand();
             if (autonomousCommand != null) {
                 CommandScheduler.getInstance().schedule(autonomousCommand);
+                Logger.recordOutput("/RobotTimer/autoCount", ++autoCount);
             }
         }
 

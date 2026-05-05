@@ -351,7 +351,7 @@ public class RobotContainer {
                                         SmartDashboard.putData("AutoRunHopper",
                                         new AutoSpinHopper(hopperSubsystem));
 
-                if (Constants.DEBUG) {
+                if (!Constants.DEBUG) {
                         SmartDashboard.putNumber(RunDashboardShotTest.ANGLER_TARGET_POSITION_KEY, 0.0);
                         SmartDashboard.putNumber(RunDashboardShotTest.SHOOTER_TARGET_RPM_KEY, Constants.SHOOTER_SPEED);
                         SmartDashboard.putNumber(RunDashboardShotTest.HOPPER_TARGET_SPEED_KEY, Constants.HOPPER_SPEED);

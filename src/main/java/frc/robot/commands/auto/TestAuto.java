@@ -21,8 +21,8 @@ public class TestAuto extends LoggableSequentialCommandGroup {
             HopperSubsystem hopper, FeederSubsystem feeder, TurretSubsystem turret, AnglerSubsystem angler,
             ControllerSubsystem controller, IntakeDeployerSubsystem intake) {
         super(
-                    LoggableCommandWrapper.wrap(auto.resetOdometry("DriveTestTwo")),
-                    LoggableCommandWrapper.wrap(auto.trajectoryCmd("DriveTestTwo"))
+                    LoggableCommandWrapper.wrap(auto.resetOdometry("DriveTest")),
+                    LoggableCommandWrapper.wrap(auto.trajectoryCmd("DriveTest"))
         );
     }
 }

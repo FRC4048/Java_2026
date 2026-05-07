@@ -230,6 +230,7 @@ public class RobotContainer {
          * {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
          * joysticks}.
          */
+        /* */
         private void setUpAutoFactory() {
                 if(!Constants.TESTBED){
                 drive = new Drive(drivebase);
@@ -241,9 +242,9 @@ public class RobotContainer {
                                 drive::followTrajectory,
                                 true,
                                 drivebase);
-
+        
                 // example implementation of autoRoutine
-                if (false) {
+
                         // Uses autofactory to create a new routine
                         straightRoutine = autoFactory.newRoutine("StraightRoutine");
 
@@ -290,7 +291,7 @@ public class RobotContainer {
                          * trajectory.recentlyDone()
                          */
                 }}
-        }
+        
 
         private void configureBindings() {
                 controller.a().onTrue(new ToggleDeployment(intakeDeployer, controllerSubsystem));

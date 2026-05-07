@@ -213,7 +213,8 @@ public class RobotContainer {
                 }
 
                 setUpAutoFactory();
-                autoChooser = new AutoChooser(drivebase, shootState, autoFactory, shooterSubsystem, climberSubsystem, feederSubsystem, hopperSubsystem, turretSubsystem, anglerSubsystem, controllerSubsystem, intakeDeployer);
+                //autoChooser = new AutoChooser(drivebase, shootState, autoFactory, shooterSubsystem, climberSubsystem, feederSubsystem, hopperSubsystem, turretSubsystem, anglerSubsystem, controllerSubsystem, intakeDeployer);
+               autoChooser = null;
                 configureBindings();
                 putShuffleboardCommands();
         }
@@ -352,7 +353,6 @@ public class RobotContainer {
         }
 
         public void putShuffleboardCommands() {
-                swipeAuto().poll();
                                 SmartDashboard.putData(
                                         "intakedeployer/Deployment State: UP",
                                         new SetDeploymentState(intakeDeployer, DeploymentState.UP));
@@ -575,8 +575,8 @@ public class RobotContainer {
          * @return the command to run in autonomous
          */
         public Command getAutonomousCommand() {
-                return autoChooser.getSelectedCommand();
-    // return straightRoutine.cmd(straightTrajectory.done());
+                //return autoChooser.getSelectedCommand();
+        return swipeAuto().cmd(straightTrajectory.done());
 
             //    return new ExampleAuto(drivebase, autoFactory);
         }

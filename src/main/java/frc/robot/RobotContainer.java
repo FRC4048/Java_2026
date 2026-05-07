@@ -81,6 +81,8 @@ import frc.robot.subsystems.TurretSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import frc.robot.subsystems.swervedrive.vision.truster.ConstantVisionTruster;
 import frc.robot.subsystems.swervedrive.vision.truster.VisionTruster;
+import frc.robot.utils.logging.commands.LoggableCommand;
+import frc.robot.utils.logging.commands.LoggableCommandWrapper;
 import frc.robot.utils.logging.commands.LoggableSequentialCommandGroup;
 import frc.robot.utils.logging.io.gyro.RealGyroIo;
 import frc.robot.utils.logging.io.gyro.ThreadedGyro;
@@ -343,10 +345,9 @@ public class RobotContainer {
         public AutoRoutine swipeAuto() {
                 AutoRoutine routine = autoFactory.newRoutine("swipeAuto");
                 AutoTrajectory traj = routine.trajectory("swipe");
-
-                routine.active().onTrue(new LoggableSequentialCommandGroup(traj.resetOdometry(),traj.cmd()));
-                
-
+                LoggableCommand trajCmd = new LoggableCommandWrapper(traj.cmd());
+                LoggableCommand resetOdomCommand = new LoggableCommandWrapper(traj.resetOdometry());
+                routine.active().onTrue(new LoggableSequentialCommandGroup(trajCmd,resetOdomCommand));
                 return routine;
         }
 

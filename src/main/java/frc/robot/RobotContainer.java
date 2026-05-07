@@ -352,6 +352,7 @@ public class RobotContainer {
         }
 
         public void putShuffleboardCommands() {
+                swipeAuto().poll();
                                 SmartDashboard.putData(
                                         "intakedeployer/Deployment State: UP",
                                         new SetDeploymentState(intakeDeployer, DeploymentState.UP));

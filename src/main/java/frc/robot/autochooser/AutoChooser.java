@@ -6,6 +6,7 @@ import java.util.Map;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
 import choreo.auto.AutoFactory;
+import choreo.auto.AutoRoutine;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Robot;
@@ -45,7 +46,7 @@ public class AutoChooser {
     private final SwerveSubsystem drivetrain; 
     private final ShootingState shootstate;
     private final ShooterSubsystem shooter;
-    private final AutoFactory auto;
+    private final AutoFactory autoFactory;
     private final FeederSubsystem feeder;
     private final IntakeDeployerSubsystem intake;
     private final HopperSubsystem hopper;
@@ -53,11 +54,11 @@ public class AutoChooser {
     private final AnglerSubsystem angler;
     private final ControllerSubsystem controller;
                 
-                    public AutoChooser(SwerveSubsystem drivetrain, ShootingState shootstate, AutoFactory auto, 
+                    public AutoChooser(SwerveSubsystem drivetrain, ShootingState shootstate, AutoFactory autoFactory, 
                     ShooterSubsystem shooter, ClimberSubsystem climber, FeederSubsystem feeder, HopperSubsystem hopper, 
                     TurretSubsystem turret, AnglerSubsystem angler, ControllerSubsystem controller, IntakeDeployerSubsystem intakeDeployer) {
                         this.drivetrain = drivetrain;
-                        this.auto = auto;
+                        this.autoFactory = autoFactory;
                         this.shootstate = shootstate;
                         this.shooter = shooter;
                         this.hopper = hopper;
@@ -114,30 +115,30 @@ public class AutoChooser {
 
         //shoot red
         commandMap.put(new AutoEvent(AutoAction.SHOOT, FieldLocation.DEPOT_SIDE, Alliance.Red),
-            new ShootRed(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, controller, intake));
+            new ShootRed(drivetrain, autoFactory, shooter, shootstate, hopper, feeder, turret, angler, controller, intake));
         commandMap.put(new AutoEvent(AutoAction.SHOOT, FieldLocation.MID, Alliance.Red),
-            new ShootRed(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, controller, intake));
+            new ShootRed(drivetrain, autoFactory, shooter, shootstate, hopper, feeder, turret, angler, controller, intake));
         commandMap.put(new AutoEvent(AutoAction.SHOOT, FieldLocation.OUTPOST_SIDE, Alliance.Red),
-            new ShootRed(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, controller, intake));
+            new ShootRed(drivetrain, autoFactory, shooter, shootstate, hopper, feeder, turret, angler, controller, intake));
         
         //shoot blue
         commandMap.put(new AutoEvent(AutoAction.SHOOT, FieldLocation.DEPOT_SIDE, Alliance.Blue),
-            new ShootBlue(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, controller, intake));
+            new ShootBlue(drivetrain, autoFactory, shooter, shootstate, hopper, feeder, turret, angler, controller, intake));
         commandMap.put(new AutoEvent(AutoAction.SHOOT, FieldLocation.MID, Alliance.Blue),
-            new ShootBlue(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, controller, intake));
+            new ShootBlue(drivetrain, autoFactory, shooter, shootstate, hopper, feeder, turret, angler, controller, intake));
         commandMap.put(new AutoEvent(AutoAction.SHOOT, FieldLocation.OUTPOST_SIDE, Alliance.Blue),
-            new ShootBlue(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, controller, intake));
+            new ShootBlue(drivetrain, autoFactory, shooter, shootstate, hopper, feeder, turret, angler, controller, intake));
 
         commandMap.put(new AutoEvent(AutoAction.FAST_SHOOT, FieldLocation.FAST_DEPOT, Alliance.Red),
-            new FastDepotRed(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, controller, intake));
+            new FastDepotRed(drivetrain, autoFactory, shooter, shootstate, hopper, feeder, turret, angler, controller, intake));
         commandMap.put(new AutoEvent(AutoAction.FAST_SHOOT, FieldLocation.FAST_DEPOT, Alliance.Blue),
-            new FastDepotBlue(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, controller, intake));
+            new FastDepotBlue(drivetrain, autoFactory, shooter, shootstate, hopper, feeder, turret, angler, controller, intake));
            
     
         
         //shoot-pickup
         commandMap.put(new AutoEvent(AutoAction.TEST, FieldLocation.TEST),
-            new TestAuto(drivetrain, auto, shooter, shootstate, hopper, feeder, turret, angler, controller, intake));
+            new TestAuto(drivetrain, autoFactory, shooter, shootstate, hopper, feeder, turret, angler, controller, intake));
 
         /* 
         //disturbance

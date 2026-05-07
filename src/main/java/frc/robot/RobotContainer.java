@@ -81,6 +81,7 @@ import frc.robot.subsystems.TurretSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import frc.robot.subsystems.swervedrive.vision.truster.ConstantVisionTruster;
 import frc.robot.subsystems.swervedrive.vision.truster.VisionTruster;
+import frc.robot.utils.logging.commands.LoggableSequentialCommandGroup;
 import frc.robot.utils.logging.io.gyro.RealGyroIo;
 import frc.robot.utils.logging.io.gyro.ThreadedGyro;
 import frc.robot.utils.logging.io.gyro.ThreadedGyroSwerveIMU;
@@ -339,6 +340,16 @@ public class RobotContainer {
                 }
         }
 
+        public AutoRoutine swipeAuto() {
+                AutoRoutine routine = autoFactory.newRoutine("swipeAuto");
+                AutoTrajectory traj = routine.trajectory("swipe");
+
+                routine.active().onTrue(new LoggableSequentialCommandGroup(traj.resetOdometry(),traj.cmd()));
+                
+
+                return routine;
+        }
+
         public void putShuffleboardCommands() {
                                 SmartDashboard.putData(
                                         "intakedeployer/Deployment State: UP",
@@ -375,7 +386,7 @@ public class RobotContainer {
                          * new TiltDown(tiltSubsystem));
                          */
 
-
+                
 
             // TODO: These commands do not REQUIRE the subsystem therefore cannot be used in// production
                                 SmartDashboard.putData(

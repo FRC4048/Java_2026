@@ -15,8 +15,9 @@ import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -344,13 +345,12 @@ public class RobotContainer {
         }
 
         public AutoRoutine swipeAuto() {
-                AutoRoutine routine = autoFactory.newRoutine("swipeAuto");
-                AutoTrajectory traj = routine.trajectory("swipe");
+                AutoRoutine routine = autoFactory.newRoutine("DriveTest");
+                AutoTrajectory traj = routine.trajectory("DriveTest");
                 LoggableCommand trajCmd = new LoggableCommandWrapper(traj.cmd());
-                LoggableCommand resetOdomCommand = new LoggableCommandWrapper(new InstantCommand(()->{CommandScheduler.getInstance().schedule(traj.resetOdometry());}));
-                traj.atTime("feed").onTrue(new SpinFeeder(feederSubsystem));
-                //traj.atTime(0).onTrue(resetOdomCommand);
-                routine.active().onTrue(trajCmd);
+                LoggableCommand resetOdomCommand = new LoggableCommandWrapper(traj.resetOdometry());
+                traj.atTime("feed").onTrue(new LoggableCommandWrapper(new PrintCommand("Hello")));
+                routine.active().onTrue(Commands.sequence(traj.cmd(),traj.resetOdometry()));
                 return routine;
         }
 

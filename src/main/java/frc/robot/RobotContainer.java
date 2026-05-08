@@ -347,6 +347,7 @@ public class RobotContainer {
                 AutoTrajectory traj = routine.trajectory("swipe");
                 LoggableCommand trajCmd = new LoggableCommandWrapper(traj.cmd());
                 LoggableCommand resetOdomCommand = new LoggableCommandWrapper(traj.resetOdometry());
+                traj.atTime("feed").onTrue(new SpinFeeder(feederSubsystem));
                 routine.active().onTrue(new LoggableSequentialCommandGroup(trajCmd,resetOdomCommand));
                 return routine;
         }

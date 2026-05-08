@@ -178,7 +178,7 @@ public class Robot extends LoggedRobot {
 
         // Hub is always active during autonomous.
         hubActive = true;
-        robotContainer.getDriveBase().resetOdometry(robotContainer.getAutoChooser().getFieldLocation().getLocation());
+       // robotContainer.getDriveBase().resetOdometry(robotContainer.getAutoChooser().getFieldLocation().getLocation());
 
         Logger.recordOutput("/RobotTimer/autoInit", Timer.getFPGATimestamp() - start);
   }

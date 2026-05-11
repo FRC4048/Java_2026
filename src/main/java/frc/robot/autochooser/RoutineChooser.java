@@ -13,6 +13,7 @@ import frc.robot.subsystems.IntakeDeployerSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.utils.logging.commands.LoggableCommandWrapper;
 import frc.robot.utils.logging.commands.LoggableSequentialCommandGroup;
+import frc.robot.utils.logging.commands.LoggableWaitCommand;
 
 public class RoutineChooser {
     private final AutoFactory factory;
@@ -32,13 +33,27 @@ public class RoutineChooser {
         }
     }
 
+        public AutoRoutine getAuto(){
+        switch (autoChooser.get()){
+            case DO_NOTHING:
+            return factory.newRoutine("do_nothing");
+            case SWIPE_DEPOT: 
+            return swipeDepot();
+            case SWIPE_OUTPOST: 
+            return swipeOutpost();
+            default: 
+            return factory.newRoutine("do_nothing");
+        }
+        
+    }
+
     public AutoRoutine swipeDepot(){
         AutoRoutine routine = factory.newRoutine("swipe");
         AutoTrajectory traj = routine.trajectory("swipe");
         routine.active().onTrue(new LoggableSequentialCommandGroup(
             new LoggableCommandWrapper(traj.resetOdometry()),
             new LoggableCommandWrapper(traj.cmd())));
-        traj.atTime("feed").onTrue(new SpinFeeder(feeder));
+        traj.atTime("stop").onTrue(new LoggableWaitCommand(10));
         traj.atTime("intake").onTrue(new SpinIntake(intake, deployer));
         return routine;
     }
@@ -52,20 +67,6 @@ public class RoutineChooser {
         traj.atTime("feed").onTrue(new SpinFeeder(feeder));
         traj.atTime("intake").onTrue(new SpinIntake(intake, deployer));
         return routine;
-    }
-
-    public AutoRoutine getAuto(){
-        switch (autoChooser.get()){
-            case DO_NOTHING:
-            return factory.newRoutine("do_nothing");
-            case SWIPE_DEPOT: 
-            return swipeDepot();
-            case SWIPE_OUTPOST: 
-            return swipeOutpost();
-            default: 
-            return factory.newRoutine("do_nothing");
-        }
-        
     }
 
 }

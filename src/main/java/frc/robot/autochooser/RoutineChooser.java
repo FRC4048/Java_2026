@@ -59,8 +59,8 @@ public class RoutineChooser {
     }
 
     public AutoRoutine swipeOutpost(){
-        AutoRoutine routine = factory.newRoutine("swipe");
-        AutoTrajectory traj = routine.trajectory("swipe").mirrorY();
+        AutoRoutine routine = factory.newRoutine("swiped");
+        AutoTrajectory traj = routine.trajectory("swiped").mirrorY();
         routine.active().onTrue(new LoggableSequentialCommandGroup(
             new LoggableCommandWrapper(traj.resetOdometry()),
             new LoggableCommandWrapper(traj.cmd())));

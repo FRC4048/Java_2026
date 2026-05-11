@@ -53,10 +53,10 @@ public class RoutineChooser {
     }
 
     public AutoRoutine swipeDepot() {
-        AutoRoutine routine = factory.newRoutine("t");
-        AutoTrajectory firstSwipeTraj = routine.trajectory("test1");
-        AutoTrajectory SecondSwipeTraj = routine.trajectory("test2");
-        firstSwipeTraj.chain(SecondSwipeTraj);
+        AutoRoutine routine = factory.newRoutine("swipe");
+        AutoTrajectory firstSwipeTraj = routine.trajectory("swipe");
+        AutoTrajectory SecondSwipeTraj = routine.trajectory("swipe");
+        firstSwipeTraj.done().onTrue(new LoggableWaitCommand(10).andThen(SecondSwipeTraj.cmd()));
         routine.active().onTrue(new LoggableSequentialCommandGroup(
                 new LoggableCommandWrapper(firstSwipeTraj.resetOdometry()),
                 new LoggableCommandWrapper(firstSwipeTraj.cmd())));

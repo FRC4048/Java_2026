@@ -31,6 +31,7 @@ public class RoutineChooser {
         this.intake = intake;
         this.deployer = deployer;
         factory.bind("feed", new SpinFeeder(feeder));
+        factory.bind("intake", new SpinIntake(intake, deployer));
         autoChooser = new LoggedDashboardChooser<>("AutoAction");
         for (AutoPath paths : AutoPath.values()) {
             autoChooser.addOption(paths.getName(), paths);
@@ -59,7 +60,6 @@ public class RoutineChooser {
         routine.active().onTrue(new LoggableSequentialCommandGroup(
                 new LoggableCommandWrapper(firstSwipeTraj.resetOdometry()),
                 new LoggableCommandWrapper(firstSwipeTraj.cmd())));
-        firstSwipeTraj.atTime("intake").onTrue(new SpinIntake(intake, deployer));
         return routine;
     }
 }

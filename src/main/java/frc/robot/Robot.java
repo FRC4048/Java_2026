@@ -16,7 +16,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import frc.robot.autochooser.FieldLocation;
 import frc.robot.commands.shooter.SetShootingState;
 import frc.robot.constants.Constants;
 import frc.robot.utils.BlinkinPattern;
@@ -150,8 +149,6 @@ public class Robot extends LoggedRobot {
                 }
             }
         }
-        SmartDashboard.putString("Selected Action",
-                robotContainer.getAutoChooser().getCommandDescription());
     }
 
   /** This function is called once each time the robot enters Disabled mode. */
@@ -178,7 +175,7 @@ public class Robot extends LoggedRobot {
 
         // Hub is always active during autonomous.
         hubActive = true;
-        robotContainer.getDriveBase().resetOdometry(robotContainer.getAutoChooser().getFieldLocation().getLocation());
+       // robotContainer.getDriveBase().resetOdometry(robotContainer.getAutoChooser().getFieldLocation().getLocation());
 
         Logger.recordOutput("/RobotTimer/autoInit", Timer.getFPGATimestamp() - start);
   }
@@ -338,13 +335,5 @@ public class Robot extends LoggedRobot {
 
     public static String allianceColorString() {
         return String.valueOf(allianceColor.orElse(null));
-    }
-
-    public FieldLocation location() {
-        return robotContainer.getAutoChooser().getFieldLocation();
-    }
-
-    public Pose2d getStartingLocation() {
-        return location().getLocation();
     }
 }

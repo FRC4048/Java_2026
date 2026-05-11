@@ -15,14 +15,16 @@ import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.apriltags.ApriltagReading;
+import frc.robot.autochooser.RoutineChooser;
 import frc.robot.commands.ResetAll;
-import frc.robot.autochooser.AutoChooser;
 import frc.robot.commands.AddApriltagReading;
 import frc.robot.commands.AddGarbageReading;
 import frc.robot.commands.AddTunableApriltagReading;
@@ -107,7 +109,7 @@ public class RobotContainer {
         private static final int DRIVER_CAM_FPS = 30;
 
         // Instantiate the autochooser.
-        private final AutoChooser autoChooser;
+        private final RoutineChooser autoChooser;
         // The robot's subsystems and commands are defined here...
         private final CommandXboxController controller =
             new CommandXboxController(Constants.XBOX_CONTROLLER_PORT);
@@ -213,7 +215,7 @@ public class RobotContainer {
                 }
 
                 setUpAutoFactory();
-                autoChooser = new AutoChooser(drivebase, shootState, autoFactory, shooterSubsystem, climberSubsystem, feederSubsystem, hopperSubsystem, turretSubsystem, anglerSubsystem, controllerSubsystem, intakeDeployer);
+                autoChooser = new RoutineChooser(autoFactory, feederSubsystem, intakeSubsystem, intakeDeployer);
                 configureBindings();
                 putShuffleboardCommands();
         }
@@ -341,16 +343,6 @@ public class RobotContainer {
                         drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity);
                 }
         }
-
-        public AutoRoutine swipeAuto() {
-                AutoRoutine routine = autoFactory.newRoutine("swipeAuto");
-                AutoTrajectory traj = routine.trajectory("swipe");
-                LoggableCommand trajCmd = new LoggableCommandWrapper(traj.cmd());
-                LoggableCommand resetOdomCommand = new LoggableCommandWrapper(traj.resetOdometry());
-                routine.active().onTrue(new LoggableSequentialCommandGroup(trajCmd,resetOdomCommand));
-                return routine;
-        }
-
         public void putShuffleboardCommands() {
                                 SmartDashboard.putData(
                                         "intakedeployer/Deployment State: UP",
@@ -575,7 +567,7 @@ public class RobotContainer {
          */
         public Command getAutonomousCommand() {
                 //return autoChooser.getSelectedCommand();
-        return swipeAuto().cmd(straightTrajectory.done());
+        return autoChooser.getAuto().cmd();
 
             //    return new ExampleAuto(drivebase, autoFactory);
         }
@@ -588,7 +580,7 @@ public class RobotContainer {
         return robotVisualizer;
     }
 
-    public AutoChooser getAutoChooser() {
+    public RoutineChooser getAutoChooser() {
         return autoChooser;
     }
 

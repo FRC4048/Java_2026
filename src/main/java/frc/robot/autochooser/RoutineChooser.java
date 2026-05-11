@@ -56,7 +56,7 @@ public class RoutineChooser {
         AutoRoutine routine = factory.newRoutine("swipe");
         AutoTrajectory firstSwipeTraj = routine.trajectory("swipe");
         AutoTrajectory SecondSwipeTraj = routine.trajectory("swipe");
-        firstSwipeTraj.chain(SecondSwipeTraj);
+        firstSwipeTraj.done().onTrue(new LoggableWaitCommand(10).andThen(SecondSwipeTraj.cmd()));
         routine.active().onTrue(new LoggableSequentialCommandGroup(
                 new LoggableCommandWrapper(firstSwipeTraj.resetOdometry()),
                 new LoggableCommandWrapper(firstSwipeTraj.cmd())));

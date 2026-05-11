@@ -22,51 +22,44 @@ public class RoutineChooser {
     private final IntakeDeployerSubsystem deployer;
     private final LoggedDashboardChooser<AutoPath> autoChooser;
 
-    public RoutineChooser(AutoFactory factory, FeederSubsystem feeder, IntakeSubsystem intake, IntakeDeployerSubsystem deployer){
+    public RoutineChooser(AutoFactory factory,
+            FeederSubsystem feeder,
+            IntakeSubsystem intake,
+            IntakeDeployerSubsystem deployer) {
         this.factory = factory;
         this.feeder = feeder;
         this.intake = intake;
         this.deployer = deployer;
+        factory.bind("feed", new SpinFeeder(feeder));
         autoChooser = new LoggedDashboardChooser<>("AutoAction");
-        for(AutoPath paths : AutoPath.values()){
+        for (AutoPath paths : AutoPath.values()) {
             autoChooser.addOption(paths.getName(), paths);
         }
     }
 
-        public AutoRoutine getAuto(){
-        switch (autoChooser.get()){
+    public AutoRoutine getAuto() {
+        switch (autoChooser.get()) {
             case DO_NOTHING:
-            return factory.newRoutine("do_nothing");
-            case SWIPE_DEPOT: 
-            return swipeDepot();
-            case SWIPE_OUTPOST: 
-            return swipeOutpost();
-            default: 
-            return factory.newRoutine("do_nothing");
+                return factory.newRoutine("do_nothing");
+            case SWIPE_DEPOT:
+                return swipeDepot();
+            case SWIPE_OUTPOST:
+                return swipeDepot();
+            default:
+                return factory.newRoutine("do_nothing");
         }
-        
+
     }
 
-    public AutoRoutine swipeDepot(){
+    public AutoRoutine swipeDepot() {
         AutoRoutine routine = factory.newRoutine("swipe");
-        AutoTrajectory traj = routine.trajectory("swipe");
+        AutoTrajectory firstSwipeTraj = routine.trajectory("swipe");
+        AutoTrajectory SecondSwipeTraj = routine.trajectory("swipe");
+        firstSwipeTraj.chain(SecondSwipeTraj);
         routine.active().onTrue(new LoggableSequentialCommandGroup(
-            new LoggableCommandWrapper(traj.resetOdometry()),
-            new LoggableCommandWrapper(traj.cmd())));
-        traj.atTime("stop").onTrue(new LoggableWaitCommand(10));
-        traj.atTime("intake").onTrue(new SpinIntake(intake, deployer));
+                new LoggableCommandWrapper(firstSwipeTraj.resetOdometry()),
+                new LoggableCommandWrapper(firstSwipeTraj.cmd())));
+        firstSwipeTraj.atTime("intake").onTrue(new SpinIntake(intake, deployer));
         return routine;
     }
-
-    public AutoRoutine swipeOutpost(){
-        AutoRoutine routine = factory.newRoutine("swipe");
-        AutoTrajectory traj = routine.trajectory("swipe").mirrorY();
-        routine.active().onTrue(new LoggableSequentialCommandGroup(
-            new LoggableCommandWrapper(traj.resetOdometry()),
-            new LoggableCommandWrapper(traj.cmd())));
-        traj.atTime("feed").onTrue(new SpinFeeder(feeder));
-        traj.atTime("intake").onTrue(new SpinIntake(intake, deployer));
-        return routine;
-    }
-
 }

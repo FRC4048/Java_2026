@@ -343,17 +343,6 @@ public class RobotContainer {
                         drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity);
                 }
         }
-
-        public AutoRoutine swipeAuto() {
-                AutoRoutine routine = autoFactory.newRoutine("DriveTest");
-                AutoTrajectory traj = routine.trajectory("DriveTest");
-                LoggableCommand trajCmd = new LoggableCommandWrapper(traj.cmd());
-                LoggableCommand resetOdomCommand = new LoggableCommandWrapper(traj.resetOdometry());
-                traj.atTime("feed").onTrue(new LoggableCommandWrapper(new PrintCommand("Hello")));
-                routine.active().onTrue(Commands.sequence(traj.resetOdometry(),traj.cmd()));
-                return routine;
-        }
-
         public void putShuffleboardCommands() {
                                 SmartDashboard.putData(
                                         "intakedeployer/Deployment State: UP",

@@ -32,9 +32,20 @@ public class RoutineChooser {
         }
     }
 
-    public AutoRoutine routine(String key){
-        AutoRoutine routine = factory.newRoutine(key);
-        AutoTrajectory traj = routine.trajectory(key);
+    public AutoRoutine swipeDepot(){
+        AutoRoutine routine = factory.newRoutine("swipe");
+        AutoTrajectory traj = routine.trajectory("swipe");
+        routine.active().onTrue(new LoggableSequentialCommandGroup(
+            new LoggableCommandWrapper(traj.resetOdometry()),
+            new LoggableCommandWrapper(traj.cmd())));
+        traj.atTime("feed").onTrue(new SpinFeeder(feeder));
+        traj.atTime("intake").onTrue(new SpinIntake(intake, deployer));
+        return routine;
+    }
+
+    public AutoRoutine swipeOutpost(){
+        AutoRoutine routine = factory.newRoutine("swipe");
+        AutoTrajectory traj = routine.trajectory("swipe").mirrorY();
         routine.active().onTrue(new LoggableSequentialCommandGroup(
             new LoggableCommandWrapper(traj.resetOdometry()),
             new LoggableCommandWrapper(traj.cmd())));
@@ -46,13 +57,12 @@ public class RoutineChooser {
     public AutoRoutine getAuto(){
         switch (autoChooser.get()){
             case DO_NOTHING:
-            Logger.recordOutput("Auto", "Do nothing");
             return factory.newRoutine("do_nothing");
-            case SWIPE: 
-            Logger.recordOutput("Auto", "swipe");
-            return routine("swipe");
+            case SWIPE_DEPOT: 
+            return swipeDepot();
+            case SWIPE_OUTPOST: 
+            return swipeOutpost();
             default: 
-            Logger.recordOutput("Auto", "INVALID AUTO THIS IS BAD");
             return factory.newRoutine("do_nothing");
         }
         

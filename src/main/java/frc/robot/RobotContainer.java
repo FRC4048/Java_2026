@@ -301,7 +301,7 @@ public class RobotContainer {
         private void configureBindings() {
                 controller.a().onTrue(new ToggleDeployment(intakeDeployer, controllerSubsystem));
                 controller.b().onTrue(new SetDeploymentState(intakeDeployer, DeploymentState.STOPPED));
-                controller.x().onTrue(new ForceDeployDown(intakeDeployer, shootState));
+                controller.x().onTrue(new ForceDeployDown(intakeDeployer));
                 controller.y().onTrue(new ToggleAdjustedPosition(controllerSubsystem));
                 controller.povUp().onTrue(new SetShootingState(shootState, ShootState.FIXED));
                 controller.povRight().onTrue(new SetShootingState(shootState, ShootState.STOPPED));

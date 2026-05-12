@@ -243,6 +243,7 @@
   "splits":[0]
  },
  "events":[
-   {"name":"intakeDeploy", "from":{"target":0, "targetTimestamp":null, "offset":{"exp":"0 s", "val":0.0}}, "event":null},
-   {"name":"intakeStop", "from":{"target":8, "targetTimestamp":null, "offset":{"exp":"0 s", "val":0.0}}, "event":null}]
+   {"name":"intakeDeployer", "from":{"target":1, "targetTimestamp":0.58772, "offset":{"exp":"0 s", "val":0.0}}, "event":null},
+   {"name":"intakeStop", "from":{"target":8, "targetTimestamp":4.45013, "offset":{"exp":"0 s", "val":0.0}}, "event":null},
+   {"name":"intakeDeploy", "from":{"target":9, "targetTimestamp":4.75967, "offset":{"exp":"0 s", "val":0.0}}, "event":null}]
 }

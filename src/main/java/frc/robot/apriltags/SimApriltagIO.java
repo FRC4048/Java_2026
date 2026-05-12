@@ -44,8 +44,8 @@ public class SimApriltagIO extends TCPApriltagIo {
                     if (cosIncidenceAngle!=0 && distance / cosIncidenceAngle < Constants.MAX_VISION_DISTANCE_SIMULATION) {
                         VisionMeasurement measurement = new VisionMeasurement(new Pose2d(), distance, 0, 0);
                         Vector<N3> stdDevs = truster.calculateTrust(measurement);
-                        double readingX = pose.getX() + random.nextGaussian() * stdDevs.get(0);
-                        double readingY = pose.getY() + random.nextGaussian() * stdDevs.get(1);
+                        double readingX = pose.getX();// + random.nextGaussian() * stdDevs.get(0);
+                        double readingY = pose.getY();// + random.nextGaussian() * stdDevs.get(1);
                         double readingYaw = pose.getRotation().getDegrees() + random.nextGaussian() * stdDevs.get(2);
                         Pose2d readingPos = new Pose2d(readingX, readingY, Rotation2d.fromDegrees(readingYaw));
                         distance = readingPos.getTranslation().getDistance(tag.getPose().toPose2d().getTranslation());

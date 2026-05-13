@@ -51,7 +51,7 @@ public class RoutineChooser {
             case SWIPE_DEPOT:
                 return swipeDepot();
             case SWIPE_OUTPOST:
-                return swipeDepot();
+                return swipeOutpost();
             default:
                 return factory.newRoutine("do_nothing");
         }
@@ -70,8 +70,19 @@ public class RoutineChooser {
                 new LoggableCommandWrapper(firstSwipeTraj.cmd())));
         return routine;
     }
-
-    /*
+   public AutoRoutine swipeOutpost() {
+        AutoRoutine routine = factory.newRoutine("swipe");
+        AutoTrajectory firstSwipeTraj = routine.trajectory("swipe_one_slow").mirrorY();
+        AutoTrajectory secondSwipeTraj = routine.trajectory("swipe_two_slow").mirrorY();
+        AutoTrajectory thirdSwipeTraj = routine.trajectory("swipe_three_slow").mirrorY();
+        firstSwipeTraj.done().onTrue(new LoggableWaitCommand(3).andThen(secondSwipeTraj.cmd()));
+        secondSwipeTraj.done().onTrue(new LoggableWaitCommand(3).andThen(thirdSwipeTraj.cmd()));
+        routine.active().onTrue(new LoggableSequentialCommandGroup(
+                new LoggableCommandWrapper(firstSwipeTraj.resetOdometry()),
+                new LoggableCommandWrapper(firstSwipeTraj.cmd())));
+        return routine;
+    }
+    
     public AutoRoutine midDepot() {
         AutoRoutine routine = factory.newRoutine("depot");
         AutoTrajectory traj = routine.trajectory("depot_hook");
@@ -81,6 +92,4 @@ public class RoutineChooser {
                 new LoggableCommandWrapper(traj.cmd())));
         return routine;
     }
-    */
-
 }

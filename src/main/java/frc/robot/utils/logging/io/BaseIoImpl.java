@@ -14,7 +14,7 @@ public abstract class BaseIoImpl<I extends LoggableInputs> implements BaseIo {
 
     public BaseIoImpl(String folder, I inputs) {
         this.inputs = inputs;
-        this.prefix = "LoggableInputs/" + folder;
+        this.prefix = "/LoggableInputs/" + folder;
     }
 
     /**

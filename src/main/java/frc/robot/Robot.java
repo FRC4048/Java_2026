@@ -16,8 +16,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import frc.robot.autochooser.FieldLocation;
+import frc.robot.commands.shooter.SetShootingState;
 import frc.robot.constants.Constants;
+import frc.robot.utils.BlinkinPattern;
+import frc.robot.constants.enums.ShootingState.ShootState;
 import frc.robot.utils.diag.Diagnostics;
 import frc.robot.utils.logging.TimeoutLogger;
 import frc.robot.utils.logging.commands.CommandLogger;
@@ -49,6 +51,8 @@ public class Robot extends LoggedRobot {
     private static Optional<DriverStation.Alliance> allianceColor = Optional.empty();
 
     final CommandXboxController driverXbox = new CommandXboxController(0);
+
+    int autoCount = 0;
 
     /**
      * This function is run when the robot is first started up and should be used for any
@@ -104,6 +108,7 @@ public class Robot extends LoggedRobot {
      */
     @Override
     public void robotPeriodic() {
+        Logger.recordOutput("MyPose", robotContainer.getDriveBase().getPose());
         // Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled
         // commands, running already-scheduled commands, removing finished or interrupted commands,
         // and running subsystem periodic() methods.  This must be called from the robot's periodic
@@ -129,25 +134,21 @@ public class Robot extends LoggedRobot {
         if (DriverStation.isDSAttached() && allianceColor.isEmpty()) {
             allianceColor = DriverStation.getAlliance();
         }
-
+        SmartDashboard.putBoolean("Hub Active?", hubActive());
         if (Constants.DEBUG) {
             SmartDashboard.putNumber("driverXbox.getLeftY()", driverXbox.getLeftY());
             SmartDashboard.putNumber("driverXbox::getRightX", driverXbox.getRightX());
             if (!Constants.TESTBED) {
-                Logger.recordOutput("MyPose", robotContainer.getDriveBase().getPose());
                     SmartDashboard.putNumber("Robot X", robotContainer.getDriveBase().getPose().getX());
             SmartDashboard.putNumber("Robot Y", robotContainer.getDriveBase().getPose().getY());
         // Puts data on the elastic dashboard
                 SmartDashboard.putString("Alliance Color", Robot.allianceColorString());
-                SmartDashboard.putBoolean("Hub Active?", hubActive());
                 if (Constants.currentMode == Constants.Mode.SIM) {
                     Logger.recordOutput("SimPose", robotContainer.getDriveBase().getSimulationPose().get());
                     Logger.recordOutput("OdomPose", robotContainer.getDriveBase().getSimulationPose().get());
                 }
             }
         }
-        SmartDashboard.putString("Selected Action",
-                robotContainer.getAutoChooser().getCommandDescription());
     }
 
   /** This function is called once each time the robot enters Disabled mode. */
@@ -159,36 +160,54 @@ public class Robot extends LoggedRobot {
 
     @Override
     public void disabledPeriodic() {
+        robotContainer.getLightStrip().setPattern(BlinkinPattern.RAINBOW_LAVA_PALETTE);
     }
 
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
     @Override
     public void autonomousInit() {
+        double start = Timer.getFPGATimestamp();
+
         //m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
         // schedule the autonomous command (example)
         mode.set(RobotMode.AUTONOMOUS);
 
-    // Hub is always active during autonomous.
-    hubActive = true;
-    robotContainer.getDriveBase().resetOdometry(robotContainer.getAutoChooser().getFieldLocation().getLocation());
+        // Hub is always active during autonomous.
+        hubActive = true;
+       // robotContainer.getDriveBase().resetOdometry(robotContainer.getAutoChooser().getFieldLocation().getLocation());
+
+        Logger.recordOutput("/RobotTimer/autoInit", Timer.getFPGATimestamp() - start);
   }
 
   /** This function is called periodically during autonomous. */
     @Override
     public void autonomousPeriodic() {
+        double start = Timer.getFPGATimestamp();
 
         // schedule the autonomous command
         if (this.autonomousCommand == null) {
             autonomousCommand = robotContainer.getAutonomousCommand();
             if (autonomousCommand != null) {
                 CommandScheduler.getInstance().schedule(autonomousCommand);
+                Logger.recordOutput("/RobotTimer/autoCount", ++autoCount);
             }
         }
+
+        Logger.recordOutput("/RobotTimer/autoPeriodic", Timer.getFPGATimestamp() - start);
+    }
+
+    @Override
+    public void autonomousExit() {
+        this.autonomousCommand = null;
     }
 
     @Override
     public void teleopInit() {
+        double start = Timer.getFPGATimestamp();
+
+        new SetShootingState(robotContainer.getShootingState(), ShootState.STOPPED).schedule();
+
         // This makes sure that the autonomous stops running when
         // teleop starts running. If you want the autonomous to
         // continue until interrupted by another command, remove
@@ -199,19 +218,24 @@ public class Robot extends LoggedRobot {
         if (autonomousCommand != null) {
             autonomousCommand.cancel();
         }
+
+        Logger.recordOutput("/RobotTimer/teleInit", Timer.getFPGATimestamp() - start);
     }
 
   /** This function is called periodically during operator control. */
     @Override
   public void teleopPeriodic() {
-      // Check who won autonomous.
+        double start = Timer.getFPGATimestamp();
+        // Check who won autonomous.
       if (autonomousWinner == null) {
           determineAutonomousWinner();
       } else {
           determineHubActive();
           determineHubCountdown();
       }
-  }
+
+        Logger.recordOutput("/RobotTimer/telePeriodic", Timer.getFPGATimestamp() - start);
+    }
 
     private void determineAutonomousWinner() {
         autonomousWinner = DriverStation.getGameSpecificMessage();
@@ -277,6 +301,7 @@ public class Robot extends LoggedRobot {
         mode.set(RobotMode.TEST);
         // Cancels all running commands at the start of test mode.
         CommandScheduler.getInstance().cancelAll();
+        new SetShootingState(robotContainer.getShootingState(), ShootState.STOPPED);
     }
 
     /** This function is called periodically during test mode. */
@@ -310,13 +335,5 @@ public class Robot extends LoggedRobot {
 
     public static String allianceColorString() {
         return String.valueOf(allianceColor.orElse(null));
-    }
-
-    public FieldLocation location() {
-        return robotContainer.getAutoChooser().getFieldLocation();
-    }
-
-    public Pose2d getStartingLocation() {
-        return location().getLocation();
     }
 }

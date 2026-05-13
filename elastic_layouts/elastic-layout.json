@@ -85,14 +85,28 @@
           {
             "title": "Active Countdown [PLACEHOLDER]",
             "x": 0.0,
-            "y": 384.0,
+            "y": 512.0,
             "width": 512.0,
-            "height": 256.0,
+            "height": 128.0,
             "type": "Large Text Display",
             "properties": {
               "topic": "/SmartDashboard/TURRET/Arm Encoder",
               "period": 0.033,
               "data_type": "double"
+            }
+          },
+          {
+            "title": "Reset All",
+            "x": 0.0,
+            "y": 384.0,
+            "width": 512.0,
+            "height": 128.0,
+            "type": "Command",
+            "properties": {
+              "topic": "/SmartDashboard/Reset All",
+              "period": 0.06,
+              "show_type": true,
+              "maximize_button_space": true
             }
           }
         ]

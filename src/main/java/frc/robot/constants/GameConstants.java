@@ -36,7 +36,7 @@ public class GameConstants {
     public static final boolean ENABLE_LOGGING = true;
 
     //Debugs
-    public static final boolean DEBUG = false;
+    public static final boolean DEBUG = true;
     public static final boolean ARM_DEBUG = true;
 
     //Joystick
@@ -45,11 +45,15 @@ public class GameConstants {
     public static final int XBOX_CONTROLLER_PORT = 2;
 
     //Speeds
-    public static final double INTAKE_SPEED = -0.5;
-    public static final double HOPPER_SPEED = 0.35;//Want to increase this later
+    public static final double INTAKE_SPEED = -0.7;
+    public static final double INTAKE_REVERSE_SPEED = 0.5;
+    public static final double HOPPER_SPEED = 1;
+    public static final double HOPPER_AUTO_SPEED = 0.35;
+    public static final double HOPPER_SHUTTLING_SPEED = 0.8;
+    public static final double HOPPER_REVERSE_SPEED = -0.5;
     public static final double CLIMBER_SPEED_UP = 0.1;
     public static final double CLIMBER_SPEED_DOWN = -0.1;
-    public static final double FEEDER_SPEED = 0.5;//Might make veolcity PID
+    public static final double FEEDER_SPEED = 1;
     public static final double MAX_SPEED = Units.feetToMeters(14.5);
     public static final double SHOOTER_SPEED = 1500;
     public static final double INTAKE_DEPLOYER_SPEED = -0.075;
@@ -100,12 +104,12 @@ public class GameConstants {
     public static final double ANGLER_FF = 0.0;
     public static final double ANGLER_HOME_ROTATIONS = 0.0;
     public static final double ANGLER_ENCODER_LOW = 0; //Lowest encoder position of Angler
-    public static final double ANGLER_ENCODER_HIGH = 100; //Highest encoder position of Angler
+    public static final double ANGLER_ENCODER_HIGH = 265; //Highest encoder position of Angler
     public static final double ANGLER_ANGLE_LOW = 17; //Lowest angle position of Angler
-    public static final double ANGLER_ANGLE_HIGH = 45; //Highest angle position of Angler
+    public static final double ANGLER_ANGLE_HIGH = 38; //Highest angle position of Angler
     public static final double ANGLER_FIXED_ROTATIONS = 0.1; //Fixed encoder position of Angler in Fixed ShootState
     public static final double ANGLER_FIXED_ANGLE = 10; //Fixed encoder position of Angler in Fixed ShootState
-    public static final double ANGLER_LIMIT_SPEED = 0.2;
+    public static final double ANGLER_LIMIT_SPEED = 0.6;
 
 
  // turret (pan angle) PID
@@ -113,18 +117,18 @@ public class GameConstants {
     public static final double TURRET_SHORT_RANGE_I = 0.000000;
     public static final double TURRET_SHORT_RANGE_D = 0.001;
     public static final double TURRET_SHORT_RANGE_FF = 0.0;
-    public static final double TURRET_LONG_RANGE_P = 1.2;
+    public static final double TURRET_LONG_RANGE_P = 1;
     public static final double TURRET_LONG_RANGE_I = 0.000000;
     public static final double TURRET_LONG_RANGE_D = 0.0;
     public static final double TURRET_LONG_RANGE_FF = 0.0;
     public static final double TURRET_ENCODER_MIN = 0; //Lowest encoder position of Turret
     public static final double TURRET_ENCODER_MAX = 77; //Highest encoder position of Turret
     public static final double TURRET_HOME_ANGLE = 0.0; //Turret facing forward
-    public static final double TURRET_MIN_ANGLE = -92;
-    public static final double TURRET_MAX_ANGLE = 92;
-    public static final double TURRET_LIMIT_SPEED = 0.1;
+    public static final double TURRET_MIN_ANGLE = -96;
+    public static final double TURRET_MAX_ANGLE = 96;
+    public static final double TURRET_LIMIT_SPEED = 0.2;
     public static final double TURRET_OUT_OF_RANGE_FLOP_RPM = -1500.0;
-    public static final double TURRET_PID_DISTANCE_THRESHOLD = 5;
+    public static final double TURRET_PID_DISTANCE_THRESHOLD = 10;
     //Minimum target encoder distance needed to use the longer pid slot
 
 
@@ -143,8 +147,10 @@ public class GameConstants {
     public static final double HUB_HEIGHT = 1.83;
     public static final double SHOOTER_HEIGHT = 0.5;
     public static final double BLUE_HUB_X_POSITION = 4.6256;
+    public static final double BLUE_HUB_Y_ADJUSTED_POSITION = 3.7345;
     public static final double BLUE_HUB_Y_POSITION = 4.0345;
     public static final double RED_HUB_X_POSITION = 11.9154;
+    public static final double RED_HUB_Y_ADJUSTED_POSITION = 4.3345;
     public static final double RED_HUB_Y_POSITION = 4.0345;
     public static final double X_DISTANCE_BETWEEN_ROBOT_AND_TURRET = .05;
     public static final double Y_DISTANCE_BETWEEN_ROBOT_AND_TURRET = .12;
@@ -171,7 +177,13 @@ public class GameConstants {
     public static final double AVERAGE_CAM_LATENCY_STD_DEV = 0; // seconds; TODO: change Later
     public static final double MAX_VISION_DISTANCE_SIMULATION = 6;
 
-    public static final double MAX_HUB_DISTANCE = 5.18;
-    public static final double MIN_HUB_DISTANCE = 1.42;
-    public static final double COMPUTATED_DISTANCE_OFFSET = 2;
+    public static final double MAX_HUB_DISTANCE = 7;// Meters
+    public static final double MIN_HUB_DISTANCE = 1.42;// Meters
+    public static final double COMPUTATED_DISTANCE_OFFSET = 0;
+    public static final double RED_SHUTTLING_TARGET_X_POSITION = 13.8;
+    public static final double BLUE_SHUTTLING_TARGET_X_POSITION = 2.8;
+    public static final double SHUTTLING_TARGET_LOWER_Y_POSITION = 2.6;
+    public static final double SHUTTLING_TARGET_HIGHER_Y_POSITION = 5.5;
+    public static final int TCP_SERVER_PORT1 = 5806;
+    public static final int TCP_SERVER_PORT2 = 5807;
 }

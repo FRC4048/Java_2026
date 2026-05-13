@@ -50,7 +50,6 @@ import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 
 import static edu.wpi.first.units.Units.Meter;
-
 public class SwerveSubsystem extends SubsystemBase {
     /**
      * Swerve drive object.

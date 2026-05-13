@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import org.littletonrobotics.junction.Logger;
+
 import com.revrobotics.spark.ClosedLoopSlot;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -46,8 +48,10 @@ public class TurretSubsystem extends SubsystemBase {
 
         if (Math.abs(targetEncoderPosition - io.getEncoderPosition()) >= Constants.TURRET_PID_DISTANCE_THRESHOLD) {
             io.setPidPosition(targetEncoderPosition, ClosedLoopSlot.kSlot1); // longer encoder distance pid
+            Logger.recordOutput(LOGGING_NAME+"/Using long PID", 1);
         } else {
             io.setPidPosition(targetEncoderPosition, ClosedLoopSlot.kSlot0); // shorter encoder distance pid
+            Logger.recordOutput(LOGGING_NAME+"/Using long PID", 0);
         }
     }
 
@@ -171,8 +175,8 @@ public class TurretSubsystem extends SubsystemBase {
                         Constants.TURRET_LONG_RANGE_I,
                         Constants.TURRET_LONG_RANGE_D,
                         Constants.TURRET_LONG_RANGE_FF)
-                .setMaxAccel(6000)
-                .setMaxVelocity(4500);
+                .setMaxAccel(5000)
+                .setMaxVelocity(4000);
     }
 
     private static SparkMaxPidMotor createMotor() {

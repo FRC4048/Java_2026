@@ -10,13 +10,11 @@ public class SpinFeeder extends LoggableCommand {
     
     private final FeederSubsystem subsystem;
     private final Timer timer;
-    private LoggedTunableNumber tunableSpeed;
   
     public SpinFeeder(FeederSubsystem subsystem) {
         this.subsystem = subsystem;
         timer = new Timer();
         addRequirements(subsystem);
-        tunableSpeed = new LoggedTunableNumber(FeederSubsystem.LOGGING_NAME, Constants.FEEDER_SPEED);
     }
 
     @Override
@@ -26,7 +24,7 @@ public class SpinFeeder extends LoggableCommand {
 
     @Override
     public void execute() {
-       subsystem.setSpeed(tunableSpeed.getAsDouble());
+       subsystem.setSpeed(Constants.FEEDER_SPEED);
     }
 
     @Override

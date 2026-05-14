@@ -72,9 +72,9 @@ public class RoutineChooser {
     }
    public AutoRoutine swipeOutpost() {
         AutoRoutine routine = factory.newRoutine("swipe");
-        AutoTrajectory firstSwipeTraj = routine.trajectory("swipe_one_slow").mirrorY();
-        AutoTrajectory secondSwipeTraj = routine.trajectory("swipe_two_slow").mirrorY();
-        AutoTrajectory thirdSwipeTraj = routine.trajectory("swipe_three_slow").mirrorY();
+        AutoTrajectory firstSwipeTraj = routine.trajectory("swipe_one").mirrorY();
+        AutoTrajectory secondSwipeTraj = routine.trajectory("swipe_two").mirrorY();
+        AutoTrajectory thirdSwipeTraj = routine.trajectory("swipe_three").mirrorY();
         firstSwipeTraj.done().onTrue(new LoggableWaitCommand(3).andThen(secondSwipeTraj.cmd()));
         secondSwipeTraj.done().onTrue(new LoggableWaitCommand(3).andThen(thirdSwipeTraj.cmd()));
         routine.active().onTrue(new LoggableSequentialCommandGroup(

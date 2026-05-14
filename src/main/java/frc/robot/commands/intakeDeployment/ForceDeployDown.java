@@ -12,18 +12,14 @@ import frc.robot.utils.logging.commands.LoggableCommand;
 
 public class ForceDeployDown extends LoggableCommand {
   private final IntakeDeployerSubsystem subsystem;
-  private final ShootingState state;
 
-  public ForceDeployDown(IntakeDeployerSubsystem subsystem, ShootingState state) {
+  public ForceDeployDown(IntakeDeployerSubsystem subsystem) {
     this.subsystem = subsystem;
-    this.state = state;
   }
 
   @Override
   public void initialize() {
-    if(state.getShootState() == ShootState.SHOOTING_HUB || state.getShootState() == ShootState.SHUTTLING){
     subsystem.setDeploymentState(DeploymentState.DOWN);
-    }
   }
 
   @Override

@@ -9,6 +9,10 @@ import choreo.auto.AutoTrajectory;
 import frc.robot.commands.feeder.SpinFeeder;
 import frc.robot.commands.intake.SpinIntake;
 import frc.robot.commands.intake.StopIntake;
+import frc.robot.commands.intakeDeployment.ForceDeployDown;
+import frc.robot.commands.intakeDeployment.ToggleDeployment;
+import frc.robot.constants.enums.ShootingState;
+import frc.robot.subsystems.ControllerSubsystem;
 import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.subsystems.IntakeDeployerSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -31,7 +35,7 @@ public class RoutineChooser {
         this.feeder = feeder;
         this.intake = intake;
         this.deployer = deployer;
-        factory.bind("intakeDeploy", new SpinIntake(intake, deployer));
+        factory.bind("intakeDeployer", new ForceDeployDown(deployer));
         factory.bind("intakeStart", new SpinIntake(intake, deployer));
         factory.bind("intakeStop", new StopIntake(intake));
         autoChooser = new LoggedDashboardChooser<>("AutoAction");
@@ -47,7 +51,7 @@ public class RoutineChooser {
             case SWIPE_DEPOT:
                 return swipeDepot();
             case SWIPE_OUTPOST:
-                return swipeDepot();
+                return swipeOutpost();
             default:
                 return factory.newRoutine("do_nothing");
         }
@@ -66,8 +70,19 @@ public class RoutineChooser {
                 new LoggableCommandWrapper(firstSwipeTraj.cmd())));
         return routine;
     }
-
-    /*
+   public AutoRoutine swipeOutpost() {
+        AutoRoutine routine = factory.newRoutine("swipe");
+        AutoTrajectory firstSwipeTraj = routine.trajectory("swipe_one").mirrorY();
+        AutoTrajectory secondSwipeTraj = routine.trajectory("swipe_two").mirrorY();
+        AutoTrajectory thirdSwipeTraj = routine.trajectory("swipe_three").mirrorY();
+        firstSwipeTraj.done().onTrue(new LoggableWaitCommand(3).andThen(secondSwipeTraj.cmd()));
+        secondSwipeTraj.done().onTrue(new LoggableWaitCommand(3).andThen(thirdSwipeTraj.cmd()));
+        routine.active().onTrue(new LoggableSequentialCommandGroup(
+                new LoggableCommandWrapper(firstSwipeTraj.resetOdometry()),
+                new LoggableCommandWrapper(firstSwipeTraj.cmd())));
+        return routine;
+    }
+    
     public AutoRoutine midDepot() {
         AutoRoutine routine = factory.newRoutine("depot");
         AutoTrajectory traj = routine.trajectory("depot_hook");
@@ -77,6 +92,4 @@ public class RoutineChooser {
                 new LoggableCommandWrapper(traj.cmd())));
         return routine;
     }
-    */
-
 }

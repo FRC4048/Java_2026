@@ -458,6 +458,9 @@ public class RobotContainer {
                         SmartDashboard.putData(
                                         "turnToAngle/Swerve Angle to -90 deg",
                                         new TurnToAngle(drivebase, gyroSubsystem, -90));
+                        SmartDashboard.putData(
+                                        "turnToAngle/Swerve Angle to 180 deg",
+                                        new TurnToAngle(drivebase, gyroSubsystem, 180));
 
             SmartDashboard.putData(
                     "turret/TurretTest/Turret Go 45",

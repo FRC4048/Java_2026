@@ -293,7 +293,7 @@ public class RobotContainer {
         }
 
         private void configureBindings() {
-                controller.a().onTrue(new ToggleDeployment(intakeDeployer, controllerSubsystem));
+                controller.a().onTrue(new ToggleDeployment(intakeDeployer));
                 controller.b().onTrue(new SetDeploymentState(intakeDeployer, DeploymentState.STOPPED));
                 controller.x().onTrue(new ForceDeployDown(intakeDeployer, shootState));
                 controller.y().onTrue(new ToggleAdjustedPosition(controllerSubsystem));
@@ -304,7 +304,7 @@ public class RobotContainer {
                 controller.leftTrigger().whileTrue(new ReverseHopper(hopperSubsystem));
                 controller.rightTrigger().whileTrue(new ReverseIntake(intakeSubsystem));
                 driveJoystick.trigger().whileTrue((new SetShootingState(shootState, ShootState.STOPPED)));
-
+                steerJoystick.trigger().whileTrue(new SpinIntake(intakeSubsystem));
 
                 // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
                 // new Trigger(m_exampleSubsystem::exampleCondition)
@@ -315,7 +315,7 @@ public class RobotContainer {
                 // cancelling on release.
                 // m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
 
-                intakeSubsystem.setDefaultCommand(new SpinIntake(intakeSubsystem, intakeDeployer));
+                intakeSubsystem.setDefaultCommand(new SpinIntake(intakeSubsystem));
             if (controllerSubsystem != null) {
                 intakeDeployer.setDefaultCommand(new RunDeployer(intakeDeployer));
                 anglerSubsystem.setDefaultCommand(new DefaultAnglerControl(anglerSubsystem, controllerSubsystem));
@@ -477,10 +477,10 @@ public class RobotContainer {
 
                         SmartDashboard.putData(
                                         "intakedeployer/InitlizeDeployer",
-                                        new ToggleDeployment(intakeDeployer, controllerSubsystem));
+                                        new ToggleDeployment(intakeDeployer));
                         SmartDashboard.putData(
                                         "Spin Intake",
-                                        new SpinIntake(intakeSubsystem, intakeDeployer));
+                                        new SpinIntake(intakeSubsystem));
                         SmartDashboard.putData(
                                         "Reverse Intake",
                                         new ReverseIntake(intakeSubsystem));

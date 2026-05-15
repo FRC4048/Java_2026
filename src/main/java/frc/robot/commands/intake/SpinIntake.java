@@ -7,12 +7,10 @@ import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.utils.logging.commands.LoggableCommand;
 
 public class SpinIntake extends LoggableCommand {
-    private final IntakeDeployerSubsystem intakeDeployer;
     private final IntakeSubsystem subsystem;
 
-    public SpinIntake(IntakeSubsystem subsystem, IntakeDeployerSubsystem intakeDeployer) {
+    public SpinIntake(IntakeSubsystem subsystem) {
         this.subsystem = subsystem;
-        this.intakeDeployer = intakeDeployer;
         addRequirements(subsystem);
     }
 
@@ -22,11 +20,7 @@ public class SpinIntake extends LoggableCommand {
 
     @Override
     public void execute() {
-        if (intakeDeployer.getDeploymentState() == DeploymentState.DOWN) {
             subsystem.setSpeed(Constants.INTAKE_SPEED);
-        }else{
-            subsystem.stopMotors();
-        }
     }
 
     @Override

@@ -38,9 +38,9 @@ public class ControllerSubsystem extends SubsystemBase {
 
     // Placeholder target poses until real field target values are finalized
     private static final Pose2d BLUE_HUB_TARGET_POSE = new Pose2d(Constants.BLUE_HUB_X_POSITION,
-            Constants.BLUE_HUB_Y_POSITION, Rotation2d.kZero);
+            Constants.BLUE_HUB_Y_ADJUSTED_POSITION, Rotation2d.kZero);
     private static final Pose2d RED_HUB_TARGET_POSE = new Pose2d(Constants.RED_HUB_X_POSITION,
-            Constants.RED_HUB_Y_POSITION, Rotation2d.kZero);
+            Constants.RED_HUB_Y_ADJUSTED_POSITION, Rotation2d.kZero);
     private static final String MANUAL_POSE_X_KEY = "controller/ManualPoseX";
     private static final String MANUAL_POSE_Y_KEY = "controller/ManualPoseY";
     private static final String MANUAL_POSE_R_KEY = "controller/ManualPoseRotation";
@@ -52,7 +52,7 @@ public class ControllerSubsystem extends SubsystemBase {
     private static final String TARGET_TURRET_ANGLE_KEY = "controller/TargetTurretAngleDegrees";
     private static final String TARGET_FEEDER_SPEED_KEY = "controller/TargetFeederSpeed";
     private static final String TARGET_HOPPER_SPEED_KEY = "controller/TargetHopperSpeed";
-
+    private boolean isadjustedPosition = false;
     // Placeholder fixed-state settings.
     private static final ShotTargets STOPPED_TARGETS = new ShotTargets(Constants.ANGLER_ANGLE_LOW, 0.0, 0.0, 0.0, false,
             false, false);
@@ -191,6 +191,15 @@ public class ControllerSubsystem extends SubsystemBase {
                     useShotTargets(FIXED_TARGETS);
                 }
             }
+            case AUTO_AIM ->{ if (Robot.allianceColor().isEmpty()) {
+                    useShotTargets(FIXED_TARGETS);
+                } else if (Robot.allianceColor().get().equals(DriverStation.Alliance.Blue)) {
+                    useShotTargets(calculateTargetsFromPose(state, BLUE_HUB_PROFILE, robotPosePredictionCalculation(BLUE_HUB_PROFILE.targetPose,robotPose)));
+                } else if (Robot.allianceColor().get().equals(DriverStation.Alliance.Red)) {
+                    useShotTargets(calculateTargetsFromPose(state, RED_HUB_PROFILE, robotPosePredictionCalculation(RED_HUB_PROFILE.targetPose,robotPose)));
+                } else {
+                    useShotTargets(FIXED_TARGETS);
+                }}
         }
     }
 
@@ -211,16 +220,12 @@ public class ControllerSubsystem extends SubsystemBase {
     }
 
     private void useShotTargets(ShotTargets shotTargets) {
-        double shooterVelocityRpm = shotTargets.shooterVelocityRpm;
-        if (isTurretTargetOutOfRange(shotTargets.turretAngleDegrees) && shooterVelocityRpm != 0.0) {
-            shooterVelocityRpm = Constants.TURRET_OUT_OF_RANGE_FLOP_RPM;
-        }
 
         // This makes everything wait until after the shooter has run for half a second before starting
         if (shootDelayTimer.hasElapsed(SHOOT_DELAY_SECONDS)) {
             activeTargets = new ShotTargets(
                     shotTargets.anglerAngleDegrees,
-                    shooterVelocityRpm,
+                    shotTargets.shooterVelocityRpm,
                     shotTargets.turretAngleDegrees,
                     shotTargets.distanceMeters,
                     shotTargets.hopperSpin,
@@ -229,7 +234,7 @@ public class ControllerSubsystem extends SubsystemBase {
         } else {
             activeTargets = new ShotTargets(
                     shotTargets.anglerAngleDegrees,
-                    shooterVelocityRpm, // Shooter starts half a second before everything else
+                    shotTargets.shooterVelocityRpm, // Shooter starts half a second before everything else
                     shotTargets.turretAngleDegrees,
                     shotTargets.distanceMeters,
                     false,
@@ -249,14 +254,14 @@ public class ControllerSubsystem extends SubsystemBase {
         double anglerAngleDegrees = calculateAnglerAngleDegrees(state, computedDistanceMeters, profile);
         double shooterVelocity = calculateShooterVelocity(state, computedDistanceMeters, profile);
         double turretAngleDegrees = calculateTurretAngleDegrees(state, robotPose, profile);
-        return new ShotTargets(anglerAngleDegrees, shooterVelocity, turretAngleDegrees, computedDistanceMeters, true,
-                true, true);
+        return new ShotTargets(anglerAngleDegrees, shooterVelocity, turretAngleDegrees, computedDistanceMeters, state != ShootState.AUTO_AIM,
+                state != ShootState.AUTO_AIM, true);
     }
 
     private double calculateDistanceMeters(ShootState state, Pose2d robotPose, Pose2d targetPose) {
         double distance = robotPose.getTranslation()
                 .getDistance(targetPose.getTranslation());
-        if (state == ShootState.SHOOTING_HUB) {
+        if (state == ShootState.SHOOTING_HUB || state == ShootState.AUTO_AIM) {
             if (distance > Constants.MAX_HUB_DISTANCE) {
                 return Constants.MAX_HUB_DISTANCE;
             } else if (distance < Constants.MIN_HUB_DISTANCE) {
@@ -290,7 +295,7 @@ public class ControllerSubsystem extends SubsystemBase {
     }
 
     private double calculateAnglerAngleDegrees(ShootState state, double computedDistanceMeters, PoseControlProfile profile) {
-        if (state == ShootState.SHOOTING_HUB) {
+        if (state == ShootState.SHOOTING_HUB || state == ShootState.AUTO_AIM) {
             double distance = (UnitConversion.METER_TO_FOOT * computedDistanceMeters) - Constants.COMPUTATED_DISTANCE_OFFSET;
             return 0.169 * distance * distance
                     - 1.73 * distance
@@ -301,10 +306,10 @@ public class ControllerSubsystem extends SubsystemBase {
 
     private double calculateShooterVelocity(ShootState state, double computedDistanceMeters, PoseControlProfile profile) {
         double distance = (UnitConversion.METER_TO_FOOT * computedDistanceMeters) - Constants.COMPUTATED_DISTANCE_OFFSET;
-        if (state == ShootState.SHOOTING_HUB) {
-            return (8.46 * distance * distance
-                    - 237 * distance
-                    - 1380);
+        if (state == ShootState.SHOOTING_HUB || state == ShootState.AUTO_AIM) {
+            return (-3.35357 * distance * distance
+                    -36.02163 * distance
+                    -1920.78263);
         } else if (state == ShootState.SHUTTLING) {
             return (((-distance * distance) - 5 * distance) - 2800);
         }
@@ -312,15 +317,22 @@ public class ControllerSubsystem extends SubsystemBase {
     }
 
     private double calculateTurretAngleDegrees(ShootState state, Pose2d robotPose, PoseControlProfile profile) {
-        if (state == ShootState.SHOOTING_HUB || state == ShootState.SHUTTLING) {
+        if (state == ShootState.SHOOTING_HUB || state == ShootState.AUTO_AIM || state == ShootState.SHUTTLING) {
             return Math.floor(
                     Math.toDegrees(TurretCalculations.calculateTurretAngle(state, robotPose.getX(), robotPose.getY(),
                             robotPose.getRotation().getRadians(),
-                            Robot.allianceColor().get() == DriverStation.Alliance.Blue)));
+                            Robot.allianceColor().get() == DriverStation.Alliance.Blue, isadjustedPosition)));
         }
         return profile.defaultTurretAngleDegrees;
     }
 
+    public void toggleAdjustedPosition(){
+        if(isadjustedPosition){
+            isadjustedPosition = false;
+        }else{
+            isadjustedPosition = true;
+        }
+    }
     // Getters for all the subsystems to set posistion.
     public double getTargetAnglerAngleDegrees() {
         return activeTargets.anglerAngleDegrees;

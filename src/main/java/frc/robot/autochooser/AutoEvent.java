@@ -40,6 +40,9 @@ public class AutoEvent {
   public AutoAction getAction() {
     return action;
   }
+  public String getActionName() {
+    return action.name();
+  }
 
   public FieldLocation getLocation() {
     return location;

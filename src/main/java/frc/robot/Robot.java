@@ -175,9 +175,6 @@ public class Robot extends LoggedRobot {
 
         // Hub is always active during autonomous.
         hubActive = true;
-       // robotContainer.getDriveBase().resetOdometry(robotContainer.getAutoChooser().getFieldLocation().getLocation());
-
-        Logger.recordOutput("/RobotTimer/autoInit", Timer.getFPGATimestamp() - start);
   }
 
   /** This function is called periodically during autonomous. */
@@ -204,10 +201,7 @@ public class Robot extends LoggedRobot {
 
     @Override
     public void teleopInit() {
-        double start = Timer.getFPGATimestamp();
-
         new SetShootingState(robotContainer.getShootingState(), ShootState.STOPPED).schedule();
-
         // This makes sure that the autonomous stops running when
         // teleop starts running. If you want the autonomous to
         // continue until interrupted by another command, remove
@@ -218,14 +212,11 @@ public class Robot extends LoggedRobot {
         if (autonomousCommand != null) {
             autonomousCommand.cancel();
         }
-
-        Logger.recordOutput("/RobotTimer/teleInit", Timer.getFPGATimestamp() - start);
     }
 
   /** This function is called periodically during operator control. */
     @Override
   public void teleopPeriodic() {
-        double start = Timer.getFPGATimestamp();
         // Check who won autonomous.
       if (autonomousWinner == null) {
           determineAutonomousWinner();
@@ -233,8 +224,6 @@ public class Robot extends LoggedRobot {
           determineHubActive();
           determineHubCountdown();
       }
-
-        Logger.recordOutput("/RobotTimer/telePeriodic", Timer.getFPGATimestamp() - start);
     }
 
     private void determineAutonomousWinner() {

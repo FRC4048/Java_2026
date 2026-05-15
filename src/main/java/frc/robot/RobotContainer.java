@@ -331,7 +331,7 @@ public class RobotContainer {
                                         () -> driveJoystick.getX() * -1)
                                         .withControllerRotationAxis(() -> {return steerJoystick.getX() * -1;})
                                         .deadband(Constants.DEADBAND)
-                                        .scaleTranslation(0.8)
+                                        .scaleTranslation(1)
                                         .allianceRelativeControl(true);
                         Command driveFieldOrientedAnglularVelocity = drivebase.driveFieldOriented(driveAngularVelocity);
                         drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity);
@@ -354,9 +354,10 @@ public class RobotContainer {
                 if (Constants.DEBUG) {
                         SmartDashboard.putNumber(RunDashboardShotTest.ANGLER_TARGET_POSITION_KEY, 0.0);
                         SmartDashboard.putNumber(RunDashboardShotTest.SHOOTER_TARGET_RPM_KEY, Constants.SHOOTER_SPEED);
+                        SmartDashboard.putNumber(RunDashboardShotTest.HOPPER_TARGET_SPEED_KEY, Constants.HOPPER_SPEED);
                  SmartDashboard.putData(
                                         "test/Run Dashboard Shot Test (30s)",
-                                        new RunDashboardShotTest(anglerSubsystem, shooterSubsystem));
+                                        new RunDashboardShotTest(anglerSubsystem, shooterSubsystem, hopperSubsystem, feederSubsystem));
                 SmartDashboard.putData("RunHoppperAndFeeder",
                                         new RunHopperAndFeeder(hopperSubsystem, feederSubsystem));
                         /*

@@ -47,7 +47,7 @@ public class GameConstants {
     //Speeds
     public static final double INTAKE_SPEED = -0.7;
     public static final double INTAKE_REVERSE_SPEED = 0.5;
-    public static final double HOPPER_SPEED = 0.6;
+    public static final double HOPPER_SPEED = 1;
     public static final double HOPPER_AUTO_SPEED = 0.35;
     public static final double HOPPER_SHUTTLING_SPEED = 0.8;
     public static final double HOPPER_REVERSE_SPEED = -0.5;
@@ -177,11 +177,13 @@ public class GameConstants {
     public static final double AVERAGE_CAM_LATENCY_STD_DEV = 0; // seconds; TODO: change Later
     public static final double MAX_VISION_DISTANCE_SIMULATION = 6;
 
-    public static final double MAX_HUB_DISTANCE = 6;// Meters
+    public static final double MAX_HUB_DISTANCE = 7;// Meters
     public static final double MIN_HUB_DISTANCE = 1.42;// Meters
     public static final double COMPUTATED_DISTANCE_OFFSET = 0;
     public static final double RED_SHUTTLING_TARGET_X_POSITION = 13.8;
     public static final double BLUE_SHUTTLING_TARGET_X_POSITION = 2.8;
     public static final double SHUTTLING_TARGET_LOWER_Y_POSITION = 2.6;
     public static final double SHUTTLING_TARGET_HIGHER_Y_POSITION = 5.5;
+    public static final int TCP_SERVER_PORT1 = 5806;
+    public static final int TCP_SERVER_PORT2 = 5807;
 }

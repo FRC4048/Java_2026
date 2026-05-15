@@ -215,18 +215,13 @@ public class ControllerSubsystem extends SubsystemBase {
     }
 
     private void useShotTargets(ShotTargets shotTargets) {
-        
-        double shooterVelocityRpm = shotTargets.shooterVelocityRpm;
-        if (isTurretTargetOutOfRange(shotTargets.turretAngleDegrees) && shooterVelocityRpm != 0.0) {
-            shooterVelocityRpm = Constants.TURRET_OUT_OF_RANGE_FLOP_RPM;
-        }
 
         // This makes everything wait until after the shooter has run for half a second before starting
         if (shootDelayTimer.hasElapsed(SHOOT_DELAY_SECONDS)) {
 
             activeTargets = new ShotTargets(
                 shotTargets.anglerAngleDegrees,
-                shooterVelocityRpm,
+                shotTargets.shooterVelocityRpm,
                 shotTargets.turretAngleDegrees,
                 shotTargets.distanceMeters,
                 shotTargets.hopperSpin,
@@ -237,7 +232,7 @@ public class ControllerSubsystem extends SubsystemBase {
 
             activeTargets = new ShotTargets(
                 shotTargets.anglerAngleDegrees,
-                shooterVelocityRpm, // Shooter starts half a second before everything else
+                shotTargets.shooterVelocityRpm, // Shooter starts half a second before everything else
                 shotTargets.turretAngleDegrees,
                 shotTargets.distanceMeters,
                 false,
@@ -310,10 +305,9 @@ public class ControllerSubsystem extends SubsystemBase {
     private double calculateShooterVelocity(ShootState state, double computedDistanceMeters, PoseControlProfile profile) {
         double distance = (UnitConversion.METER_TO_FOOT * computedDistanceMeters) - Constants.COMPUTATED_DISTANCE_OFFSET;
         if (state == ShootState.SHOOTING_HUB || state == ShootState.AUTO_AIM) {
-            return (-0.583675*distance*distance*distance
-                    +20.18291*distance*distance
-                    -261.37309*distance
-                    -1324.19278);
+            return (-3.35357 * distance * distance 
+                    -36.02163 * distance
+                    -1920.78263);
         }else if(state == ShootState.SHUTTLING){
             return (((-distance*distance) - 5 * distance) - 2800);
         }

@@ -172,9 +172,9 @@ public class Robot extends LoggedRobot {
         // schedule the autonomous command (example)
         mode.set(RobotMode.AUTONOMOUS);
 
-    // Hub is always active during autonomous.
-    hubActive = true;
-    robotContainer.getDriveBase().resetOdometry(robotContainer.getAutoChooser().getFieldLocation().getLocation());
+        // Hub is always active during autonomous.
+        hubActive = true;
+        robotContainer.getDriveBase().resetOdometry(robotContainer.getAutoChooser().getFieldLocation().getLocation());
   }
 
   /** This function is called periodically during autonomous. */
@@ -208,14 +208,14 @@ public class Robot extends LoggedRobot {
   /** This function is called periodically during operator control. */
     @Override
   public void teleopPeriodic() {
-      // Check who won autonomous.
+        // Check who won autonomous.
       if (autonomousWinner == null) {
           determineAutonomousWinner();
       } else {
           determineHubActive();
           determineHubCountdown();
       }
-  }
+    }
 
     private void determineAutonomousWinner() {
         autonomousWinner = DriverStation.getGameSpecificMessage();

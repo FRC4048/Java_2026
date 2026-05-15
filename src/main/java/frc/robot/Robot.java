@@ -134,7 +134,27 @@ public class Robot extends LoggedRobot {
             allianceColor = DriverStation.getAlliance();
         }
 
-        Logger.recordOutput("MyPose", robotContainer.getDriveBase().getPose());
+        SmartDashboard.putBoolean("Hub Active?", hubActive());
+        if (Constants.DEBUG) {
+            SmartDashboard.putNumber("driverXbox.getLeftY()", driverXbox.getLeftY());
+            SmartDashboard.putNumber("driverXbox::getRightX", driverXbox.getRightX());
+            if (!Constants.TESTBED) {
+                Logger.recordOutput("MyPose", robotContainer.getDriveBase().getPose());
+                logComponentsForSimulation();
+
+                // Puts data on the elastic dashboard
+                SmartDashboard.putString("Alliance Color", Robot.allianceColorString());
+                if (Constants.currentMode == Constants.Mode.SIM) {
+                    Logger.recordOutput("SimPose", robotContainer.getDriveBase().getSimulationPose().get());
+                    Logger.recordOutput("OdomPose", robotContainer.getDriveBase().getSimulationPose().get());
+                }
+            }
+        }
+        SmartDashboard.putString("Selected Action",
+                robotContainer.getAutoChooser().getCommandDescription());
+    }
+
+    private void logComponentsForSimulation() {
         Logger.recordOutput("ZeroPose", Pose2d.kZero);
 
         Translation3d intakePosition = new Translation3d(0.3, 0, 0.3);
@@ -165,26 +185,9 @@ public class Robot extends LoggedRobot {
         Pose3d angler = new Pose3d(adjustedAnglerPosition, anglerRotation);
 
         Logger.recordOutput("ZeroedComponents", new Pose3d[] { Pose3d.kZero, intake, hopper, turret, shooter, angler });
-
-        SmartDashboard.putBoolean("Hub Active?", hubActive());
-        if (Constants.DEBUG) {
-            SmartDashboard.putNumber("driverXbox.getLeftY()", driverXbox.getLeftY());
-            SmartDashboard.putNumber("driverXbox::getRightX", driverXbox.getRightX());
-            if (!Constants.TESTBED) {
-
-                // Puts data on the elastic dashboard
-                SmartDashboard.putString("Alliance Color", Robot.allianceColorString());
-                if (Constants.currentMode == Constants.Mode.SIM) {
-                    Logger.recordOutput("SimPose", robotContainer.getDriveBase().getSimulationPose().get());
-                    Logger.recordOutput("OdomPose", robotContainer.getDriveBase().getSimulationPose().get());
-                }
-            }
-        }
-        SmartDashboard.putString("Selected Action",
-                robotContainer.getAutoChooser().getCommandDescription());
     }
 
-  /** This function is called once each time the robot enters Disabled mode. */
+    /** This function is called once each time the robot enters Disabled mode. */
     @Override
     public void disabledInit() {
         mode.set(RobotMode.DISABLED);

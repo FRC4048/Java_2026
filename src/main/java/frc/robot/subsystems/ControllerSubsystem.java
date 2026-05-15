@@ -4,6 +4,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Twist2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import frc.robot.Robot;
+import frc.robot.constants.enums.DeploymentState;
 import frc.robot.utils.math.TurretCalculations;
 
 import java.util.ArrayList;
@@ -160,9 +161,9 @@ public class ControllerSubsystem extends SubsystemBase {
     }
 
     private void updateTargets(ShootState state, Pose2d robotPose) {
-//        if (!activeTargets.intakeDeploy && intakeDeployer.getDeploymentState() == DeploymentState.DOWN) {
-//            new SetDeploymentState(intakeDeployer, DeploymentState.STOPPED).schedule();
-//        }
+        if (!activeTargets.intakeDeploy && intakeDeployer.getDeploymentState() == DeploymentState.DOWN) {
+            new SetDeploymentState(intakeDeployer, DeploymentState.STOPPED).schedule();
+        }
         switch (state) {
             case STOPPED -> updateStoppedTargets();
             case FIXED -> useShotTargets(FIXED_TARGETS);

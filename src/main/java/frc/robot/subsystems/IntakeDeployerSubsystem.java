@@ -81,7 +81,6 @@ public class IntakeDeployerSubsystem extends SubsystemBase {
 
   public static SparkMaxIo createSimIo(RobotVisualizer visualizer) {
     SparkMax motor = createMotor();
-    MotorSimulator simulator = new MotorSimulator(motor, visualizer.getIntakeDeploymentLigament());
     ArmParameters params = new ArmParameters();
     params.armGearing = 100.0;
     params.armInertia = 10.0;

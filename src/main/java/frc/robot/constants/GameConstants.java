@@ -60,6 +60,8 @@ public class GameConstants {
     public static final double INTAKE_RETRACTION_SPEED = 0.1;
     public static final double INITIAL_INTAKE_DEPLOYMENT_SPEED = -0.3;
     public static final double INITIAL_INTAKE_RETRACTION_SPEED = 0.5;
+        public static final double AGITATOR_DOWN = -0.05;
+    public static final double AGITATIOR_UP = 0.05;
 
 
     //Diags

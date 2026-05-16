@@ -23,6 +23,7 @@ public class ToggleDeployment extends LoggableCommand {
 
   @Override
   public void initialize() { 
+    subsystem.toggleState();
       timer.restart();
   }
 

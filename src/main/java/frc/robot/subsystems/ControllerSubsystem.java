@@ -155,9 +155,6 @@ public class ControllerSubsystem extends SubsystemBase {
     }
 
     private void updateTargets(ShootState state, Pose2d robotPose) {
-        if(!activeTargets.intakeDeploy && intakeDeployer.getDeploymentState() == DeploymentState.DOWN){
-            new SetDeploymentState(intakeDeployer, DeploymentState.STOPPED).schedule();
-        }
         switch (state) {
             case STOPPED -> updateStoppedTargets();
             case FIXED -> useShotTargets(FIXED_TARGETS);

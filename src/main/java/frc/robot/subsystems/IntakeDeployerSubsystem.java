@@ -102,8 +102,8 @@ public class IntakeDeployerSubsystem extends SubsystemBase {
     this.deploymentState = deploymentState;
   }
 
-  public void toggleState(boolean canDeploy) {
-    if (deploymentState == DeploymentState.UP && canDeploy) {
+  public void toggleState() {
+    if (deploymentState == DeploymentState.UP) {
       deploymentState = DeploymentState.DOWN;
     } else {
       deploymentState = DeploymentState.UP;

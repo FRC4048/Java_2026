@@ -36,11 +36,14 @@ import frc.robot.commands.drive.DriveSwerve;
 import frc.robot.commands.drive.FakeVision;
 import frc.robot.commands.feeder.DefaultSpinFeeder;
 import frc.robot.commands.feeder.SpinFeeder;
+import frc.robot.commands.hopper.AutoSpinHopper;
 import frc.robot.commands.hopper.DefaultSpinHopper;
+import frc.robot.commands.hopper.ReverseHopper;
 import frc.robot.commands.hopper.SpinHopper;
 import frc.robot.commands.intake.ReverseIntake;
 import frc.robot.commands.intake.SpinIntake;
 import frc.robot.commands.intake.StopIntake;
+import frc.robot.commands.intakeDeployment.ForceDeployDown;
 import frc.robot.commands.intakeDeployment.RunDeployer;
 import frc.robot.commands.intakeDeployment.SetDeploymentState;
 import frc.robot.commands.intakeDeployment.ToggleDeployment;
@@ -55,6 +58,7 @@ import frc.robot.commands.turret.RunTurretToFwdLimit;
 import frc.robot.commands.turret.RunTurretToRevLimit;
 import frc.robot.commands.turret.SetTurretAngle;
 import frc.robot.commands.turret.TestSetTurretAngle;
+import frc.robot.commands.turret.ToggleAdjustedPosition;
 import frc.robot.constants.Constants;
 import frc.robot.constants.enums.DeploymentState;
 import frc.robot.constants.enums.DriveDirection;
@@ -299,8 +303,7 @@ public class RobotContainer {
                 controller.povRight().onTrue(new SetShootingState(shootState, ShootState.STOPPED));
                 controller.povDown().onTrue(new SetShootingState(shootState, ShootState.SHOOTING_HUB));
                 controller.povLeft().onTrue(new SetShootingState(shootState, ShootState.SHUTTLING));
-                controller.leftTrigger().onTrue((new ResetAll(anglerSubsystem, climberSubsystem, 
-                        intakeDeployer, intakeSubsystem, shooterSubsystem, turretSubsystem, shootState)));
+                controller.leftTrigger().whileTrue(new ReverseHopper(hopperSubsystem));
                 controller.rightTrigger().whileTrue(new ReverseIntake(intakeSubsystem));
                 driveJoystick.trigger().whileTrue((new SetShootingState(shootState, ShootState.STOPPED)));
 
@@ -319,8 +322,8 @@ public class RobotContainer {
                 intakeDeployer.setDefaultCommand(new RunDeployer(intakeDeployer));
                 anglerSubsystem.setDefaultCommand(new DefaultAnglerControl(anglerSubsystem, controllerSubsystem));
                 shooterSubsystem.setDefaultCommand(new DefaultShooterControl(shooterSubsystem, controllerSubsystem));
-                //turretSubsystem.setDefaultCommand(new ManualTurretMove(turretSubsystem, controller));
-                hopperSubsystem.setDefaultCommand(new DefaultSpinHopper(hopperSubsystem, controllerSubsystem));
+                //turretSubsystem.setDefaultCommand(new DefaultTurretControl(turretSubsystem, controllerSubsystem));
+                hopperSubsystem.setDefaultCommand(new DefaultSpinHopper(hopperSubsystem, controllerSubsystem, shootState));
                 feederSubsystem.setDefaultCommand(new DefaultSpinFeeder(feederSubsystem, controllerSubsystem));
             }
 
@@ -330,7 +333,7 @@ public class RobotContainer {
                                         () -> driveJoystick.getX() * -1)
                                         .withControllerRotationAxis(() -> {return steerJoystick.getX() * -1;})
                                         .deadband(Constants.DEADBAND)
-                                        .scaleTranslation(0.8)
+                                        .scaleTranslation(1)
                                         .allianceRelativeControl(true);
                         Command driveFieldOrientedAnglularVelocity = drivebase.driveFieldOriented(driveAngularVelocity);
                         drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity);
@@ -338,12 +341,25 @@ public class RobotContainer {
         }
 
         public void putShuffleboardCommands() {
+                                SmartDashboard.putData(
+                                        "intakedeployer/Deployment State: UP",
+                                        new SetDeploymentState(intakeDeployer, DeploymentState.UP));
+                        SmartDashboard.putData(
+                                        "intakedeployer/Deployment State: DOWN",
+                                        new SetDeploymentState(intakeDeployer, DeploymentState.DOWN));
+                                        SmartDashboard.putData(
+                                        "Shooting State: Auto aim",
+                                        new SetShootingState(shootState, ShootState.AUTO_AIM));
+                                        SmartDashboard.putData("AutoRunHopper",
+                                        new AutoSpinHopper(hopperSubsystem));
+
                 if (Constants.DEBUG) {
                         SmartDashboard.putNumber(RunDashboardShotTest.ANGLER_TARGET_POSITION_KEY, 0.0);
                         SmartDashboard.putNumber(RunDashboardShotTest.SHOOTER_TARGET_RPM_KEY, Constants.SHOOTER_SPEED);
+                        SmartDashboard.putNumber(RunDashboardShotTest.HOPPER_TARGET_SPEED_KEY, Constants.HOPPER_SPEED);
                  SmartDashboard.putData(
                                         "test/Run Dashboard Shot Test (30s)",
-                                        new RunDashboardShotTest(anglerSubsystem, shooterSubsystem));
+                                        new RunDashboardShotTest(anglerSubsystem, shooterSubsystem, hopperSubsystem, feederSubsystem));
                 SmartDashboard.putData("RunHoppperAndFeeder",
                                         new RunHopperAndFeeder(hopperSubsystem, feederSubsystem));
                         /*
@@ -468,12 +484,19 @@ public class RobotContainer {
                                         "Spin Intake",
                                         new SpinIntake(intakeSubsystem, intakeDeployer));
                         SmartDashboard.putData(
+                                        "Reverse Intake",
+                                        new ReverseIntake(intakeSubsystem));
+
+                        SmartDashboard.putData(
                                         "Stop Intake",
                                         new StopIntake(intakeSubsystem));
 
                         SmartDashboard.putData(
                                         "Start Hopper",
                                         new SpinHopper(hopperSubsystem));
+                        SmartDashboard.putData(
+                                        "Reverse Hopper",
+                                        new ReverseHopper(hopperSubsystem));
 
                         SmartDashboard.putData(
                                         "Climber Up",
@@ -511,14 +534,12 @@ public class RobotContainer {
                                         "Shooting State: Shuttling",
                                         new SetShootingState(shootState, ShootState.SHUTTLING));
                         SmartDashboard.putData(
-                                        "intakedeployer/Deployment State: UP",
-                                        new SetDeploymentState(intakeDeployer, DeploymentState.UP));
-                        SmartDashboard.putData(
-                                        "intakedeployer/Deployment State: DOWN",
-                                        new SetDeploymentState(intakeDeployer, DeploymentState.DOWN));
-                        SmartDashboard.putData(
                                         "intakedeployer/Deployment State: STOPPED",
                                         new SetDeploymentState(intakeDeployer, DeploymentState.STOPPED));
+                        SmartDashboard.putData(
+                                "Reset All",
+                                new ResetAll(anglerSubsystem, climberSubsystem, 
+                        intakeDeployer, intakeSubsystem, shooterSubsystem, turretSubsystem, shootState));
 
                 }
 

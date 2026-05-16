@@ -29,6 +29,10 @@ public class SetLed extends LoggableCommand {
 
     @Override
     public void initialize() {
+    }
+
+    @Override
+    public void execute() {
         if (controllerSubsystem.getTargetShooterVelocityRpm() > -1500) {
             if (controllerSubsystem.getTargetShooterVelocityRpm() > shooterSubsystem.getRPM()
                     * Constants.SHOOTER_RPM_THRESHOLD) {
@@ -39,10 +43,6 @@ public class SetLed extends LoggableCommand {
         } else {
             lightStrip.setPattern(BlinkinPattern.RAINBOW_PARTY_PALETTE);
         }
-    }
-
-    @Override
-    public void execute() {
     }
 
     @Override

@@ -4,8 +4,9 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.constants.Constants;
 import frc.robot.subsystems.IntakeDeployerSubsystem;
+import frc.robot.utils.logging.commands.LoggableCommand;
 
-public class Agitate extends Command {
+public class Agitate extends LoggableCommand {
   public final IntakeDeployerSubsystem subsystem;
   public final Timer timer;
   public Agitate(IntakeDeployerSubsystem subsystem) {

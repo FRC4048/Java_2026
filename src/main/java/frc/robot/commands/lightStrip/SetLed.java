@@ -11,13 +11,14 @@ import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import frc.robot.utils.BlinkinPattern;
 import frc.robot.utils.logging.commands.LoggableCommand;
 
-public class SetLed extends LoggableCommand{
+public class SetLed extends LoggableCommand {
 
     private final LightStripSubsystem lightStrip;
     private final ControllerSubsystem controllerSubsystem;
     private final ShooterSubsystem shooterSubsystem;
-  
-    public SetLed(LightStripSubsystem lightStrip, ControllerSubsystem controllerSubsystem,ShooterSubsystem shooterSubsystem) {
+
+    public SetLed(LightStripSubsystem lightStrip, ControllerSubsystem controllerSubsystem,
+            ShooterSubsystem shooterSubsystem) {
 
         this.lightStrip = lightStrip;
         this.controllerSubsystem = controllerSubsystem;
@@ -28,16 +29,17 @@ public class SetLed extends LoggableCommand{
 
     @Override
     public void initialize() {
-        if(controllerSubsystem.getTargetShooterVelocityRpm()>-1500){
-        if(controllerSubsystem.getTargetShooterVelocityRpm() > shooterSubsystem.getRPM()*Constants.SHOOTER_RPM_THRESHOLD){
-            lightStrip.setPattern(BlinkinPattern.STROBE_RED);
-        }else{
-            lightStrip.setPattern(BlinkinPattern.GREEN);
-        }
-        }else{
+        if (controllerSubsystem.getTargetShooterVelocityRpm() > -1500) {
+            if (controllerSubsystem.getTargetShooterVelocityRpm() > shooterSubsystem.getRPM()
+                    * Constants.SHOOTER_RPM_THRESHOLD) {
+                lightStrip.setPattern(BlinkinPattern.STROBE_RED);
+            } else {
+                lightStrip.setPattern(BlinkinPattern.GREEN);
+            }
+        } else {
             lightStrip.setPattern(BlinkinPattern.RAINBOW_PARTY_PALETTE);
         }
-    }  
+    }
 
     @Override
     public void execute() {
@@ -50,7 +52,7 @@ public class SetLed extends LoggableCommand{
 
     @Override
     public void end(boolean interrupted) {
-        
+
     }
-    
+
 }

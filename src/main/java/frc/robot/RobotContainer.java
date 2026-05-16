@@ -293,7 +293,7 @@ public class RobotContainer {
         }
 
         private void configureBindings() {
-                //controller.a().onTrue(new ToggleDeployment(intakeDeployer, controllerSubsystem));
+                controller.a().onTrue(new ToggleDeployment(intakeDeployer, controllerSubsystem));
                 controller.b().onTrue(new SetDeploymentState(intakeDeployer, DeploymentState.STOPPED));
                 controller.x().onTrue(new ForceDeployDown(intakeDeployer, shootState));
                 controller.y().onTrue(new ToggleAdjustedPosition(controllerSubsystem));

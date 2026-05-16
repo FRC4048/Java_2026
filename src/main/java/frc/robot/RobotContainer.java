@@ -249,7 +249,7 @@ public class RobotContainer {
                                 drivebase);
         
                 // example implementation of autoRoutine
-
+                        if(false){
                         // Uses autofactory to create a new routine
                         straightRoutine = autoFactory.newRoutine("StraightRoutine");
 
@@ -295,6 +295,7 @@ public class RobotContainer {
                          * trajectory.doneFor(int)
                          * trajectory.recentlyDone()
                          */
+                        }
                 }}
         
 

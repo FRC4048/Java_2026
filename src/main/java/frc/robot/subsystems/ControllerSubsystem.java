@@ -305,9 +305,6 @@ public class ControllerSubsystem extends SubsystemBase {
             return (-3.35357 * distance * distance 
                     -36.02163 * distance
                     -1920.78263);
-            return (-3.35357 * distance * distance 
-                    -36.02163 * distance
-                    -1920.78263);
         }else if(state == ShootState.SHUTTLING){
             return (((-distance*distance) - 5 * distance) - 2800);
         }

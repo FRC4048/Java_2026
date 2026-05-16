@@ -47,6 +47,7 @@ import frc.robot.commands.intakeDeployment.ForceDeployDown;
 import frc.robot.commands.intakeDeployment.RunDeployer;
 import frc.robot.commands.intakeDeployment.SetDeploymentState;
 import frc.robot.commands.intakeDeployment.ToggleDeployment;
+import frc.robot.commands.lightStrip.SetLed;
 import frc.robot.commands.parallels.RunHopperAndFeeder;
 import frc.robot.commands.shooter.DefaultShooterControl;
 import frc.robot.commands.shooter.SetShootingState;
@@ -316,6 +317,7 @@ public class RobotContainer {
                 // m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
 
                 intakeSubsystem.setDefaultCommand(new SpinIntake(intakeSubsystem, intakeDeployer));
+                lightStripSubsystem.setDefaultCommand(new SetLed(lightStripSubsystem,controllerSubsystem,shooterSubsystem));
             if (controllerSubsystem != null) {
                 intakeDeployer.setDefaultCommand(new RunDeployer(intakeDeployer));
                 anglerSubsystem.setDefaultCommand(new DefaultAnglerControl(anglerSubsystem, controllerSubsystem));

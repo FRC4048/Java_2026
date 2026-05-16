@@ -186,4 +186,6 @@ public class GameConstants {
     public static final double SHUTTLING_TARGET_HIGHER_Y_POSITION = 5.5;
     public static final int TCP_SERVER_PORT1 = 5806;
     public static final int TCP_SERVER_PORT2 = 5807;
+
+    public static final double SHOOTER_RPM_THRESHOLD = 0.9;
 }

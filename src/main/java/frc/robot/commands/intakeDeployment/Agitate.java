@@ -21,10 +21,10 @@ public class Agitate extends Command {
 
   @Override
   public void execute() {
-    if(timer.hasElapsed(1)){
+    if(timer.hasElapsed(Constants.AGITATOR_CYCLE_TIME)){
       timer.restart();
     }
-    subsystem.setSpeed(timer.hasElapsed(0.5) ? Constants.AGITATIOR_UP: Constants.AGITATOR_DOWN);
+    subsystem.setSpeed(timer.hasElapsed(Constants.AGITATOR_CYCLE_TIME/2) ? Constants.AGITATIOR_UP: Constants.AGITATOR_DOWN);
   }
 
   @Override

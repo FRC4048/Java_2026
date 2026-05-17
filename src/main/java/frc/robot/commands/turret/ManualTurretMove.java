@@ -22,7 +22,7 @@ public class ManualTurretMove extends LoggableCommand {
 
   @Override
   public void execute() {
-    subsystem.manualMove(controller.getLeftX()/4);
+    subsystem.manualMove(-controller.getLeftX()/4);
 
   }
 

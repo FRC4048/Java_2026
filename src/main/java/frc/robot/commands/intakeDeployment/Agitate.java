@@ -1,5 +1,7 @@
 package frc.robot.commands.intakeDeployment;
 
+import org.littletonrobotics.junction.Logger;
+
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.constants.Constants;
@@ -23,9 +25,11 @@ public class Agitate extends LoggableCommand {
   @Override
   public void execute() {
     if(timer.hasElapsed(Constants.AGITATOR_CYCLE_TIME)){
-      timer.restart();
+      timer.reset();
+      timer.start();
     }
-    subsystem.setSpeed(timer.hasElapsed(Constants.AGITATOR_CYCLE_TIME/2) ? Constants.AGITATIOR_UP: Constants.AGITATOR_DOWN);
+    subsystem.setSpeed(timer.hasElapsed(Constants.AGITATOR_CYCLE_TIME/2.0) ? Constants.AGITATOR_DOWN: Constants.AGITATIOR_UP);
+    Logger.recordOutput("agitatortimer", timer.hasElapsed(Constants.AGITATOR_CYCLE_TIME/2.0));
   }
 
   @Override

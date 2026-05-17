@@ -57,11 +57,11 @@ public class GameConstants {
     public static final double MAX_SPEED = Units.feetToMeters(14.5);
     public static final double SHOOTER_SPEED = 1500;
     public static final double INTAKE_DEPLOYER_SPEED = -0.075;
-    public static final double INTAKE_RETRACTION_SPEED = 0.1;
+    public static final double INTAKE_RETRACTION_SPEED = 0.075;
     public static final double INITIAL_INTAKE_DEPLOYMENT_SPEED = -0.3;
-    public static final double INITIAL_INTAKE_RETRACTION_SPEED = 0.5;
-    public static final double AGITATOR_DOWN = -0.05;
-    public static final double AGITATIOR_UP = 0.05;
+    public static final double INITIAL_INTAKE_RETRACTION_SPEED = 0.3;
+    public static final double AGITATOR_DOWN = -0.15;
+    public static final double AGITATIOR_UP = 0.15;
 
 
     //Diags
@@ -84,7 +84,7 @@ public class GameConstants {
     public static final double SHOOTER_TIMEOUT = 5;
     public static final double INTAKE_DEPLOYER_TIMEOUT_TIMER = 5;
     public static final double TURRET_TIMEOUT = 5;
-    public static final int AGITATOR_CYCLE_TIME = 1;
+    public static final int AGITATOR_CYCLE_TIME = 3;
 
     //Angles
     public static final Rotation2d ANGLER_MIN_ANGLE = Rotation2d.fromDegrees(45);

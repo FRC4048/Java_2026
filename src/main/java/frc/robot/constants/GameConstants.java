@@ -45,8 +45,8 @@ public class GameConstants {
     public static final int XBOX_CONTROLLER_PORT = 2;
 
     //Speeds
-    public static final double INTAKE_SPEED = 0.6;
-    public static final double INTAKE_REVERSE_SPEED = 0.5;
+    public static final double INTAKE_SPEED = 0.8;
+    public static final double INTAKE_REVERSE_SPEED = -0.5;
     public static final double HOPPER_SPEED = 1;
     public static final double HOPPER_AUTO_SPEED = 0.35;
     public static final double HOPPER_SHUTTLING_SPEED = 0.8;

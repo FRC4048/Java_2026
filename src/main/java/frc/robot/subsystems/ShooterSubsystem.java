@@ -95,13 +95,13 @@ public class ShooterSubsystem extends SubsystemBase {
     // setPidVelocity expects a speed in RPM
     public void setPidVelocity(double velocity) {
         if(Constants.SLOT0_SHOOTER_PID_THRESHOLD < velocity){
-        io.setPidVelocity(velocity, ClosedLoopSlot.kSlot0);
+            io.setPidVelocity(velocity, ClosedLoopSlot.kSlot0);
         }else if(Constants.SLOT1_SHOOTER_PID_THRESHOLD < velocity){
-        io.setPidVelocity(velocity,ClosedLoopSlot.kSlot1);
+            io.setPidVelocity(velocity,ClosedLoopSlot.kSlot1);
         }else if(Constants.SLOT2_SHOOTER_PID_THRESHOLD < velocity){
-        io.setPidVelocity(velocity,ClosedLoopSlot.kSlot2);
+            io.setPidVelocity(velocity,ClosedLoopSlot.kSlot2);
         }else{
-        io.setPidVelocity(velocity,ClosedLoopSlot.kSlot3);
+            io.setPidVelocity(velocity,ClosedLoopSlot.kSlot3);
         }
     }
 

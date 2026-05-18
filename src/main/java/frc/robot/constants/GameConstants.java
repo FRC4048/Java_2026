@@ -113,7 +113,7 @@ public class GameConstants {
 
 
  // turret (pan angle) PID
-    public static final double TURRET_SHORT_RANGE_P = 0.002;
+    public static final double TURRET_SHORT_RANGE_P = 0.2;
     public static final double TURRET_SHORT_RANGE_I = 0.000000;
     public static final double TURRET_SHORT_RANGE_D = 0.001;
     public static final double TURRET_SHORT_RANGE_FF = 0.0;

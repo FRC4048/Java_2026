@@ -186,4 +186,10 @@ public class GameConstants {
     public static final double SHUTTLING_TARGET_HIGHER_Y_POSITION = 5.5;
     public static final int TCP_SERVER_PORT1 = 5806;
     public static final int TCP_SERVER_PORT2 = 5807;
+
+
+    //Upper bounds of the shooter pid for each slot the third slot is anything past the second
+    public static final double SLOT0_SHOOTER_PID_THRESHOLD = -2000;
+    public static final double SLOT1_SHOOTER_PID_THRESHOLD = -3000;
+    public static final double SLOT2_SHOOTER_PID_THRESHOLD = -4000;
 }

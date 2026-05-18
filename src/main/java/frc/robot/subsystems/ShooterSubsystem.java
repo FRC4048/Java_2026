@@ -4,6 +4,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix6.controls.Follower;
 import com.revrobotics.spark.SparkLowLevel;
 import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.ClosedLoopSlot;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.config.SparkBaseConfig;
@@ -44,13 +45,37 @@ public class ShooterSubsystem extends SubsystemBase {
 
     public ShooterSubsystem(SparkMaxPidMotorIo io) {
         this.io = io ;
-        this.pidManager = new TunablePIDManager(LOGGING_NAME, io, createPidConfig());
+        this.pidManager = new TunablePIDManager(LOGGING_NAME, io, createPidConfig0());
         //  io.setPid(0.0000002, 0.000015, 0.000015); // Pid needs tuning
         stopMotors();
     }
 
-    private static SparkMaxPidConfig createPidConfig() {
-        return new SparkMaxPidConfig(false)
+    private static SparkMaxPidConfig createPidConfig0() {
+        return new SparkMaxPidConfig(false, ClosedLoopSlot.kSlot0)
+                .setCurrentLimit(Constants.NEO_CURRENT_LIMIT)
+                .setAllowedError(.1)
+                .setIdleMode(IdleMode.kCoast)
+                .setPid(0.0003,0.000000005,0.005)
+                .setFF(0.0025);
+    }
+    private static SparkMaxPidConfig createPidConfig1() {
+        return new SparkMaxPidConfig(false, ClosedLoopSlot.kSlot1)
+                .setCurrentLimit(Constants.NEO_CURRENT_LIMIT)
+                .setAllowedError(.1)
+                .setIdleMode(IdleMode.kCoast)
+                .setPid(0.0003,0.000000005,0.005)
+                .setFF(0.0025);
+    }
+    private static SparkMaxPidConfig createPidConfig2() {
+        return new SparkMaxPidConfig(false, ClosedLoopSlot.kSlot2)
+                .setCurrentLimit(Constants.NEO_CURRENT_LIMIT)
+                .setAllowedError(.1)
+                .setIdleMode(IdleMode.kCoast)
+                .setPid(0.0003,0.000000005,0.005)
+                .setFF(0.0025);
+    }
+    private static SparkMaxPidConfig createPidConfig3() {
+        return new SparkMaxPidConfig(false, ClosedLoopSlot.kSlot3)
                 .setCurrentLimit(Constants.NEO_CURRENT_LIMIT)
                 .setAllowedError(.1)
                 .setIdleMode(IdleMode.kCoast)
@@ -69,7 +94,15 @@ public class ShooterSubsystem extends SubsystemBase {
 
     // setPidVelocity expects a speed in RPM
     public void setPidVelocity(double velocity) {
-        io.setPidVelocity(velocity);
+        if(Constants.SLOT0_SHOOTER_PID_THRESHOLD < velocity){
+        io.setPidVelocity(velocity, ClosedLoopSlot.kSlot0);
+        }else if(Constants.SLOT1_SHOOTER_PID_THRESHOLD < velocity){
+        io.setPidVelocity(velocity,ClosedLoopSlot.kSlot1);
+        }else if(Constants.SLOT2_SHOOTER_PID_THRESHOLD < velocity){
+        io.setPidVelocity(velocity,ClosedLoopSlot.kSlot2);
+        }else{
+        io.setPidVelocity(velocity,ClosedLoopSlot.kSlot3);
+        }
     }
 
     @Override
@@ -104,7 +137,8 @@ public class ShooterSubsystem extends SubsystemBase {
         SparkMaxConfig followerConfig = new SparkMaxConfig();
         followerConfig.follow(Constants.SHOOTER_MOTOR_ID, true).idleMode(IdleMode.kCoast);
         followerIo.configure(followerConfig, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
-        return new MotorPair(new SparkMaxPidMotor(Constants.SHOOTER_MOTOR_ID, createPidConfig()),followerIo);
+        return new MotorPair(new SparkMaxPidMotor(Constants.SHOOTER_MOTOR_ID, 
+        createPidConfig0(),createPidConfig1(),createPidConfig2(),createPidConfig3()),followerIo);
     }
     public record MotorPair(SparkMaxPidMotor mainMotor, SparkMax followerMotor){}
     public record MotorPairIO(RealSparkMaxIo mainMotor, RealSparkMaxIo followerMotor){}

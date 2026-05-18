@@ -298,7 +298,7 @@ public class RobotContainer {
                 controller.b().onTrue(new SetDeploymentState(intakeDeployer, DeploymentState.STOPPED));
                 controller.x().onTrue(new ForceDeployDown(intakeDeployer, shootState));
                 controller.y().onTrue(new ToggleAdjustedPosition(controllerSubsystem));
-                controller.leftStick().whileTrue(new ManualTurretMove(turretSubsystem, controller));
+                controller.leftStick().whileTrue(new ManualTurretMove(turretSubsystem, controller::getLeftX));
                 controller.povUp().onTrue(new SetShootingState(shootState, ShootState.FIXED));
                 controller.povRight().onTrue(new SetShootingState(shootState, ShootState.STOPPED));
                 controller.povDown().onTrue(new SetShootingState(shootState, ShootState.SHOOTING_HUB));

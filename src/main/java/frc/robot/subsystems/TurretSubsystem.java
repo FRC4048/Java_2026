@@ -72,7 +72,7 @@ public class TurretSubsystem extends SubsystemBase {
         }
     }
     public void manualMove(double input){
-        if((input > 0 && !isAtForwardLimit())||(input < 0 && !isAtReverseLimit())){
+        if((input > 0 && !isAtForwardLimit())||(input < 0 && !isAtReverseLimit()) || (currentSetPosition+input > Constants.TURRET_ENCODER_MAX) || (currentSetPosition+input > Constants.TURRET_ENCODER_MIN)){
             currentSetPosition += input;
         }
         setPosition(currentSetPosition);

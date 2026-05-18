@@ -117,7 +117,7 @@ public class GameConstants {
     public static final double TURRET_SHORT_RANGE_I = 0.000000;
     public static final double TURRET_SHORT_RANGE_D = 0.001;
     public static final double TURRET_SHORT_RANGE_FF = 0.0;
-    public static final double TURRET_LONG_RANGE_P = 0.002;
+    public static final double TURRET_LONG_RANGE_P = 1;
     public static final double TURRET_LONG_RANGE_I = 0.000000;
     public static final double TURRET_LONG_RANGE_D = 0.0;
     public static final double TURRET_LONG_RANGE_FF = 0.0;

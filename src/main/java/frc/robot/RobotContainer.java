@@ -338,7 +338,8 @@ public class RobotContainer {
         }
 
         public void putShuffleboardCommands() {
-                        SmartDashboard.putData("Run hopper and feeder", new ShootButton(controllerSubsystem));
+                if (Constants.DEBUG) {
+                SmartDashboard.putData("Run hopper and feeder", new ShootButton(controllerSubsystem));
                         SmartDashboard.putData(
                                         "intakedeployer/Deployment State: UP",
                                         new SetDeploymentState(intakeDeployer, DeploymentState.UP));
@@ -353,8 +354,6 @@ public class RobotContainer {
                         SmartDashboard.putData(
                                         "Shooting State: Into Hub",
                                         new SetShootingState(shootState, ShootState.SHOOTING_HUB));
-
-                if (Constants.DEBUG) {
                         SmartDashboard.putNumber(RunDashboardShotTest.ANGLER_TARGET_POSITION_KEY, 0.0);
                         SmartDashboard.putNumber(RunDashboardShotTest.SHOOTER_TARGET_RPM_KEY, Constants.SHOOTER_SPEED);
                         SmartDashboard.putNumber(RunDashboardShotTest.HOPPER_TARGET_SPEED_KEY, Constants.HOPPER_SPEED);

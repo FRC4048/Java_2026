@@ -224,8 +224,8 @@ public class ControllerSubsystem extends SubsystemBase {
                 shotTargets.shooterVelocityRpm,
                 shotTargets.turretAngleDegrees,
                 shotTargets.distanceMeters,
-                shotTargets.hopperSpin,
-                shotTargets.feederSpin,
+                false,
+                false,
                 shotTargets.intakeDeploy);
 
         } else {
@@ -351,11 +351,11 @@ public class ControllerSubsystem extends SubsystemBase {
     }
 
     public boolean shouldFeederSpin() {
-        return activeTargets.feederSpin;
+        return driverActivatedShooting;
     }
 
     public boolean shouldHopperSpin() {
-        return activeTargets.hopperSpin;
+        return driverActivatedShooting;
     }
 
     public boolean canIntakeDeploy() {

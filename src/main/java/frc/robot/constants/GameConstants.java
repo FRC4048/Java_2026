@@ -92,13 +92,13 @@ public class GameConstants {
 
     public static final double ANGLER_LENGTH = 0.2;
     public static final double ANGLER_INERTIA = 0.5;
-    public static final double ANGLER_GEARING = 45.0;
+    public static final double ANGLER_GEARING = 4660.0; // (MAX_ENCODER - MIN_ENCODER) / (MAX_ANGLE - MIN_ANGLE)/360
     public static final boolean ANGLER_SIMULATE_GRAVITY = false;
     public static final int NEO_CURRENT_LIMIT = 20;
     public static final int INTAKE_DEPLOYER_CURRENT_LIMIT = 40;
-    public static final double TURRET_LENGTH = 0.4;
-    public static final double TURRET_INERTIA = 0.5;
-    public static final double TURRET_GEARING = 45.0;
+    public static final double TURRET_LENGTH = 1;
+    public static final double TURRET_INERTIA = 1;
+    public static final double TURRET_GEARING = 155;
 
     // angler (turret) PID
     public static final double ANGLER_P = 0.7;

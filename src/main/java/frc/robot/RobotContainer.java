@@ -339,7 +339,9 @@ public class RobotContainer {
         }
 
         public void putShuffleboardCommands() {
-                                SmartDashboard.putData(
+                if (Constants.DEBUG) {
+                SmartDashboard.putData("Run hopper and feeder", new ShootButton(controllerSubsystem));
+                        SmartDashboard.putData(
                                         "intakedeployer/Deployment State: UP",
                                         new SetDeploymentState(intakeDeployer, DeploymentState.UP));
                         SmartDashboard.putData(
@@ -350,8 +352,9 @@ public class RobotContainer {
                                         new SetShootingState(shootState, ShootState.AUTO_AIM));
                                         SmartDashboard.putData("AutoRunHopper",
                                         new AutoSpinHopper(hopperSubsystem));
-
-                if (Constants.DEBUG) {
+                        SmartDashboard.putData(
+                                        "Shooting State: Into Hub",
+                                        new SetShootingState(shootState, ShootState.SHOOTING_HUB));
                         SmartDashboard.putNumber(RunDashboardShotTest.ANGLER_TARGET_POSITION_KEY, 0.0);
                         SmartDashboard.putNumber(RunDashboardShotTest.SHOOTER_TARGET_RPM_KEY, Constants.SHOOTER_SPEED);
                         SmartDashboard.putNumber(RunDashboardShotTest.HOPPER_TARGET_SPEED_KEY, Constants.HOPPER_SPEED);
@@ -523,10 +526,6 @@ public class RobotContainer {
                         SmartDashboard.putData(
                                         "Shooting State: Fixed 2",
                                         new SetShootingState(shootState, ShootState.FIXED_2));
-
-                        SmartDashboard.putData(
-                                        "Shooting State: Into Hub",
-                                        new SetShootingState(shootState, ShootState.SHOOTING_HUB));
 
                         SmartDashboard.putData(
                                         "Shooting State: Shuttling",

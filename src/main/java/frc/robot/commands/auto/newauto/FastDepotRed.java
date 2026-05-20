@@ -31,14 +31,14 @@ public class FastDepotRed extends LoggableSequentialCommandGroup {
                 LoggableCommandWrapper.wrap(auto.trajectoryCmd("Depot_Fast"))
             ),
             new AutoShoot(hopper, feeder, 1),
-            new ToggleDeployment(intake, controller),
+            new ToggleDeployment(intake),
             new LoggableParallelCommandGroup(
                 new AutoShoot(hopper, feeder, 20),
                 new LoggableSequentialCommandGroup(
                     new DriveSwerve(drivetrain, DriveDirection.BACKWARD, 6, 0.3),
                     new DriveSwerve(drivetrain, DriveDirection.FORWARD, 0.5, 0.6),
                     new DriveSwerve(drivetrain, DriveDirection.BACKWARD, 7, 0.3),
-                    new ToggleDeployment(intake, controller)
+                    new ToggleDeployment(intake)
                 )
             )
 

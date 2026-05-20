@@ -14,18 +14,16 @@ import frc.robot.utils.logging.commands.LoggableCommand;
 public class ToggleDeployment extends LoggableCommand {
   private final IntakeDeployerSubsystem subsystem;
   private final Timer timer;
-  private final ControllerSubsystem controller;
 
-  public ToggleDeployment(IntakeDeployerSubsystem subsystem, ControllerSubsystem controller) {
+  public ToggleDeployment(IntakeDeployerSubsystem subsystem) {
     timer = new Timer();
     this.subsystem = subsystem;
-    this.controller = controller;
     addRequirements(subsystem);
   }
 
   @Override
   public void initialize() { 
-      subsystem.toggleState(controller.canIntakeDeploy());
+    subsystem.toggleState();
       timer.restart();
   }
 

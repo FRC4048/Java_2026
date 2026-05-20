@@ -139,10 +139,10 @@ public class Robot extends LoggedRobot {
             SmartDashboard.putNumber("driverXbox.getLeftY()", driverXbox.getLeftY());
             SmartDashboard.putNumber("driverXbox::getRightX", driverXbox.getRightX());
             if (!Constants.TESTBED) {
-                Logger.recordOutput("MyPose", robotContainer.getDriveBase().getPose());
-                logComponentsForSimulation();
-
-                // Puts data on the elastic dashboard
+                    Logger.recordOutput("MyPose", robotContainer.getDriveBase().getPose());
+                    SmartDashboard.putNumber("Robot X", robotContainer.getDriveBase().getPose().getX());
+            SmartDashboard.putNumber("Robot Y", robotContainer.getDriveBase().getPose().getY());
+        // Puts data on the elastic dashboard
                 SmartDashboard.putString("Alliance Color", Robot.allianceColorString());
                 if (Constants.currentMode == Constants.Mode.SIM) {
                     Logger.recordOutput("SimPose", robotContainer.getDriveBase().getSimulationPose().get());

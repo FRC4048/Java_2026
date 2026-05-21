@@ -23,7 +23,7 @@ public class ManualTurretMove extends LoggableCommand {
 
   @Override
   public void execute() {
-    subsystem.manualMove(-input.getAsDouble()*Constants.SCALING_FACTOR);
+    subsystem.manualMove(-input.getAsDouble()*Constants.MANUAL_MOVE_SCALING_FACTOR);
 
   }
 

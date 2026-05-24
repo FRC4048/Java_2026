@@ -8,7 +8,8 @@ package frc.robot;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.cscore.VideoSource;
-import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.*;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.Timer;
@@ -132,12 +133,13 @@ public class Robot extends LoggedRobot {
         if (DriverStation.isDSAttached() && allianceColor.isEmpty()) {
             allianceColor = DriverStation.getAlliance();
         }
+
         SmartDashboard.putBoolean("Hub Active?", hubActive());
         if (Constants.DEBUG) {
             SmartDashboard.putNumber("driverXbox.getLeftY()", driverXbox.getLeftY());
             SmartDashboard.putNumber("driverXbox::getRightX", driverXbox.getRightX());
             if (!Constants.TESTBED) {
-                Logger.recordOutput("MyPose", robotContainer.getDriveBase().getPose());
+                    Logger.recordOutput("MyPose", robotContainer.getDriveBase().getPose());
                     SmartDashboard.putNumber("Robot X", robotContainer.getDriveBase().getPose().getX());
             SmartDashboard.putNumber("Robot Y", robotContainer.getDriveBase().getPose().getY());
         // Puts data on the elastic dashboard
@@ -152,7 +154,40 @@ public class Robot extends LoggedRobot {
                 robotContainer.getAutoChooser().getCommandDescription());
     }
 
-  /** This function is called once each time the robot enters Disabled mode. */
+    private void logComponentsForSimulation() {
+        Logger.recordOutput("ZeroPose", Pose2d.kZero);
+
+        Translation3d intakePosition = new Translation3d(0.3, 0, 0.3);
+        double intakeAngle = Units.degreesToRadians(robotContainer.getRobotVisualizer().getIntakeDeploymentLigament().getAngle());
+        Rotation3d intakeRotation = new Rotation3d(0, intakeAngle, 0);
+        Pose3d intake = new Pose3d(intakePosition, intakeRotation);
+
+        Translation3d hopperPosition = new Translation3d(0, 0, 0);
+        double hopperAngle = Units.degreesToRadians(robotContainer.getRobotVisualizer().getHopperLigament().getAngle());
+        Rotation3d hopperRotation = new Rotation3d(0, 0, hopperAngle);
+        Pose3d hopper = new Pose3d(hopperPosition, hopperRotation);
+
+        Translation3d turretPosition = new Translation3d(0, 0, 0);
+        double turretAngle = Units.degreesToRadians(robotContainer.getRobotVisualizer().getTurretLigament().getAngle());
+        Rotation3d turretRotation = new Rotation3d(0, 0, turretAngle);
+        Pose3d turret = new Pose3d(turretPosition, turretRotation);
+
+        Translation3d shooterPosition = new Translation3d(-0.15, 0, 0.55);
+        Translation3d adjustedShooterPosition = shooterPosition.rotateBy(turretRotation);
+        double shooterAngle = Units.degreesToRadians(robotContainer.getRobotVisualizer().getShooterLigament().getAngle());
+        Rotation3d shooterRotation = new Rotation3d(0, shooterAngle, turretAngle);
+        Pose3d shooter = new Pose3d(adjustedShooterPosition, shooterRotation);
+
+        Translation3d anglerPosition = new Translation3d(-0.1, 0, 0.55);
+        Translation3d adjustedAnglerPosition = anglerPosition.rotateBy(turretRotation);
+        double anglerAngle = Units.degreesToRadians(robotContainer.getRobotVisualizer().getAnglerLigament().getAngle());
+        Rotation3d anglerRotation = new Rotation3d(0, anglerAngle, turretAngle);
+        Pose3d angler = new Pose3d(adjustedAnglerPosition, anglerRotation);
+
+        Logger.recordOutput("ZeroedComponents", new Pose3d[] { Pose3d.kZero, intake, hopper, turret, shooter, angler });
+    }
+
+    /** This function is called once each time the robot enters Disabled mode. */
     @Override
     public void disabledInit() {
         mode.set(RobotMode.DISABLED);

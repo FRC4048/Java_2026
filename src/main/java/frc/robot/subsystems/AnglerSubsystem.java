@@ -8,6 +8,7 @@ import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Robot;
 import frc.robot.constants.Constants;
@@ -170,8 +171,8 @@ public class AnglerSubsystem extends SubsystemBase {
         params.armGearing = Constants.ANGLER_GEARING;
         params.armInertia = Constants.ANGLER_INERTIA;
         params.armLength = Constants.ANGLER_LENGTH;
-        params.armMinAngle = Constants.ANGLER_MIN_ANGLE;
-        params.armMaxAngle = Constants.ANGLER_MAX_ANGLE;
+        params.armMinAngle = Rotation2d.fromDegrees(Constants.ANGLER_ANGLE_LOW);
+        params.armMaxAngle = Rotation2d.fromDegrees(Constants.ANGLER_ANGLE_HIGH);
         params.armSimulateGravity = Constants.ANGLER_SIMULATE_GRAVITY;
         return params;
     }

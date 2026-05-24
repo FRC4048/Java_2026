@@ -54,6 +54,7 @@ import frc.robot.commands.shooter.SetShootingState;
 import frc.robot.commands.shooter.SpinShooter;
 import frc.robot.commands.testing.RunDashboardShotTest;
 import frc.robot.commands.turret.DefaultTurretControl;
+import frc.robot.commands.turret.ManualTurretMove;
 import frc.robot.commands.turret.RunTurretToFwdLimit;
 import frc.robot.commands.turret.RunTurretToRevLimit;
 import frc.robot.commands.turret.SetTurretAngle;
@@ -296,8 +297,9 @@ public class RobotContainer {
         private void configureBindings() {
                 controller.a().onTrue(new ToggleDeployment(intakeDeployer));
                 controller.b().onTrue(new SetDeploymentState(intakeDeployer, DeploymentState.STOPPED));
-                controller.x().whileTrue(new SpinIntake(intakeSubsystem));
-                controller.y().whileTrue(new Agitate(intakeDeployer));
+                controller.x().onTrue(new ForceDeployDown(intakeDeployer, shootState));
+                controller.y().onTrue(new ToggleAdjustedPosition(controllerSubsystem));
+                controller.leftStick().whileTrue(new ManualTurretMove(turretSubsystem, controller::getLeftX));
                 controller.povUp().onTrue(new SetShootingState(shootState, ShootState.FIXED));
                 controller.povRight().onTrue(new SetShootingState(shootState, ShootState.STOPPED));
                 controller.povDown().onTrue(new SetShootingState(shootState, ShootState.SHOOTING_HUB));
@@ -320,7 +322,7 @@ public class RobotContainer {
                 intakeDeployer.setDefaultCommand(new RunDeployer(intakeDeployer));
                 anglerSubsystem.setDefaultCommand(new DefaultAnglerControl(anglerSubsystem, controllerSubsystem));
                 shooterSubsystem.setDefaultCommand(new DefaultShooterControl(shooterSubsystem, controllerSubsystem));
-                turretSubsystem.setDefaultCommand(new DefaultTurretControl(turretSubsystem, controllerSubsystem));
+                //turretSubsystem.setDefaultCommand(new DefaultTurretControl(turretSubsystem, controllerSubsystem));
                 hopperSubsystem.setDefaultCommand(new DefaultSpinHopper(hopperSubsystem, controllerSubsystem, shootState));
                 feederSubsystem.setDefaultCommand(new DefaultSpinFeeder(feederSubsystem, controllerSubsystem));
             }

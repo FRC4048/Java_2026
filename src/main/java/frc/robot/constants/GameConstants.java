@@ -190,5 +190,5 @@ public class GameConstants {
     public static final int TCP_SERVER_PORT1 = 5806;
     public static final int TCP_SERVER_PORT2 = 5807;
 
-    public static final double SCALING_FACTOR = 0.25;
+    public static final double SHOOTER_RPM_THRESHOLD = 0.9;
 }

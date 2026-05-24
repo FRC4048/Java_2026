@@ -36,7 +36,7 @@ public class RoutineChooser {
         this.intake = intake;
         this.deployer = deployer;
         factory.bind("intakeDeployer", new ForceDeployDown(deployer));
-        factory.bind("intakeStart", new SpinIntake(intake, deployer));
+        factory.bind("intakeStart", new SpinIntake(intake));
         factory.bind("intakeStop", new StopIntake(intake));
         autoChooser = new LoggedDashboardChooser<>("AutoAction");
         for (AutoPath paths : AutoPath.values()) {
@@ -52,6 +52,12 @@ public class RoutineChooser {
                 return swipeDepot();
             case SWIPE_OUTPOST:
                 return swipeOutpost();
+            case SWIPE_DEPOT_DOT:
+                return swipeDepotDot();
+            case SWIPE_OUTPOST_DOT:
+                return swipeOutpostDot();
+            case MID_DEPOT:
+                return midDepot();
             default:
                 return factory.newRoutine("do_nothing");
         }
@@ -90,6 +96,28 @@ public class RoutineChooser {
         routine.active().onTrue(new LoggableSequentialCommandGroup(
                 new LoggableCommandWrapper(traj.resetOdometry()),
                 new LoggableCommandWrapper(traj.cmd())));
+        return routine;
+    }
+
+    public AutoRoutine swipeDepotDot() {
+        AutoRoutine routine = factory.newRoutine("swipe");
+        AutoTrajectory firstSwipeTraj = routine.trajectory("swipe_one");
+        AutoTrajectory secondSwipeTraj = routine.trajectory("swipe_two_dot");
+        firstSwipeTraj.done().onTrue(new LoggableWaitCommand(3).andThen(secondSwipeTraj.cmd()));
+        routine.active().onTrue(new LoggableSequentialCommandGroup(
+                new LoggableCommandWrapper(firstSwipeTraj.resetOdometry()),
+                new LoggableCommandWrapper(firstSwipeTraj.cmd())));
+        return routine;
+    }
+
+    public AutoRoutine swipeOutpostDot() {
+        AutoRoutine routine = factory.newRoutine("swipe");
+        AutoTrajectory firstSwipeTraj = routine.trajectory("swipe_one");
+        AutoTrajectory secondSwipeTraj = routine.trajectory("swipe_two_dot");
+        firstSwipeTraj.done().onTrue(new LoggableWaitCommand(3).andThen(secondSwipeTraj.cmd()));
+        routine.active().onTrue(new LoggableSequentialCommandGroup(
+                new LoggableCommandWrapper(firstSwipeTraj.resetOdometry()),
+                new LoggableCommandWrapper(firstSwipeTraj.cmd())));
         return routine;
     }
 }

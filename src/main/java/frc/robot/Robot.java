@@ -132,13 +132,13 @@ public class Robot extends LoggedRobot {
         if (DriverStation.isDSAttached() && allianceColor.isEmpty()) {
             allianceColor = DriverStation.getAlliance();
         }
-
+        Logger.recordOutput("MyPose", robotContainer.getDriveBase().getPose());
+        
         SmartDashboard.putBoolean("Hub Active?", hubActive());
         if (Constants.DEBUG) {
             SmartDashboard.putNumber("driverXbox.getLeftY()", driverXbox.getLeftY());
             SmartDashboard.putNumber("driverXbox::getRightX", driverXbox.getRightX());
             if (!Constants.TESTBED) {
-                    Logger.recordOutput("MyPose", robotContainer.getDriveBase().getPose());
                     SmartDashboard.putNumber("Robot X", robotContainer.getDriveBase().getPose().getX());
             SmartDashboard.putNumber("Robot Y", robotContainer.getDriveBase().getPose().getY());
         // Puts data on the elastic dashboard

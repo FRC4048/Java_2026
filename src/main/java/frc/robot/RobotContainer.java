@@ -546,7 +546,7 @@ public class RobotContainer {
                 }
 
         //basic drive command
-        if (!Constants.TESTBED) {
+         if (!Constants.TESTBED) {
             Command driveDirectionTime = new DriveDirectionTime(drivebase, 0.1, 0.1, true, 1);
             SmartDashboard.putData("Drive Command", driveDirectionTime);
             SmartDashboard.putData("Fake vision near trench", new FakeVision(drivebase, 4, 1));
@@ -554,10 +554,9 @@ public class RobotContainer {
             SmartDashboard.putData("AddApriltagReading", new AddApriltagReading(apriltagSubsystem, new ApriltagReading(0, 0, 0, 0, 0, 0, 0, 0, 0)));
             SmartDashboard.putData("AddGarbageReading", new AddGarbageReading(apriltagSubsystem));
             SmartDashboard.putData("AddTunedApriltagReading", new AddTunableApriltagReading(apriltagSubsystem));
-
         }
-
-        }
+        }     
+        }  
 
         /**
          * Use this to pass the autonomous command to the main {@link Robot} class.

@@ -25,7 +25,7 @@ public class RunDeployer extends LoggableCommand {
   public void execute() {
       switch (subsystem.getDeploymentState()) {
         case UP -> subsystem.setSpeed(Constants.INTAKE_RETRACTION_SPEED);
-        case DOWN -> subsystem.setSpeed(Constants.INTAKE_DEPLOYER_SPEED);
+        case DOWN ->subsystem.setSpeed(Constants.INTAKE_DEPLOYER_SPEED);
         case STOPPED -> subsystem.stopMotors();
         default -> subsystem.stopMotors();
     }

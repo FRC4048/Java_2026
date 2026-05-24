@@ -298,16 +298,16 @@ public class RobotContainer {
         private void configureBindings() {
                 controller.a().onTrue(new ToggleDeployment(intakeDeployer));
                 controller.b().onTrue(new SetDeploymentState(intakeDeployer, DeploymentState.STOPPED));
-                controller.x().onTrue(new ForceDeployDown(intakeDeployer, shootState));
-                controller.y().onTrue(new ToggleAdjustedPosition(controllerSubsystem));
+                controller.x().whileTrue(new SpinIntake(intakeSubsystem));
+                controller.y().whileTrue(new Agitate(intakeDeployer));
                 controller.leftStick().whileTrue(new ManualTurretMove(turretSubsystem, controller::getLeftX));
-                controller.povUp().onTrue(new SetShootingState(shootState, ShootState.FIXED));
+                //controller.povUp().onTrue(new SetShootingState(shootState, ShootState.FIXED));
                 controller.povRight().onTrue(new SetShootingState(shootState, ShootState.STOPPED));
                 controller.povDown().onTrue(new SetShootingState(shootState, ShootState.SHOOTING_HUB));
-                controller.povLeft().onTrue(new SetShootingState(shootState, ShootState.SHUTTLING));
+                //controller.povLeft().onTrue(new SetShootingState(shootState, ShootState.SHUTTLING));
                 controller.leftTrigger().whileTrue(new ReverseHopper(hopperSubsystem));
                 controller.rightTrigger().whileTrue(new ReverseIntake(intakeSubsystem));
-                driveJoystick.trigger().whileTrue((new SetShootingState(shootState, ShootState.STOPPED)));
+                driveJoystick.trigger().whileTrue(new ShootButton(controllerSubsystem));
 
                 // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
                 // new Trigger(m_exampleSubsystem::exampleCondition)
@@ -318,7 +318,7 @@ public class RobotContainer {
                 // cancelling on release.
                 // m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
 
-                intakeSubsystem.setDefaultCommand(new SpinIntake(intakeSubsystem));
+                //intakeSubsystem.setDefaultCommand(new SpinIntake(intakeSubsystem));
                 lightStripSubsystem.setDefaultCommand(new SetLed(lightStripSubsystem,controllerSubsystem,shooterSubsystem));
             if (controllerSubsystem != null) {
                 intakeDeployer.setDefaultCommand(new RunDeployer(intakeDeployer));

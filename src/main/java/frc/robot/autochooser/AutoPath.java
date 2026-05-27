@@ -6,7 +6,7 @@ public enum AutoPath {
     SWIPE_OUTPOST("Swipe outpost"),
     SWIPE_DEPOT_DOT("Swipe Depot Dot"),
     SWIPE_OUTPOST_DOT("Swipe Outpost Dot"),
-    MID_DEPOT("mid depot");
+    MID_DEPOT("Mid Depot");
 
     private final String name;
     private AutoPath(String name){

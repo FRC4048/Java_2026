@@ -10,12 +10,16 @@ import frc.robot.commands.feeder.SpinFeeder;
 import frc.robot.commands.intake.SpinIntake;
 import frc.robot.commands.intake.StopIntake;
 import frc.robot.commands.intakeDeployment.ForceDeployDown;
+import frc.robot.commands.intakeDeployment.ForceDeployUp;
 import frc.robot.commands.intakeDeployment.ToggleDeployment;
+import frc.robot.commands.shooter.SetShootingState;
 import frc.robot.constants.enums.ShootingState;
+import frc.robot.constants.enums.ShootingState.ShootState;
 import frc.robot.subsystems.ControllerSubsystem;
 import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.subsystems.IntakeDeployerSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.utils.logging.commands.LoggableCommandWrapper;
 import frc.robot.utils.logging.commands.LoggableSequentialCommandGroup;
 import frc.robot.utils.logging.commands.LoggableWaitCommand;
@@ -25,19 +29,27 @@ public class RoutineChooser {
     private final FeederSubsystem feeder;
     private final IntakeSubsystem intake;
     private final IntakeDeployerSubsystem deployer;
+    private final ShootingState shootState;
     private final LoggedDashboardChooser<AutoPath> autoChooser;
 
     public RoutineChooser(AutoFactory factory,
             FeederSubsystem feeder,
             IntakeSubsystem intake,
-            IntakeDeployerSubsystem deployer) {
+            IntakeDeployerSubsystem deployer,
+            ShootingState shootState) {
         this.factory = factory;
         this.feeder = feeder;
         this.intake = intake;
         this.deployer = deployer;
-        factory.bind("intakeDeployer", new ForceDeployDown(deployer));
-        factory.bind("intakeStart", new SpinIntake(intake));
-        factory.bind("intakeStop", new StopIntake(intake));
+        this.shootState = shootState;
+
+        factory.bind("intakeDeploy", new ForceDeployDown(deployer)); //intake deploy marker
+        factory.bind("intakeStart", new SpinIntake(intake)); //intake start marker
+        factory.bind("intakeStop", new StopIntake(intake)); //intake stop marker
+        factory.bind("intakeUp", new ForceDeployUp(deployer)); //intake up marker
+        factory.bind("shooting", new SetShootingState(shootState, ShootState.SHOOTING_HUB)); //shoot state to shooting marker
+        factory.bind("stopShooting", new SetShootingState(shootState, ShootState.STOPPED)); //shoot state to stop marker
+
         autoChooser = new LoggedDashboardChooser<>("AutoAction");
         for (AutoPath paths : AutoPath.values()) {
             autoChooser.addOption(paths.getName(), paths);
@@ -119,5 +131,24 @@ public class RoutineChooser {
                 new LoggableCommandWrapper(firstSwipeTraj.resetOdometry()),
                 new LoggableCommandWrapper(firstSwipeTraj.cmd())));
         return routine;
+
+        /*
+        
+        Swipe Auto
+            swipe_one
+                2 - intakeDeploy, intakeStart
+                9 - intakeStop
+                12 - shooting
+
+            swipe_two
+                1 - shootingStop
+                2 - intakeStart
+                11 - intakeStop
+                12 - shootingStart
+            
+            swipe_three
+                1 - shootingStop
+                //go to neutral zone for the beginning of teleop
+         */
     }
 }

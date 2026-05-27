@@ -125,6 +125,6 @@
   "splits":[0]
  },
  "events":[
-   {"name":"intakeStart", "from":{"target":null, "targetTimestamp":null, "offset":{"exp":"0 s", "val":0.0}}, "event":null},
-   {"name":"intakeStop", "from":{"target":null, "targetTimestamp":null, "offset":{"exp":"0 s", "val":0.0}}, "event":null}]
+   {"name":"shootingStop", "from":{"target":0, "targetTimestamp":null, "offset":{"exp":"0 s", "val":0.0}}, "event":null},
+   {"name":"intakeUp", "from":{"target":0, "targetTimestamp":null, "offset":{"exp":"0 s", "val":0.0}}, "event":null}]
 }

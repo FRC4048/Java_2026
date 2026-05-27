@@ -149,6 +149,14 @@ public class RoutineChooser {
             swipe_three
                 1 - shootingStop
                 //go to neutral zone for the beginning of teleop
+
+        Swipe-dot Auto
+            swipe_one
+                2 - intakeDeploy, intakeStart
+                9 - intakeStop
+                12 - shooting
+            swipe_two_dot
+                1 - shootingStop, intakeUp
          */
     }
 }

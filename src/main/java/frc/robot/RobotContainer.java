@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -513,6 +514,19 @@ public class RobotContainer {
                         SmartDashboard.putData(
                                         "Spins Shooter",
                                         new SpinShooter(shooterSubsystem, Constants.SHOOTER_SPEED));
+
+                        SmartDashboard.putData(
+                                        "SysId/Shooter Quasistatic Forward",
+                                        shooterSubsystem.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
+                        SmartDashboard.putData(
+                                        "SysId/Shooter Quasistatic Reverse",
+                                        shooterSubsystem.sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
+                        SmartDashboard.putData(
+                                        "SysId/Shooter Dynamic Forward",
+                                        shooterSubsystem.sysIdDynamic(SysIdRoutine.Direction.kForward));
+                        SmartDashboard.putData(
+                                        "SysId/Shooter Dynamic Reverse",
+                                        shooterSubsystem.sysIdDynamic(SysIdRoutine.Direction.kReverse));
 
                         SmartDashboard.putData(
                                         "Shooting State: Stopped",

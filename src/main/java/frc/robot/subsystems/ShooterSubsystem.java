@@ -10,7 +10,14 @@ import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
+import edu.wpi.first.units.measure.Voltage;
+import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
+import edu.wpi.first.wpilibj.sysid.SysIdRoutineLog;
+
+import static edu.wpi.first.units.Units.*;
 import frc.robot.Robot;
 import frc.robot.constants.Constants;
 import frc.robot.constants.GameConstants;
@@ -35,6 +42,7 @@ public class ShooterSubsystem extends SubsystemBase {
     private final SparkMaxPidMotorIo io;
     private SparkMaxIo followerIo;
     private final TunablePIDManager pidManager;
+    private final SysIdRoutine sysIdRoutine;
 
     public ShooterSubsystem(MotorPairIO motorPairIO) {
         this((SparkMaxPidMotorIo) motorPairIO.mainMotor);
@@ -45,6 +53,14 @@ public class ShooterSubsystem extends SubsystemBase {
     public ShooterSubsystem(SparkMaxPidMotorIo io) {
         this.io = io ;
         this.pidManager = new TunablePIDManager(LOGGING_NAME, io, createPidConfig());
+        this.sysIdRoutine = new SysIdRoutine(
+                new SysIdRoutine.Config(),
+                new SysIdRoutine.Mechanism(
+                        this::sysIdDrive,
+                        this::sysIdLog,
+                        this
+                )
+        );
         //  io.setPid(0.0000002, 0.000015, 0.000015); // Pid needs tuning
         stopMotors();
     }
@@ -76,6 +92,28 @@ public class ShooterSubsystem extends SubsystemBase {
     public void periodic() {
         pidManager.periodic();
         io.periodic();
+    }
+
+    private void sysIdDrive(Voltage voltage) {
+        io.setVoltage(voltage.in(Volts));
+        if (followerIo != null) {
+            followerIo.setVoltage(voltage.in(Volts));
+        }
+    }
+
+    private void sysIdLog(SysIdRoutineLog log) {
+        log.motor("shooter")
+                .voltage(Volts.of(io.getAppliedOutput() * RobotController.getBatteryVoltage()))
+                .angularPosition(Rotations.of(io.getEncoderPosition()))
+                .angularVelocity(RPM.of(io.getEncoderVelocity()));
+    }
+
+    public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
+        return sysIdRoutine.quasistatic(direction);
+    }
+
+    public Command sysIdDynamic(SysIdRoutine.Direction direction) {
+        return sysIdRoutine.dynamic(direction);
     }
 
     public static SparkMaxPidMotorIo createMockIo() {

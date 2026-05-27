@@ -189,4 +189,9 @@ public class GameConstants {
     public static final double SHUTTLING_TARGET_HIGHER_Y_POSITION = 5.5;
     public static final int TCP_SERVER_PORT1 = 5806;
     public static final int TCP_SERVER_PORT2 = 5807;
+
+    //shooter PID
+    public static final double SHOOTER_KV = 0.0025;
+    public static final double SHOOTER_KA = 0;
+    public static final double SHOOTER_KS = 0;
 }

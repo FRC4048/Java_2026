@@ -54,8 +54,7 @@ public class ShooterSubsystem extends SubsystemBase {
                 .setCurrentLimit(Constants.NEO_CURRENT_LIMIT)
                 .setAllowedError(.1)
                 .setIdleMode(IdleMode.kCoast)
-                .setPid(0.0003,0.000000005,0.005)
-                .setFF(0.0025);
+                .setPid(0.0003,0.000000005,0.005,Constants.SHOOTER_KV,Constants.SHOOTER_KA,Constants.SHOOTER_KS);
     }
 
     // setSpeed expects a power value from -1 to 1

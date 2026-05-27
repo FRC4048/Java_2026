@@ -27,7 +27,7 @@ public class TunablePIDManager {
         kITunable = new LoggedTunableNumber(prefix + "/PID_I", initConfig.getI());
         kDTunable = new LoggedTunableNumber(prefix + "/PID_D", initConfig.getD());
         kIZoneTunable = new LoggedTunableNumber(prefix + "/PID_I_ZONE", initConfig.getIZone());
-        kFFTunable = new LoggedTunableNumber(prefix + "/PID_FF", initConfig.getFF());
+        kFFTunable = new LoggedTunableNumber(prefix + "/PID_FF", initConfig.getKV());
         kMaxVelTunable = new LoggedTunableNumber(prefix + "/PID_MAX_VEL", initConfig.getMaxVelocity());
         kMaxAccTunable = new LoggedTunableNumber(prefix + "/PID_MAX_ACCEL", initConfig.getMaxAccel());
         kAllowedErrorTunable =
@@ -44,7 +44,7 @@ public class TunablePIDManager {
                                         .setI(kITunable.get())
                                         .setD(kDTunable.get())
                                         .setIZone(kIZoneTunable.get())
-                                        .setFF(kFFTunable.get())
+                                        .setKV(kFFTunable.get())
                                         .setMaxVelocity(kMaxVelTunable.get())
                                         .setMaxAccel(kMaxAccTunable.get())
                                         .setAllowedError(kAllowedErrorTunable.get())),

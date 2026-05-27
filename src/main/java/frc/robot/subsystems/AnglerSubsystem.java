@@ -154,11 +154,10 @@ public class AnglerSubsystem extends SubsystemBase {
         return new SparkMaxPidConfig(false)
                 .setCurrentLimit(Constants.NEO_CURRENT_LIMIT)
                 .setAllowedError(.1)
-                .setPidf(
+                .setPid(
                         Constants.ANGLER_P,
                         Constants.ANGLER_I,
-                        Constants.ANGLER_D,
-                        Constants.ANGLER_FF);
+                        Constants.ANGLER_D);
     }
 
     private static SparkMaxPidMotor createMotor() {

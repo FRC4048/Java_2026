@@ -158,11 +158,10 @@ public class TurretSubsystem extends SubsystemBase {
         return new SparkMaxPidConfig(false, ClosedLoopSlot.kSlot0)
                 .setCurrentLimit(Constants.NEO_CURRENT_LIMIT)
                 .setAllowedError(.1)
-                .setPidf(
+                .setPid(
                         Constants.TURRET_SHORT_RANGE_P,
                         Constants.TURRET_SHORT_RANGE_I,
-                        Constants.TURRET_SHORT_RANGE_D,
-                        Constants.TURRET_SHORT_RANGE_FF);
+                        Constants.TURRET_SHORT_RANGE_D);
     }
 
     // PID config for slot 1 (far range)
@@ -170,11 +169,10 @@ public class TurretSubsystem extends SubsystemBase {
         return new SparkMaxPidConfig(true, ClosedLoopSlot.kSlot1)
                 .setCurrentLimit(Constants.NEO_CURRENT_LIMIT)
                 .setAllowedError(.1)
-                .setPidf(
+                .setPid(
                         Constants.TURRET_LONG_RANGE_P,
                         Constants.TURRET_LONG_RANGE_I,
-                        Constants.TURRET_LONG_RANGE_D,
-                        Constants.TURRET_LONG_RANGE_FF)
+                        Constants.TURRET_LONG_RANGE_D)
                 .setMaxAccel(5000)
                 .setMaxVelocity(4000);
     }

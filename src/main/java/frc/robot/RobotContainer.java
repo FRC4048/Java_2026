@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -105,7 +106,7 @@ public class RobotContainer {
         private static final int DRIVER_CAM_FPS = 30;
 
         // Instantiate the autochooser.
-        private final AutoChooser autoChooser;
+        //private final AutoChooser autoChooser;
         // The robot's subsystems and commands are defined here...
         private final CommandXboxController controller =
             new CommandXboxController(Constants.XBOX_CONTROLLER_PORT);
@@ -209,9 +210,8 @@ public class RobotContainer {
                                 throw new RuntimeException("Did not specify Robot Mode");
                         }
                 }
-
-                setUpAutoFactory();
-                autoChooser = new AutoChooser(drivebase, shootState, autoFactory, shooterSubsystem, climberSubsystem, feederSubsystem, hopperSubsystem, turretSubsystem, anglerSubsystem, controllerSubsystem, intakeDeployer);
+                //setUpAutoFactory();
+                //autoChooser = new AutoChooser(drivebase, shootState, autoFactory, shooterSubsystem, climberSubsystem, feederSubsystem, hopperSubsystem, turretSubsystem, anglerSubsystem, controllerSubsystem, intakeDeployer);
                 configureBindings();
                 putShuffleboardCommands();
         }
@@ -339,6 +339,18 @@ public class RobotContainer {
         }
 
         public void putShuffleboardCommands() {
+                 SmartDashboard.putData(
+                                        "SysId/Shooter Quasistatic Forward",
+                                        shooterSubsystem.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
+                        SmartDashboard.putData(
+                                        "SysId/Shooter Quasistatic Reverse",
+                                        shooterSubsystem.sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
+                        SmartDashboard.putData(
+                                        "SysId/Shooter Dynamic Forward",
+                                        shooterSubsystem.sysIdDynamic(SysIdRoutine.Direction.kForward));
+                        SmartDashboard.putData(
+                                        "SysId/Shooter Dynamic Reverse",
+                                        shooterSubsystem.sysIdDynamic(SysIdRoutine.Direction.kReverse));
                 if (Constants.DEBUG) {
                 SmartDashboard.putData("Run hopper and feeder", new ShootButton(controllerSubsystem));
                         SmartDashboard.putData(
@@ -515,6 +527,8 @@ public class RobotContainer {
                                         "Spins Shooter",
                                         new SpinShooter(shooterSubsystem, Constants.SHOOTER_SPEED));
 
+                       
+
                         SmartDashboard.putData(
                                         "Shooting State: Stopped",
                                         new SetShootingState(shootState, ShootState.STOPPED));
@@ -560,7 +574,8 @@ public class RobotContainer {
          * @return the command to run in autonomous
          */
         public Command getAutonomousCommand() {
-                return autoChooser.getSelectedCommand();
+                //return autoChooser.getSelectedCommand();
+                return null;
     // return straightRoutine.cmd(straightTrajectory.done());
 
             //    return new ExampleAuto(drivebase, autoFactory);
@@ -575,7 +590,8 @@ public class RobotContainer {
     }
 
     public AutoChooser getAutoChooser() {
-        return autoChooser;
+        //return autoChooser;
+        return null;
     }
 
     public IntakeSubsystem getIntakeSubsystem() {

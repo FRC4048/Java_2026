@@ -17,7 +17,7 @@ package frc.robot.constants;
 
 // To use the other constatns files, change which line is not commented out here.
 // Then discard changes to this file before committing.
-public class Constants extends ConstantsReal2026 {
+public class Constants extends ConstantsTestbed2026 {
 //public class Constants extends ConstantsPushbot2026 {
 // public class Constants extends ConstantsTestbed2026 {
 }

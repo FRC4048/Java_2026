@@ -30,7 +30,7 @@ public class SetLed extends LoggableCommand{
 
     @Override
     public void execute() {
-        double x = drivebase.getPose().getX();
+   /*     double x = drivebase.getPose().getX();
         double y = drivebase.getPose().getY();
 
         // If statement checks if the robot is near the trench
@@ -65,7 +65,7 @@ public class SetLed extends LoggableCommand{
                 break;
             }
 
-        }
+        }*/ 
     }
 
     @Override

@@ -150,8 +150,8 @@ public class Robot extends LoggedRobot {
                 }
             }
         }
-        SmartDashboard.putString("Selected Action",
-                robotContainer.getAutoChooser().getCommandDescription());
+      //  SmartDashboard.putString("Selected Action",
+      //          robotContainer.getAutoChooser().getCommandDescription());
     }
 
     private void logComponentsForSimulation() {
@@ -209,7 +209,7 @@ public class Robot extends LoggedRobot {
 
         // Hub is always active during autonomous.
         hubActive = true;
-        robotContainer.getDriveBase().resetOdometry(robotContainer.getAutoChooser().getFieldLocation().getLocation());
+       // robotContainer.getDriveBase().resetOdometry(robotContainer.getAutoChooser().getFieldLocation().getLocation());
   }
 
   /** This function is called periodically during autonomous. */
@@ -353,7 +353,7 @@ public class Robot extends LoggedRobot {
     }
 
     public FieldLocation location() {
-        return robotContainer.getAutoChooser().getFieldLocation();
+        return FieldLocation.DEPOT_SIDE;//robotContainer.getAutoChooser().getFieldLocation();
     }
 
     public Pose2d getStartingLocation() {

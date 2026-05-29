@@ -89,7 +89,10 @@ public class SparkMaxPidMotor {
                     .pid(pidConfig.getP(), pidConfig.getI(), pidConfig.getD(), closedLoopSlot)
                     .iZone(pidConfig.getIZone(), closedLoopSlot)
                     .outputRange(-1, 1, closedLoopSlot)
-                    .feedForward.kV(pidConfig.getFF(), closedLoopSlot);
+                    .feedForward
+                    .kV(pidConfig.getKV(), closedLoopSlot)
+                    .kA(pidConfig.getKA(), closedLoopSlot)
+                    .kS(pidConfig.getKS(), closedLoopSlot);
 
             if (pidConfig.getUsesMaxMotion()) {
                 config
@@ -123,7 +126,10 @@ public class SparkMaxPidMotor {
                 .closedLoop
                 .pid(params.getP(), params.getI(), params.getD(), closedLoopSlot)
                 .iZone(params.getIZone(), closedLoopSlot)
-                .feedForward.kV(params.getFF(), closedLoopSlot);
+                .feedForward
+                .kV(params.getKV(), closedLoopSlot)
+                .kA(params.getKA(), closedLoopSlot)
+                .kS(params.getKS(), closedLoopSlot);
         if (params.getUsesMaxMotion()) {
             config
                     .closedLoop

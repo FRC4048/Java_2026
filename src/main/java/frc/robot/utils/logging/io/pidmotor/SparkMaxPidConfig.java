@@ -12,7 +12,9 @@ public class SparkMaxPidConfig {
     public static final double DEFAULT_I = 0;
     public static final double DEFAULT_D = 0.0;
     public static final double DEFAULT_IZONE = 0.0;
-    public static final double DEFAULT_FF = 0.0;
+    public static final double DEFAULT_KV = 0.0;
+    public static final double DEFAULT_KA = 0.0;
+    public static final double DEFAULT_KS = 0.0;
     public static final double MAX_VELOCITY = 5000;
     public static final double MAX_ACCELERATION = 10000;
     public static final double ALLOWED_ERROR = 1.0;
@@ -23,7 +25,9 @@ public class SparkMaxPidConfig {
     private double i = DEFAULT_I;
     private double d = DEFAULT_D;
     private double iZone = DEFAULT_IZONE;
-    private double ff = DEFAULT_FF;
+    private double kv = DEFAULT_KV;
+    private double ka = DEFAULT_KA;
+    private double ks = DEFAULT_KS;
     private int currentLimit = 20;
     private IdleMode mode = DEFAULT_IDLE_MODE;
     /**
@@ -79,12 +83,28 @@ public class SparkMaxPidConfig {
         return this;
     }
 
-    public double getFF() {
-        return ff;
+    public double getKV() {
+        return kv;
     }
 
-    public SparkMaxPidConfig setFF(double ff) {
-        this.ff = ff;
+    public SparkMaxPidConfig setKV(double kv) {
+        this.kv = kv;
+        return this;
+    }
+    public double getKA() {
+        return ka;
+    }
+
+    public SparkMaxPidConfig setKA(double ka) {
+        this.ka = ka;
+        return this;
+    }
+    public double getKS() {
+        return ks;
+    }
+
+    public SparkMaxPidConfig setKS(double ks) {
+        this.ks = ks;
         return this;
     }
 
@@ -117,8 +137,11 @@ public class SparkMaxPidConfig {
         return this;
     }
 
-    public SparkMaxPidConfig setPidf(double p, double i, double d, double ff) {
-        setPid(p, i, d).setFF(ff);
+    public SparkMaxPidConfig setPid(double p, double i, double d, double kv, double ka, double ks) {
+        setPid(p, i, d)
+        .setKV(kv)
+        .setKA(ka)
+        .setKS(ks);
         return this;
     }
 

@@ -10,8 +10,8 @@ public class ConstantsPushbot2026 extends GameConstants {
     public static final int FEEDER_MOTOR_ID = 2;
     public static final int CLIMBER_MOTOR_ID = 6;
 
-    public static final int SHOOTER_MOTOR_ID = 54;
-    public static final int SHOOTER_FOLLOWER_MOTOR_ID = 53;
+    public static final int SHOOTER_MOTOR_ID = 34;
+    public static final int SHOOTER_FOLLOWER_MOTOR_ID = 56;
     public static final int INTAKE_DEPLOYMENT_ID = 9;
     public static final int TURRET_MOTOR_ID = 1;
     

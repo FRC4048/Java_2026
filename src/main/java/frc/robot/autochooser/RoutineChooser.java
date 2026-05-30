@@ -102,8 +102,8 @@ public class RoutineChooser {
     }
     
     public AutoRoutine midDepot() {
-        AutoRoutine routine = factory.newRoutine("depot");
-        AutoTrajectory traj = routine.trajectory("depot_hook");
+        AutoRoutine routine = factory.newRoutine("swipe");
+        AutoTrajectory traj = routine.trajectory("test");
 
         routine.active().onTrue(new LoggableSequentialCommandGroup(
                 new LoggableCommandWrapper(traj.resetOdometry()),
@@ -131,6 +131,7 @@ public class RoutineChooser {
                 new LoggableCommandWrapper(firstSwipeTraj.resetOdometry()),
                 new LoggableCommandWrapper(firstSwipeTraj.cmd())));
         return routine;
+    }
 
         /*
         
@@ -158,5 +159,5 @@ public class RoutineChooser {
             swipe_two_dot
                 1 - shootingStop, intakeUp
          */
-    }
+    
 }

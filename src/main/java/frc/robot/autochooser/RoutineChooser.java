@@ -1,11 +1,14 @@
 package frc.robot.autochooser;
 
+import java.util.Optional;
+
 import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
 import choreo.auto.AutoFactory;
 import choreo.auto.AutoRoutine;
 import choreo.auto.AutoTrajectory;
+import frc.robot.Robot;
 import frc.robot.commands.feeder.SpinFeeder;
 import frc.robot.commands.intake.SpinIntake;
 import frc.robot.commands.intake.StopIntake;
@@ -57,7 +60,8 @@ public class RoutineChooser {
     }
 
     public AutoRoutine getAuto() {
-        switch (autoChooser.get()) {
+        AutoPath selectedPath = autoChooser.get();
+        switch (selectedPath == null ? AutoPath.DO_NOTHING : selectedPath) {
             case DO_NOTHING:
                 return factory.newRoutine("do_nothing");
             case SWIPE_DEPOT:

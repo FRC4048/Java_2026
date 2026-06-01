@@ -30,10 +30,10 @@ public class DepotShootPickup extends LoggableSequentialCommandGroup {
                     LoggableCommandWrapper.wrap(auto.trajectoryCmd("Depot_ToDepot").withTimeout(2)),
                     new SetShootingState(shootstate, ShootState.SHOOTING_HUB)
                 ),
-                new ToggleDeployment(intake, controller),
+                new ToggleDeployment(intake),
                 new DriveSwerve(drivetrain, DriveDirection.BACKWARD, 5, 0.2),
                 new LoggableWaitCommand(3),
-                new ToggleDeployment(intake, controller)
+                new ToggleDeployment(intake)
         );
     }
 }

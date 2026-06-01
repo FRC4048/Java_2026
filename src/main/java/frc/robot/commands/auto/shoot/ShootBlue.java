@@ -34,9 +34,9 @@ public class ShootBlue extends LoggableSequentialCommandGroup{
                 new LoggableWaitCommand(2),
                 new SetShootingState(shootstate, ShootState.SHOOTING_HUB),
                 new DriveSwerve(drivetrain, DriveDirection.FORWARD, 3, 0.5),
-                new ToggleDeployment(intakeDeployer, controller), //initial fuel falls in
+                new ToggleDeployment(intakeDeployer), //initial fuel falls in
                 new LoggableWaitCommand(4),
-                new ToggleDeployment(intakeDeployer, controller),
+                new ToggleDeployment(intakeDeployer),
                 new LoggableWaitCommand(2),
                 new SetShootingState(shootstate, ShootState.STOPPED)
         );

@@ -24,7 +24,7 @@ public class DepotShootPickup extends LoggableSequentialCommandGroup {
             ControllerSubsystem controller, IntakeDeployerSubsystem intake) {
         super(
                 //shoot
-                new AutoReset(shootstate, turret, angler),
+                new AutoReset(shootstate, turret),
                 new LoggableParallelCommandGroup(
                     LoggableCommandWrapper.wrap(auto.resetOdometry("Depot_ToDepot")),
                     LoggableCommandWrapper.wrap(auto.trajectoryCmd("Depot_ToDepot").withTimeout(2)),

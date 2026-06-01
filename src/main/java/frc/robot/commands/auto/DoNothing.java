@@ -10,10 +10,10 @@ import frc.robot.subsystems.TurretSubsystem;
 import frc.robot.utils.logging.commands.LoggableParallelCommandGroup;
 
 public class DoNothing extends LoggableParallelCommandGroup{
-    public DoNothing(TurretSubsystem turret, AnglerSubsystem angler, ShootingState shootState) {
+    public DoNothing(TurretSubsystem turret, ShootingState shootState) {
             super(
                     new RunTurretToRevLimit(turret),
-                    new RunAnglerToReverseLimit(angler),
+                    //new RunAnglerToReverseLimit(angler),
                     new SetShootingState(shootState, ShootState.STOPPED)
                 );
     }

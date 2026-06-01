@@ -21,10 +21,10 @@ import frc.robot.utils.logging.commands.LoggableWaitCommand;
 public class FastDepotRed extends LoggableSequentialCommandGroup {
     public FastDepotRed(
             SwerveSubsystem drivetrain, AutoFactory auto, ShooterSubsystem shooter, ShootingState shootstate,
-            HopperSubsystem hopper, FeederSubsystem feeder, TurretSubsystem turret, AnglerSubsystem angler,
+            HopperSubsystem hopper, FeederSubsystem feeder, TurretSubsystem turret, 
             ControllerSubsystem controller, IntakeDeployerSubsystem intake) {
         super(  
-            new AutoReset(shootstate, turret, angler),
+            new AutoReset(shootstate, turret),
             new SetShootingState(shootstate, ShootState.AUTO_AIM),
             new LoggableParallelCommandGroup(
                 LoggableCommandWrapper.wrap(auto.resetOdometry("Depot_Fast")),

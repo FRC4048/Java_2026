@@ -112,7 +112,7 @@ public class RobotContainer {
         private final PowerDistribution powerDistribution = new PowerDistribution();
 
         private final ClimberSubsystem climberSubsystem;
-        private final AnglerSubsystem anglerSubsystem;
+        //private final AnglerSubsystem anglerSubsystem;
         private final IntakeSubsystem intakeSubsystem;
         private final FeederSubsystem feederSubsystem;
         private final ApriltagSubsystem apriltagSubsystem;
@@ -147,7 +147,7 @@ public class RobotContainer {
                 // Configure the trigger bindings
                 switch (Constants.currentMode) {
                         case REAL -> {
-                                anglerSubsystem = new AnglerSubsystem(AnglerSubsystem.createRealIo());
+                                //anglerSubsystem = new AnglerSubsystem(AnglerSubsystem.createRealIo());
                                 intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createRealIo());
                                 hopperSubsystem = new HopperSubsystem(HopperSubsystem.createRealIo());
                                 intakeDeployer = new IntakeDeployerSubsystem(IntakeDeployerSubsystem.createRealIo());
@@ -167,7 +167,7 @@ public class RobotContainer {
                                 powerDistribution.setSwitchableChannel(true);
                                 }
                         case REPLAY -> {
-                                anglerSubsystem = new AnglerSubsystem(AnglerSubsystem.createMockIo());
+                                //anglerSubsystem = new AnglerSubsystem(AnglerSubsystem.createMockIo());
                                 intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createMockIo());
                                 hopperSubsystem = new HopperSubsystem(HopperSubsystem.createMockIo());
                                 climberSubsystem = new ClimberSubsystem(ClimberSubsystem.createMockIo());
@@ -186,7 +186,7 @@ public class RobotContainer {
             }
             case SIM -> {
                 robotVisualizer = new RobotVisualizer();
-                                anglerSubsystem = new AnglerSubsystem(AnglerSubsystem.createSimIo(robotVisualizer));
+                                //anglerSubsystem = new AnglerSubsystem(AnglerSubsystem.createSimIo(robotVisualizer));
                                 intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.createSimIo(robotVisualizer));
                                 hopperSubsystem = new HopperSubsystem(HopperSubsystem.createSimIo(robotVisualizer));
                                 climberSubsystem = new ClimberSubsystem(ClimberSubsystem.createSimIo(robotVisualizer));
@@ -210,7 +210,7 @@ public class RobotContainer {
                 }
 
                 setUpAutoFactory();
-                autoChooser = new AutoChooser(drivebase, shootState, autoFactory, shooterSubsystem, climberSubsystem, feederSubsystem, hopperSubsystem, turretSubsystem, anglerSubsystem, controllerSubsystem, intakeDeployer);
+                autoChooser = new AutoChooser(drivebase, shootState, autoFactory, shooterSubsystem, climberSubsystem, feederSubsystem, hopperSubsystem, turretSubsystem, controllerSubsystem, intakeDeployer);
                 configureBindings();
                 putShuffleboardCommands();
         }
@@ -318,7 +318,7 @@ public class RobotContainer {
                 intakeSubsystem.setDefaultCommand(new SpinIntake(intakeSubsystem, intakeDeployer));
             if (controllerSubsystem != null) {
                 intakeDeployer.setDefaultCommand(new RunDeployer(intakeDeployer));
-                anglerSubsystem.setDefaultCommand(new DefaultAnglerControl(anglerSubsystem, controllerSubsystem));
+                //anglerSubsystem.setDefaultCommand(new DefaultAnglerControl(anglerSubsystem, controllerSubsystem));
                 shooterSubsystem.setDefaultCommand(new DefaultShooterControl(shooterSubsystem, controllerSubsystem));
                 turretSubsystem.setDefaultCommand(new DefaultTurretControl(turretSubsystem, controllerSubsystem));
                 hopperSubsystem.setDefaultCommand(new DefaultSpinHopper(hopperSubsystem, controllerSubsystem, shootState));
@@ -354,9 +354,12 @@ public class RobotContainer {
                 if (Constants.DEBUG) {
                         SmartDashboard.putNumber(RunDashboardShotTest.ANGLER_TARGET_POSITION_KEY, 0.0);
                         SmartDashboard.putNumber(RunDashboardShotTest.SHOOTER_TARGET_RPM_KEY, Constants.SHOOTER_SPEED);
-                 SmartDashboard.putData(
+                 /*
+                        SmartDashboard.putData(
                                         "test/Run Dashboard Shot Test (30s)",
                                         new RunDashboardShotTest(anglerSubsystem, shooterSubsystem));
+                */
+
                 SmartDashboard.putData("RunHoppperAndFeeder",
                                         new RunHopperAndFeeder(hopperSubsystem, feederSubsystem));
                         /*
@@ -404,7 +407,7 @@ public class RobotContainer {
                         SmartDashboard.putData("RunTurret",
                                         new TestSetTurretAngle(turretSubsystem));
 
-                       
+                       /*
                         SmartDashboard.putData(
                                         "angler/Go Home",
                                         new InstantCommand(() -> anglerSubsystem
@@ -441,7 +444,7 @@ public class RobotContainer {
                                         "reset All",
                                         new ResetAll(anglerSubsystem, climberSubsystem, intakeDeployer, intakeSubsystem, 
                                                 shooterSubsystem, turretSubsystem, shootState));
-
+                        */
             SmartDashboard.putData(
                     "turret/TurretTest/Turret Go 45",
                     new SetTurretAngle(turretSubsystem, 45));
@@ -535,7 +538,7 @@ public class RobotContainer {
                                         new SetDeploymentState(intakeDeployer, DeploymentState.STOPPED));
                         SmartDashboard.putData(
                                 "Reset All",
-                                new ResetAll(anglerSubsystem, climberSubsystem, 
+                                new ResetAll(climberSubsystem, 
                         intakeDeployer, intakeSubsystem, shooterSubsystem, turretSubsystem, shootState));
 
                 }

@@ -27,10 +27,10 @@ import frc.robot.utils.logging.commands.LoggableWaitCommand;
 public class ShootBlue extends LoggableSequentialCommandGroup{
     public ShootBlue(
         SwerveSubsystem drivetrain, AutoFactory auto, ShooterSubsystem shooter, ShootingState shootstate, 
-        HopperSubsystem hopper, FeederSubsystem feeder, TurretSubsystem turret, AnglerSubsystem angler,
+        HopperSubsystem hopper, FeederSubsystem feeder, TurretSubsystem turret, 
         ControllerSubsystem controller, IntakeDeployerSubsystem intakeDeployer) {
         super(  
-                new AutoReset(shootstate, turret, angler),
+                new AutoReset(shootstate, turret),
                 new LoggableWaitCommand(2),
                 new SetShootingState(shootstate, ShootState.SHOOTING_HUB),
                 new DriveSwerve(drivetrain, DriveDirection.FORWARD, 3, 0.5),

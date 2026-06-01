@@ -16,12 +16,11 @@ import frc.robot.subsystems.TurretSubsystem;
 import frc.robot.utils.logging.commands.LoggableParallelCommandGroup;
 
 public class ResetAll extends LoggableParallelCommandGroup {
-    public ResetAll(AnglerSubsystem anglerSubsystem, ClimberSubsystem climberSubsystem,
+    public ResetAll(ClimberSubsystem climberSubsystem,
             IntakeDeployerSubsystem intakeDeployerSubsystem, IntakeSubsystem intakeSubsystem,
             ShooterSubsystem shooterSubsystem, TurretSubsystem turretSubsystem, ShootingState shootState) {
         super(
             new MoveIntakeDeploymentUp(intakeDeployerSubsystem),
-            new StowAngler(anglerSubsystem),
             new ClimberDown(climberSubsystem),
             new SetShootingState(shootState, ShootState.STOPPED),
             new TurretToRev(turretSubsystem)

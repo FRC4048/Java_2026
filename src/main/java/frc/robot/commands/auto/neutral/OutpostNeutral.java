@@ -17,10 +17,9 @@ public class OutpostNeutral extends LoggableSequentialCommandGroup {
             AutoFactory auto,
             ShootingState shootstate,
             TurretSubsystem turret,
-            AnglerSubsystem angler,
             ControllerSubsystem controller) {
         super(
-                new AutoReset(shootstate, turret, angler),
+                new AutoReset(shootstate, turret),
                 new SetTurretAngle(turret, 0),
                 LoggableCommandWrapper.wrap(auto.resetOdometry("Outpost_Neutral_1")),
                 LoggableCommandWrapper.wrap(auto.trajectoryCmd("Outpost_Neutral_1")),

@@ -70,6 +70,12 @@ public class RoutineChooser {
                 return swipeOutpostDot();
             case MID_DEPOT:
                 return midDepot();
+            case TEST:
+                return test();
+            case BIG_DOT_DEPOT:
+                return bigDotDepot();
+            case BIG_DOT_OUTPOST:
+                return bigDotDepot();
             default:
                 return factory.newRoutine("do_nothing");
         }
@@ -102,8 +108,8 @@ public class RoutineChooser {
     }
     
     public AutoRoutine midDepot() {
-        AutoRoutine routine = factory.newRoutine("swipe");
-        AutoTrajectory traj = routine.trajectory("test");
+        AutoRoutine routine = factory.newRoutine("depot");
+        AutoTrajectory traj = routine.trajectory("depot_hook");
 
         routine.active().onTrue(new LoggableSequentialCommandGroup(
                 new LoggableCommandWrapper(traj.resetOdometry()),
@@ -124,12 +130,42 @@ public class RoutineChooser {
 
     public AutoRoutine swipeOutpostDot() {
         AutoRoutine routine = factory.newRoutine("swipe");
-        AutoTrajectory firstSwipeTraj = routine.trajectory("swipe_one");
-        AutoTrajectory secondSwipeTraj = routine.trajectory("swipe_two_dot");
+        AutoTrajectory firstSwipeTraj = routine.trajectory("swipe_one").mirrorY();
+        AutoTrajectory secondSwipeTraj = routine.trajectory("swipe_two_dot").mirrorY();
         firstSwipeTraj.done().onTrue(new LoggableWaitCommand(3).andThen(secondSwipeTraj.cmd()));
         routine.active().onTrue(new LoggableSequentialCommandGroup(
                 new LoggableCommandWrapper(firstSwipeTraj.resetOdometry()),
                 new LoggableCommandWrapper(firstSwipeTraj.cmd())));
+        return routine;
+    }
+
+    public AutoRoutine test() {
+        AutoRoutine routine = factory.newRoutine("test");
+        AutoTrajectory traj = routine.trajectory("test");
+
+        routine.active().onTrue(new LoggableSequentialCommandGroup(
+                new LoggableCommandWrapper(traj.resetOdometry()),
+                new LoggableCommandWrapper(traj.cmd())));
+        return routine;
+    }
+
+    public AutoRoutine bigDotDepot() {
+        AutoRoutine routine = factory.newRoutine("dot");
+        AutoTrajectory traj = routine.trajectory("bigDot");
+
+        routine.active().onTrue(new LoggableSequentialCommandGroup(
+                new LoggableCommandWrapper(traj.resetOdometry()),
+                new LoggableCommandWrapper(traj.cmd())));
+        return routine;
+    }
+
+    public AutoRoutine bigDotOutpost() {
+        AutoRoutine routine = factory.newRoutine("dot");
+        AutoTrajectory traj = routine.trajectory("bigDot").mirrorY();
+
+        routine.active().onTrue(new LoggableSequentialCommandGroup(
+                new LoggableCommandWrapper(traj.resetOdometry()),
+                new LoggableCommandWrapper(traj.cmd())));
         return routine;
     }
 

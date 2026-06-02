@@ -103,8 +103,8 @@ public class ShooterSubsystem extends SubsystemBase {
     private void sysIdLog(SysIdRoutineLog log) {
         log.motor("shooter")
                 .voltage(Volts.of(io.getAppliedOutput() * RobotController.getBatteryVoltage()))
-                .angularPosition(Rotations.of(io.getEncoderPosition()*(2*Math.PI)))
-                .angularVelocity(RPM.of((io.getEncoderVelocity()*(2*Math.PI))/60));
+                .angularPosition(Rotations.of(io.getEncoderPosition()))
+                .angularVelocity(RPM.of((io.getEncoderVelocity())));
     }
 
     public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {

@@ -308,10 +308,10 @@ public class RobotContainer {
                 controller.povUp().onTrue(new SetShootingState(shootState, ShootState.FIXED));
                 controller.povRight().onTrue(new SetShootingState(shootState, ShootState.STOPPED));
                 controller.povDown().onTrue(new SetShootingState(shootState, ShootState.SHOOTING_HUB));
-                controller.povLeft().onTrue(new SetShootingState(shootState, ShootState.SHUTTLING));
+                //controller.povLeft().onTrue(new SetShootingState(shootState, ShootState.SHUTTLING));
                 controller.leftTrigger().whileTrue(new ReverseHopper(hopperSubsystem));
                 controller.rightTrigger().whileTrue(new ReverseIntake(intakeSubsystem));
-                driveJoystick.trigger().whileTrue((new SetShootingState(shootState, ShootState.STOPPED)));
+                driveJoystick.trigger().whileTrue(new ShootButton(controllerSubsystem));
 
                 // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
                 // new Trigger(m_exampleSubsystem::exampleCondition)
@@ -327,7 +327,7 @@ public class RobotContainer {
                 intakeDeployer.setDefaultCommand(new RunDeployer(intakeDeployer));
                 anglerSubsystem.setDefaultCommand(new DefaultAnglerControl(anglerSubsystem, controllerSubsystem));
                 shooterSubsystem.setDefaultCommand(new DefaultShooterControl(shooterSubsystem, controllerSubsystem));
-                turretSubsystem.setDefaultCommand(new DefaultTurretControl(turretSubsystem, controllerSubsystem));
+                //turretSubsystem.setDefaultCommand(new DefaultTurretControl(turretSubsystem, controllerSubsystem));
                 hopperSubsystem.setDefaultCommand(new DefaultSpinHopper(hopperSubsystem, controllerSubsystem, shootState));
                 feederSubsystem.setDefaultCommand(new DefaultSpinFeeder(feederSubsystem, controllerSubsystem));
             }

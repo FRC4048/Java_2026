@@ -306,7 +306,7 @@ public class RobotContainer {
                 controller.povLeft().onTrue(new SetShootingState(shootState, ShootState.SHUTTLING));
                 controller.leftTrigger().whileTrue(new ReverseHopper(hopperSubsystem));
                 controller.rightTrigger().whileTrue(new ReverseIntake(intakeSubsystem));
-                driveJoystick.trigger().whileTrue((new SetShootingState(shootState, ShootState.STOPPED)));
+                driveJoystick.trigger().whileTrue((new ShootButton(controllerSubsystem)));
 
                 // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
                 // new Trigger(m_exampleSubsystem::exampleCondition)

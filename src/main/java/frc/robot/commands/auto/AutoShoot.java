@@ -2,15 +2,18 @@ package frc.robot.commands.auto;
 
 import frc.robot.commands.feeder.SpinFeeder;
 import frc.robot.commands.hopper.AutoSpinHopper;
-import frc.robot.commands.hopper.SpinHopper;
+import frc.robot.commands.shooter.SetShootingState;
+import frc.robot.constants.enums.ShootingState;
+import frc.robot.constants.enums.ShootingState.ShootState;
 import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.subsystems.HopperSubsystem;
 import frc.robot.utils.logging.commands.LoggableRaceCommandGroup;
 import frc.robot.utils.logging.commands.LoggableWaitCommand;
 
 public class AutoShoot extends LoggableRaceCommandGroup{
-    public AutoShoot(HopperSubsystem hopperSubsystem, FeederSubsystem feederSubsystem, double time){
+    public AutoShoot(HopperSubsystem hopperSubsystem, FeederSubsystem feederSubsystem, ShootingState shootState, double time){
         super(
+            new SetShootingState(shootState, ShootState.SHOOTING_HUB),
             new AutoSpinHopper(hopperSubsystem),
             new SpinFeeder(feederSubsystem),
             new LoggableWaitCommand(time)

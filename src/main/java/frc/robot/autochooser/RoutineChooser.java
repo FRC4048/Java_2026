@@ -50,8 +50,6 @@ public class RoutineChooser {
         factory.bind("intakeStart", new SpinIntake(intake)); //intake start marker
         factory.bind("intakeStop", new StopIntake(intake)); //intake stop marker
         factory.bind("intakeUp", new ForceDeployUp(deployer)); //intake up marker
-        factory.bind("shooting", new SetShootingState(shootState, ShootState.SHOOTING_HUB)); //shoot state to shooting marker
-        factory.bind("stopShooting", new SetShootingState(shootState, ShootState.STOPPED)); //shoot state to stop marker
 
         autoChooser = new LoggedDashboardChooser<>("AutoAction");
         for (AutoPath paths : AutoPath.values()) {
@@ -170,6 +168,7 @@ public class RoutineChooser {
         routine.active().onTrue(new LoggableSequentialCommandGroup(
                 new LoggableCommandWrapper(traj.resetOdometry()),
                 new LoggableCommandWrapper(traj.cmd())));
+
         return routine;
     }
 

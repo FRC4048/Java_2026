@@ -9,6 +9,7 @@ import choreo.auto.AutoFactory;
 import choreo.auto.AutoRoutine;
 import choreo.auto.AutoTrajectory;
 import frc.robot.Robot;
+import frc.robot.commands.auto.AutoShoot;
 import frc.robot.commands.feeder.SpinFeeder;
 import frc.robot.commands.intake.SpinIntake;
 import frc.robot.commands.intake.StopIntake;
@@ -20,10 +21,12 @@ import frc.robot.constants.enums.ShootingState;
 import frc.robot.constants.enums.ShootingState.ShootState;
 import frc.robot.subsystems.ControllerSubsystem;
 import frc.robot.subsystems.FeederSubsystem;
+import frc.robot.subsystems.HopperSubsystem;
 import frc.robot.subsystems.IntakeDeployerSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.utils.logging.commands.LoggableCommandWrapper;
+import frc.robot.utils.logging.commands.LoggableParallelCommandGroup;
 import frc.robot.utils.logging.commands.LoggableSequentialCommandGroup;
 import frc.robot.utils.logging.commands.LoggableWaitCommand;
 
@@ -33,18 +36,21 @@ public class RoutineChooser {
     private final IntakeSubsystem intake;
     private final IntakeDeployerSubsystem deployer;
     private final ShootingState shootState;
+    private final HopperSubsystem hopper;
     private final LoggedDashboardChooser<AutoPath> autoChooser;
 
     public RoutineChooser(AutoFactory factory,
             FeederSubsystem feeder,
             IntakeSubsystem intake,
             IntakeDeployerSubsystem deployer,
-            ShootingState shootState) {
+            ShootingState shootState,
+            HopperSubsystem hopper) {
         this.factory = factory;
         this.feeder = feeder;
         this.intake = intake;
         this.deployer = deployer;
         this.shootState = shootState;
+        this.hopper = hopper;
 
         factory.bind("intakeDeploy", new ForceDeployDown(deployer)); //intake deploy marker
         factory.bind("intakeStart", new SpinIntake(intake)); //intake start marker
@@ -86,16 +92,37 @@ public class RoutineChooser {
 
     public AutoRoutine swipeDepot() {
         AutoRoutine routine = factory.newRoutine("swipe");
-        AutoTrajectory firstSwipeTraj = routine.trajectory("swipe_one");
-        AutoTrajectory secondSwipeTraj = routine.trajectory("swipe_two");
-        AutoTrajectory thirdSwipeTraj = routine.trajectory("swipe_three");
-        firstSwipeTraj.done().onTrue(new LoggableWaitCommand(3).andThen(secondSwipeTraj.cmd()));
-        secondSwipeTraj.done().onTrue(new LoggableWaitCommand(3).andThen(thirdSwipeTraj.cmd()));
+        AutoTrajectory swipe1 = routine.trajectory("swipe_1");
+        AutoTrajectory swipe2 = routine.trajectory("swipe_2");
+        AutoTrajectory swipe3 = routine.trajectory("swipe_2");
+        AutoTrajectory shoot1 = routine.trajectory("shoot_depot_1");
+        AutoTrajectory shoot2 = routine.trajectory("shoot_depot_2");
+
         routine.active().onTrue(new LoggableSequentialCommandGroup(
-                new LoggableCommandWrapper(firstSwipeTraj.resetOdometry()),
-                new LoggableCommandWrapper(firstSwipeTraj.cmd())));
+                new LoggableCommandWrapper(swipe1.resetOdometry()),
+                new LoggableCommandWrapper(swipe1.cmd())
+        ));
+        
+        swipe1.done().onTrue(shoot1.cmd());
+
+        shoot1.done().onTrue(new LoggableParallelCommandGroup(
+                    new AutoShoot(hopper, feeder, shootState, 5),
+                    new LoggableWaitCommand(3)
+        ));
+        shoot2.cmd();
+
+        swipe2.cmd();
+
+        swipe2.done().onTrue(new LoggableParallelCommandGroup(
+                    new AutoShoot(hopper, feeder, shootState, 5),
+                    new LoggableWaitCommand(3)
+        ));
+        swipe3.cmd();
+
         return routine;
     }
+
+
    public AutoRoutine swipeOutpost() {
         AutoRoutine routine = factory.newRoutine("swipe");
         AutoTrajectory firstSwipeTraj = routine.trajectory("swipe_one").mirrorY();

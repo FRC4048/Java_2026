@@ -111,13 +111,15 @@ public class RoutineChooser {
         ));
         shoot2.cmd();
 
-        swipe2.cmd();
+        shoot2.done().onTrue(shoot1.cmd());
 
-        swipe2.done().onTrue(new LoggableParallelCommandGroup(
+        shoot1.done().onTrue(new LoggableParallelCommandGroup(
                     new AutoShoot(hopper, feeder, shootState, 5),
                     new LoggableWaitCommand(3)
         ));
-        swipe3.cmd();
+        shoot2.cmd();
+
+        shoot2.done().onTrue(swipe3.cmd());
 
         return routine;
     }

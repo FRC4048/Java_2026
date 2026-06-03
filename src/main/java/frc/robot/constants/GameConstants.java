@@ -124,8 +124,8 @@ public class GameConstants {
     public static final double TURRET_LONG_RANGE_I = 0.000000;
     public static final double TURRET_LONG_RANGE_D = 0.0;
     public static final double TURRET_LONG_RANGE_FF = 0.0;
-    public static final double TURRET_ENCODER_MIN = 0; //Lowest encoder position of Turret
-    public static final double TURRET_ENCODER_MAX = 77; //Highest encoder position of Turret
+    public static final double TURRET_ENCODER_MIN = -10; //Lowest encoder position of Turret
+    public static final double TURRET_ENCODER_MAX = 10; //Highest encoder position of Turret
     public static final double TURRET_HOME_ANGLE = 0.0; //Turret facing forward
     public static final double TURRET_MIN_ANGLE = -96;
     public static final double TURRET_MAX_ANGLE = 96;
@@ -189,4 +189,6 @@ public class GameConstants {
     public static final double SHUTTLING_TARGET_HIGHER_Y_POSITION = 5.5;
     public static final int TCP_SERVER_PORT1 = 5806;
     public static final int TCP_SERVER_PORT2 = 5807;
+
+    public static final double MANUAL_MOVE_SCALING_FACTOR = 0.1;
 }

@@ -27,7 +27,7 @@ public class TurretSubsystem extends SubsystemBase {
     private final SparkMaxPidMotorIo io;
     private final TunablePIDManager pidManager;
     private double lastAngle = 999;
-
+    private double currentSetPosition = 0;
     public TurretSubsystem(SparkMaxPidMotorIo io) {
         this.io = io;
         this.pidManager = new TunablePIDManager(LOGGING_NAME, io, createPidConfig0());
@@ -70,6 +70,12 @@ public class TurretSubsystem extends SubsystemBase {
             setPosition(targetRotations);
             lastAngle = targetAngle;
         }
+    }
+    public void manualMove(double input){
+        if(((input > 0 && !isAtForwardLimit())||(input < 0 && !isAtReverseLimit())) && (currentSetPosition+input < Constants.TURRET_ENCODER_MAX) && (currentSetPosition+input > Constants.TURRET_ENCODER_MIN)){
+            currentSetPosition += input;
+        }
+        setPosition(currentSetPosition);
     }
 
     //Range translate code with a clamp

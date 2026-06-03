@@ -60,7 +60,7 @@ public class GameConstants {
     public static final double INTAKE_RETRACTION_SPEED = 0.075;
     public static final double INITIAL_INTAKE_DEPLOYMENT_SPEED = -0.3;
     public static final double INITIAL_INTAKE_RETRACTION_SPEED = 0.3;
-    public static final double AGITATOR_DOWN = -0.3;
+    public static final double AGITATOR_DOWN = -0.15;
     public static final double AGITATIOR_UP = 0.3;
 
 
@@ -84,7 +84,7 @@ public class GameConstants {
     public static final double SHOOTER_TIMEOUT = 5;
     public static final double INTAKE_DEPLOYER_TIMEOUT_TIMER = 5;
     public static final double TURRET_TIMEOUT = 5;
-    public static final double AGITATOR_CYCLE_TIME = 0.25;
+    public static final double AGITATOR_CYCLE_TIME = 1;
 
     //Angles
     public static final Rotation2d ANGLER_MIN_ANGLE = Rotation2d.fromDegrees(45);

@@ -2,8 +2,8 @@ package frc.robot.autochooser;
 
 public enum AutoPath {
     DO_NOTHING("Do nothing"),
-    SWIPE_DEPOT("Swipe depot"),
-    SWIPE_OUTPOST("Swipe outpost"),
+    SINGLE_SWIPE_DEPOT("Single swipe depot"),
+    SINGLE_SWIPE_OUTPOST("Single Swipe outpost"),
     SWIPE_DEPOT_DOT("Swipe Depot Dot"),
     SWIPE_OUTPOST_DOT("Swipe Outpost Dot"),
     MID_DEPOT("Mid Depot"),

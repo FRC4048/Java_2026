@@ -13,6 +13,7 @@ import frc.robot.commands.auto.AutoShoot;
 import frc.robot.commands.feeder.SpinFeeder;
 import frc.robot.commands.intake.SpinIntake;
 import frc.robot.commands.intake.StopIntake;
+import frc.robot.commands.intakeDeployment.Agitate;
 import frc.robot.commands.intakeDeployment.ForceDeployDown;
 import frc.robot.commands.intakeDeployment.ForceDeployUp;
 import frc.robot.commands.intakeDeployment.ToggleDeployment;
@@ -93,8 +94,6 @@ public class RoutineChooser {
     public AutoRoutine swipeDepot() {
         AutoRoutine routine = factory.newRoutine("swipe");
         AutoTrajectory swipe1 = routine.trajectory("swipe_1");
-        AutoTrajectory swipe2 = routine.trajectory("swipe_2");
-        AutoTrajectory swipe3 = routine.trajectory("swipe_2");
         AutoTrajectory shoot1 = routine.trajectory("shoot_depot_1");
         AutoTrajectory shoot2 = routine.trajectory("shoot_depot_2");
 
@@ -107,19 +106,15 @@ public class RoutineChooser {
 
         shoot1.done().onTrue(new LoggableParallelCommandGroup(
                     new AutoShoot(hopper, feeder, shootState, 5),
-                    new LoggableWaitCommand(3)
+                    new LoggableWaitCommand(6),
+                    new LoggableSequentialCommandGroup(
+                        new LoggableWaitCommand(3),
+                        new Agitate(deployer)
+                    )
         ));
         shoot2.cmd();
 
-        shoot2.done().onTrue(swipe2.cmd());
-
-        swipe2.done().onTrue(new LoggableParallelCommandGroup(
-                    new AutoShoot(hopper, feeder, shootState, 5),
-                    new LoggableWaitCommand(3)
-        ));
-        shoot2.cmd();
-
-        shoot2.done().onTrue(swipe3.cmd());
+        shoot2.done().onTrue(shoot2.cmd());
 
         return routine;
     }

@@ -303,11 +303,11 @@ public class RobotContainer {
 
         private void configureBindings() {
                 controller.a().onTrue(new ToggleDeployment(intakeDeployer));
-                controller.b().onTrue(new SetDeploymentState(intakeDeployer, DeploymentState.STOPPED));
+                //controller.b().onTrue(new SetDeploymentState(intakeDeployer, DeploymentState.STOPPED));
                 controller.x().whileTrue(new SpinIntake(intakeSubsystem));
                 controller.y().whileTrue(new Agitate(intakeDeployer));
                 controller.leftStick().whileTrue(new ManualTurretMove(turretSubsystem, controller::getLeftX));
-                controller.povUp().onTrue(new SetShootingState(shootState, ShootState.FIXED));
+                //controller.povUp().onTrue(new SetShootingState(shootState, ShootState.FIXED));
                 controller.povRight().onTrue(new SetShootingState(shootState, ShootState.STOPPED));
                 controller.povDown().onTrue(new SetShootingState(shootState, ShootState.SHOOTING_HUB));
                 //controller.povLeft().onTrue(new SetShootingState(shootState, ShootState.SHUTTLING));

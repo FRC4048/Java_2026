@@ -7,6 +7,7 @@ import frc.robot.constants.enums.ShootingState;
 import frc.robot.constants.enums.ShootingState.ShootState;
 import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.subsystems.HopperSubsystem;
+import frc.robot.utils.logging.commands.LoggableParallelCommandGroup;
 import frc.robot.utils.logging.commands.LoggableRaceCommandGroup;
 import frc.robot.utils.logging.commands.LoggableSequentialCommandGroup;
 import frc.robot.utils.logging.commands.LoggableWaitCommand;
@@ -18,7 +19,10 @@ public class AutoShoot extends LoggableSequentialCommandGroup{
 
             new LoggableRaceCommandGroup(
                 new AutoSpinHopper(hopperSubsystem),
-                new SpinFeeder(feederSubsystem),
+                new LoggableParallelCommandGroup(
+                    new SpinFeeder(feederSubsystem),
+                    new LoggableWaitCommand(2)
+                ),
                 new LoggableWaitCommand(time)
             ),
             

@@ -145,11 +145,7 @@ public class RoutineChooser {
                 new LoggableCommandWrapper(traj.cmd())));
 
         traj.done().onTrue(new LoggableParallelCommandGroup(
-            new AutoShoot(hopper, feeder, shootState, 5),
-            new LoggableSequentialCommandGroup(
-                        new LoggableWaitCommand(4),
-                        new Agitate(deployer)
-            )
+            new AutoShoot(hopper, feeder, shootState, 5)
         ));
 
         return routine;

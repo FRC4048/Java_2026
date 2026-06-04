@@ -36,7 +36,7 @@ public class GameConstants {
     public static final boolean ENABLE_LOGGING = true;
 
     //Debugs
-    public static final boolean DEBUG = false;
+    public static final boolean DEBUG = true;
     public static final boolean ARM_DEBUG = true;
 
     //Joystick
@@ -190,5 +190,5 @@ public class GameConstants {
     public static final int TCP_SERVER_PORT1 = 5806;
     public static final int TCP_SERVER_PORT2 = 5807;
 
-    public static final double SHOOTER_RPM_THRESHOLD = 0.9;
+    public static final double SHOOTER_RPM_THRESHOLD = 0.95;
 }

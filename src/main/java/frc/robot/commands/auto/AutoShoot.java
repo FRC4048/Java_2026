@@ -16,16 +16,11 @@ public class AutoShoot extends LoggableSequentialCommandGroup{
     public AutoShoot(HopperSubsystem hopperSubsystem, FeederSubsystem feederSubsystem, ShootingState shootState, double time){
         super(
             new SetShootingState(shootState, ShootState.SHOOTING_HUB),
-
+            new LoggableWaitCommand(2),
             new LoggableRaceCommandGroup(
-                new AutoSpinHopper(hopperSubsystem),
-                new LoggableParallelCommandGroup(
-                    new SpinFeeder(feederSubsystem),
-                    new LoggableWaitCommand(2)
-                ),
+                new AutoSpinHopper(hopperSubsystem, feederSubsystem),
                 new LoggableWaitCommand(time)
             ),
-            
             new SetShootingState(shootState, ShootState.STOPPED)
         );
     }

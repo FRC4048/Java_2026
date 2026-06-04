@@ -70,28 +70,24 @@ public class RoutineChooser {
             case DO_NOTHING:
                 return factory.newRoutine("do_nothing");
             case SINGLE_SWIPE_DEPOT:
-                return singleSwipeDepot();
+                return depotSingleSwipe();
             case SINGLE_SWIPE_OUTPOST:
-                return singleSwipeOutpost();
-            case SWIPE_DEPOT_DOT:
-                return swipeDepotDot();
-            case SWIPE_OUTPOST_DOT:
-                return swipeOutpostDot();
+                return outpostSingleSwipe();
             case MID_DEPOT:
-                return midDepot();
+                return depotMid();
+            case DIP_AND_DOT_DEPOT:
+                return depotDipAndDot();
+            case DIP_AND_DOT_OUTPOST:
+                return outpostDipAndDot();
             case TEST:
                 return test();
-            case BIG_DOT_DEPOT:
-                return bigDotDepot();
-            case BIG_DOT_OUTPOST:
-                return bigDotDepot();
             default:
                 return factory.newRoutine("do_nothing");
         }
 
     }
 
-    public AutoRoutine singleSwipeDepot() {
+    public AutoRoutine depotSingleSwipe() {
         AutoRoutine routine = factory.newRoutine("swipe");
 
         AutoTrajectory swipe1 = routine.trajectory("swipe_1");
@@ -106,7 +102,6 @@ public class RoutineChooser {
 
         shoot1.done().onTrue(new LoggableParallelCommandGroup(
                     new AutoShoot(hopper, feeder, shootState, 5),
-                    new LoggableWaitCommand(8),
                     new LoggableSequentialCommandGroup(
                         new LoggableWaitCommand(4),
                         new Agitate(deployer)
@@ -116,7 +111,7 @@ public class RoutineChooser {
         return routine;
     }
 
-    public AutoRoutine singleSwipeOutpost() {
+    public AutoRoutine outpostSingleSwipe() {
         AutoRoutine routine = factory.newRoutine("swipe");
 
         AutoTrajectory swipe1 = routine.trajectory("swipe_1").mirrorY();
@@ -131,7 +126,6 @@ public class RoutineChooser {
 
         shoot1.done().onTrue(new LoggableParallelCommandGroup(
                     new AutoShoot(hopper, feeder, shootState, 5),
-                    new LoggableWaitCommand(8),
                     new LoggableSequentialCommandGroup(
                         new LoggableWaitCommand(4),
                         new Agitate(deployer)
@@ -142,37 +136,25 @@ public class RoutineChooser {
     }
    
     
-    public AutoRoutine midDepot() {
+    public AutoRoutine depotMid() {
         AutoRoutine routine = factory.newRoutine("depot");
-        AutoTrajectory traj = routine.trajectory("depot_hook");
+        AutoTrajectory traj = routine.trajectory("midHook");
 
         routine.active().onTrue(new LoggableSequentialCommandGroup(
                 new LoggableCommandWrapper(traj.resetOdometry()),
                 new LoggableCommandWrapper(traj.cmd())));
+
+        traj.done().onTrue(new LoggableParallelCommandGroup(
+            new AutoShoot(hopper, feeder, shootState, 5),
+            new LoggableSequentialCommandGroup(
+                        new LoggableWaitCommand(4),
+                        new Agitate(deployer)
+            )
+        ));
+
         return routine;
     }
 
-    public AutoRoutine swipeDepotDot() {
-        AutoRoutine routine = factory.newRoutine("swipe");
-        AutoTrajectory firstSwipeTraj = routine.trajectory("swipe_one");
-        AutoTrajectory secondSwipeTraj = routine.trajectory("swipe_two_dot");
-        firstSwipeTraj.done().onTrue(new LoggableWaitCommand(3).andThen(secondSwipeTraj.cmd()));
-        routine.active().onTrue(new LoggableSequentialCommandGroup(
-                new LoggableCommandWrapper(firstSwipeTraj.resetOdometry()),
-                new LoggableCommandWrapper(firstSwipeTraj.cmd())));
-        return routine;
-    }
-
-    public AutoRoutine swipeOutpostDot() {
-        AutoRoutine routine = factory.newRoutine("swipe");
-        AutoTrajectory firstSwipeTraj = routine.trajectory("swipe_one").mirrorY();
-        AutoTrajectory secondSwipeTraj = routine.trajectory("swipe_two_dot").mirrorY();
-        firstSwipeTraj.done().onTrue(new LoggableWaitCommand(3).andThen(secondSwipeTraj.cmd()));
-        routine.active().onTrue(new LoggableSequentialCommandGroup(
-                new LoggableCommandWrapper(firstSwipeTraj.resetOdometry()),
-                new LoggableCommandWrapper(firstSwipeTraj.cmd())));
-        return routine;
-    }
 
     public AutoRoutine test() {
         AutoRoutine routine = factory.newRoutine("test");
@@ -184,52 +166,49 @@ public class RoutineChooser {
         return routine;
     }
 
-    public AutoRoutine bigDotDepot() {
+    public AutoRoutine depotDipAndDot() {
         AutoRoutine routine = factory.newRoutine("dot");
-        AutoTrajectory traj = routine.trajectory("bigDot");
+        AutoTrajectory traj = routine.trajectory("bigDot_depot_1");
+        AutoTrajectory traj1 = routine.trajectory("bigDot_depot_2");
 
-        routine.active().onTrue(new LoggableSequentialCommandGroup(
-                new LoggableCommandWrapper(traj.resetOdometry()),
-                new LoggableCommandWrapper(traj.cmd())));
-        return routine;
-    }
-
-    public AutoRoutine bigDotOutpost() {
-        AutoRoutine routine = factory.newRoutine("dot");
-        AutoTrajectory traj = routine.trajectory("bigDot").mirrorY();
 
         routine.active().onTrue(new LoggableSequentialCommandGroup(
                 new LoggableCommandWrapper(traj.resetOdometry()),
                 new LoggableCommandWrapper(traj.cmd())));
 
+        traj.done().onTrue(new LoggableParallelCommandGroup(
+            new AutoShoot(hopper, feeder, shootState, 5),
+            new LoggableSequentialCommandGroup(
+                new LoggableWaitCommand(4),
+                new Agitate(deployer)
+            )
+        ));
+
+        traj1.cmd(); //dot
+
         return routine;
     }
 
-        /*
-        
-        Swipe Auto
-            swipe_one
-                2 - intakeDeploy, intakeStart
-                9 - intakeStop
-                12 - shooting
+    public AutoRoutine outpostDipAndDot() {
+        AutoRoutine routine = factory.newRoutine("dot");
+        AutoTrajectory traj = routine.trajectory("bigDot_depot_1");
+        AutoTrajectory traj1 = routine.trajectory("bigDot_depot_2");
 
-            swipe_two
-                1 - shootingStop
-                2 - intakeStart
-                11 - intakeStop
-                12 - shootingStart
-            
-            swipe_three
-                1 - shootingStop
-                //go to neutral zone for the beginning of teleop
 
-        Swipe-dot Auto
-            swipe_one
-                2 - intakeDeploy, intakeStart
-                9 - intakeStop
-                12 - shooting
-            swipe_two_dot
-                1 - shootingStop, intakeUp
-         */
-    
+        routine.active().onTrue(new LoggableSequentialCommandGroup(
+                new LoggableCommandWrapper(traj.resetOdometry()),
+                new LoggableCommandWrapper(traj.cmd())));
+
+        traj.done().onTrue(new LoggableParallelCommandGroup(
+            new AutoShoot(hopper, feeder, shootState, 5),
+            new LoggableSequentialCommandGroup(
+                new LoggableWaitCommand(4),
+                new Agitate(deployer)
+            )
+        ));
+
+        traj1.cmd(); //dot
+
+        return routine;
+    } 
 }

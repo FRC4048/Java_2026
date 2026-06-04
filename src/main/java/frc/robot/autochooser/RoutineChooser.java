@@ -53,10 +53,10 @@ public class RoutineChooser {
         this.shootState = shootState;
         this.hopper = hopper;
 
-        factory.bind("intakeDeploy", new ForceDeployDown(deployer)); //intake deploy marker
-        factory.bind("intakeStart", new SpinIntake(intake)); //intake start marker
-        factory.bind("intakeStop", new StopIntake(intake)); //intake stop marker
-        factory.bind("intakeUp", new ForceDeployUp(deployer)); //intake up marker
+        factory.bind("intakeDeploy", new ForceDeployDown(deployer)); // intake deploy marker
+        factory.bind("intakeStart", new SpinIntake(intake)); // intake start marker
+        factory.bind("intakeStop", new StopIntake(intake)); // intake stop marker
+        factory.bind("intakeUp", new ForceDeployUp(deployer)); // intake up marker
 
         autoChooser = new LoggedDashboardChooser<>("AutoAction");
         for (AutoPath paths : AutoPath.values()) {
@@ -95,18 +95,15 @@ public class RoutineChooser {
 
         routine.active().onTrue(new LoggableSequentialCommandGroup(
                 new LoggableCommandWrapper(swipe1.resetOdometry()),
-                new LoggableCommandWrapper(swipe1.cmd())
-        ));
-        
+                new LoggableCommandWrapper(swipe1.cmd())));
+
         swipe1.done().onTrue(shoot1.cmd());
 
         shoot1.done().onTrue(new LoggableParallelCommandGroup(
-                    new AutoShoot(hopper, feeder, shootState, 5),
-                    new LoggableSequentialCommandGroup(
+                new AutoShoot(hopper, feeder, shootState, 5),
+                new LoggableSequentialCommandGroup(
                         new LoggableWaitCommand(4),
-                        new Agitate(deployer)
-                    )
-        ));
+                        new Agitate(deployer))));
 
         return routine;
     }
@@ -119,38 +116,30 @@ public class RoutineChooser {
 
         routine.active().onTrue(new LoggableSequentialCommandGroup(
                 new LoggableCommandWrapper(swipe1.resetOdometry()),
-                new LoggableCommandWrapper(swipe1.cmd())
-        ));
-        
+                new LoggableCommandWrapper(swipe1.cmd())));
+
         swipe1.done().onTrue(shoot1.cmd());
 
         shoot1.done().onTrue(new LoggableParallelCommandGroup(
-                    new AutoShoot(hopper, feeder, shootState, 5),
-                    new LoggableSequentialCommandGroup(
+                new AutoShoot(hopper, feeder, shootState, 5),
+                new LoggableSequentialCommandGroup(
                         new LoggableWaitCommand(4),
-                        new Agitate(deployer)
-                    )
-        ));
+                        new Agitate(deployer))));
 
         return routine;
     }
-   
-    
+
     public AutoRoutine depotMid() {
         AutoRoutine routine = factory.newRoutine("depot");
         AutoTrajectory traj = routine.trajectory("midHook");
 
         routine.active().onTrue(new LoggableSequentialCommandGroup(
                 new LoggableCommandWrapper(traj.resetOdometry()),
-                new LoggableCommandWrapper(traj.cmd())));
-
-        traj.done().onTrue(new LoggableParallelCommandGroup(
-            new AutoShoot(hopper, feeder, shootState, 5)
-        ));
+                new LoggableCommandWrapper(traj.cmd().andThen(new LoggableParallelCommandGroup(
+                        new AutoShoot(hopper, feeder, shootState, 5))))));
 
         return routine;
     }
-
 
     public AutoRoutine test() {
         AutoRoutine routine = factory.newRoutine("test");
@@ -167,20 +156,17 @@ public class RoutineChooser {
         AutoTrajectory traj = routine.trajectory("bigDot_depot_1");
         AutoTrajectory traj1 = routine.trajectory("bigDot_depot_2");
 
-
         routine.active().onTrue(new LoggableSequentialCommandGroup(
                 new LoggableCommandWrapper(traj.resetOdometry()),
                 new LoggableCommandWrapper(traj.cmd())));
 
         traj.done().onTrue(new LoggableParallelCommandGroup(
-            new AutoShoot(hopper, feeder, shootState, 5),
-            new LoggableSequentialCommandGroup(
-                new LoggableWaitCommand(4),
-                new Agitate(deployer)
-            )
-        ));
+                new AutoShoot(hopper, feeder, shootState, 5),
+                new LoggableSequentialCommandGroup(
+                        new LoggableWaitCommand(4),
+                        new Agitate(deployer))));
 
-        traj1.cmd(); //dot
+        traj1.cmd(); // dot
 
         return routine;
     }
@@ -190,21 +176,18 @@ public class RoutineChooser {
         AutoTrajectory traj = routine.trajectory("bigDot_depot_1");
         AutoTrajectory traj1 = routine.trajectory("bigDot_depot_2");
 
-
         routine.active().onTrue(new LoggableSequentialCommandGroup(
                 new LoggableCommandWrapper(traj.resetOdometry()),
                 new LoggableCommandWrapper(traj.cmd())));
 
         traj.done().onTrue(new LoggableParallelCommandGroup(
-            new AutoShoot(hopper, feeder, shootState, 5),
-            new LoggableSequentialCommandGroup(
-                new LoggableWaitCommand(4),
-                new Agitate(deployer)
-            )
-        ));
+                new AutoShoot(hopper, feeder, shootState, 5),
+                new LoggableSequentialCommandGroup(
+                        new LoggableWaitCommand(4),
+                        new Agitate(deployer))));
 
-        traj1.cmd(); //dot
+        traj1.cmd(); // dot
 
         return routine;
-    } 
+    }
 }

@@ -250,6 +250,16 @@ public class Robot extends LoggedRobot {
           determineHubActive();
           determineHubCountdown();
       }
+    if (robotContainer.getControllerSubsystem().getTargetShooterVelocityRpm() > -1500) {
+            if (robotContainer.getControllerSubsystem().getTargetShooterVelocityRpm() > robotContainer.getShooterSubsystem().getRPM()
+                    * Constants.SHOOTER_RPM_THRESHOLD) {
+               Logger.recordOutput("CanShoot", false);
+            } else {
+                Logger.recordOutput("CanShoot", true);
+            }
+        }else{
+            Logger.recordOutput("CanShoot", false);
+        }
     }
 
     private void determineAutonomousWinner() {

@@ -316,7 +316,7 @@ public class RobotContainer {
                 // cancelling on release.
                 // m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
 
-                intakeSubsystem.setDefaultCommand(new SpinIntake(intakeSubsystem, intakeDeployer));
+                intakeSubsystem.setDefaultCommand(new SpinIntake(intakeSubsystem));
                 lightStripSubsystem.setDefaultCommand(new SetLed(lightStripSubsystem,controllerSubsystem,shooterSubsystem));
             if (controllerSubsystem != null) {
                 intakeDeployer.setDefaultCommand(new RunDeployer(intakeDeployer));
@@ -596,5 +596,15 @@ public class RobotContainer {
         }
         public LightStripSubsystem getLightStrip() {
                 return lightStripSubsystem;
+        }
+
+
+        public ControllerSubsystem getControllerSubsystem() {
+                return controllerSubsystem;
+        }
+
+
+        public ShooterSubsystem getShooterSubsystem() {
+                return shooterSubsystem;
         }
 }

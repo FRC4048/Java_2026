@@ -140,6 +140,7 @@ public class Robot extends LoggedRobot {
             SmartDashboard.putNumber("driverXbox::getRightX", driverXbox.getRightX());
             if (!Constants.TESTBED) {
                     Logger.recordOutput("MyPose", robotContainer.getDriveBase().getPose());
+                    logComponentsForSimulation();
                     SmartDashboard.putNumber("Robot X", robotContainer.getDriveBase().getPose().getX());
             SmartDashboard.putNumber("Robot Y", robotContainer.getDriveBase().getPose().getY());
         // Puts data on the elastic dashboard

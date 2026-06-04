@@ -358,10 +358,14 @@ public class RobotContainer {
                         SmartDashboard.putNumber(RunDashboardShotTest.ANGLER_TARGET_POSITION_KEY, 0.0);
                         SmartDashboard.putNumber(RunDashboardShotTest.SHOOTER_TARGET_RPM_KEY, Constants.SHOOTER_SPEED);
                         SmartDashboard.putNumber(RunDashboardShotTest.HOPPER_TARGET_SPEED_KEY, Constants.HOPPER_SPEED);
-                 SmartDashboard.putData(
+                
+                /* 
+                        SmartDashboard.putData(
                                         "test/Run Dashboard Shot Test (30s)",
                                         new RunDashboardShotTest(anglerSubsystem, shooterSubsystem, hopperSubsystem, feederSubsystem));
-                SmartDashboard.putData("RunHoppperAndFeeder",
+                */
+                
+                                        SmartDashboard.putData("RunHoppperAndFeeder",
                                         new RunHopperAndFeeder(hopperSubsystem, feederSubsystem));
                         /*
                          * SmartDashboard.putData(

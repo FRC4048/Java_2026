@@ -2,18 +2,21 @@ package frc.robot.commands.hopper;
 
 import edu.wpi.first.wpilibj.Timer;
 import frc.robot.constants.Constants;
+import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.subsystems.HopperSubsystem;
 import frc.robot.utils.logging.commands.LoggableCommand;
 
 public class AutoSpinHopper extends LoggableCommand {
     
+    public final FeederSubsystem feedersubsystem;
     public final HopperSubsystem subsystem;
     public final Timer timer;
 
 
-    public AutoSpinHopper(HopperSubsystem subsystem){
+    public AutoSpinHopper(HopperSubsystem subsystem, FeederSubsystem feedersubsystem){
         timer = new Timer();
         this.subsystem = subsystem;
+        this.feedersubsystem = feedersubsystem;
         addRequirements(subsystem);
     }
 
@@ -25,6 +28,7 @@ public class AutoSpinHopper extends LoggableCommand {
     @Override
     public void execute() {
             subsystem.setSpeed(Constants.HOPPER_AUTO_SPEED);
+            feedersubsystem.setSpeed(Constants.FEEDER_SPEED);
     }
 
     @Override

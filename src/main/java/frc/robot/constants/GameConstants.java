@@ -45,7 +45,7 @@ public class GameConstants {
     public static final int XBOX_CONTROLLER_PORT = 2;
 
     //Speeds
-    public static final double INTAKE_SPEED = 0.8;
+    public static final double INTAKE_SPEED = 1;
     public static final double INTAKE_REVERSE_SPEED = -0.5;
     public static final double HOPPER_SPEED = 1;
     public static final double HOPPER_AUTO_SPEED = 0.35;
@@ -61,7 +61,7 @@ public class GameConstants {
     public static final double INITIAL_INTAKE_DEPLOYMENT_SPEED = -0.3;
     public static final double INITIAL_INTAKE_RETRACTION_SPEED = 0.3;
     public static final double AGITATOR_DOWN = -0.15;
-    public static final double AGITATIOR_UP = 0.15;
+    public static final double AGITATIOR_UP = 0.3;
 
 
     //Diags
@@ -84,7 +84,7 @@ public class GameConstants {
     public static final double SHOOTER_TIMEOUT = 5;
     public static final double INTAKE_DEPLOYER_TIMEOUT_TIMER = 5;
     public static final double TURRET_TIMEOUT = 5;
-    public static final int AGITATOR_CYCLE_TIME = 3;
+    public static final double AGITATOR_CYCLE_TIME = 1;
 
     //Angles
     public static final Rotation2d ANGLER_MIN_ANGLE = Rotation2d.fromDegrees(45);
@@ -124,8 +124,8 @@ public class GameConstants {
     public static final double TURRET_LONG_RANGE_I = 0.000000;
     public static final double TURRET_LONG_RANGE_D = 0.0;
     public static final double TURRET_LONG_RANGE_FF = 0.0;
-    public static final double TURRET_ENCODER_MIN = 0; //Lowest encoder position of Turret
-    public static final double TURRET_ENCODER_MAX = 77; //Highest encoder position of Turret
+    public static final double TURRET_ENCODER_MIN = -10; //Lowest encoder position of Turret
+    public static final double TURRET_ENCODER_MAX = 10; //Highest encoder position of Turret
     public static final double TURRET_HOME_ANGLE = 0.0; //Turret facing forward
     public static final double TURRET_MIN_ANGLE = -96;
     public static final double TURRET_MAX_ANGLE = 96;
@@ -191,4 +191,5 @@ public class GameConstants {
     public static final int TCP_SERVER_PORT2 = 5807;
 
     public static final double SHOOTER_RPM_THRESHOLD = 0.95;
+    public static final double MANUAL_MOVE_SCALING_FACTOR = 0.1;
 }

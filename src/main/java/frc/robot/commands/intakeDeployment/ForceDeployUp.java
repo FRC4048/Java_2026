@@ -4,28 +4,26 @@
 
 package frc.robot.commands.intakeDeployment;
 
-import frc.robot.constants.Constants;
 import frc.robot.constants.enums.DeploymentState;
 import frc.robot.constants.enums.ShootingState;
 import frc.robot.constants.enums.ShootingState.ShootState;
 import frc.robot.subsystems.IntakeDeployerSubsystem;
 import frc.robot.utils.logging.commands.LoggableCommand;
 
-public class ForceDeployDown extends LoggableCommand {
+public class ForceDeployUp extends LoggableCommand {
   private final IntakeDeployerSubsystem subsystem;
 
-  public ForceDeployDown(IntakeDeployerSubsystem subsystem) {
+  public ForceDeployUp(IntakeDeployerSubsystem subsystem) {
     this.subsystem = subsystem;
   }
 
   @Override
   public void initialize() {
-    subsystem.setDeploymentState(DeploymentState.DOWN);
+    subsystem.setDeploymentState(DeploymentState.UP);
   }
 
   @Override
   public void execute() {
-    subsystem.setSpeed(Constants.INITIAL_INTAKE_DEPLOYMENT_SPEED);
   }
 
   @Override
@@ -34,6 +32,6 @@ public class ForceDeployDown extends LoggableCommand {
 
   @Override
   public boolean isFinished() {
-    return subsystem.getRevLimitSwitchState();
+    return true;
   }
 }

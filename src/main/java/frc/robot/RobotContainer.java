@@ -347,6 +347,10 @@ public class RobotContainer {
                 }
         }
         public void putShuffleboardCommands() {
+                SmartDashboard.putNumber(RunDashboardShotTest.SHOOTER_TARGET_RPM_KEY, Constants.SHOOTER_SPEED);
+                 SmartDashboard.putData(
+                                        "test/Run Dashboard Shot Test (30s)",
+                                        new RunDashboardShotTest(anglerSubsystem, shooterSubsystem, hopperSubsystem, feederSubsystem));
                 if (Constants.DEBUG) {
                 SmartDashboard.putData("Run hopper and feeder", new ShootButton(controllerSubsystem));
                         SmartDashboard.putData(
@@ -359,15 +363,13 @@ public class RobotContainer {
                                         "Shooting State: Auto aim",
                                         new SetShootingState(shootState, ShootState.AUTO_AIM));
                                         SmartDashboard.putData("AutoRunHopper",
-                                        new AutoSpinHopper(hopperSubsystem));
+                                        new AutoSpinHopper(hopperSubsystem, feederSubsystem));
 
                 if (!Constants.DEBUG) {
                         SmartDashboard.putNumber(RunDashboardShotTest.ANGLER_TARGET_POSITION_KEY, 0.0);
-                        SmartDashboard.putNumber(RunDashboardShotTest.SHOOTER_TARGET_RPM_KEY, Constants.SHOOTER_SPEED);
+                        
                         SmartDashboard.putNumber(RunDashboardShotTest.HOPPER_TARGET_SPEED_KEY, Constants.HOPPER_SPEED);
-                 SmartDashboard.putData(
-                                        "test/Run Dashboard Shot Test (30s)",
-                                        new RunDashboardShotTest(anglerSubsystem, shooterSubsystem, hopperSubsystem, feederSubsystem));
+                
                 SmartDashboard.putData("RunHoppperAndFeeder",
                                         new RunHopperAndFeeder(hopperSubsystem, feederSubsystem));
                         /*

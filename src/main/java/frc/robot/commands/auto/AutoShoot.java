@@ -19,7 +19,7 @@ public class AutoShoot extends LoggableSequentialCommandGroup{
             new LoggableWaitCommand(2),
             new LoggableRaceCommandGroup(
                 new AutoSpinHopper(hopperSubsystem, feederSubsystem),
-                new LoggableWaitCommand(time)
+                new LoggableWaitCommand(time-2)
             ),
             new SetShootingState(shootState, ShootState.STOPPED)
         );

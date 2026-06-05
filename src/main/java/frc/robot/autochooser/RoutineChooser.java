@@ -26,6 +26,7 @@ import frc.robot.subsystems.HopperSubsystem;
 import frc.robot.subsystems.IntakeDeployerSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.utils.logging.commands.Loggable;
 import frc.robot.utils.logging.commands.LoggableCommandWrapper;
 import frc.robot.utils.logging.commands.LoggableParallelCommandGroup;
 import frc.robot.utils.logging.commands.LoggableSequentialCommandGroup;
@@ -132,14 +133,19 @@ public class RoutineChooser {
     public AutoRoutine depotMid() {
         AutoRoutine routine = factory.newRoutine("depot");
         AutoTrajectory traj = routine.trajectory("midHook");
+        AutoTrajectory traj1 = routine.trajectory("midHook_2");
 
         routine.active().onTrue(new LoggableSequentialCommandGroup(
                 new LoggableCommandWrapper(traj.resetOdometry()),
-                new LoggableCommandWrapper(traj.cmd().andThen(new LoggableParallelCommandGroup(
-                        new AutoShoot(hopper, feeder, shootState, 5))))));
+                new LoggableCommandWrapper(traj.cmd())));
+
+        traj.done().onTrue(new LoggableSequentialCommandGroup(
+            new AutoShoot(hopper, feeder, shootState, 5),
+            new LoggableCommandWrapper(traj1.cmd())));
 
         return routine;
     }
+
 
     public AutoRoutine test() {
         AutoRoutine routine = factory.newRoutine("test");

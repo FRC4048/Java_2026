@@ -75,24 +75,27 @@ public class RoutineChooser {
         switch (selectedPath == null ? AutoPath.DO_NOTHING : selectedPath) {
             case DO_NOTHING:
                 return doNothing();
+            case MID_DEPOT:
+                return depotMid();
+            case TEST:
+                return test();
+            /* 
             case SINGLE_SWIPE_DEPOT:
                 return depotSingleSwipe();
             case SINGLE_SWIPE_OUTPOST:
                 return outpostSingleSwipe();
-            case MID_DEPOT:
-                return depotMid();
             case DIP_AND_DOT_DEPOT:
                 return depotDipAndDot();
             case DIP_AND_DOT_OUTPOST:
                 return outpostDipAndDot();
-            case TEST:
-                return test();
+            */
             default:
                 return factory.newRoutine("do_nothing");
         }
 
     }
 
+    /*
     public AutoRoutine depotSingleSwipe() {
         AutoRoutine routine = factory.newRoutine("swipe");
 
@@ -114,15 +117,6 @@ public class RoutineChooser {
         return routine;
     }
     
-    public AutoRoutine doNothing() {
-        AutoRoutine routine = factory.newRoutine("donothing");
-        AutoTrajectory donothing = routine.trajectory("doNothing");
-        routine.active().onTrue(new LoggableSequentialCommandGroup(
-                new LoggableCommandWrapper(donothing.resetOdometry()),
-                new LoggableCommandWrapper(donothing.cmd())));
-        return routine;
-    }
-
     public AutoRoutine outpostSingleSwipe() {
         AutoRoutine routine = factory.newRoutine("swipe");
 
@@ -143,6 +137,7 @@ public class RoutineChooser {
 
         return routine;
     }
+    */
 
     public AutoRoutine depotMid() {
         AutoRoutine routine = factory.newRoutine("depot");
@@ -160,6 +155,14 @@ public class RoutineChooser {
         return routine;
     }
 
+    public AutoRoutine doNothing() {
+        AutoRoutine routine = factory.newRoutine("do nothing");
+        AutoTrajectory donothing = routine.trajectory("doNothing");
+        routine.active().onTrue(new LoggableSequentialCommandGroup(
+                new LoggableCommandWrapper(donothing.resetOdometry()),
+                new LoggableCommandWrapper(donothing.cmd())));
+        return routine;
+    }
 
     public AutoRoutine test() {
         AutoRoutine routine = factory.newRoutine("test");
@@ -171,6 +174,8 @@ public class RoutineChooser {
         return routine;
     }
 
+    /*
+    
     public AutoRoutine depotDipAndDot() {
         AutoRoutine routine = factory.newRoutine("dot");
         AutoTrajectory traj = routine.trajectory("bigDot_depot_1");
@@ -210,4 +215,5 @@ public class RoutineChooser {
 
         return routine;
     }
+    */
 }

@@ -8,6 +8,10 @@ import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 import choreo.auto.AutoFactory;
 import choreo.auto.AutoRoutine;
 import choreo.auto.AutoTrajectory;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import frc.robot.Robot;
 import frc.robot.commands.auto.AutoShoot;
 import frc.robot.commands.feeder.SpinFeeder;
@@ -27,6 +31,7 @@ import frc.robot.subsystems.IntakeDeployerSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.utils.logging.commands.Loggable;
+import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import frc.robot.utils.logging.commands.LoggableCommandWrapper;
 import frc.robot.utils.logging.commands.LoggableParallelCommandGroup;
 import frc.robot.utils.logging.commands.LoggableSequentialCommandGroup;
@@ -69,7 +74,7 @@ public class RoutineChooser {
         AutoPath selectedPath = autoChooser.get();
         switch (selectedPath == null ? AutoPath.DO_NOTHING : selectedPath) {
             case DO_NOTHING:
-                return factory.newRoutine("do_nothing");
+                return doNothing();
             case SINGLE_SWIPE_DEPOT:
                 return depotSingleSwipe();
             case SINGLE_SWIPE_OUTPOST:
@@ -106,6 +111,15 @@ public class RoutineChooser {
                         new LoggableWaitCommand(4),
                         new Agitate(deployer))));
 
+        return routine;
+    }
+    
+    public AutoRoutine doNothing() {
+        AutoRoutine routine = factory.newRoutine("donothing");
+        AutoTrajectory donothing = routine.trajectory("doNothing");
+        routine.active().onTrue(new LoggableSequentialCommandGroup(
+                new LoggableCommandWrapper(donothing.resetOdometry()),
+                new LoggableCommandWrapper(donothing.cmd())));
         return routine;
     }
 

@@ -359,7 +359,7 @@ public class RobotContainer {
                                         "Shooting State: Auto aim",
                                         new SetShootingState(shootState, ShootState.AUTO_AIM));
                                         SmartDashboard.putData("AutoRunHopper",
-                                        new AutoSpinHopper(hopperSubsystem));
+                                        new AutoSpinHopper(hopperSubsystem, feederSubsystem));
 
                 if (!Constants.DEBUG) {
                         SmartDashboard.putNumber(RunDashboardShotTest.ANGLER_TARGET_POSITION_KEY, 0.0);

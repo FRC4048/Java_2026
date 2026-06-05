@@ -43,7 +43,6 @@ public class RoutineChooser {
     private final IntakeDeployerSubsystem deployer;
     private final ShootingState shootState;
     private final HopperSubsystem hopper;
-    private final SwerveSubsystem swerveSubsystem;
     private final LoggedDashboardChooser<AutoPath> autoChooser;
 
     public RoutineChooser(AutoFactory factory,
@@ -51,14 +50,13 @@ public class RoutineChooser {
             IntakeSubsystem intake,
             IntakeDeployerSubsystem deployer,
             ShootingState shootState,
-            HopperSubsystem hopper, SwerveSubsystem swerveSubsystem) {
+            HopperSubsystem hopper) {
         this.factory = factory;
         this.feeder = feeder;
         this.intake = intake;
         this.deployer = deployer;
         this.shootState = shootState;
         this.hopper = hopper;
-        this.swerveSubsystem = swerveSubsystem;
 
         factory.bind("intakeDeploy", new ForceDeployDown(deployer)); // intake deploy marker
         factory.bind("intakeStart", new SpinIntake(intake)); // intake start marker

@@ -56,7 +56,7 @@ public class GameConstants {
     public static final double FEEDER_SPEED = 1;
     public static final double MAX_SPEED = Units.feetToMeters(14.5);
     public static final double SHOOTER_SPEED = 1500;
-    public static final double INTAKE_DEPLOYER_SPEED = -0.075;
+    public static final double INTAKE_DEPLOYER_SPEED = -0.3;
     public static final double INTAKE_RETRACTION_SPEED = 0.075;
     public static final double INITIAL_INTAKE_DEPLOYMENT_SPEED = -0.3;
     public static final double INITIAL_INTAKE_RETRACTION_SPEED = 0.3;

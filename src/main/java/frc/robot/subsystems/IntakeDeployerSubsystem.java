@@ -96,7 +96,7 @@ public class IntakeDeployerSubsystem extends SubsystemBase {
   private static SparkMax createMotor() {
     SparkMax motor = new SparkMax(Constants.INTAKE_DEPLOYMENT_ID, SparkLowLevel.MotorType.kBrushless);
     SparkMaxConfig motorConfig = new SparkMaxConfig();
-    motorConfig.idleMode(SparkBaseConfig.IdleMode.kBrake);
+    motorConfig.idleMode(SparkBaseConfig.IdleMode.kCoast);
     motorConfig.smartCurrentLimit(Constants.INTAKE_DEPLOYER_CURRENT_LIMIT);
     motor.configure(
         motorConfig,

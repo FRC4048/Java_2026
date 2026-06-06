@@ -348,6 +348,8 @@ public class RobotContainer {
         }
         public void putShuffleboardCommands() {
                 if (Constants.DEBUG) {
+                SmartDashboard.putData("agitate", new Agitate(intakeDeployer));
+                SmartDashboard.putData("ToggleDeployment", new ToggleDeployment(intakeDeployer));
                 SmartDashboard.putData("Run hopper and feeder", new ShootButton(controllerSubsystem));
                         SmartDashboard.putData(
                                         "intakedeployer/Deployment State: UP",

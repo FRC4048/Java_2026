@@ -71,7 +71,6 @@ public class RoutineChooser {
     }
 
     public AutoRoutine getAuto() {
-        Logger.recordOutput("Selected Action", autoChooser.get().getName());
         AutoPath selectedPath = autoChooser.get();
         switch (selectedPath == null ? AutoPath.DO_NOTHING : selectedPath) {
             case DO_NOTHING:

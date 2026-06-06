@@ -343,7 +343,7 @@ public class ControllerSubsystem extends SubsystemBase {
 
     public double getTargetShooterVelocityRpm() {
         //return activeTargets.shooterVelocityRpm * 0.9; use in squishy mode
-        return activeTargets.shooterVelocityRpm * 0.9;
+        return activeTargets.shooterVelocityRpm * 0.95;
 
     }
 

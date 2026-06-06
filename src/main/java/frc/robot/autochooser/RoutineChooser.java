@@ -71,6 +71,7 @@ public class RoutineChooser {
     }
 
     public AutoRoutine getAuto() {
+        Logger.recordOutput("Selected Action", autoChooser.get().getName());
         AutoPath selectedPath = autoChooser.get();
         switch (selectedPath == null ? AutoPath.DO_NOTHING : selectedPath) {
             case DO_NOTHING:
@@ -142,15 +143,12 @@ public class RoutineChooser {
     public AutoRoutine depotMid() {
         AutoRoutine routine = factory.newRoutine("depot");
         AutoTrajectory traj = routine.trajectory("midHook");
-        AutoTrajectory traj1 = routine.trajectory("midHook_2");
 
         routine.active().onTrue(new LoggableSequentialCommandGroup(
                 new LoggableCommandWrapper(traj.resetOdometry()),
                 new LoggableCommandWrapper(traj.cmd())));
 
-        traj.done().onTrue(new LoggableSequentialCommandGroup(
-            new AutoShoot(hopper, feeder, shootState, 5),
-            new LoggableCommandWrapper(traj1.cmd())));
+        traj.done().onTrue(new AutoShoot(hopper, feeder, shootState, 5));
 
         return routine;
     }

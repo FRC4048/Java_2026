@@ -15,6 +15,8 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.Filesystem;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import frc.robot.Robot;
 import frc.robot.commands.auto.AutoShoot;
@@ -75,20 +77,24 @@ public class RoutineChooser {
             if (file.getName() != "path.chor") {
                 String name = file.getName().replaceAll("_", " ").replaceAll(".traj", "");
                 AutoRoutine routine = factory.newRoutine(name);
-                AutoTrajectory traj = routine.trajectory(file.getName());
-                routine.active().onTrue(new LoggableSequentialCommandGroup(
-                        new LoggableCommandWrapper(traj.resetOdometry()),
-                        new LoggableCommandWrapper(traj.cmd())));
+                if (file.isFile()) {
+                    AutoTrajectory traj = routine.trajectory(file.getName());
+                    routine.active().onTrue(new LoggableSequentialCommandGroup(
+                            new LoggableCommandWrapper(traj.resetOdometry()),
+                            new LoggableCommandWrapper(traj.cmd())));
+                }
                 autoChooser.addOption(name, routine);
+                autoChooser.addDefaultOption("select action", null);
             }
         }
     }
 
-    public AutoRoutine getAuto() {
-        return autoChooser.get();
-    }
-
-    public AutoRoutine depotMid() {
-        return factory.newRoutine("auto1");
+    public void runAuto() {
+        Command auto = autoChooser.get().cmd();
+        if(auto != null){
+             CommandScheduler.getInstance().schedule(autoChooser.get().cmd());
+        } else{
+            
+        }
     }
 }

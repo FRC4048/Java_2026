@@ -207,10 +207,7 @@ public class Robot extends LoggedRobot {
 
         // Hub is always active during autonomous.
         hubActive = true;
-        autonomousCommand = robotContainer.getAutonomousCommand();
-            if (autonomousCommand != null) {
-                CommandScheduler.getInstance().schedule(autonomousCommand);
-            }
+        robotContainer.getAutoChooser().runAuto();
   }
 
   /** This function is called periodically during autonomous. */

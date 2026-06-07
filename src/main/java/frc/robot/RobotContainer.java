@@ -575,12 +575,6 @@ public class RobotContainer {
          *
          * @return the command to run in autonomous
          */
-        public Command getAutonomousCommand() {
-                //return autoChooser.getSelectedCommand();
-        return autoChooser.getAuto().cmd();
-
-            //    return new ExampleAuto(drivebase, autoFactory);
-        }
 
         public ClimberSubsystem getClimberSubsystem() {
                 return climberSubsystem;

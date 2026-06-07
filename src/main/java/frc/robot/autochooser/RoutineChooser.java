@@ -74,27 +74,27 @@ public class RoutineChooser {
         this.deploy = new File(Filesystem.getDeployDirectory(), "choreo").listFiles();
         autoChooser = new LoggedDashboardChooser<>("AutoAction");
         for (File file : deploy) {
-            if (file.getName() != "path.chor") {
+            if (!file.getName().equals("path.chor")) {
                 String name = file.getName().replaceAll("_", " ").replaceAll(".traj", "");
                 AutoRoutine routine = factory.newRoutine(name);
-                if (file.isFile()) {
                     AutoTrajectory traj = routine.trajectory(file.getName());
                     routine.active().onTrue(new LoggableSequentialCommandGroup(
                             new LoggableCommandWrapper(traj.resetOdometry()),
                             new LoggableCommandWrapper(traj.cmd())));
-                }
                 autoChooser.addOption(name, routine);
-                autoChooser.addDefaultOption("select action", null);
             }
         }
     }
 
     public void runAuto() {
-        Command auto = autoChooser.get().cmd();
-        if(auto != null){
-             CommandScheduler.getInstance().schedule(autoChooser.get().cmd());
-        } else{
-            
+        AutoRoutine autoRoutine = autoChooser.get();
+        if(autoRoutine == null){
+           autoRoutine = factory.newRoutine("Do Nothing");
+           AutoTrajectory traj = autoRoutine.trajectory("doNothing");
+                    autoRoutine.active().onTrue(new LoggableSequentialCommandGroup(
+                            new LoggableCommandWrapper(traj.resetOdometry()),
+                            new LoggableCommandWrapper(traj.cmd())));
         }
+        CommandScheduler.getInstance().schedule(autoRoutine.cmd());
     }
 }

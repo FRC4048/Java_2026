@@ -48,7 +48,7 @@ public class RoutineChooser {
     private final IntakeDeployerSubsystem deployer;
     private final ShootingState shootState;
     private final HopperSubsystem hopper;
-    private final LoggedDashboardChooser<Runnable> autoChooser;
+    private final LoggedDashboardChooser<AutoRoutine> autoChooser;
     private final File[] deploy;
 
     public RoutineChooser(AutoFactory factory,
@@ -74,17 +74,18 @@ public class RoutineChooser {
         for (File file : deploy) {
             if (file.getName() != "path.chor") {
                 String name = file.getName().replaceAll("_", " ").replaceAll(".traj", "");
-                autoChooser.addOption(name, () -> {
                 AutoRoutine routine = factory.newRoutine(name);
                 AutoTrajectory traj = routine.trajectory(file.getName());
-                
-                });
+                routine.active().onTrue(new LoggableSequentialCommandGroup(
+                        new LoggableCommandWrapper(traj.resetOdometry()),
+                        new LoggableCommandWrapper(traj.cmd())));
+                autoChooser.addOption(name, routine);
             }
         }
     }
 
     public AutoRoutine getAuto() {
-        return null;
+        return autoChooser.get();
     }
 
     public AutoRoutine depotMid() {

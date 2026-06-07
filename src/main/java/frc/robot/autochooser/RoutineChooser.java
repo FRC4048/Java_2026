@@ -85,7 +85,6 @@ public class RoutineChooser {
             }
         }
     }
-
     public void runAuto() {
         AutoRoutine autoRoutine = autoChooser.get();
         if(autoRoutine == null){

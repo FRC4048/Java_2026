@@ -71,6 +71,8 @@ public class ControllerSubsystem extends SubsystemBase {
     private static final PoseControlProfile BLUE_SHUTTLE_PROFILE = new PoseControlProfile(BLUE_HUB_TARGET_POSE, 37.0, 90.0,
             -14.0);
 
+    private double rpmMod = 0;
+    
     private final SwerveSubsystem drivebase;
     private final IntakeDeployerSubsystem intakeDeployer;
     private final RobotContainer robotContainer;
@@ -305,13 +307,16 @@ public class ControllerSubsystem extends SubsystemBase {
     private double calculateShooterVelocity(ShootState state, double computedDistanceMeters, PoseControlProfile profile) {
         double distance = (UnitConversion.METER_TO_FOOT * computedDistanceMeters) - Constants.COMPUTATED_DISTANCE_OFFSET;
         if (state == ShootState.SHOOTING_HUB || state == ShootState.AUTO_AIM) {
-            return (-3.35357 * distance * distance
-                    -36.02163 * distance
-                    -1920.78263);
+                        return (-5.24406 * distance * distance
+                                + 3.98 * distance
+                                - 2063.94375) + rpmMod;
         } else if (state == ShootState.SHUTTLING) {
             return (((-distance * distance) - 5 * distance) - 2800);
         }
         return profile.defaultShooterVelocityRpm;
+    }
+    public void addRpm(double rpm){
+        rpmMod += rpm;
     }
 
     private double calculateTurretAngleDegrees(ShootState state, Pose2d robotPose, PoseControlProfile profile) {
@@ -338,7 +343,7 @@ public class ControllerSubsystem extends SubsystemBase {
 
     public double getTargetShooterVelocityRpm() {
         //return activeTargets.shooterVelocityRpm * 0.9; use in squishy mode
-        return activeTargets.shooterVelocityRpm;
+        return activeTargets.shooterVelocityRpm * 0.95;
 
     }
 

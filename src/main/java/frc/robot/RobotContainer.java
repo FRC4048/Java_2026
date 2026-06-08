@@ -15,14 +15,16 @@ import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.apriltags.ApriltagReading;
+import frc.robot.autochooser.RoutineChooser;
 import frc.robot.commands.ResetAll;
-import frc.robot.autochooser.AutoChooser;
 import frc.robot.commands.AddApriltagReading;
 import frc.robot.commands.AddGarbageReading;
 import frc.robot.commands.AddTunableApriltagReading;
@@ -83,6 +85,9 @@ import frc.robot.subsystems.TurretSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import frc.robot.subsystems.swervedrive.vision.truster.ConstantVisionTruster;
 import frc.robot.subsystems.swervedrive.vision.truster.VisionTruster;
+import frc.robot.utils.logging.commands.LoggableCommand;
+import frc.robot.utils.logging.commands.LoggableCommandWrapper;
+import frc.robot.utils.logging.commands.LoggableSequentialCommandGroup;
 import frc.robot.utils.logging.io.gyro.RealGyroIo;
 import frc.robot.utils.logging.io.gyro.ThreadedGyro;
 import frc.robot.utils.logging.io.gyro.ThreadedGyroSwerveIMU;
@@ -106,7 +111,7 @@ public class RobotContainer {
         private static final int DRIVER_CAM_FPS = 30;
 
         // Instantiate the autochooser.
-        private final AutoChooser autoChooser;
+        private final RoutineChooser autoChooser;
         // The robot's subsystems and commands are defined here...
         private final CommandXboxController controller =
             new CommandXboxController(Constants.XBOX_CONTROLLER_PORT);
@@ -212,7 +217,7 @@ public class RobotContainer {
                 }
 
                 setUpAutoFactory();
-                autoChooser = new AutoChooser(drivebase, shootState, autoFactory, shooterSubsystem, climberSubsystem, feederSubsystem, hopperSubsystem, turretSubsystem, anglerSubsystem, controllerSubsystem, intakeDeployer);
+                autoChooser = new RoutineChooser(autoFactory, feederSubsystem, intakeSubsystem, intakeDeployer, shootState, hopperSubsystem);
                 configureBindings();
                 putShuffleboardCommands();
         }
@@ -232,6 +237,7 @@ public class RobotContainer {
          * {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
          * joysticks}.
          */
+        /* */
         private void setUpAutoFactory() {
                 if(!Constants.TESTBED){
                 drive = new Drive(drivebase);
@@ -243,9 +249,9 @@ public class RobotContainer {
                                 drive::followTrajectory,
                                 true,
                                 drivebase);
-
+        
                 // example implementation of autoRoutine
-                if (false) {
+                        if(false){
                         // Uses autofactory to create a new routine
                         straightRoutine = autoFactory.newRoutine("StraightRoutine");
 
@@ -291,22 +297,23 @@ public class RobotContainer {
                          * trajectory.doneFor(int)
                          * trajectory.recentlyDone()
                          */
+                        }
                 }}
-        }
+        
 
         private void configureBindings() {
                 controller.a().onTrue(new ToggleDeployment(intakeDeployer));
-                controller.b().onTrue(new SetDeploymentState(intakeDeployer, DeploymentState.STOPPED));
+                //controller.b().onTrue(new SetDeploymentState(intakeDeployer, DeploymentState.STOPPED));
                 controller.x().whileTrue(new SpinIntake(intakeSubsystem));
                 controller.y().whileTrue(new Agitate(intakeDeployer));
                 controller.leftStick().whileTrue(new ManualTurretMove(turretSubsystem, controller::getLeftX));
-                controller.povUp().onTrue(new SetShootingState(shootState, ShootState.FIXED));
+                //controller.povUp().onTrue(new SetShootingState(shootState, ShootState.FIXED));
                 controller.povRight().onTrue(new SetShootingState(shootState, ShootState.STOPPED));
                 controller.povDown().onTrue(new SetShootingState(shootState, ShootState.SHOOTING_HUB));
-                controller.povLeft().onTrue(new SetShootingState(shootState, ShootState.SHUTTLING));
+                //controller.povLeft().onTrue(new SetShootingState(shootState, ShootState.SHUTTLING));
                 controller.leftTrigger().whileTrue(new ReverseHopper(hopperSubsystem));
                 controller.rightTrigger().whileTrue(new ReverseIntake(intakeSubsystem));
-                driveJoystick.trigger().whileTrue((new ShootButton(controllerSubsystem)));
+                driveJoystick.trigger().whileTrue(new ShootButton(controllerSubsystem));
 
                 // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
                 // new Trigger(m_exampleSubsystem::exampleCondition)
@@ -339,9 +346,10 @@ public class RobotContainer {
                         drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity);
                 }
         }
-
         public void putShuffleboardCommands() {
                 if (Constants.DEBUG) {
+                SmartDashboard.putData("agitate", new Agitate(intakeDeployer));
+                SmartDashboard.putData("ToggleDeployment", new ToggleDeployment(intakeDeployer));
                 SmartDashboard.putData("Run hopper and feeder", new ShootButton(controllerSubsystem));
                         SmartDashboard.putData(
                                         "intakedeployer/Deployment State: UP",
@@ -353,13 +361,18 @@ public class RobotContainer {
                                         "Shooting State: Auto aim",
                                         new SetShootingState(shootState, ShootState.AUTO_AIM));
                                         SmartDashboard.putData("AutoRunHopper",
-                                        new AutoSpinHopper(hopperSubsystem));
-                        SmartDashboard.putData(
-                                        "Shooting State: Into Hub",
-                                        new SetShootingState(shootState, ShootState.SHOOTING_HUB));
+                                        new AutoSpinHopper(hopperSubsystem, feederSubsystem));
+                                SmartDashboard.putData(
+                                        "RPMincrease",
+                                       new InstantCommand(()->{controllerSubsystem.addRpm(-100);}));
+                                 SmartDashboard.putData(
+                                        "RPMdecrease",
+                                       new InstantCommand(()->{controllerSubsystem.addRpm(100);}));
+                if (!Constants.DEBUG) {
                         SmartDashboard.putNumber(RunDashboardShotTest.ANGLER_TARGET_POSITION_KEY, 0.0);
-                        SmartDashboard.putNumber(RunDashboardShotTest.SHOOTER_TARGET_RPM_KEY, Constants.SHOOTER_SPEED);
+                        
                         SmartDashboard.putNumber(RunDashboardShotTest.HOPPER_TARGET_SPEED_KEY, Constants.HOPPER_SPEED);
+                  SmartDashboard.putNumber(RunDashboardShotTest.SHOOTER_TARGET_RPM_KEY, Constants.SHOOTER_SPEED);
                  SmartDashboard.putData(
                                         "test/Run Dashboard Shot Test (30s)",
                                         new RunDashboardShotTest(anglerSubsystem, shooterSubsystem, hopperSubsystem, feederSubsystem));
@@ -379,12 +392,13 @@ public class RobotContainer {
                          * new TiltDown(tiltSubsystem));
                          */
 
-
+                
 
             // TODO: These commands do not REQUIRE the subsystem therefore cannot be used in// production
                                 SmartDashboard.putData(
                                         "Drive/Forward",
                                         new DriveSwerve(drivebase, DriveDirection.FORWARD, 0.5, 0.2));
+                               
                                 SmartDashboard.putData(
                                         "Drive/Backward",
                                         new DriveSwerve(drivebase, DriveDirection.BACKWARD, 0.5, 0.2));
@@ -543,7 +557,7 @@ public class RobotContainer {
                 }
 
         //basic drive command
-        if (!Constants.TESTBED) {
+         if (!Constants.TESTBED) {
             Command driveDirectionTime = new DriveDirectionTime(drivebase, 0.1, 0.1, true, 1);
             SmartDashboard.putData("Drive Command", driveDirectionTime);
             SmartDashboard.putData("Fake vision near trench", new FakeVision(drivebase, 4, 1));
@@ -551,10 +565,9 @@ public class RobotContainer {
             SmartDashboard.putData("AddApriltagReading", new AddApriltagReading(apriltagSubsystem, new ApriltagReading(0, 0, 0, 0, 0, 0, 0, 0, 0)));
             SmartDashboard.putData("AddGarbageReading", new AddGarbageReading(apriltagSubsystem));
             SmartDashboard.putData("AddTunedApriltagReading", new AddTunableApriltagReading(apriltagSubsystem));
-
         }
-
-        }
+        }     
+        }  
 
         /**
          * Use this to pass the autonomous command to the main {@link Robot} class.
@@ -562,8 +575,8 @@ public class RobotContainer {
          * @return the command to run in autonomous
          */
         public Command getAutonomousCommand() {
-                return autoChooser.getSelectedCommand();
-    // return straightRoutine.cmd(straightTrajectory.done());
+                //return autoChooser.getSelectedCommand();
+        return autoChooser.getAuto().cmd();
 
             //    return new ExampleAuto(drivebase, autoFactory);
         }
@@ -576,7 +589,7 @@ public class RobotContainer {
         return robotVisualizer;
     }
 
-    public AutoChooser getAutoChooser() {
+    public RoutineChooser getAutoChooser() {
         return autoChooser;
     }
 

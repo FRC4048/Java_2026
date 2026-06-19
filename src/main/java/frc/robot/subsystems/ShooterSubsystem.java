@@ -1,6 +1,8 @@
 package frc.robot.subsystems;
 
 
+import java.util.logging.Logger;
+
 import com.ctre.phoenix6.controls.Follower;
 import com.revrobotics.spark.SparkLowLevel;
 import com.revrobotics.spark.SparkMax;
@@ -58,6 +60,9 @@ public class ShooterSubsystem extends SubsystemBase {
                 .setFF(0.0025);
     }
 
+    public double getRPM(){
+        return io.getRPM();
+    }
     // setSpeed expects a power value from -1 to 1
     public void setSpeed(double speed) {
         io.set(speed);

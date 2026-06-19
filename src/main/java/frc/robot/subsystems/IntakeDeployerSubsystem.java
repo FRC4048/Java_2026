@@ -33,7 +33,7 @@ import frc.robot.utils.simulation.RobotVisualizer;
 
 public class IntakeDeployerSubsystem extends SubsystemBase {
   public static final String LOGGING_NAME = "IntakeDeployer";
-  public DeploymentState deploymentState = DeploymentState.UP;
+  public DeploymentState deploymentState = DeploymentState.STOPPED;
   private final SparkMaxIo io;
 
   public IntakeDeployerSubsystem(SparkMaxIo io) {
